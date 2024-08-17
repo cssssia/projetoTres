@@ -25,8 +25,6 @@ public class UpdateSprite : MonoBehaviour
         }
         image = GetComponent<SpriteRenderer>();
         image.sprite = cardFace;
-
-        Debug.Log("a");
     }
 
 }

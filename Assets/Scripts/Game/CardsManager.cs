@@ -19,11 +19,10 @@ public class CardsManager : NetworkBehaviour
     [SerializeField] private Quaternion m_clientCardRotation;
     private static string[] suits = new string[] { "C", "D", "H", "S" };
     private static string[] values = new string[] { "A", "2", "3", "4", "5", "6", "7", "8", "9", "10", "J", "Q", "K" };
-    public List<string> deck;
-    private int m_deckIndex;
 
     private float m_dealDeckTimer = 4f;
     private float m_dealDeckTimerMax = 4f;
+    private bool m_cardsWereSpawned = false;
 
     void Awake()
     {
@@ -46,11 +45,9 @@ public class CardsManager : NetworkBehaviour
         {
             m_dealDeckTimer = m_dealDeckTimerMax;
 
-            if (deck.Count == 0)
-            {
-                //PlayCards();
+            if (!m_cardsWereSpawned)
                 SpawnNewPlayCardsServerRpc();
-            }
+
         }
 
     }
@@ -58,52 +55,48 @@ public class CardsManager : NetworkBehaviour
     [ServerRpc]
     void SpawnNewPlayCardsServerRpc() //can only instantiate prefabs on server
     {
-        //StartCoroutine(Deal());
-        deck = GenerateDeck();
-        foreach (string card in deck)
+        //PlayCards();
+        List<string> l_deck = GenerateDeck();
+        Shuffle(l_deck);
+
+        foreach (string card in l_deck)
         {
             GameObject newCard = Instantiate(m_cardPrefab, m_cardPrefab.transform.position, m_cardPrefab.transform.rotation);
             NetworkObject cardNetworkObject = newCard.GetComponent<NetworkObject>();
             cardNetworkObject.Spawn(true);
-            m_deckCards.Add(cardNetworkObject);
-            RenameCardClientRpc(cardNetworkObject);
-            //newCard.name = card;
+            RenameCardClientRpc(cardNetworkObject, card);
         }
+
+        m_cardsWereSpawned = true;
 
     }
 
-    int i;
+    // int i;
     [ClientRpc]
-    void RenameCardClientRpc(NetworkObject cardNetworkObject)
+    void RenameCardClientRpc(NetworkObjectReference cardNetworkObjectReference, string card)
     {
-        deck = GenerateDeck();
-        Debug.Log("RenameCardClientRpc");
-        foreach (string card in deck)
-        {
-            Debug.Log("rn" + card);
-            cardNetworkObject.name = card;
-            Debug.Log("n" + cardNetworkObject.name);
-        }
+        cardNetworkObjectReference.TryGet(out NetworkObject cardNetworkObject);
+        cardNetworkObject.name = card;
     }
 
-    public void PlayCards()
-    {
-        deck = GenerateDeck();
-        Shuffle(deck);
-        //StartCoroutine(Deal());
-    }
+    // public void PlayCards()
+    // {
+    //     deck = GenerateDeck();
+    //     Shuffle(deck);
+    //     StartCoroutine(Deal());
+    // }
 
     public static List<string> GenerateDeck()
     {
-        List<string> newDeck = new List<string>();
+        List<string> l_newDeck = new List<string>();
         foreach (string s in suits)
         {
             foreach (string v in values)
             {
-                newDeck.Add(s + v);
+                l_newDeck.Add(s + v);
             }
         }
-        return newDeck;
+        return l_newDeck;
     }
 
     void Shuffle<T>(List<T> list)
@@ -118,15 +111,11 @@ public class CardsManager : NetworkBehaviour
         }
     }
 
-    IEnumerator Deal()
-    {
-        foreach (string card in deck)
-        {
-            yield return new WaitForSeconds(0.01f);
-            GameObject newCard = Instantiate(m_cardPrefab, transform.position, Quaternion.identity);
-            NetworkObject cardNetworkObject = newCard.GetComponent<NetworkObject>();
-            cardNetworkObject.Spawn(true);
-            newCard.name = card;
-        }
-    }
+    // IEnumerator Deal()
+    // {
+    //     foreach (string card in deck)
+    //     {
+    //         yield return new WaitForSeconds(0.01f);
+    //     }
+    // }
 }

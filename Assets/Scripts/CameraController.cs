@@ -1,27 +1,15 @@
-using System.Collections;
 using System.Collections.Generic;
-using Unity.Netcode;
 using UnityEngine;
 
 public class CameraController : Singleton<CameraController>
 {
     [SerializeField]private Camera m_camera;
+    [SerializeField] private List<Vector3> m_cameraSpawnPositionList;
+    [SerializeField] private List<Quaternion> m_cameraSpawnRotationList;
 
-    [Header("Host Camera")]
-    [SerializeField] private Vector3 m_hostCameraPosition;
-    [SerializeField] private Quaternion m_hostCameraRotation;
-
-    [Header("Client Camera")]
-    [SerializeField] private Vector3 m_clientCameraPosition;
-    [SerializeField] private Quaternion m_clientCameraRotation;
-
-    public void SetHostCamera()
+    public void SetCamera(int p_index)
     {
-        m_camera.transform.SetPositionAndRotation(m_hostCameraPosition, m_hostCameraRotation);
+        m_camera.transform.SetPositionAndRotation(m_cameraSpawnPositionList[p_index], m_cameraSpawnRotationList[p_index]);
     }
 
-    public void SetClientCamera()
-    {
-        m_camera.transform.SetPositionAndRotation(m_clientCameraPosition, m_clientCameraRotation);
-    }
 }

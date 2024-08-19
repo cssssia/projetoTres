@@ -35,7 +35,7 @@ public class LobbyMessageUI : MonoBehaviour
         GameLobby.Instance.OnCodeJoinFailed -= GameLobby_OnCodeJoinFailed;
     }
 
-    private void GameMultiplayerManager_OnFailToJoinGame(object sender, EventArgs e)
+    private void GameMultiplayerManager_OnFailToJoinGame(object p_sender, EventArgs e)
     {
         if (NetworkManager.Singleton.DisconnectReason == "") // if connection gets timeout, text message is empty
             ShowMessage(ErrorMessage.MESSAGE_FAILED_CONNECT);
@@ -45,27 +45,27 @@ public class LobbyMessageUI : MonoBehaviour
         Show();
     }
 
-    private void GameLobby_OnCreatedLobbyStarted(object sender, EventArgs e)
+    private void GameLobby_OnCreatedLobbyStarted(object p_sender, EventArgs e)
     {
         ShowMessage(ErrorMessage.MESSAGE_CREATING);
     }
 
-    private void GameLobby_OnCreatedLobbyFailed(object sender, EventArgs e)
+    private void GameLobby_OnCreatedLobbyFailed(object p_sender, EventArgs e)
     {
         ShowMessage(ErrorMessage.MESSAGE_FAILED_CREATE_LOBBY);
     }
 
-    private void GameLobby_OnJoinStarted(object sender, EventArgs e)
+    private void GameLobby_OnJoinStarted(object p_sender, EventArgs e)
     {
         ShowMessage(ErrorMessage.MESSAGE_JOINING);
     }
 
-    private void GameLobby_OnQuickJoinFailed(object sender, EventArgs e)
+    private void GameLobby_OnQuickJoinFailed(object p_sender, EventArgs e)
     {
         ShowMessage(ErrorMessage.MESSAGE_FAILED_QUICK_LOBBY);
     }
 
-    private void GameLobby_OnCodeJoinFailed(object sender, EventArgs e)
+    private void GameLobby_OnCodeJoinFailed(object p_sender, EventArgs e)
     {
         ShowMessage(ErrorMessage.MESSAGE_FAILED_JOIN_LOBBY);
     }

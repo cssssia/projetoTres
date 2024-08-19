@@ -14,10 +14,8 @@ using UnityEngine;
 
 // TODO handle empty lobby name
 
-public class GameLobby : MonoBehaviour
+public class GameLobby : Singleton<GameLobby>
 {
-    public static GameLobby Instance { get; private set;}
-
     private const string KEY_RELAY_JOIN_CODE = "RelayJoinCode";
 
     public event EventHandler OnCreatedLobbyStarted;
@@ -38,7 +36,6 @@ public class GameLobby : MonoBehaviour
 
     void Awake()
     {
-        Instance = this;
         DontDestroyOnLoad(gameObject);
         InitializeUnityAuthentication();
     }
@@ -276,4 +273,5 @@ public class GameLobby : MonoBehaviour
     {
         return m_joinedLobby;
     }
+
 }

@@ -32,15 +32,15 @@ public class DisconnectUI : MonoBehaviour
             NetworkManager.Singleton.OnClientDisconnectCallback -= NetworkManager_OnClientDisconnectCallback;
     }
 
-    private void NetworkManager_OnClientDisconnectCallback(ulong clientId)
+    private void NetworkManager_OnClientDisconnectCallback(ulong p_clientId)
     {
-        if (NetworkManager.Singleton != null && clientId == NetworkManager.ServerClientId)
+        if (NetworkManager.Singleton != null && p_clientId == NetworkManager.ServerClientId)
         {
             // server is shutting down
             Show();
         }
         else
-            Debug.Log("someone disconnected: " + clientId);
+            Debug.Log("someone disconnected: " + p_clientId);
     }
 
     private void Show()

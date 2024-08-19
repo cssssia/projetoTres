@@ -47,14 +47,14 @@ public class WaitLobbyManager : NetworkBehaviour
 	}
 
 	[ClientRpc]
-	private void SetPlayerReadyClientRpc(ulong clientId)
+	private void SetPlayerReadyClientRpc(ulong p_clientId)
 	{
-		m_playerReadyDictionary[clientId] = true;
+		m_playerReadyDictionary[p_clientId] = true;
 		OnReadyChanged?.Invoke(this, EventArgs.Empty);
 	}
 
-	public bool IsPlayerReady(ulong clientId)
+	public bool IsPlayerReady(ulong p_clientId)
 	{
-		return m_playerReadyDictionary.ContainsKey(clientId) && m_playerReadyDictionary[clientId];
+		return m_playerReadyDictionary.ContainsKey(p_clientId) && m_playerReadyDictionary[p_clientId];
 	}
 }

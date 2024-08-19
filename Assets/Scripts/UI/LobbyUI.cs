@@ -61,7 +61,7 @@ public class LobbyUI : MonoBehaviour
         GameLobby.Instance.OnLobbyListChanged -= GammeLobby_OnLobbyListChanged;
     }
 
-    private void GammeLobby_OnLobbyListChanged(object sender, GameLobby.OnLobbyListChangedEventArgs e)
+    private void GammeLobby_OnLobbyListChanged(object p_sender, GameLobby.OnLobbyListChangedEventArgs e)
     {
         UpdateLobbyList(e.lobbyList);
     }

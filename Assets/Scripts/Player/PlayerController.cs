@@ -32,9 +32,9 @@ public class PlayerController : NetworkBehaviour
 
     }
 
-    private void NetworkManager_OnClientDisconnectCallback(ulong clientId)
+    private void NetworkManager_OnClientDisconnectCallback(ulong p_clientId)
     {
-        if (clientId == OwnerClientId)
+        if (p_clientId == OwnerClientId)
         {
             Debug.Log("owner disconnected");
             // destroy network stuff

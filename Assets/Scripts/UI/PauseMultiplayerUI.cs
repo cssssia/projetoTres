@@ -11,12 +11,12 @@ public class PauseMultiplayerUI : MonoBehaviour
 		Hide();
 	}
 
-	private void GameManager_OnMultiplayerGamePaused(object sender, EventArgs e)
+	private void GameManager_OnMultiplayerGamePaused(object p_sender, EventArgs e)
 	{
 		Show();
 	}
 
-	private void GameManager_OnMultiplayerGameUnpaused(object sender, EventArgs e)
+	private void GameManager_OnMultiplayerGameUnpaused(object p_sender, EventArgs e)
 	{
 		Hide();
 	}

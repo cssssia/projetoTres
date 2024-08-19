@@ -58,7 +58,7 @@ public class GameManager : NetworkBehaviour
 		}
     }
 
-    private void SceneManager_OnLoadEventCompleted(string sceneName, UnityEngine.SceneManagement.LoadSceneMode loadSceneMode, List<ulong> clientsCompleted, List<ulong> clientsTimedOut)
+    private void SceneManager_OnLoadEventCompleted(string p_sceneName, UnityEngine.SceneManagement.LoadSceneMode p_loadSceneMode, List<ulong> p_clientsCompleted, List<ulong> p_clientsTimedOut)
     {
         foreach (ulong clientId in NetworkManager.Singleton.ConnectedClientsIds)
 		{
@@ -67,12 +67,12 @@ public class GameManager : NetworkBehaviour
 		}
     }
 
-    private void GameState_OnValueChanged(GameState previousValue, GameState newValue)
+    private void GameState_OnValueChanged(GameState p_previousValue, GameState p_newValue)
 	{
 		OnStateChanged?.Invoke(this, EventArgs.Empty);
 	}
 
-	private void IsGamePaused_OnValueChanged(bool previousValue, bool newValue)
+	private void IsGamePaused_OnValueChanged(bool p_previousValue, bool p_newValue)
 	{
 		if (m_isGamePaused.Value)
 		{
@@ -86,17 +86,17 @@ public class GameManager : NetworkBehaviour
 		}
 	}
 
-	private void NetworkManager_OnClientDisconnectCallback(ulong clientId)
+	private void NetworkManager_OnClientDisconnectCallback(ulong p_clientId)
 	{
 		m_autoTestGamePauseState = true;
 	}
 
-    private void GameInput_OnPauseAction(object sender, EventArgs e)
+    private void GameInput_OnPauseAction(object p_sender, EventArgs e)
 	{
 		TogglePauseGame();
 	}
 
-	private void GameInput_OnInteractAction(object sender, EventArgs e)
+	private void GameInput_OnInteractAction(object p_sender, EventArgs e)
 	{
 		if (m_gameState.Value == GameState.WaitingToStart)
 		{

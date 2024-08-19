@@ -11,13 +11,13 @@ public class TestingWaitingForPlayersUI : MonoBehaviour
         Hide();
     }
 
-    private void GameManager_OnLocalPlayerReadyChanged(object sender, EventArgs e)
+    private void GameManager_OnLocalPlayerReadyChanged(object p_sender, EventArgs e)
     {
         if (GameManager.Instance.IsLocalPlayerReady())
             Show();
     }
 
-    private void GameManager_OnStateChanged(object sender, EventArgs e)
+    private void GameManager_OnStateChanged(object p_sender, EventArgs e)
     {
         if (GameManager.Instance.IsCountdownToStartActive())
             Hide();

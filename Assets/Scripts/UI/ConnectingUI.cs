@@ -17,12 +17,12 @@ public class ConnectingUI : MonoBehaviour
         GameMultiplayerManager.Instance.OnFailToJoinGame -= GameMultiplayerManager_OnFailToJoinGame;
     }
 
-    private void GameMultiplayerManager_OnTryingToJoinGame(object sender, EventArgs e)
+    private void GameMultiplayerManager_OnTryingToJoinGame(object p_sender, EventArgs e)
     {
         Show();
     }
 
-    private void GameMultiplayerManager_OnFailToJoinGame(object sender, EventArgs e)
+    private void GameMultiplayerManager_OnFailToJoinGame(object p_sender, EventArgs e)
     {
         Hide();
     }

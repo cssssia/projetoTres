@@ -11,7 +11,7 @@ public class TutorialUI : MonoBehaviour
 		Show();
 	}
 
-	private void GameManager_OnLocalPlayerReadyChanged(object sender, EventArgs e)
+	private void GameManager_OnLocalPlayerReadyChanged(object p_sender, EventArgs e)
 	{
 		if (GameManager.Instance.IsLocalPlayerReady()) //done this way by the tutorial guy to give the ability to unready the player, if we want
 			Hide();

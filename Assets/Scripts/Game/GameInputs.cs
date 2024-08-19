@@ -1,16 +1,10 @@
 using System;
 using UnityEngine;
 
-public class GameInput : MonoBehaviour {
-
-    public static GameInput Instance { get; private set; }
+public class GameInput : Singleton<GameInput> {
 
     public event EventHandler OnInteractAction;
     public event EventHandler OnPauseAction;
-
-    private void Awake() {
-        Instance = this;
-    }
 
 	void Update()
 	{

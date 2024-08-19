@@ -21,12 +21,12 @@ public class PlayerReadyManager : MonoBehaviour
         GameMultiplayerManager.Instance.OnPlayerDataNetworkListChanged -= GameMultiplayerManager_OnPlayerDataNetworkListChanged;
     }
 
-    private void GameMultiplayerManager_OnPlayerDataNetworkListChanged(object sender, EventArgs e)
+    private void GameMultiplayerManager_OnPlayerDataNetworkListChanged(object p_sender, EventArgs e)
     {
         UpdatePlayer();
     }
 
-    private void WaitLobbyManager_OnReadyChanged(object sender, EventArgs e)
+    private void WaitLobbyManager_OnReadyChanged(object p_sender, EventArgs e)
     {
         UpdatePlayer();
     }

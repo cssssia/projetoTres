@@ -33,12 +33,12 @@ public class PauseUI : MonoBehaviour
 		Hide();
 	}
 
-	private void GameManager_OnLocalGamePaused(object sender, EventArgs e)
+	private void GameManager_OnLocalGamePaused(object p_sender, EventArgs e)
 	{
 		Show();
 	}
 
-	private void GameManager_OnLocalGameUnpaused(object sender, EventArgs e)
+	private void GameManager_OnLocalGameUnpaused(object p_sender, EventArgs e)
 	{
 		Hide();
 	}

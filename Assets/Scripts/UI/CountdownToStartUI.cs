@@ -10,7 +10,7 @@ public class CountdownToStartUI : MonoBehaviour
         Hide();
     }
 
-    private void GameManager_OnStateChanged(object sender, EventArgs e)
+    private void GameManager_OnStateChanged(object p_sender, EventArgs e)
     {
 		if (GameManager.Instance.IsCountdownToStartActive())
 			Show();

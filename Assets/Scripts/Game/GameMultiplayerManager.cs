@@ -1,0 +1,157 @@
+using System;
+using Unity.Netcode;
+using UnityEngine;
+
+public class GameMultiplayerManager : NetworkBehaviour
+{
+	public static GameMultiplayerManager Instance { get; private set; }
+
+	public const int MAX_PLAYER_AMOUNT = 2;
+	private const string PLAYER_PREFS_PLAYER_NAME_MULTIPLAYER = "PlayerNameMultiplayer";
+
+	public event EventHandler OnTryingToJoinGame;
+	public event EventHandler OnFailToJoinGame;
+	public event EventHandler OnPlayerDataNetworkListChanged;
+
+	private NetworkList<PlayerData> m_playerDataNetworkList; // network lists HAVE to be initialized on awake
+	private string m_playerName;
+
+	void Awake()
+	{
+		Instance = this;
+
+		DontDestroyOnLoad(gameObject);
+
+		m_playerName = PlayerPrefs.GetString(PLAYER_PREFS_PLAYER_NAME_MULTIPLAYER, "PlayerName" + UnityEngine.Random.Range(100, 1000));
+
+		m_playerDataNetworkList = new NetworkList<PlayerData>();
+		m_playerDataNetworkList.OnListChanged += PlayerDataNetworkList_OnListChanged;
+	}
+
+	public string GetPlayerName()
+	{
+		return m_playerName;
+	}
+
+	public void SetPlayerName(string p_playerName)
+	{
+		m_playerName = p_playerName;
+
+		PlayerPrefs.SetString(PLAYER_PREFS_PLAYER_NAME_MULTIPLAYER, p_playerName);
+	}
+
+    private void PlayerDataNetworkList_OnListChanged(NetworkListEvent<PlayerData> changeEvent)
+    {
+        OnPlayerDataNetworkListChanged?.Invoke(this, EventArgs.Empty);
+    }
+
+    public void StartHost()
+	{
+		NetworkManager.Singleton.ConnectionApprovalCallback += NetworkManager_ConnectionApprovalCallback;
+		NetworkManager.Singleton.OnClientConnectedCallback += NetworkManager_Server_OnClientConnectedCallback;
+		NetworkManager.Singleton.OnClientDisconnectCallback += NetworkManager_Server_OnClientDisconnectCallback;
+		NetworkManager.Singleton.StartHost();
+	}
+
+    public void StartClient()
+	{
+		OnTryingToJoinGame?.Invoke(this, EventArgs.Empty);
+
+		NetworkManager.Singleton.OnClientConnectedCallback +=  NetworkManager_Client_OnClientConnectedCallback;
+		NetworkManager.Singleton.OnClientDisconnectCallback +=  NetworkManager_Client_OnClientDisconnectCallback;
+		NetworkManager.Singleton.StartClient();
+	}
+
+    private void NetworkManager_ConnectionApprovalCallback(NetworkManager.ConnectionApprovalRequest connectionApprovalRequest, NetworkManager.ConnectionApprovalResponse connectionApprovalResponse)
+    {
+
+		if (UnityEngine.SceneManagement.SceneManager.GetActiveScene().name != SceneLoader.Scene.SCN_WaitLobby.ToString())
+		{
+	        connectionApprovalResponse.Approved = false;
+			connectionApprovalResponse.Reason = ErrorMessage.REASON_GAME_STARTED;
+			return;
+		}
+
+		if (NetworkManager.Singleton.ConnectedClientsIds.Count >= MAX_PLAYER_AMOUNT)
+		{
+			connectionApprovalResponse.Approved = false;
+			connectionApprovalResponse.Reason = ErrorMessage.REASON_GAME_FULL;
+			return;
+		}
+
+		connectionApprovalResponse.Approved = true;
+
+    }
+
+	private void NetworkManager_Server_OnClientConnectedCallback(ulong clientId)
+    {
+        m_playerDataNetworkList.Add(new PlayerData {
+			clientId = clientId
+		});
+        SetPlayerNameServerRpc(GetPlayerName());
+	}
+
+	private void NetworkManager_Client_OnClientConnectedCallback(ulong clientId)
+    {
+        SetPlayerNameServerRpc(GetPlayerName());
+    }
+
+	private void NetworkManager_Server_OnClientDisconnectCallback(ulong clientId)
+	{
+		for (int i = 0; i < m_playerDataNetworkList.Count; i++)
+		{
+			PlayerData l_playeData = m_playerDataNetworkList[i];
+			if (l_playeData.clientId == clientId)
+			{
+				// disconnected
+				m_playerDataNetworkList.RemoveAt(i);
+			}
+		}
+	}
+
+	private void NetworkManager_Client_OnClientDisconnectCallback(ulong clientId)
+    {
+        OnFailToJoinGame?.Invoke(this, EventArgs.Empty);
+    }
+
+	[ServerRpc(RequireOwnership = false)]
+	private void SetPlayerNameServerRpc(string p_playerName, ServerRpcParams serverRpcParams = default)
+	{
+		int l_playerDataIndex = GetPlayerDataIndexFromClientId(serverRpcParams.Receive.SenderClientId);
+
+		PlayerData l_playerData = m_playerDataNetworkList[l_playerDataIndex];
+
+		l_playerData.playerName = p_playerName;
+
+		m_playerDataNetworkList[l_playerDataIndex] = l_playerData;
+	}
+
+	public bool IsPlayerIndexConnected(int p_playerIndex)
+	{
+		return p_playerIndex < m_playerDataNetworkList.Count;
+	}
+
+	public int GetPlayerDataIndexFromClientId(ulong p_clientId)
+	{
+		for (int i = 0; i < m_playerDataNetworkList.Count; i++)
+			if (m_playerDataNetworkList[i].clientId == p_clientId)
+				return i;
+
+		return -1;
+	}
+
+	public PlayerData GetPlayerDataFromClientId(ulong p_clientId)
+	{
+		foreach (PlayerData l_playeData in m_playerDataNetworkList)
+			if (l_playeData.clientId.Equals(p_clientId))
+				return l_playeData;
+
+		return default;
+	}
+
+	public PlayerData GetPlayerDataFromPlayerIndex(int p_playerIndex)
+	{
+		return m_playerDataNetworkList[p_playerIndex];
+	}
+
+}

@@ -1,0 +1,60 @@
+using System;
+using System.Collections.Generic;
+using Unity.Netcode;
+using UnityEngine;
+
+public class WaitLobbyManager : NetworkBehaviour
+{
+    public static WaitLobbyManager Instance { get; private set; }
+
+	public event EventHandler OnReadyChanged;
+
+    private Dictionary<ulong, bool> m_playerReadyDictionary;
+
+    void Awake()
+    {
+        Instance = this;
+        m_playerReadyDictionary = new Dictionary<ulong, bool>();
+    }
+
+    public void SetPlayerReady()
+    {
+        SetPlayerReadyServerRpc();
+    }
+
+    [ServerRpc(RequireOwnership = false)]
+	private void SetPlayerReadyServerRpc(ServerRpcParams p_serverRpcParams = default)
+	{
+		SetPlayerReadyClientRpc(p_serverRpcParams.Receive.SenderClientId);
+		m_playerReadyDictionary[p_serverRpcParams.Receive.SenderClientId] = true;
+
+		bool l_allClientsReady = true;
+		foreach (ulong clientId in NetworkManager.Singleton.ConnectedClientsIds)
+		{
+			if (!m_playerReadyDictionary.ContainsKey(clientId) || !m_playerReadyDictionary[clientId])
+			{
+				// this player is NOT ready
+				l_allClientsReady = false;
+				break;
+			}
+		}
+
+		if (l_allClientsReady)
+		{
+			SceneLoader.LoadNetwork(SceneLoader.Scene.SCN_Game);
+			GameLobby.Instance.DeleteLobby();
+		}
+	}
+
+	[ClientRpc]
+	private void SetPlayerReadyClientRpc(ulong clientId)
+	{
+		m_playerReadyDictionary[clientId] = true;
+		OnReadyChanged?.Invoke(this, EventArgs.Empty);
+	}
+
+	public bool IsPlayerReady(ulong clientId)
+	{
+		return m_playerReadyDictionary.ContainsKey(clientId) && m_playerReadyDictionary[clientId];
+	}
+}

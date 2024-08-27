@@ -14,12 +14,13 @@ using UnityEngine;
 
 // TODO handle empty lobby name
 
-public class GameLobby : Singleton<GameLobby>
+public class GameLobby : MonoBehaviour
 {
+    public static GameLobby Instance { get; private set; }
     private const string KEY_RELAY_JOIN_CODE = "RelayJoinCode";
 
-    public event EventHandler OnCreatedLobbyStarted;
-    public event EventHandler OnCreatedLobbyFailed;
+    public event EventHandler OnCreateLobbyStarted;
+    public event EventHandler OnCreateLobbyFailed;
     public event EventHandler OnJoinStarted;
     public event EventHandler OnQuickJoinFailed;
     public event EventHandler OnCodeJoinFailed;
@@ -36,6 +37,7 @@ public class GameLobby : Singleton<GameLobby>
 
     void Awake()
     {
+        Instance = this;
         DontDestroyOnLoad(gameObject);
         InitializeUnityAuthentication();
     }
@@ -63,6 +65,7 @@ public class GameLobby : Singleton<GameLobby>
     private void HandlePeriodicListLobbies()
     {
         if (m_joinedLobby == null &&
+            //UnityServices.State == ServicesInitializationState.Initialized &&
             AuthenticationService.Instance.IsSignedIn &&
             UnityEngine.SceneManagement.SceneManager.GetActiveScene().name == SceneLoader.Scene.SCN_Lobby.ToString())
         {
@@ -106,20 +109,20 @@ public class GameLobby : Singleton<GameLobby>
     {
         if (UnityServices.State != ServicesInitializationState.Initialized)
         {
-            InitializationOptions l_initializationOptionsoptions = new InitializationOptions();
-            l_initializationOptionsoptions.SetProfile(UnityEngine.Random.Range(0, 1000).ToString()); // test for multiple builds in same pc
-            await UnityServices.InitializeAsync();
+            InitializationOptions l_initializationOptions = new InitializationOptions();
+            l_initializationOptions.SetProfile(UnityEngine.Random.Range(0, 10000).ToString()); // test for multiple builds in same pc
+            await UnityServices.InitializeAsync(l_initializationOptions);
             await AuthenticationService.Instance.SignInAnonymouslyAsync();
         }
     }
 
-    private async Task<Allocation> AlocateRelay()
+    private async Task<Allocation> AllocateRelay()
     {
         try {
-            Allocation l_alocation = await RelayService.Instance.CreateAllocationAsync(GameMultiplayerManager.MAX_PLAYER_AMOUNT - 1);
-            return l_alocation;
+            Allocation l_allocation = await RelayService.Instance.CreateAllocationAsync(GameMultiplayerManager.MAX_PLAYER_AMOUNT - 1);
+            return l_allocation;
         } catch (RelayServiceException e) {
-            Debug.Log("[ERROR] AlocateRelay: " + e);
+            Debug.Log("[ERROR] AllocateRelay: " + e);
             return default;
         }
     }
@@ -148,14 +151,14 @@ public class GameLobby : Singleton<GameLobby>
 
     public async void CreateLobby(string p_lobbyName, bool p_isPrivate)
     {
-        OnCreatedLobbyStarted?.Invoke(this, EventArgs.Empty);
+        OnCreateLobbyStarted?.Invoke(this, EventArgs.Empty);
         try {
 
             m_joinedLobby = await LobbyService.Instance.CreateLobbyAsync(p_lobbyName, GameMultiplayerManager.MAX_PLAYER_AMOUNT, new CreateLobbyOptions {
                 IsPrivate = p_isPrivate,
             });
 
-            Allocation l_allocation = await AlocateRelay();
+            Allocation l_allocation = await AllocateRelay();
 
             string l_relayJoinCode = await GetRelayJoinCode(l_allocation);
 
@@ -172,7 +175,7 @@ public class GameLobby : Singleton<GameLobby>
 
         } catch (LobbyServiceException e) {
             Debug.Log("[ERROR] CreateLobby: " + e);
-            OnCreatedLobbyFailed?.Invoke(this, EventArgs.Empty);
+            OnCreateLobbyFailed?.Invoke(this, EventArgs.Empty);
         }
     }
 

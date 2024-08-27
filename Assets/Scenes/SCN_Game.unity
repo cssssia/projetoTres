@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 705507994}
-  m_IndirectSpecularColor: {r: 0.18028378, g: 0.22571412, b: 0.30692285, a: 1}
+  m_IndirectSpecularColor: {r: 0.18028326, g: 0.22571333, b: 0.30692202, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -154,8 +154,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_camera: {fileID: 963194227}
   m_cameraSpawnPositionList:
-  - {x: 0, y: 3, z: -10}
-  - {x: 0, y: 3, z: 10}
+  - {x: 0, y: 3, z: -12}
+  - {x: 0, y: 3, z: 12}
   m_cameraSpawnRotationList:
   - {x: 0, y: 0, z: 0, w: 0}
   - {x: 0, y: 180, z: 0, w: 0}
@@ -703,13 +703,13 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 430329691}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.7071068, y: 0, z: 0, w: 0.7071068}
-  m_LocalPosition: {x: 0, y: 0.8, z: -4}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 2052521495}
-  m_LocalEulerAnglesHint: {x: 90, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &430329693
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2450,13 +2450,13 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 963194225}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 3, z: -10}
+  m_LocalRotation: {x: 0, y: 1, z: 0, w: 0}
+  m_LocalPosition: {x: 0, y: 3, z: 12}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 180, z: 0}
 --- !u!1 &1009839713
 GameObject:
   m_ObjectHideFlags: 0
@@ -4183,6 +4183,21 @@ MonoBehaviour:
   m_cardPrefab: {fileID: 1231877694399136775, guid: 76e6d1e481a51fa4daf245926fd91995, type: 3}
   m_deckParent: {fileID: 430329691}
   m_deckCards: []
+  m_cardSpawnPositionList:
+  - {x: 1, y: 2, z: -8}
+  - {x: -1, y: 2, z: 8}
+  - {x: 1.5, y: 2, z: -8}
+  - {x: -1.5, y: 2, z: 8}
+  - {x: 2, y: 2, z: -8}
+  - {x: -2, y: 2, z: 8}
+  m_cardSpawnRotationList:
+  - {x: 0, y: 0, z: 0.0870688, w: 0.9962023}
+  - {x: 0.08715574, y: 0.9961947, z: -0.0000000038096983, w: -0.000000043545054}
+  - {x: 0, y: 0, z: 0, w: 0}
+  - {x: 0, y: 1, z: 0, w: -0.00000004371139}
+  - {x: 0, y: 0, z: -0.08715574, w: 0.9961947}
+  - {x: 0.08715612, y: -0.99619466, z: -0.0000000038097148, w: 0.00000004354505}
+  m_cardsSO: {fileID: 11400000, guid: f1e57d18c838241b2aaa61ff988810d9, type: 2}
 --- !u!1 &1952039775
 GameObject:
   m_ObjectHideFlags: 0

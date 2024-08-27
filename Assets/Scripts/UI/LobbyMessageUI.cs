@@ -17,8 +17,8 @@ public class LobbyMessageUI : MonoBehaviour
     void Start()
     {
         GameMultiplayerManager.Instance.OnFailToJoinGame += GameMultiplayerManager_OnFailToJoinGame;
-        GameLobby.Instance.OnCreatedLobbyStarted += GameLobby_OnCreatedLobbyStarted;
-        GameLobby.Instance.OnCreatedLobbyFailed += GameLobby_OnCreatedLobbyFailed;
+        GameLobby.Instance.OnCreateLobbyStarted += GameLobby_OnCreateLobbyStarted;
+        GameLobby.Instance.OnCreateLobbyFailed += GameLobby_OnCreateLobbyFailed;
         GameLobby.Instance.OnJoinStarted += GameLobby_OnJoinStarted;
         GameLobby.Instance.OnQuickJoinFailed += GameLobby_OnQuickJoinFailed;
         GameLobby.Instance.OnCodeJoinFailed += GameLobby_OnCodeJoinFailed;
@@ -28,8 +28,8 @@ public class LobbyMessageUI : MonoBehaviour
     void OnDestroy()
     {
         GameMultiplayerManager.Instance.OnFailToJoinGame -= GameMultiplayerManager_OnFailToJoinGame;
-        GameLobby.Instance.OnCreatedLobbyStarted -= GameLobby_OnCreatedLobbyStarted;
-        GameLobby.Instance.OnCreatedLobbyFailed -= GameLobby_OnCreatedLobbyFailed;
+        GameLobby.Instance.OnCreateLobbyStarted -= GameLobby_OnCreateLobbyStarted;
+        GameLobby.Instance.OnCreateLobbyFailed -= GameLobby_OnCreateLobbyFailed;
         GameLobby.Instance.OnJoinStarted -= GameLobby_OnJoinStarted;
         GameLobby.Instance.OnQuickJoinFailed -= GameLobby_OnQuickJoinFailed;
         GameLobby.Instance.OnCodeJoinFailed -= GameLobby_OnCodeJoinFailed;
@@ -45,12 +45,12 @@ public class LobbyMessageUI : MonoBehaviour
         Show();
     }
 
-    private void GameLobby_OnCreatedLobbyStarted(object p_sender, EventArgs e)
+    private void GameLobby_OnCreateLobbyStarted(object p_sender, EventArgs e)
     {
         ShowMessage(ErrorMessage.MESSAGE_CREATING);
     }
 
-    private void GameLobby_OnCreatedLobbyFailed(object p_sender, EventArgs e)
+    private void GameLobby_OnCreateLobbyFailed(object p_sender, EventArgs e)
     {
         ShowMessage(ErrorMessage.MESSAGE_FAILED_CREATE_LOBBY);
     }

@@ -18,6 +18,9 @@ public class CardsManager : NetworkBehaviour
     private float m_dealDeckTimer = 4f;
     private float m_dealDeckTimerMax = 4f;
     private bool m_cardsWereSpawned = false;
+    [SerializeField] private List<Vector3> m_cardSpawnPositionList;
+    [SerializeField] private List<Quaternion> m_cardSpawnRotationList;
+    [SerializeField] private CardsScriptableObject m_cardsSO;
 
     //NetworkVariable<float> testVariable = new NetworkVariable<float>(0f); //leave other parameters blank to everyone read, but only server write
     //network variables fire an event whenever the variable changes (as it is a network variable, listen to it on spawn, not start not awake)
@@ -58,35 +61,33 @@ public class CardsManager : NetworkBehaviour
     [ServerRpc] //[ServerRpc(RequireOwnership = false)] clients can call the function, but it runs on the server
     void SpawnNewPlayCardsServerRpc() //can only instantiate prefabs on server AND only destroy on server
     {
-        //PlayCards();
-        List<string> l_deck = GenerateDeck();
-        Shuffle(l_deck);
-
-        foreach (string card in l_deck)
+        for (int i = 0; i < 6; i++)
         {
-            GameObject newCard = Instantiate(m_cardPrefab, transform.position, Quaternion.identity);
-            NetworkObject cardNetworkObject = newCard.GetComponent<NetworkObject>();
-            cardNetworkObject.Spawn(true);
-            RenameCardServerRpc(cardNetworkObject, card);
+            GameObject l_newCard = Instantiate(m_cardsSO.prefab, m_cardSpawnPositionList[i], m_cardSpawnRotationList[i]);
+            NetworkObject l_cardNetworkObject = l_newCard.GetComponent<NetworkObject>();
+            l_cardNetworkObject.Spawn(true);
+            RenameCardServerRpc(l_cardNetworkObject, i);
         }
 
         m_cardsWereSpawned = true;
-
     }
 
     [ServerRpc]
-    void RenameCardServerRpc(NetworkObjectReference cardNetworkObjectReference, string card) //for a pattern, maybe ? (the tutorial guy does it)
+    void RenameCardServerRpc(NetworkObjectReference p_cardNetworkObjectReference, int p_index) //for a pattern, maybe ? (the tutorial guy does it)
     {
-        RenameCardClientRpc(cardNetworkObjectReference, card);
+        RenameCardClientRpc(p_cardNetworkObjectReference, p_index);
     }
 
     // int i;
     [ClientRpc]
-    void RenameCardClientRpc(NetworkObjectReference cardNetworkObjectReference, string card)
+    void RenameCardClientRpc(NetworkObjectReference p_cardNetworkObjectReference, int p_index)
     {
-        cardNetworkObjectReference.TryGet(out NetworkObject cardNetworkObject);
-        cardNetworkObject.name = card;
-        cardNetworkObject.TrySetParent(m_deckParent, false); //false to ignore WorldPositionStays and to work as we are used to (also do it on the client to sync position)
+        p_cardNetworkObjectReference.TryGet(out NetworkObject l_cardNetworkObject);
+        l_cardNetworkObject.name = m_cardsSO.deck[p_index].name;
+        l_cardNetworkObject.GetComponent<SpriteRenderer>().sprite = m_cardsSO.deck[p_index].sprite;
+        l_cardNetworkObject.GetComponent<SpriteRenderer>().sortingOrder = p_index / 2;
+        l_cardNetworkObject.transform.GetChild(0).GetComponent<SpriteRenderer>().sortingOrder = p_index / 2;
+        l_cardNetworkObject.TrySetParent(m_deckParent, false); //false to ignore WorldPositionStays and to work as we are used to (also do it on the client to sync position)
     }
 
     // public void PlayCards()

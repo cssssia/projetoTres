@@ -14,6 +14,6 @@ public class CardsScriptableObject : ScriptableObject
     {
         [SerializeField] public string name;
         [SerializeField] public int value;
-        [SerializeField] public Sprite sprite;
+        [SerializeField] public Material material;
     }
 }

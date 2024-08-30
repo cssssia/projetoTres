@@ -30,6 +30,9 @@ public class PlayerController : NetworkBehaviour
         if (IsServer)
             NetworkManager.Singleton.OnClientDisconnectCallback += NetworkManager_OnClientDisconnectCallback;
 
+        if (IsOwner)
+    		GameInput.Instance.OnInteractAction += GameInput_OnInteractAction;
+
     }
 
     private void NetworkManager_OnClientDisconnectCallback(ulong p_clientId)
@@ -38,6 +41,31 @@ public class PlayerController : NetworkBehaviour
         {
             Debug.Log("owner disconnected");
             // destroy network stuff
+        }
+    }
+
+    private void GameInput_OnInteractAction(object p_sender, System.EventArgs e)
+    {
+        Debug.Log("click");
+        RaycastHit l_raycastHit;
+
+        Ray l_ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+        if (Physics.Raycast(l_ray, out l_raycastHit, 100f))
+        {
+            if (l_raycastHit.transform != null)
+            {
+                //Our custom method. 
+                CurrentClickedGameObject(l_raycastHit.transform.gameObject);
+            }
+        }
+    }
+
+    private void CurrentClickedGameObject(GameObject gameObject)
+    {
+        Debug.Log("uar");
+        if(gameObject.tag=="something")
+        {
+            Debug.Log(gameObject.name);
         }
     }
 

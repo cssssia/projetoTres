@@ -12,161 +12,161 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3146a563e93f64101b81f966c92589c0, type: 3}
   m_Name: CardsSO
   m_EditorClassIdentifier: 
-  prefab: {fileID: 1231877694399136775, guid: 76e6d1e481a51fa4daf245926fd91995, type: 3}
+  prefab: {fileID: 6693041384023231204, guid: 2f21bec7f30c7d744a280a41c7e1980a, type: 3}
   deck:
   - name: CA
-    value: 0
-    sprite: {fileID: 1517767412, guid: 984aa6f55ecc0b344af295f52e8d57cc, type: 3}
+    value: 1
+    material: {fileID: 2100000, guid: 2d3881b5d54c10049a49fa770b2e9faf, type: 2}
   - name: C2
-    value: 0
-    sprite: {fileID: 1649677004, guid: 984aa6f55ecc0b344af295f52e8d57cc, type: 3}
+    value: 1
+    material: {fileID: 2100000, guid: e4c2871890650ae41b820045fca7eb50, type: 2}
   - name: C3
-    value: 0
-    sprite: {fileID: 1302139476, guid: 984aa6f55ecc0b344af295f52e8d57cc, type: 3}
+    value: 1
+    material: {fileID: 2100000, guid: 3759337a4461d474e8256e017ae8143a, type: 2}
   - name: C4
-    value: 0
-    sprite: {fileID: 1844120735, guid: 984aa6f55ecc0b344af295f52e8d57cc, type: 3}
+    value: 1
+    material: {fileID: 2100000, guid: a404ac05a37aa39428f25895c04ba2a9, type: 2}
   - name: C5
-    value: 0
-    sprite: {fileID: 877486563, guid: 984aa6f55ecc0b344af295f52e8d57cc, type: 3}
+    value: 1
+    material: {fileID: 2100000, guid: 6cd5951d6b2d0b54196a0e0173d7125c, type: 2}
   - name: C6
-    value: 0
-    sprite: {fileID: 1475107936, guid: 984aa6f55ecc0b344af295f52e8d57cc, type: 3}
+    value: 1
+    material: {fileID: 2100000, guid: 172e62500bd581444a4f9f5dcfd8b2a5, type: 2}
   - name: 
     value: 0
-    sprite: {fileID: 0}
+    material: {fileID: 0}
   - name: 
     value: 0
-    sprite: {fileID: 0}
+    material: {fileID: 0}
   - name: 
     value: 0
-    sprite: {fileID: 0}
+    material: {fileID: 0}
   - name: 
     value: 0
-    sprite: {fileID: 0}
+    material: {fileID: 0}
   - name: 
     value: 0
-    sprite: {fileID: 0}
+    material: {fileID: 0}
   - name: 
     value: 0
-    sprite: {fileID: 0}
+    material: {fileID: 0}
   - name: 
     value: 0
-    sprite: {fileID: 0}
+    material: {fileID: 0}
   - name: 
     value: 0
-    sprite: {fileID: 0}
+    material: {fileID: 0}
   - name: 
     value: 0
-    sprite: {fileID: 0}
+    material: {fileID: 0}
   - name: 
     value: 0
-    sprite: {fileID: 0}
+    material: {fileID: 0}
   - name: 
     value: 0
-    sprite: {fileID: 0}
+    material: {fileID: 0}
   - name: 
     value: 0
-    sprite: {fileID: 0}
+    material: {fileID: 0}
   - name: 
     value: 0
-    sprite: {fileID: 0}
+    material: {fileID: 0}
   - name: 
     value: 0
-    sprite: {fileID: 0}
+    material: {fileID: 0}
   - name: 
     value: 0
-    sprite: {fileID: 0}
+    material: {fileID: 0}
   - name: 
     value: 0
-    sprite: {fileID: 0}
+    material: {fileID: 0}
   - name: 
     value: 0
-    sprite: {fileID: 0}
+    material: {fileID: 0}
   - name: 
     value: 0
-    sprite: {fileID: 0}
+    material: {fileID: 0}
   - name: 
     value: 0
-    sprite: {fileID: 0}
+    material: {fileID: 0}
   - name: 
     value: 0
-    sprite: {fileID: 0}
+    material: {fileID: 0}
   - name: 
     value: 0
-    sprite: {fileID: 0}
+    material: {fileID: 0}
   - name: 
     value: 0
-    sprite: {fileID: 0}
+    material: {fileID: 0}
   - name: 
     value: 0
-    sprite: {fileID: 0}
+    material: {fileID: 0}
   - name: 
     value: 0
-    sprite: {fileID: 0}
+    material: {fileID: 0}
   - name: 
     value: 0
-    sprite: {fileID: 0}
+    material: {fileID: 0}
   - name: 
     value: 0
-    sprite: {fileID: 0}
+    material: {fileID: 0}
   - name: 
     value: 0
-    sprite: {fileID: 0}
+    material: {fileID: 0}
   - name: 
     value: 0
-    sprite: {fileID: 0}
+    material: {fileID: 0}
   - name: 
     value: 0
-    sprite: {fileID: 0}
+    material: {fileID: 0}
   - name: 
     value: 0
-    sprite: {fileID: 0}
+    material: {fileID: 0}
   - name: 
     value: 0
-    sprite: {fileID: 0}
+    material: {fileID: 0}
   - name: 
     value: 0
-    sprite: {fileID: 0}
+    material: {fileID: 0}
   - name: 
     value: 0
-    sprite: {fileID: 0}
+    material: {fileID: 0}
   - name: 
     value: 0
-    sprite: {fileID: 0}
+    material: {fileID: 0}
   - name: 
     value: 0
-    sprite: {fileID: 0}
+    material: {fileID: 0}
   - name: 
     value: 0
-    sprite: {fileID: 0}
+    material: {fileID: 0}
   - name: 
     value: 0
-    sprite: {fileID: 0}
+    material: {fileID: 0}
   - name: 
     value: 0
-    sprite: {fileID: 0}
+    material: {fileID: 0}
   - name: 
     value: 0
-    sprite: {fileID: 0}
+    material: {fileID: 0}
   - name: 
     value: 0
-    sprite: {fileID: 0}
+    material: {fileID: 0}
   - name: 
     value: 0
-    sprite: {fileID: 0}
+    material: {fileID: 0}
   - name: 
     value: 0
-    sprite: {fileID: 0}
+    material: {fileID: 0}
   - name: 
     value: 0
-    sprite: {fileID: 0}
+    material: {fileID: 0}
   - name: 
     value: 0
-    sprite: {fileID: 0}
+    material: {fileID: 0}
   - name: 
     value: 0
-    sprite: {fileID: 0}
+    material: {fileID: 0}
   - name: 
     value: 0
-    sprite: {fileID: 0}
+    material: {fileID: 0}

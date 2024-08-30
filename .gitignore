@@ -81,3 +81,5 @@ crashlytics-build.properties
 /[Aa]ssets/_[Tt]emp
 .fake
 fmod_editor.log
+
+.DS_Store

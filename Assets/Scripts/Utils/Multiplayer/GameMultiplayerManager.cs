@@ -1,9 +1,12 @@
 using System;
+using System.Collections.Generic;
 using Unity.Netcode;
 using UnityEngine;
 
 public class GameMultiplayerManager : NetworkBehaviour
 {
+
+	//aa
 	public static GameMultiplayerManager Instance { get; private set; }
 
 	public const int MAX_PLAYER_AMOUNT = 2;
@@ -14,6 +17,9 @@ public class GameMultiplayerManager : NetworkBehaviour
 	public event EventHandler OnPlayerDataNetworkListChanged;
 
 	private NetworkList<PlayerData> m_playerDataNetworkList; // network lists HAVE to be initialized on awake
+	
+	[SerializeField] private List<PlayerController> m_playerControllerList;
+
 	private string m_playerName;
 
 	void Awake()
@@ -152,6 +158,16 @@ public class GameMultiplayerManager : NetworkBehaviour
 	public PlayerData GetPlayerDataFromPlayerIndex(int p_playerIndex)
 	{
 		return m_playerDataNetworkList[p_playerIndex];
+	}
+
+	public void AddPlayerControllerToList(PlayerController p_playerController)
+	{
+		m_playerControllerList.Add(p_playerController);
+	}
+
+	public PlayerController GetPlayerControllerFromId(int p_id)
+	{
+		return m_playerControllerList[p_id];
 	}
 
 }

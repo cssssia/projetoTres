@@ -1,6 +1,8 @@
 using System;
 using UnityEngine;
 
+// TODO rename this or the other as this is not testing
+
 public class TestingWaitingForPlayersUI : MonoBehaviour
 {
 
@@ -19,7 +21,7 @@ public class TestingWaitingForPlayersUI : MonoBehaviour
 
     private void GameManager_OnStateChanged(object p_sender, EventArgs e)
     {
-        if (GameManager.Instance.IsCountdownToStartActive())
+        if (GameManager.Instance.IsDealingCards())
             Hide();
     }
 

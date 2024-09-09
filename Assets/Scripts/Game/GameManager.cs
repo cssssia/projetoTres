@@ -17,15 +17,18 @@ public class GameManager : NetworkBehaviour
 	private enum GameState
 	{
 		WaitingToStart,
-		CountdownToStart, //check if we will use something like this
-		GamePlaying,
+		//CountdownToStart, //check if we will use something like this
+		DealingCards,
+		HostPlayerTurn,
+		ClientPlayerTurn,
+		//GamePlaying,
 		GameOver,
 	}
 
 	[SerializeField] private Transform m_playerPrefab;
 
 	private NetworkVariable<GameState> m_gameState = new NetworkVariable<GameState>(GameState.WaitingToStart);
-	private NetworkVariable<float> m_countdownToStartTimer = new NetworkVariable<float>(3f);
+	//private NetworkVariable<float> m_countdownToStartTimer = new NetworkVariable<float>(3f);
 	private bool m_isLocalPlayerReady;
 	private bool m_isLocalGamePaused = false;
 	private NetworkVariable<bool> m_isGamePaused = new NetworkVariable<bool>(false);
@@ -64,6 +67,7 @@ public class GameManager : NetworkBehaviour
 		{
 			Transform l_playerTransform = Instantiate(m_playerPrefab);
 			l_playerTransform.GetComponent<NetworkObject>().SpawnAsPlayerObject(clientId, true);
+			GameMultiplayerManager.Instance.AddPlayerControllerToList(l_playerTransform.GetComponent<PlayerController>());
 		}
     }
 
@@ -123,7 +127,7 @@ public class GameManager : NetworkBehaviour
 		}
 
 		if (l_allClientsReady)
-			m_gameState.Value = GameState.CountdownToStart;
+			m_gameState.Value = GameState.DealingCards;
 	}
 
 	void Update()
@@ -135,17 +139,21 @@ public class GameManager : NetworkBehaviour
 		{
 			case GameState.WaitingToStart:
 				break;
-			case GameState.CountdownToStart:
-				m_countdownToStartTimer.Value -= Time.deltaTime;
-				if (m_countdownToStartTimer.Value < 0f)
-				{
-					Debug.Log("game playing");
-					m_gameState.Value = GameState.GamePlaying; //deal cards here maybe
-				}
+			case GameState.DealingCards:
+				CardsManager.Instance.SpawnNewPlayCardsServerRpc();
+				m_gameState.Value = GameState.HostPlayerTurn;
+				// m_countdownToStartTimer.Value -= Time.deltaTime;
+				// if (m_countdownToStartTimer.Value < 0f)
+				// {
+				// 	Debug.Log("game playing");
+				// 	m_gameState.Value = GameState.HostPlayerTurn;
+				// }
 				break;
-			case GameState.GamePlaying:
+			case GameState.HostPlayerTurn:
 				// if (loseMatch)
 				// 	m_gameState.Value = GameState.GameOver;
+				break;
+			case GameState.ClientPlayerTurn:
 				break;
 			case GameState.GameOver:
 				break;
@@ -167,24 +175,24 @@ public class GameManager : NetworkBehaviour
 		return m_gameState.Value == GameState.WaitingToStart;
 	}
 
-	public bool IsCountdownToStartActive()
+	public bool IsDealingCards()
 	{
-		return m_gameState.Value == GameState.CountdownToStart;
+		return m_gameState.Value == GameState.DealingCards;
 	}
 
-	public bool IsGamePlaying()
+	public bool IsHostPlayerTurn()
 	{
-		return m_gameState.Value == GameState.GamePlaying;
+		return m_gameState.Value == GameState.HostPlayerTurn;
+	}
+
+	public bool IsClientPlayerTurn()
+	{
+		return m_gameState.Value == GameState.ClientPlayerTurn;
 	}
 
 	public bool IsGameOver()
 	{
 		return m_gameState.Value == GameState.GameOver;
-	}
-
-	public float GetCountdownToStartTimer()
-	{
-		return m_countdownToStartTimer.Value;
 	}
 
 	public bool IsLocalPlayerReady()

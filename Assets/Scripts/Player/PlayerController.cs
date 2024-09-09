@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using Unity.Netcode;
 using UnityEngine;
@@ -9,6 +10,7 @@ public class PlayerController : NetworkBehaviour
     public static PlayerController LocalInstance { get; private set;}
 
     [SerializeField] private List<Vector3> m_spawnPositionList;
+    [SerializeField] private List<CardsScriptableObject.Card> m_myHand;
 
     void Start()
     {
@@ -60,6 +62,12 @@ public class PlayerController : NetworkBehaviour
         }
     }
 
+    void Update()
+    {
+        if (!IsOwner)
+            return;
+    }
+
     private void CurrentClickedGameObject(GameObject gameObject)
     {
         Debug.Log("uar");
@@ -69,9 +77,9 @@ public class PlayerController : NetworkBehaviour
         }
     }
 
-    void Update()
+    public void AddToMyHand(CardsScriptableObject.Card p_card)
     {
-        if (!IsOwner)
-            return;
+        m_myHand.Add(p_card);
     }
+
 }

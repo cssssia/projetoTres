@@ -5,6 +5,7 @@ using UnityEngine;
 
 public class WaitLobbyManager : NetworkBehaviour
 {
+	//aa
     public static WaitLobbyManager Instance { get; private set; }
 
 	public event EventHandler OnReadyChanged;

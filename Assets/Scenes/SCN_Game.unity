@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 705507994}
-  m_IndirectSpecularColor: {r: 0.18028326, g: 0.22571333, b: 0.30692202, a: 1}
+  m_IndirectSpecularColor: {r: 0.18028378, g: 0.22571412, b: 0.30692285, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -1524,6 +1524,7 @@ Transform:
   - {fileID: 75616272}
   - {fileID: 1949528511}
   - {fileID: 1145973620}
+  - {fileID: 711494076}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &705507993
@@ -1620,6 +1621,50 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 50, y: -30, z: 0}
+--- !u!1 &711494075
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 711494076}
+  - component: {fileID: 711494077}
+  m_Layer: 0
+  m_Name: TurnManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &711494076
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 711494075}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 622314291}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &711494077
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 711494075}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fbeed48afd51b3449b66bc0a3b7273c8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &719113044
 GameObject:
   m_ObjectHideFlags: 0
@@ -4127,59 +4172,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8d790bb1d91897a4d84b8840f48b1f39, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  cardFaces:
-  - {fileID: 1517767412, guid: 984aa6f55ecc0b344af295f52e8d57cc, type: 3}
-  - {fileID: 1649677004, guid: 984aa6f55ecc0b344af295f52e8d57cc, type: 3}
-  - {fileID: 1302139476, guid: 984aa6f55ecc0b344af295f52e8d57cc, type: 3}
-  - {fileID: 1844120735, guid: 984aa6f55ecc0b344af295f52e8d57cc, type: 3}
-  - {fileID: 877486563, guid: 984aa6f55ecc0b344af295f52e8d57cc, type: 3}
-  - {fileID: 1475107936, guid: 984aa6f55ecc0b344af295f52e8d57cc, type: 3}
-  - {fileID: 895321576, guid: 984aa6f55ecc0b344af295f52e8d57cc, type: 3}
-  - {fileID: -806756612, guid: 984aa6f55ecc0b344af295f52e8d57cc, type: 3}
-  - {fileID: -511977837, guid: 984aa6f55ecc0b344af295f52e8d57cc, type: 3}
-  - {fileID: 2004742769, guid: 984aa6f55ecc0b344af295f52e8d57cc, type: 3}
-  - {fileID: -207910960, guid: 984aa6f55ecc0b344af295f52e8d57cc, type: 3}
-  - {fileID: 268621851, guid: 984aa6f55ecc0b344af295f52e8d57cc, type: 3}
-  - {fileID: 1458226514, guid: 984aa6f55ecc0b344af295f52e8d57cc, type: 3}
-  - {fileID: -1642149915, guid: 179410290d966bb44937d039c3de9a99, type: 3}
-  - {fileID: 2098436556, guid: 179410290d966bb44937d039c3de9a99, type: 3}
-  - {fileID: 463812247, guid: 179410290d966bb44937d039c3de9a99, type: 3}
-  - {fileID: 2063981178, guid: 179410290d966bb44937d039c3de9a99, type: 3}
-  - {fileID: -1548101478, guid: 179410290d966bb44937d039c3de9a99, type: 3}
-  - {fileID: -2073552146, guid: 179410290d966bb44937d039c3de9a99, type: 3}
-  - {fileID: 579565878, guid: 179410290d966bb44937d039c3de9a99, type: 3}
-  - {fileID: -69347627, guid: 179410290d966bb44937d039c3de9a99, type: 3}
-  - {fileID: 321972815, guid: 179410290d966bb44937d039c3de9a99, type: 3}
-  - {fileID: 1387560448, guid: 179410290d966bb44937d039c3de9a99, type: 3}
-  - {fileID: 1505381465, guid: 179410290d966bb44937d039c3de9a99, type: 3}
-  - {fileID: 2106863551, guid: 179410290d966bb44937d039c3de9a99, type: 3}
-  - {fileID: 1673858594, guid: 179410290d966bb44937d039c3de9a99, type: 3}
-  - {fileID: -53850228, guid: cf9dcace4364bf9419418ee0c029bb29, type: 3}
-  - {fileID: -277764036, guid: cf9dcace4364bf9419418ee0c029bb29, type: 3}
-  - {fileID: 1523212556, guid: cf9dcace4364bf9419418ee0c029bb29, type: 3}
-  - {fileID: 2046900721, guid: cf9dcace4364bf9419418ee0c029bb29, type: 3}
-  - {fileID: -1859395729, guid: cf9dcace4364bf9419418ee0c029bb29, type: 3}
-  - {fileID: 1733285427, guid: cf9dcace4364bf9419418ee0c029bb29, type: 3}
-  - {fileID: 1805196434, guid: cf9dcace4364bf9419418ee0c029bb29, type: 3}
-  - {fileID: -1077375494, guid: cf9dcace4364bf9419418ee0c029bb29, type: 3}
-  - {fileID: 1966688084, guid: cf9dcace4364bf9419418ee0c029bb29, type: 3}
-  - {fileID: -524044213, guid: cf9dcace4364bf9419418ee0c029bb29, type: 3}
-  - {fileID: -52439789, guid: cf9dcace4364bf9419418ee0c029bb29, type: 3}
-  - {fileID: 1564219121, guid: cf9dcace4364bf9419418ee0c029bb29, type: 3}
-  - {fileID: -1925073687, guid: cf9dcace4364bf9419418ee0c029bb29, type: 3}
-  - {fileID: -2067555142, guid: 4e36f12841d29bf4d94c185d641273a6, type: 3}
-  - {fileID: 1843729207, guid: 4e36f12841d29bf4d94c185d641273a6, type: 3}
-  - {fileID: 353441677, guid: 4e36f12841d29bf4d94c185d641273a6, type: 3}
-  - {fileID: -843903263, guid: 4e36f12841d29bf4d94c185d641273a6, type: 3}
-  - {fileID: -503105067, guid: 4e36f12841d29bf4d94c185d641273a6, type: 3}
-  - {fileID: 1213645908, guid: 4e36f12841d29bf4d94c185d641273a6, type: 3}
-  - {fileID: 232086157, guid: 4e36f12841d29bf4d94c185d641273a6, type: 3}
-  - {fileID: 503179922, guid: 4e36f12841d29bf4d94c185d641273a6, type: 3}
-  - {fileID: 109245596, guid: 4e36f12841d29bf4d94c185d641273a6, type: 3}
-  - {fileID: 2080580621, guid: 4e36f12841d29bf4d94c185d641273a6, type: 3}
-  - {fileID: 1132452121, guid: 4e36f12841d29bf4d94c185d641273a6, type: 3}
-  - {fileID: -577420879, guid: 4e36f12841d29bf4d94c185d641273a6, type: 3}
-  - {fileID: 1135117, guid: 4e36f12841d29bf4d94c185d641273a6, type: 3}
   m_deckParent: {fileID: 430329691}
   m_cardSpawnPositionList:
   - {x: 0.7, y: 2, z: -9.5}

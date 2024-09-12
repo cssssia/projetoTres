@@ -71,10 +71,19 @@ public class PlayerController : NetworkBehaviour
     {
         if(gameObject.CompareTag("Card"))
         {
-            Debug.Log(gameObject.name);
             for (int i = 0; i < m_myHand.Count; i++)
                 if (m_myHand[i].name == gameObject.name)
-                    TurnManager.Instance.PlayCard(m_myHand[i].value);
+                {
+                    if (TurnManager.Instance.CurrentMatch.WhoStartedMatch.Equals(Player.DEFAULT))
+                    {
+                        TurnManager.Instance.StartMatch(IsHost ? Player.HOST : Player.CLIENT);
+                    } else
+                    {
+                        Debug.Log(TurnManager.Instance.CurrentMatch.WhoStartedMatch);
+                    }
+                    
+                    TurnManager.Instance.PlayCard(m_myHand[i], IsHost ? Player.HOST : Player.CLIENT);
+                }
         }
     }
 

@@ -48,15 +48,14 @@ public class PlayerController : NetworkBehaviour
 
     private void GameInput_OnInteractAction(object p_sender, System.EventArgs e)
     {
-        Debug.Log("click");
         RaycastHit l_raycastHit;
 
         Ray l_ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-        if (Physics.Raycast(l_ray, out l_raycastHit, 100f))
+        if (Physics.Raycast(l_ray, out l_raycastHit, 10f))
         {
             if (l_raycastHit.transform != null)
             {
-                //Our custom method. 
+                //Our custom method.
                 CurrentClickedGameObject(l_raycastHit.transform.gameObject);
             }
         }
@@ -70,10 +69,12 @@ public class PlayerController : NetworkBehaviour
 
     private void CurrentClickedGameObject(GameObject gameObject)
     {
-        Debug.Log("uar");
-        if(gameObject.tag=="something")
+        if(gameObject.CompareTag("Card"))
         {
             Debug.Log(gameObject.name);
+            for (int i = 0; i < m_myHand.Count; i++)
+                if (m_myHand[i].name == gameObject.name)
+                    TurnManager.Instance.PlayCard(m_myHand[i].value);
         }
     }
 

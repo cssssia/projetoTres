@@ -67,7 +67,7 @@ MonoBehaviour:
     material: {fileID: 2100000, guid: 0bc3145c2ba58154d8e0f2ea24373d8c, type: 2}
   - name: D5
     value: 2
-    material: {fileID: 2100000, guid: 6cd5951d6b2d0b54196a0e0173d7125c, type: 2}
+    material: {fileID: 2100000, guid: cc24a1ab16f26484b8d8d187dcc9cfd6, type: 2}
   - name: D6
     value: 3
     material: {fileID: 2100000, guid: 01e1aea0d03567244a16f7b9080af24c, type: 2}

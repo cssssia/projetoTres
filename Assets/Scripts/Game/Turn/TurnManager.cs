@@ -1,41 +1,17 @@
+using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
 
 public class TurnManager : Singleton<TurnManager>
 {
+    public Match CurrentMatch;
 
-    private int m_firstPlayerCardValue;
-    private int m_secondPlayerCardValue;
 
-    void Start()
+    public void PlayCard(CardsScriptableObject.Card p_card, int p_playerID)
     {
-        m_firstPlayerCardValue = 0;
-        m_secondPlayerCardValue = 0;
+        CurrentMatch.CardPlayed(p_card, (Player)p_playerID);
     }
+   
 
-    public void PlayCard(int p_value)
-    {
-        if (m_firstPlayerCardValue == 0)
-            m_firstPlayerCardValue = p_value;
-        else if (m_secondPlayerCardValue == 0)
-        {
-            m_secondPlayerCardValue = p_value;
-            CheckWinner();
-        }
-    }
-
-    private void CheckWinner()
-    {
-        if (m_firstPlayerCardValue > m_secondPlayerCardValue)
-        {
-
-        }
-        else if (m_secondPlayerCardValue > m_firstPlayerCardValue)
-        {
-
-        }
-
-        //check for empate later
-    }
 
 }

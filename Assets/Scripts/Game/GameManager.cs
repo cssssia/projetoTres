@@ -161,7 +161,43 @@ public class GameManager : NetworkBehaviour
 
 	}
 
-	void LateUpdate()
+	[ServerRpc(RequireOwnership = false)]
+	public void EndTurnServerRpc(int p_clientID)
+    {
+        switch (p_clientID)
+        {
+			case 0: //host
+				break;
+			case 1: //outro
+				break;
+            default:
+                break;
+        }
+    }
+
+	void SetState(GameState p_gameState)
+    {
+        switch (p_gameState)
+        {
+            case GameState.WaitingToStart:
+                break;
+            case GameState.DealingCards:
+				//start new match
+				//decide quem começa a proxima partida baseada na ultima partida
+				//decidindo isso, set game state pra HostPlayerTurn || ClientPlayerTurn
+				break;
+            case GameState.HostPlayerTurn:
+				//informar o host q ele ta pronto pra jogar
+				break;
+            case GameState.ClientPlayerTurn:
+				//informar o cliente q ele ta pronto pra jogar
+				break;
+            case GameState.GameOver:
+                break;
+        }
+    }
+
+    void LateUpdate()
 	{
 		if (m_autoTestGamePauseState)
 		{

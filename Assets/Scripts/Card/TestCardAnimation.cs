@@ -22,7 +22,7 @@ public class TestCardAnimation : MonoBehaviour
                     Rotation = new Vector3(0, 0 ,0)
                 };
 
-                cardBehavior.AnimateToPlace(cardTr);
+                cardBehavior.AnimateToPlace(cardTr, CardAnimType.PLAY);
             }
         }
 

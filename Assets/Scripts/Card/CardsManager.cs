@@ -5,7 +5,12 @@ using Unity.Networking.Transport;
 using UnityEngine;
 
 //cannot set a network object to a parent that was dinamically spawned -> limitation
-
+[System.Serializable]
+public class UsableDeck
+{
+    public CardsScriptableObject.Card UsableCard;
+    public int OriginalSOIndex;
+}
 public class CardsManager : NetworkBehaviour
 {
     public static CardsManager Instance;
@@ -15,7 +20,7 @@ public class CardsManager : NetworkBehaviour
     [SerializeField] private List<Vector3> m_cardSpawnRotationList;
     [SerializeField] private CardsScriptableObject m_cardsSO;
 
-    [SerializeField] private List<CardsScriptableObject.Card> m_usableDeckList;
+    [SerializeField] private List<UsableDeck> m_usableDeckList;
     [SerializeField] private HashSet<ulong>.Enumerator m_observers;
 
     //NetworkVariable<float> testVariable = new NetworkVariable<float>(0f); //leave other parameters blank to everyone read, but only server write
@@ -63,7 +68,12 @@ public class CardsManager : NetworkBehaviour
             if (m_cardsSO.deck[i].value == 0)
                 continue;
 
-            m_usableDeckList.Add(m_cardsSO.deck[i]);
+            UsableDeck l_usableDeck = new();
+
+            l_usableDeck.UsableCard = m_cardsSO.deck[i];
+            l_usableDeck.OriginalSOIndex = i;
+
+            m_usableDeckList.Add(l_usableDeck);
         }
     }
 
@@ -79,24 +89,24 @@ public class CardsManager : NetworkBehaviour
             GameObject l_newCard = Instantiate(m_cardsSO.prefab, m_cardSpawnPositionList[i], Quaternion.Euler(m_cardSpawnRotationList[i]));
             NetworkObject l_cardNetworkObject = l_newCard.GetComponent<NetworkObject>();
             l_cardNetworkObject.Spawn(true);
-            RenameCardServerRpc(l_cardNetworkObject, m_usableDeckList[i]);
+            RenameCardServerRpc(l_cardNetworkObject, m_usableDeckList[i].OriginalSOIndex);
         }
 
     }
 
     [ServerRpc]
-    void RenameCardServerRpc(NetworkObjectReference p_cardNetworkObjectReference, CardsScriptableObject.Card p_card) //for a pattern, maybe ? (the tutorial guy does it)
+    void RenameCardServerRpc(NetworkObjectReference p_cardNetworkObjectReference, int p_cardIndexSO) //for a pattern, maybe ? (the tutorial guy does it)
     {
-        RenameCardClientRpc(p_cardNetworkObjectReference, p_card);
+        RenameCardClientRpc(p_cardNetworkObjectReference, p_cardIndexSO);
     }
 
     // int i;
     [ClientRpc]
-    void RenameCardClientRpc(NetworkObjectReference p_cardNetworkObjectReference, CardsScriptableObject.Card p_card)
+    void RenameCardClientRpc(NetworkObjectReference p_cardNetworkObjectReference, int p_cardIndexSO)
     {
         p_cardNetworkObjectReference.TryGet(out NetworkObject l_cardNetworkObject);
-        l_cardNetworkObject.name = p_card.name;
-        l_cardNetworkObject.GetComponent<MeshRenderer>().material = p_card.material;
+        l_cardNetworkObject.name = m_cardsSO.deck[p_cardIndexSO].name;
+        l_cardNetworkObject.GetComponent<MeshRenderer>().material = m_cardsSO.deck[p_cardIndexSO].material;
         //l_cardNetworkObject.GetComponent<SpriteRenderer>().sprite = m_usableDeckList[p_index].sprite;
         //l_cardNetworkObject.GetComponent<SpriteRenderer>().sortingOrder = p_index / GameMultiplayerManager.MAX_PLAYER_AMOUNT;
         //l_cardNetworkObject.transform.GetChild(0).GetComponent<SpriteRenderer>().sortingOrder = p_index / GameMultiplayerManager.MAX_PLAYER_AMOUNT;

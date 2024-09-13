@@ -36,6 +36,8 @@ public class CardsManager : NetworkBehaviour
     //        testVariable.Value //to access the variable
     // }
 
+
+
     void Awake()
     {
         if (Instance == null) Instance = this;
@@ -89,20 +91,23 @@ public class CardsManager : NetworkBehaviour
             GameObject l_newCard = Instantiate(m_cardsSO.prefab, m_cardSpawnPositionList[i], Quaternion.Euler(m_cardSpawnRotationList[i]));
             NetworkObject l_cardNetworkObject = l_newCard.GetComponent<NetworkObject>();
             l_cardNetworkObject.Spawn(true);
-            RenameCardServerRpc(l_cardNetworkObject, m_usableDeckList[i].OriginalSOIndex);
+            // GameMultiplayerManager.Instance.GetPlayerControllerFromId(i % 2).AddToMyHand(m_usableDeckList[i].UsableCard);
+            RenameCardServerRpc(l_cardNetworkObject, m_usableDeckList[i].OriginalSOIndex, i);
         }
 
     }
 
     [ServerRpc]
-    void RenameCardServerRpc(NetworkObjectReference p_cardNetworkObjectReference, int p_cardIndexSO) //for a pattern, maybe ? (the tutorial guy does it)
+    void RenameCardServerRpc(NetworkObjectReference p_cardNetworkObjectReference, int p_cardIndexSO, int p_cardIndex) //for a pattern, maybe ? (the tutorial guy does it)
     {
-        RenameCardClientRpc(p_cardNetworkObjectReference, p_cardIndexSO);
+        RenameCardClientRpc(p_cardNetworkObjectReference, p_cardIndexSO, p_cardIndex);
+        // PlayerController.LocalInstance.AddToMyHandOwnServerRpc(p_cardIndexSO);
+        // PlayerController.LocalInstance.AddToMyHandServerRpc(p_cardIndexSO);
     }
 
     // int i;
     [ClientRpc]
-    void RenameCardClientRpc(NetworkObjectReference p_cardNetworkObjectReference, int p_cardIndexSO)
+    void RenameCardClientRpc(NetworkObjectReference p_cardNetworkObjectReference, int p_cardIndexSO, int p_cardIndex)
     {
         p_cardNetworkObjectReference.TryGet(out NetworkObject l_cardNetworkObject);
         l_cardNetworkObject.name = m_cardsSO.deck[p_cardIndexSO].name;
@@ -111,10 +116,14 @@ public class CardsManager : NetworkBehaviour
         //l_cardNetworkObject.GetComponent<SpriteRenderer>().sortingOrder = p_index / GameMultiplayerManager.MAX_PLAYER_AMOUNT;
         //l_cardNetworkObject.transform.GetChild(0).GetComponent<SpriteRenderer>().sortingOrder = p_index / GameMultiplayerManager.MAX_PLAYER_AMOUNT;
         l_cardNetworkObject.TrySetParent(m_deckParent, false); //false to ignore WorldPositionStays and to work as we are used to (also do it on the client to sync position)
+        PlayerController.LocalInstance.AddToMyHandClientRpc(p_cardIndexSO, p_cardIndex);
         // m_observers = NetworkObject.GetObservers();
 
-        // if (PlayerController.LocalInstance.OwnerClientId == Convert.ToUInt64(p_index % 2))
-        //     PlayerController.LocalInstance.AddToMyHand(m_usableDeckList[p_index]);
+        //if (GameMultiplayerManager.Instance.GetPlayerControllerFromId() == Convert.ToUInt64(p_cardIndexSO % 2))
+
+
+          //  PlayerController.LocalInstance
+
 
         // if (p_index % 2 == 0)
         //     GameMultiplayerManager.Instance.GetPlayerControllerFromId(0).AddToMyHand(m_usableDeckList[p_index]);

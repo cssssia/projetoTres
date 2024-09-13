@@ -1630,6 +1630,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 711494076}
+  - component: {fileID: 711494078}
   - component: {fileID: 711494077}
   m_Layer: 0
   m_Name: TurnManager
@@ -1646,7 +1647,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 711494075}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -1662,9 +1663,36 @@ MonoBehaviour:
   m_GameObject: {fileID: 711494075}
   m_Enabled: 1
   m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  GlobalObjectIdHash: 1570186234
+  AlwaysReplicateAsRoot: 0
+  DontDestroyWithOwner: 0
+  AutoObjectParentSync: 1
+--- !u!114 &711494078
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 711494075}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: fbeed48afd51b3449b66bc0a3b7273c8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  CurrentMatch:
+    HostCardsPlayed: []
+    ClientCardsPlayed: []
+    HostRoundsWon: 0
+    ClientRoundsWon: 0
+    RoundMatch: 0
+    RoundsWonHistory: 
+    RoundsStartedHistory: 
+  HostTurnsWonHistory: 0
+  ClientTurnsWonHistory: 0
+  CardsSO: {fileID: 11400000, guid: f1e57d18c838241b2aaa61ff988810d9, type: 2}
 --- !u!1 &719113044
 GameObject:
   m_ObjectHideFlags: 0

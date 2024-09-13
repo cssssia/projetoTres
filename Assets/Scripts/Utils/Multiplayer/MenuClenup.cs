@@ -1,6 +1,8 @@
 using Unity.Netcode;
 using UnityEngine;
 
+//menu
+
 public class MenuClenup : MonoBehaviour
 {
     void Awake()

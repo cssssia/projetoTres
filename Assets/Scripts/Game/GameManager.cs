@@ -67,7 +67,7 @@ public class GameManager : NetworkBehaviour
 		{
 			Transform l_playerTransform = Instantiate(m_playerPrefab);
 			l_playerTransform.GetComponent<NetworkObject>().SpawnAsPlayerObject(clientId, true);
-			GameMultiplayerManager.Instance.AddPlayerControllerToList(l_playerTransform.GetComponent<PlayerController>());
+			//GameMultiplayerManager.Instance.AddPlayerControllerToList(l_playerTransform.GetComponent<PlayerController>());
 		}
     }
 
@@ -183,7 +183,7 @@ public class GameManager : NetworkBehaviour
                 break;
             case GameState.DealingCards:
 				//start new match
-				//decide quem começa a proxima partida baseada na ultima partida
+				//decide quem comeï¿½a a proxima partida baseada na ultima partida
 				//decidindo isso, set game state pra HostPlayerTurn || ClientPlayerTurn
 				break;
             case GameState.HostPlayerTurn:

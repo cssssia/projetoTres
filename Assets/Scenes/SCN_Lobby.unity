@@ -932,8 +932,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3ea17d08d8d61437daf0841b368ef810, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_keepAliveTimer: 0
-  m_listLobbiesTimer: 0
 --- !u!1 &294190472
 GameObject:
   m_ObjectHideFlags: 0
@@ -1666,6 +1664,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9d9b752694c034bb6bd40bf96838f8c5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  m_playerControllerList: []
 --- !u!4 &488717447
 Transform:
   m_ObjectHideFlags: 0

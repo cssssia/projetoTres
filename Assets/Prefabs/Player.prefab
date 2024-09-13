@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 5532184906107296603}
   - component: {fileID: 5396420236894118007}
   - component: {fileID: -7920416680504153039}
-  - component: {fileID: 4384299640131347584}
+  - component: {fileID: 7551673745850367150}
   m_Layer: 0
   m_Name: Player
   m_TagString: Untagged
@@ -70,8 +70,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_spawnPositionList:
+  - {x: 10, y: 0, z: 0}
   - {x: 0, y: 0, z: 0}
-  - {x: 0, y: 0, z: 0}
+  m_myHand: []
+  m_cardsSO: {fileID: 11400000, guid: f1e57d18c838241b2aaa61ff988810d9, type: 2}
+  m_index: 0
+  m_usableDeckList: []
 --- !u!114 &5396420236894118007
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -101,7 +105,7 @@ MonoBehaviour:
   AlwaysReplicateAsRoot: 0
   DontDestroyWithOwner: 0
   AutoObjectParentSync: 1
---- !u!114 &4384299640131347584
+--- !u!114 &7551673745850367150
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -110,7 +114,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 5153222700290797854}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: effe7bbb17c279848be86398e968bdd2, type: 3}
+  m_Script: {fileID: 11500000, guid: e8d0727d5ae3244e3b569694d3912374, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   TransitionStateInfoList: []

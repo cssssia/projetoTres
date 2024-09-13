@@ -17,8 +17,13 @@ public class GameMultiplayerManager : NetworkBehaviour
 	public event EventHandler OnPlayerDataNetworkListChanged;
 
 	private NetworkList<PlayerData> m_playerDataNetworkList; // network lists HAVE to be initialized on awake
+	//[SerializeField] private NetworkVariable<CardList> m_hostCardList;
+	//[SerializeField] private NetworkVariable<CardList> m_clientCardList;
+
+	// [SerializeField] private NetworkVariable<PlayerController> m_hostPlayerController;
+	// [SerializeField] private NetworkVariable<PlayerController> m_clientPlayerController;
 	
-	[SerializeField] private List<PlayerController> m_playerControllerList;
+	//[SerializeField] private List<PlayerController> m_playerControllerList;
 
 	private string m_playerName;
 
@@ -31,6 +36,7 @@ public class GameMultiplayerManager : NetworkBehaviour
 		m_playerName = PlayerPrefs.GetString(PLAYER_PREFS_PLAYER_NAME_MULTIPLAYER, "PlayerName" + UnityEngine.Random.Range(100, 1000));
 
 		m_playerDataNetworkList = new NetworkList<PlayerData>();
+
 		m_playerDataNetworkList.OnListChanged += PlayerDataNetworkList_OnListChanged;
 	}
 
@@ -160,14 +166,14 @@ public class GameMultiplayerManager : NetworkBehaviour
 		return m_playerDataNetworkList[p_playerIndex];
 	}
 
-	public void AddPlayerControllerToList(PlayerController p_playerController)
-	{
-		m_playerControllerList.Add(p_playerController);
-	}
+	// public void AddPlayerControllerToList(PlayerController p_playerController)
+	// {
+	// 	m_playerControllerList.Add(p_playerController);
+	// }
 
-	public PlayerController GetPlayerControllerFromId(int p_id)
-	{
-		return m_playerControllerList[p_id];
-	}
+	// public PlayerController GetPlayerControllerFromId(int p_id)
+	// {
+	// 	return m_playerControllerList[p_id];
+	// }
 
 }

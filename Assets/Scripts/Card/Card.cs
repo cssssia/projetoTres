@@ -1,11 +1,10 @@
-// using Unity.VisualScripting;
-// using UnityEngine;
+using Unity.VisualScripting;
+using UnityEngine;
 
-// [System.Serializable]
-// [IncludeInSettings(true)]
-// public class Card
-// {
-//     [SerializeField] public string name;
-//     [SerializeField] public int value;
-//     [SerializeField] public Material material;
-// }
+[System.Serializable]
+[IncludeInSettings(true)]
+public class Card
+{
+    [SerializeField] public string name;
+    [SerializeField] public int value;
+}

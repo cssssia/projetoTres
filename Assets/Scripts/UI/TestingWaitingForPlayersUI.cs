@@ -21,7 +21,7 @@ public class TestingWaitingForPlayersUI : MonoBehaviour
 
     private void GameManager_OnStateChanged(object p_sender, EventArgs e)
     {
-        if (GameManager.Instance.IsDealingCards())
+        if (!GameManager.Instance.IsWaitingToStart())
             Hide();
     }
 

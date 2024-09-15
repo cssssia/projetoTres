@@ -1,16 +1,9 @@
 using System;
 using System.Collections.Generic;
 using Unity.Netcode;
-using Unity.Networking.Transport;
 using UnityEngine;
 
 //cannot set a network object to a parent that was dinamically spawned -> limitation
-[System.Serializable]
-public class UsableDeck
-{
-    public CardsScriptableObject.Card UsableCard;
-    public int OriginalSOIndex;
-}
 public class CardsManager : NetworkBehaviour
 {
     public static CardsManager Instance;
@@ -20,8 +13,9 @@ public class CardsManager : NetworkBehaviour
     [SerializeField] private List<Vector3> m_cardSpawnRotationList;
     [SerializeField] private CardsScriptableObject m_cardsSO;
 
-    [SerializeField] private List<UsableDeck> m_usableDeckList;
+    [SerializeField] private List<UsableCard> m_usableCardList;
     [SerializeField] private HashSet<ulong>.Enumerator m_observers;
+	public event EventHandler OnAddCardToMyHand;
 
     //NetworkVariable<float> testVariable = new NetworkVariable<float>(0f); //leave other parameters blank to everyone read, but only server write
     //network variables fire an event whenever the variable changes (as it is a network variable, listen to it on spawn, not start not awake)
@@ -36,8 +30,6 @@ public class CardsManager : NetworkBehaviour
     //        testVariable.Value //to access the variable
     // }
 
-
-
     void Awake()
     {
         if (Instance == null) Instance = this;
@@ -48,19 +40,6 @@ public class CardsManager : NetworkBehaviour
     {
         if (!IsServer)
             return;
-
-        // m_dealDeckTimer -= Time.deltaTime;
-        // if (m_dealDeckTimer <= 0f) //timer to have time to connect host and client (only for tests)
-        // {
-        //     m_dealDeckTimer = m_dealDeckTimerMax;
-
-        //     if (!m_cardsWereSpawned)
-        //     {
-        //         SpawnNewPlayCardsServerRpc();
-        //     }
-
-        // }
-
     }
 
     void SelectUsableCardsInSO()
@@ -70,12 +49,12 @@ public class CardsManager : NetworkBehaviour
             if (m_cardsSO.deck[i].value == 0)
                 continue;
 
-            UsableDeck l_usableDeck = new();
+            UsableCard l_usableCard = new();
 
-            l_usableDeck.UsableCard = m_cardsSO.deck[i];
-            l_usableDeck.OriginalSOIndex = i;
+            l_usableCard.Card = m_cardsSO.deck[i];
+            l_usableCard.OriginalSOIndex = i;
 
-            m_usableDeckList.Add(l_usableDeck);
+            m_usableCardList.Add(l_usableCard);
         }
     }
 
@@ -84,15 +63,14 @@ public class CardsManager : NetworkBehaviour
     {
 
         SelectUsableCardsInSO();
-        Shuffle(m_usableDeckList);
+        Shuffle(m_usableCardList);
 
         for (int i = 0; i < 3 * GameMultiplayerManager.MAX_PLAYER_AMOUNT; i++)
         {
             GameObject l_newCard = Instantiate(m_cardsSO.prefab, m_cardSpawnPositionList[i], Quaternion.Euler(m_cardSpawnRotationList[i]));
             NetworkObject l_cardNetworkObject = l_newCard.GetComponent<NetworkObject>();
             l_cardNetworkObject.Spawn(true);
-            // GameMultiplayerManager.Instance.GetPlayerControllerFromId(i % 2).AddToMyHand(m_usableDeckList[i].UsableCard);
-            RenameCardServerRpc(l_cardNetworkObject, m_usableDeckList[i].OriginalSOIndex, i);
+            RenameCardServerRpc(l_cardNetworkObject, m_usableCardList[i].OriginalSOIndex, i);
         }
 
     }
@@ -101,33 +79,21 @@ public class CardsManager : NetworkBehaviour
     void RenameCardServerRpc(NetworkObjectReference p_cardNetworkObjectReference, int p_cardIndexSO, int p_cardIndex) //for a pattern, maybe ? (the tutorial guy does it)
     {
         RenameCardClientRpc(p_cardNetworkObjectReference, p_cardIndexSO, p_cardIndex);
-        // PlayerController.LocalInstance.AddToMyHandOwnServerRpc(p_cardIndexSO);
-        // PlayerController.LocalInstance.AddToMyHandServerRpc(p_cardIndexSO);
     }
 
-    // int i;
     [ClientRpc]
     void RenameCardClientRpc(NetworkObjectReference p_cardNetworkObjectReference, int p_cardIndexSO, int p_cardIndex)
     {
+        Indexes l_indexes = new();
+
+        l_indexes.cardIndexSO = p_cardIndexSO;
+        l_indexes.cardIndexDeal = p_cardIndex;
+
         p_cardNetworkObjectReference.TryGet(out NetworkObject l_cardNetworkObject);
         l_cardNetworkObject.name = m_cardsSO.deck[p_cardIndexSO].name;
         l_cardNetworkObject.GetComponent<MeshRenderer>().material = m_cardsSO.deck[p_cardIndexSO].material;
-        //l_cardNetworkObject.GetComponent<SpriteRenderer>().sprite = m_usableDeckList[p_index].sprite;
-        //l_cardNetworkObject.GetComponent<SpriteRenderer>().sortingOrder = p_index / GameMultiplayerManager.MAX_PLAYER_AMOUNT;
-        //l_cardNetworkObject.transform.GetChild(0).GetComponent<SpriteRenderer>().sortingOrder = p_index / GameMultiplayerManager.MAX_PLAYER_AMOUNT;
         l_cardNetworkObject.TrySetParent(m_deckParent, false); //false to ignore WorldPositionStays and to work as we are used to (also do it on the client to sync position)
-        PlayerController.LocalInstance.AddToMyHandClientRpc(p_cardIndexSO, p_cardIndex);
-        // m_observers = NetworkObject.GetObservers();
-
-        //if (GameMultiplayerManager.Instance.GetPlayerControllerFromId() == Convert.ToUInt64(p_cardIndexSO % 2))
-
-
-          //  PlayerController.LocalInstance
-
-
-        // if (p_index % 2 == 0)
-        //     GameMultiplayerManager.Instance.GetPlayerControllerFromId(0).AddToMyHand(m_usableDeckList[p_index]);
-        // PlayerController.LocalInstance.AddToMyHand(m_usableDeckList[p_index]);
+        OnAddCardToMyHand?.Invoke(l_indexes, EventArgs.Empty);
     }
 
     void Shuffle<T>(List<T> list)

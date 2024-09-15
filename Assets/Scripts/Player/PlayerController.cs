@@ -10,12 +10,10 @@ public class PlayerController : NetworkBehaviour
     public static PlayerController LocalInstance { get; private set;}
 
     [SerializeField] private List<Vector3> m_spawnPositionList;
-    [SerializeField] private List<CardsScriptableObject.Card> m_myHand;
     [SerializeField] private CardsScriptableObject m_cardsSO;
     [SerializeField] private int m_index;
 
-    private List<UsableDeck> usableDeckList;
-    [SerializeField] private List<UsableDeck> m_usableDeckList;
+    [SerializeField] private List<UsableCard> m_myHand;
 
     void Start()
     {
@@ -34,14 +32,36 @@ public class PlayerController : NetworkBehaviour
         if (IsOwner)
             CameraController.Instance.SetCamera(GameMultiplayerManager.Instance.GetPlayerDataIndexFromClientId(OwnerClientId));
 
-        if (IsHost && IsOwner)
-            
+        CardsManager.Instance.OnAddCardToMyHand += CardsManager_OnAddCardToMyHand;
+        TurnManager.Instance.OnMatchWon += TurnManager_OnMatchWon;
 
         if (IsServer)
             NetworkManager.Singleton.OnClientDisconnectCallback += NetworkManager_OnClientDisconnectCallback;
 
         if (IsOwner)
     		GameInput.Instance.OnInteractAction += GameInput_OnInteractAction;
+
+    }
+
+    private void TurnManager_OnMatchWon(object p_playerWonId, EventArgs e)
+    {
+        if (IsOwner && GameMultiplayerManager.Instance.GetPlayerDataIndexFromClientId(OwnerClientId) == (int)p_playerWonId)
+            Debug.Log("You Won!");
+    }
+
+    private void CardsManager_OnAddCardToMyHand(object p_indexes, EventArgs e)
+    {
+        Indexes l_indexes = (Indexes)p_indexes;
+
+        if (IsOwner && l_indexes.cardIndexDeal % 2 == GameMultiplayerManager.Instance.GetPlayerDataIndexFromClientId(OwnerClientId))
+        {
+            UsableCard l_usableCard = new();
+
+            l_usableCard.Card = m_cardsSO.deck[l_indexes.cardIndexSO];
+            l_usableCard.OriginalSOIndex = l_indexes.cardIndexSO;
+
+            m_myHand.Add(l_usableCard);
+        }
 
     }
 
@@ -79,80 +99,39 @@ public class PlayerController : NetworkBehaviour
     {
         if(gameObject.CompareTag("Card"))
         {
-
-Debug.Log("Card");
-                Debug.Log(m_myHand.Count);
-
             for (int i = 0; i < m_myHand.Count; i++)
             {
-                Debug.Log("meu for");
-                if (m_myHand[i].name == gameObject.name)
+                if (m_myHand[i].Card.name == gameObject.name)
                 {
-                    
-        Debug.Log(m_myHand[i].name);
-                    if (TurnManager.Instance.CurrentMatch.WhoStartedMatch.Equals(Player.DEFAULT))
-                    {
+
+                    if (!TurnManager.Instance.MatchHasStarted.Value)
                         TurnManager.Instance.StartMatchServerRpc(IsHost ? Player.HOST : Player.CLIENT);
-                    } else
-                    {
-                        Debug.Log(TurnManager.Instance.CurrentMatch.WhoStartedMatch);
-                    }
 
+                    TurnManager.Instance.PlayCardServerRpc(m_myHand[i].OriginalSOIndex, IsHost ? Player.HOST : Player.CLIENT);
+                    m_myHand.RemoveAt(i);
 
-                    
-                    TurnManager.Instance.PlayCardServerRpc(m_usableDeckList[i].OriginalSOIndex, IsHost ? Player.HOST : Player.CLIENT);
+                    RemoveCardVisualFromMyHandServerRpc(gameObject.GetComponent<NetworkObject>());
+
                 }
+            }
         }
     }
+
+    [ServerRpc]
+    void RemoveCardVisualFromMyHandServerRpc(NetworkObjectReference p_cardNetworkObjectReference)
+    {
+        p_cardNetworkObjectReference.TryGet(out NetworkObject l_cardNetworkObject);
+        l_cardNetworkObject.Despawn();
     }
+
     public void AddToMyHand(int p_cardIndexSO)
     {
-        
+        UsableCard l_usableCard = new();
 
-        m_myHand.Add(m_cardsSO.deck[p_cardIndexSO]);
-        UsableDeck l_usableDeck = new();
+        l_usableCard.Card = m_cardsSO.deck[p_cardIndexSO];
+        l_usableCard.OriginalSOIndex = p_cardIndexSO;
 
-        l_usableDeck.UsableCard = m_cardsSO.deck[p_cardIndexSO];
-        l_usableDeck.OriginalSOIndex = p_cardIndexSO;
-
-         m_usableDeckList.Add(l_usableDeck);
+        m_myHand.Add(l_usableCard);
     }
 
-    // [ServerRpc]
-    // public void AddToMyHandServerRpc(int p_index)
-    // {
-    //     Debug.Log(IsHost);
-    //     Debug.Log(IsOwner);
-    //     Debug.Log(IsServer);
-    //     Debug.Log(p_index);
-    // }
-
-    // [ServerRpc (RequireOwnership = false)]
-    // public void AddToMyHandOwnServerRpc(int p_index)
-    // {
-    //     Debug.Log(IsHost);
-    //     Debug.Log(IsOwner);
-    //     Debug.Log(IsServer);
-    //     Debug.Log(p_index);
-    // }
-
-    [ClientRpc]
-    public void AddToMyHandClientRpc(int p_cardIndexSO, int p_cardIndex)
-    {
-
-        Debug.Log(GameMultiplayerManager.Instance.GetPlayerDataIndexFromClientId(OwnerClientId));
-
-        if (GameMultiplayerManager.Instance.GetPlayerDataIndexFromClientId(OwnerClientId) == p_cardIndex % 2){
-                    m_myHand.Add(m_cardsSO.deck[p_cardIndexSO]);
-        UsableDeck l_usableDeck = new();
-
-        l_usableDeck.UsableCard = m_cardsSO.deck[p_cardIndexSO];
-        l_usableDeck.OriginalSOIndex = p_cardIndexSO;
-
-         m_usableDeckList.Add(l_usableDeck);
-        }
-            
-        // else if  (GameMultiplayerManager.Instance.GetPlayerDataIndexFromClientId(OwnerClientId) == 1)
-        //     AddToMyHand(p_cardIndexSO);
-    }
 }

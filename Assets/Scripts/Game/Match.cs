@@ -2,22 +2,22 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public enum Player { DEFAULT, HOST, CLIENT, DRAW};
+public enum Player { DEFAULT, HOST, CLIENT, DRAW };
 [System.Serializable]
 public class Match
 {
-    public Player WhoStartedMatch { get; private set; }
-    public Player LastTurnPlayer { get; set; }
+    [HideInInspector] public Player WhoStartedMatch { get; private set; }
+    [HideInInspector] public Player LastTurnPlayer { get; set; }
 
     public List<CardsScriptableObject.Card> HostCardsPlayed;
     public List<CardsScriptableObject.Card> ClientCardsPlayed;
 
-    public int HostRoundsWon;
-    public int ClientRoundsWon;
+    [HideInInspector] public int HostRoundsWon;
+    [HideInInspector] public int ClientRoundsWon;
 
-    public int RoundMatch;
-    public List<Player> RoundsWonHistory;
-    public List<Player> RoundsStartedHistory;
+    [HideInInspector] public int RoundMatch;
+    [HideInInspector] public List<Player> RoundsWonHistory;
+    [HideInInspector] public List<Player> RoundsStartedHistory;
 
     public Match(Player p_whoStartsMatch)
     {

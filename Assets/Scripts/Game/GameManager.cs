@@ -27,7 +27,7 @@ public class GameManager : NetworkBehaviour
 
 	[SerializeField] private Transform m_playerPrefab;
 
-	private NetworkVariable<GameState> m_gameState = new NetworkVariable<GameState>(GameState.WaitingToStart);
+	[SerializeField] private NetworkVariable<GameState> m_gameState = new NetworkVariable<GameState>(GameState.WaitingToStart);
 	//private NetworkVariable<float> m_countdownToStartTimer = new NetworkVariable<float>(3f);
 	private bool m_isLocalPlayerReady;
 	private bool m_isLocalGamePaused = false;
@@ -58,6 +58,25 @@ public class GameManager : NetworkBehaviour
 		{
             NetworkManager.Singleton.OnClientDisconnectCallback += NetworkManager_OnClientDisconnectCallback;
 			NetworkManager.Singleton.SceneManager.OnLoadEventCompleted += SceneManager_OnLoadEventCompleted; //triggered on all the clients have loaded the final scene
+	        TurnManager.Instance.OnCardPlayed += TurnManager_OnCardPlayed;
+			TurnManager.Instance.MatchHasStarted.OnValueChanged += MatchHasStarted_OnValueChanged;
+		}
+    }
+
+    private void MatchHasStarted_OnValueChanged(bool previousValue, bool newValue)
+    {
+        if (!newValue)
+			m_gameState.Value = GameState.DealingCards;
+    }
+
+    private void TurnManager_OnCardPlayed(object p_playerType, EventArgs e)
+    {
+		if (TurnManager.Instance.MatchHasStarted.Value)
+		{
+			if ((Player)p_playerType == Player.HOST)
+				m_gameState.Value = GameState.ClientPlayerTurn; //logic for match win and round flow
+			else if ((Player)p_playerType == Player.CLIENT)
+				m_gameState.Value = GameState.HostPlayerTurn;
 		}
     }
 
@@ -141,7 +160,13 @@ public class GameManager : NetworkBehaviour
 				break;
 			case GameState.DealingCards:
 				CardsManager.Instance.SpawnNewPlayCardsServerRpc();
-				m_gameState.Value = GameState.HostPlayerTurn;
+
+				if (TurnManager.Instance.MatchWonHistory.Count == 0)
+					m_gameState.Value = GameState.HostPlayerTurn;
+				else if ((Player)TurnManager.Instance.MatchWonHistory[TurnManager.Instance.MatchWonHistory.Count - 1] == Player.HOST) //logic for round win, not match win
+					m_gameState.Value = GameState.ClientPlayerTurn;
+				else if ((Player)TurnManager.Instance.MatchWonHistory[TurnManager.Instance.MatchWonHistory.Count - 1] == Player.CLIENT)
+					m_gameState.Value = GameState.HostPlayerTurn;
 				// m_countdownToStartTimer.Value -= Time.deltaTime;
 				// if (m_countdownToStartTimer.Value < 0f)
 				// {
@@ -224,6 +249,11 @@ public class GameManager : NetworkBehaviour
 	public bool IsClientPlayerTurn()
 	{
 		return m_gameState.Value == GameState.ClientPlayerTurn;
+	}
+
+	public bool IsMyTurn(bool p_isHost)
+	{
+		return p_isHost ? IsHostPlayerTurn() : IsClientPlayerTurn();
 	}
 
 	public bool IsGameOver()

@@ -62,6 +62,8 @@ public class CardsManager : NetworkBehaviour
     public void SpawnNewPlayCardsServerRpc() //can only instantiate prefabs on server AND only destroy on server
     {
 
+        Debug.Log("Spawn Cards");
+
         SelectUsableCardsInSO();
         Shuffle(m_usableCardList);
 
@@ -88,6 +90,7 @@ public class CardsManager : NetworkBehaviour
 
         l_indexes.cardIndexSO = p_cardIndexSO;
         l_indexes.cardIndexDeal = p_cardIndex;
+        l_indexes.networkObjectReference = p_cardNetworkObjectReference;
 
         p_cardNetworkObjectReference.TryGet(out NetworkObject l_cardNetworkObject);
         l_cardNetworkObject.name = m_cardsSO.deck[p_cardIndexSO].name;

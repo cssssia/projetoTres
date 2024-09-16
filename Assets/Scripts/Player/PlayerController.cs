@@ -14,6 +14,8 @@ public class PlayerController : NetworkBehaviour
     [SerializeField] private int m_index;
 
     [SerializeField] private List<UsableCard> m_myHand;
+    [SerializeField] private List<NetworkObject> m_myHandNetworkObjects;
+	public event EventHandler OnMatchEnd;
 
     void Start()
     {
@@ -34,6 +36,7 @@ public class PlayerController : NetworkBehaviour
 
         CardsManager.Instance.OnAddCardToMyHand += CardsManager_OnAddCardToMyHand;
         TurnManager.Instance.OnMatchWon += TurnManager_OnMatchWon;
+        //TurnManager.Instance.OnCardPlayed += TurnManager_OnCardPlayed;
 
         if (IsServer)
             NetworkManager.Singleton.OnClientDisconnectCallback += NetworkManager_OnClientDisconnectCallback;
@@ -43,10 +46,29 @@ public class PlayerController : NetworkBehaviour
 
     }
 
+    // private void TurnManager_OnCardPlayed(object p_playerType, EventArgs e)
+    // {
+    //     if (IsOwner && GameMultiplayerManager.Instance.GetPlayerDataIndexFromClientId(OwnerClientId) == (int)p_playerType)
+            
+    // }
+
     private void TurnManager_OnMatchWon(object p_playerWonId, EventArgs e)
     {
+        if (IsOwner)
+        {
+            for (int i = 0; i < m_myHandNetworkObjects.Count; i++)
+                RemoveCardVisualFromMyHandServerRpc(m_myHandNetworkObjects[i]);
+
+            m_myHand.Clear();
+            m_myHandNetworkObjects.Clear();
+        }
+
         if (IsOwner && GameMultiplayerManager.Instance.GetPlayerDataIndexFromClientId(OwnerClientId) == (int)p_playerWonId)
             Debug.Log("You Won!");
+
+        if (IsServer)
+            TurnManager.Instance.MatchHasStarted.Value = false;
+
     }
 
     private void CardsManager_OnAddCardToMyHand(object p_indexes, EventArgs e)
@@ -60,7 +82,10 @@ public class PlayerController : NetworkBehaviour
             l_usableCard.Card = m_cardsSO.deck[l_indexes.cardIndexSO];
             l_usableCard.OriginalSOIndex = l_indexes.cardIndexSO;
 
+            l_indexes.networkObjectReference.TryGet(out NetworkObject l_networkObject);
+
             m_myHand.Add(l_usableCard);
+            m_myHandNetworkObjects.Add(l_networkObject);
         }
 
     }
@@ -76,15 +101,18 @@ public class PlayerController : NetworkBehaviour
 
     private void GameInput_OnInteractAction(object p_sender, System.EventArgs e)
     {
-        RaycastHit l_raycastHit;
-
-        Ray l_ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-        if (Physics.Raycast(l_ray, out l_raycastHit, 10f))
+        if (GameManager.Instance.IsMyTurn(IsHost))
         {
-            if (l_raycastHit.transform != null)
+            RaycastHit l_raycastHit;
+
+            Ray l_ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+            if (Physics.Raycast(l_ray, out l_raycastHit, 10f))
             {
-                //Our custom method.
-                CurrentClickedGameObject(l_raycastHit.transform.gameObject);
+                if (l_raycastHit.transform != null)
+                {
+                    //Our custom method.
+                    CurrentClickedGameObject(l_raycastHit.transform.gameObject);
+                }
             }
         }
     }
@@ -108,8 +136,9 @@ public class PlayerController : NetworkBehaviour
                         TurnManager.Instance.StartMatchServerRpc(IsHost ? Player.HOST : Player.CLIENT);
 
                     TurnManager.Instance.PlayCardServerRpc(m_myHand[i].OriginalSOIndex, IsHost ? Player.HOST : Player.CLIENT);
-                    m_myHand.RemoveAt(i);
 
+                    m_myHand.RemoveAt(i);
+                    m_myHandNetworkObjects.RemoveAt(i);
                     RemoveCardVisualFromMyHandServerRpc(gameObject.GetComponent<NetworkObject>());
 
                 }

@@ -1188,7 +1188,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 224130951485110974, guid: 9ed2a051c32b4fe47a5e4fb95c20b03f, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 0
+      value: 0.0000076293945
       objectReference: {fileID: 0}
     - target: {fileID: 224166536479716514, guid: 9ed2a051c32b4fe47a5e4fb95c20b03f, type: 3}
       propertyPath: m_AnchorMax.y
@@ -2098,7 +2098,7 @@ GameObject:
   - component: {fileID: 711494078}
   - component: {fileID: 711494077}
   m_Layer: 0
-  m_Name: TurnManager
+  m_Name: RoundManager
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2148,18 +2148,20 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   CardsSO: {fileID: 11400000, guid: f1e57d18c838241b2aaa61ff988810d9, type: 2}
-  MatchHasStarted:
+  RoundHasStarted:
     m_InternalValue: 0
-  CurrentMatch:
+  WhoStartedRound:
+    m_InternalValue: 0
+  CurrentTrick:
     HostCardsPlayed: []
     ClientCardsPlayed: []
-    HostRoundsWon: 0
-    ClientRoundsWon: 0
-    RoundMatch: 0
-    RoundsWonHistory: 
-    RoundsStartedHistory: 
-  HostMatchWon: 0
-  ClientMatchWon: 0
+    HostTurnsWon: 0
+    ClientTurnsWon: 0
+    CurrentTrick: 0
+    TurnsWonHistory: 
+    TurnsStartedHistory: 
+  HostTrickWon: 0
+  ClientTrickWon: 0
 --- !u!1 &719113044
 GameObject:
   m_ObjectHideFlags: 0

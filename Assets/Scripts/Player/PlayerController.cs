@@ -35,7 +35,7 @@ public class PlayerController : NetworkBehaviour
             CameraController.Instance.SetCamera(GameMultiplayerManager.Instance.GetPlayerDataIndexFromClientId(OwnerClientId));
 
         CardsManager.Instance.OnAddCardToMyHand += CardsManager_OnAddCardToMyHand;
-        TurnManager.Instance.OnMatchWon += TurnManager_OnMatchWon;
+        RoundManager.Instance.OnRoundWon += TurnManager_OnRoundWon;
         //TurnManager.Instance.OnCardPlayed += TurnManager_OnCardPlayed;
 
         if (IsServer)
@@ -52,7 +52,7 @@ public class PlayerController : NetworkBehaviour
             
     // }
 
-    private void TurnManager_OnMatchWon(object p_playerWonId, EventArgs e)
+    private void TurnManager_OnRoundWon(object p_playerWonId, EventArgs e)
     {
         if (IsOwner)
         {
@@ -67,7 +67,7 @@ public class PlayerController : NetworkBehaviour
             Debug.Log("You Won!");
 
         if (IsServer)
-            TurnManager.Instance.MatchHasStarted.Value = false;
+            RoundManager.Instance.RoundHasStarted.Value = false;
 
     }
 
@@ -132,10 +132,10 @@ public class PlayerController : NetworkBehaviour
                 if (m_myHand[i].Card.name == gameObject.name)
                 {
 
-                    if (!TurnManager.Instance.MatchHasStarted.Value)
-                        TurnManager.Instance.StartMatchServerRpc(IsHost ? Player.HOST : Player.CLIENT);
+                    if (!RoundManager.Instance.RoundHasStarted.Value)
+                        RoundManager.Instance.StartMatchServerRpc(IsHost ? Player.HOST : Player.CLIENT);
 
-                    TurnManager.Instance.PlayCardServerRpc(m_myHand[i].OriginalSOIndex, IsHost ? Player.HOST : Player.CLIENT);
+                    RoundManager.Instance.PlayCardServerRpc(m_myHand[i].OriginalSOIndex, IsHost ? Player.HOST : Player.CLIENT);
 
                     m_myHand.RemoveAt(i);
                     m_myHandNetworkObjects.RemoveAt(i);

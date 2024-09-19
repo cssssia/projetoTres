@@ -58,9 +58,16 @@ public class GameManager : NetworkBehaviour
 		{
             NetworkManager.Singleton.OnClientDisconnectCallback += NetworkManager_OnClientDisconnectCallback;
 			NetworkManager.Singleton.SceneManager.OnLoadEventCompleted += SceneManager_OnLoadEventCompleted; //triggered on all the clients have loaded the final scene
-	        TurnManager.Instance.OnCardPlayed += TurnManager_OnCardPlayed;
-			TurnManager.Instance.MatchHasStarted.OnValueChanged += MatchHasStarted_OnValueChanged;
+	        RoundManager.Instance.OnCardPlayed += TurnManager_OnCardPlayed;
+			RoundManager.Instance.OnTrickWon += RoundManager_OnTrickWon;
+			RoundManager.Instance.RoundHasStarted.OnValueChanged += MatchHasStarted_OnValueChanged;
 		}
+    }
+
+	private Player m_wonTrickPlayer;
+    private void RoundManager_OnTrickWon(object l_wonTrickPlayer, EventArgs e)
+    {
+        m_wonTrickPlayer = (Player)l_wonTrickPlayer;
     }
 
     private void MatchHasStarted_OnValueChanged(bool previousValue, bool newValue)
@@ -71,12 +78,24 @@ public class GameManager : NetworkBehaviour
 
     private void TurnManager_OnCardPlayed(object p_playerType, EventArgs e)
     {
-		if (TurnManager.Instance.MatchHasStarted.Value)
+		if (RoundManager.Instance.RoundHasStarted.Value)
 		{
-			if ((Player)p_playerType == Player.HOST)
-				m_gameState.Value = GameState.ClientPlayerTurn; //logic for match win and round flow
-			else if ((Player)p_playerType == Player.CLIENT)
-				m_gameState.Value = GameState.HostPlayerTurn;
+			if (m_wonTrickPlayer == Player.DEFAULT) //logic turn flow
+			{
+				if ((Player)p_playerType == Player.HOST)
+					m_gameState.Value = GameState.ClientPlayerTurn; 
+				else if ((Player)p_playerType == Player.CLIENT)
+					m_gameState.Value = GameState.HostPlayerTurn;
+			}
+			else //trick win
+			{
+				if (m_wonTrickPlayer == Player.HOST)
+					m_gameState.Value = GameState.HostPlayerTurn;
+				else if (m_wonTrickPlayer == Player.CLIENT)
+					m_gameState.Value = GameState.ClientPlayerTurn;
+				m_wonTrickPlayer = Player.DEFAULT;
+			}
+
 		}
     }
 
@@ -161,18 +180,13 @@ public class GameManager : NetworkBehaviour
 			case GameState.DealingCards:
 				CardsManager.Instance.SpawnNewPlayCardsServerRpc();
 
-				if (TurnManager.Instance.MatchWonHistory.Count == 0)
+				if (RoundManager.Instance.RoundWonHistory.Count == 0) //logic round flow
 					m_gameState.Value = GameState.HostPlayerTurn;
-				else if ((Player)TurnManager.Instance.MatchWonHistory[TurnManager.Instance.MatchWonHistory.Count - 1] == Player.HOST) //logic for round win, not match win
+				else if ((Player)RoundManager.Instance.WhoStartedRound.Value == Player.HOST)
 					m_gameState.Value = GameState.ClientPlayerTurn;
-				else if ((Player)TurnManager.Instance.MatchWonHistory[TurnManager.Instance.MatchWonHistory.Count - 1] == Player.CLIENT)
+				else if ((Player)RoundManager.Instance.WhoStartedRound.Value == Player.CLIENT)
 					m_gameState.Value = GameState.HostPlayerTurn;
-				// m_countdownToStartTimer.Value -= Time.deltaTime;
-				// if (m_countdownToStartTimer.Value < 0f)
-				// {
-				// 	Debug.Log("game playing");
-				// 	m_gameState.Value = GameState.HostPlayerTurn;
-				// }
+
 				break;
 			case GameState.HostPlayerTurn:
 				// if (loseMatch)

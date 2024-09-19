@@ -93,6 +93,14 @@ public class GameManager : NetworkBehaviour
 					m_gameState.Value = GameState.HostPlayerTurn;
 				else if (m_wonTrickPlayer == Player.CLIENT)
 					m_gameState.Value = GameState.ClientPlayerTurn;
+				else if (m_wonTrickPlayer == Player.DRAW)
+				{
+					if ((Player)RoundManager.Instance.WhoStartedRound.Value == Player.HOST)
+						m_gameState.Value = GameState.HostPlayerTurn;
+					else if ((Player)RoundManager.Instance.WhoStartedRound.Value == Player.CLIENT)
+						m_gameState.Value = GameState.ClientPlayerTurn;
+				}
+
 				m_wonTrickPlayer = Player.DEFAULT;
 			}
 

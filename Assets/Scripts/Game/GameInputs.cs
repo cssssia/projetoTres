@@ -4,6 +4,7 @@ using UnityEngine;
 public class GameInput : Singleton<GameInput> {
 
     public event EventHandler OnInteractAction;
+    public event EventHandler OnStopInteractAction;
     public event EventHandler OnPauseAction;
     public event EventHandler OnMoveMouse;
 
@@ -12,8 +13,10 @@ public class GameInput : Singleton<GameInput> {
 	{
 		if (Input.GetMouseButtonDown(0))
 			Interact();
+        if (Input.GetMouseButtonUp(0))
+            StopInteract();
 
-		if (Input.GetKeyDown(KeyCode.Escape))
+        if (Input.GetKeyDown(KeyCode.Escape))
 			Pause();
 
         if (Input.mousePosition != m_lastMousePosition) 
@@ -26,6 +29,10 @@ public class GameInput : Singleton<GameInput> {
 
     private void Interact() {
         OnInteractAction?.Invoke(this, EventArgs.Empty);
+    }
+
+    private void StopInteract(){
+        OnStopInteractAction?.Invoke(this, EventArgs.Empty);
     }
 
     private void MoveMouse()

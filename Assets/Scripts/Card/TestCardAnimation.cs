@@ -11,7 +11,8 @@ public class TestCardAnimation : MonoBehaviour
     private void Start()
     {
         GameInput.Instance.OnMoveMouse += GameInput_OnMoveMouse;
-
+        GameInput.Instance.OnInteractAction += GameInput_OnClickDownMouse;
+        GameInput.Instance.OnStopInteractAction += GameInputOnClickUpMouse;
     }
 
     private void Update()
@@ -44,21 +45,41 @@ public class TestCardAnimation : MonoBehaviour
     private void GameInput_OnMoveMouse(object p_sender, System.EventArgs e)
     {
         Ray l_ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-        if (Physics.Raycast(l_ray, out l_mousePosRaycastHit, 10f))
+        if (Physics.Raycast(l_ray, out l_mousePosRaycastHit))
         {
-            if (l_mousePosRaycastHit.transform != null)
-            {
-                //Our custom method.
-                Debug.Log("finde transform" + l_mousePosRaycastHit.transform.gameObject);
-                CheckHoverOnObject(l_mousePosRaycastHit.transform.gameObject);
-            }
+            CheckHoverOnObject(l_mousePosRaycastHit.transform.gameObject);
         }
+
+        m_handBehavior.UpdateMousePos(Input.mousePosition);
     }
 
     private void CheckHoverOnObject(GameObject p_gameObject)
     {
-        bool l_find = m_handBehavior.CheckObject(p_gameObject);
-        if (l_find) Debug.Log("hover");
+        //atualmente, só está checando cartas, mas aqui podemos chegar itens tambem
+
+        bool l_find = m_handBehavior.CheckHoverObject(p_gameObject);
     }
 
+    private void GameInput_OnClickDownMouse(object p_sender, System.EventArgs e)
+    {
+        Ray l_ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+        if (Physics.Raycast(l_ray, out l_mousePosRaycastHit))
+        {
+            if (l_mousePosRaycastHit.transform != null)
+                CheckClickOnObjects(l_mousePosRaycastHit.transform.gameObject);
+            else CheckClickOnObjects(null);
+        }
+    }
+
+    private void CheckClickOnObjects(GameObject p_gameObject)
+    {
+        //atualmente, só está checando cartas, mas aqui podemos chegar itens tambem
+
+        bool l_find = m_handBehavior.CheckClickObject(p_gameObject);
+    }
+
+    private void GameInputOnClickUpMouse(object p_sender, System.EventArgs e)
+    {
+        m_handBehavior.CheckClickUp();
+    }
 }

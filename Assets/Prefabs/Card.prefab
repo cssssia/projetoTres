@@ -122,14 +122,17 @@ MonoBehaviour:
   m_idleCardTranform:
     Position: {x: 0, y: 0, z: 0}
     Rotation: {x: 0, y: 0, z: 0}
+    Scale: {x: 0, y: 0, z: 0}
   m_highlightCardTranform:
-    Position: {x: 0, y: 0.5, z: 0}
+    Position: {x: 0, y: 0.15, z: 0.1}
     Rotation: {x: 0, y: 0, z: 0}
+    Scale: {x: 0.125, y: 0.125, z: 0.125}
   m_individualHighlightCardTranform:
     Position: {x: 0, y: 0, z: 0}
     Rotation: {x: 0, y: 0, z: 0}
+    Scale: {x: 0, y: 0, z: 0}
   m_playCardAnim: {fileID: 0}
-  m_idleCardAnim: {fileID: 0}
+  m_idleCardAnim: {fileID: 11400000, guid: de68a7a4436d6ad4bb6d8323e5e8e750, type: 2}
   m_hoverCardAnim: {fileID: 11400000, guid: 5a1ff09991fa28b40ada698f2bfe8856, type: 2}
 --- !u!114 &937226932739149441
 MonoBehaviour:

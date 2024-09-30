@@ -10,9 +10,9 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: e9df0788dd818444aa319d6b46ab6f9f, type: 3}
-  m_Name: CFG_CardAnim_Hover
+  m_Name: CFG_CardAnim_Idle
   m_EditorClassIdentifier: 
-  m_animTime: 0.25
+  m_animTime: 0.15
   MoveAnimCurve:
     serializedVersion: 2
     m_Curve:
@@ -28,11 +28,11 @@ MonoBehaviour:
     - serializedVersion: 3
       time: 1
       value: 1
-      inSlope: -1.6564988
-      outSlope: -1.6564988
+      inSlope: 0
+      outSlope: 0
       tangentMode: 0
       weightedMode: 0
-      inWeight: 0.06279445
+      inWeight: 0
       outWeight: 0
     m_PreInfinity: 2
     m_PostInfinity: 2

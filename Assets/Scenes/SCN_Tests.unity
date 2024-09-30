@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.18028378, g: 0.22571412, b: 0.30692285, a: 1}
+  m_IndirectSpecularColor: {r: 0.18028331, g: 0.2257133, b: 0.3069217, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -511,7 +511,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6532333713274794338, guid: 3ab3ab04bee207942bd566ff92efd07f, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -1.34
+      value: -1.15
       objectReference: {fileID: 0}
     - target: {fileID: 6532333713274794338, guid: 3ab3ab04bee207942bd566ff92efd07f, type: 3}
       propertyPath: m_LocalPosition.y
@@ -548,6 +548,22 @@ PrefabInstance:
     - target: {fileID: 6532333713274794338, guid: 3ab3ab04bee207942bd566ff92efd07f, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7069966637958241455, guid: 3ab3ab04bee207942bd566ff92efd07f, type: 3}
+      propertyPath: m_idleScale.x
+      value: 0.1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7069966637958241455, guid: 3ab3ab04bee207942bd566ff92efd07f, type: 3}
+      propertyPath: m_idleScale.y
+      value: 0.1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7069966637958241455, guid: 3ab3ab04bee207942bd566ff92efd07f, type: 3}
+      propertyPath: m_idleScale.z
+      value: 0.1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7069966637958241455, guid: 3ab3ab04bee207942bd566ff92efd07f, type: 3}
+      propertyPath: m_invertZPlayer
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7202223858772493674, guid: 3ab3ab04bee207942bd566ff92efd07f, type: 3}
       propertyPath: GlobalObjectIdHash

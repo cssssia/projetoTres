@@ -51,6 +51,7 @@ MonoBehaviour:
   - {fileID: 5507363336741254846}
   - {fileID: 134262310808726510}
   - {fileID: 4979565127473886958}
+  m_currentHoverCard: {fileID: 0}
   m_handWidth: 1
   m_cardsQuantity: 3
 --- !u!1001 &3041271533710874347
@@ -221,6 +222,10 @@ PrefabInstance:
     - target: {fileID: 3163843079088258309, guid: 2f21bec7f30c7d744a280a41c7e1980a, type: 3}
       propertyPath: m_cardYPump
       value: 20
+      objectReference: {fileID: 0}
+    - target: {fileID: 3163843079088258309, guid: 2f21bec7f30c7d744a280a41c7e1980a, type: 3}
+      propertyPath: m_highlightCardTranform.Position.y
+      value: 0.25
       objectReference: {fileID: 0}
     - target: {fileID: 3163843079088258309, guid: 2f21bec7f30c7d744a280a41c7e1980a, type: 3}
       propertyPath: m_cardYPumpCurve.m_Curve.Array.size

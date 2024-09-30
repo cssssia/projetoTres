@@ -137,7 +137,7 @@ public class PlayerController : NetworkBehaviour
 
     private void CheckHoverOnObject(GameObject p_gameObject)
     {
-        bool l_find = m_handBehavior.CheckObject(p_gameObject);
+        bool l_find = m_handBehavior.CheckHoverObject(p_gameObject);
 
         if (l_find) Debug.Log("hover");
     }

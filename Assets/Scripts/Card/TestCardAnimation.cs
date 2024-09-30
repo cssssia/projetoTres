@@ -65,7 +65,7 @@ public class TestCardAnimation : MonoBehaviour
         Ray l_ray = Camera.main.ScreenPointToRay(Input.mousePosition);
         if (Physics.Raycast(l_ray, out l_mousePosRaycastHit))
         {
-            if (l_mousePosRaycastHit.transform != null)
+            if (l_mousePosRaycastHit.transform != null && l_mousePosRaycastHit.transform.gameObject != null)
                 CheckClickOnObjects(l_mousePosRaycastHit.transform.gameObject);
             else CheckClickOnObjects(null);
         }

@@ -29,11 +29,12 @@ public class CardTransform
     }
 }
 
-public enum CardAnimType { PLAY, IDLE, HIGHLIGHT }
+public enum CardAnimType { PLAY, IDLE, HIGHLIGHT, DRAG }
 
 public class CardBehavior : MonoBehaviour
 {
     private CardAnimType m_currentState = CardAnimType.IDLE;
+    public CardAnimType CurrentState { get { return m_currentState; } }
     [SerializeField] private CardTransform m_idleCardTranform;
     [SerializeField] private CardTransform m_highlightCardTranform;
     [SerializeField] private CardTransform m_individualHighlightCardTranform;
@@ -41,6 +42,9 @@ public class CardBehavior : MonoBehaviour
     [SerializeField] private CardAnimConfig m_playCardAnim;
     [SerializeField] private CardAnimConfig m_idleCardAnim;
     [SerializeField] private CardAnimConfig m_hoverCardAnim;
+    [SerializeField] private Vector3 m_dragOffset;
+    [SerializeField] private Transform m_dragAnchor;
+
     private Vector3 m_startPosition;
     private Vector3 m_startRotation;
 
@@ -69,7 +73,7 @@ public class CardBehavior : MonoBehaviour
 
     CardAnimConfig l_tempCardAnim;
     Coroutine m_currentAnim;
-    public void AnimateToPlace(CardTransform p_cardTransform, CardAnimType p_animType)
+    public void AnimateToPlace(CardTransform p_cardTransform, CardAnimType p_animType, Action p_action = null)
     {
         switch (p_animType)
         {
@@ -86,7 +90,7 @@ public class CardBehavior : MonoBehaviour
 
         if (m_currentAnim != null) StopCoroutine(m_currentAnim);
 
-        m_currentAnim = StartCoroutine(IAnimateToPlace(p_cardTransform, l_tempCardAnim, p_animType));
+        m_currentAnim = StartCoroutine(IAnimateToPlace(p_cardTransform, l_tempCardAnim, p_animType, p_action));
     }
 
     public void HighlightCard()
@@ -103,7 +107,7 @@ public class CardBehavior : MonoBehaviour
     }
 
     Vector3 l_tempPosition, l_initialPosition, l_tempRotation, l_initialRotation, l_tempScale, l_initialScale;
-    IEnumerator IAnimateToPlace(CardTransform p_cardTransform, CardAnimConfig p_animConfig, CardAnimType p_cardState)
+    IEnumerator IAnimateToPlace(CardTransform p_cardTransform, CardAnimConfig p_animConfig, CardAnimType p_cardState, Action p_onFinishAnim = null)
     {
         m_currentState = p_cardState;
         l_initialPosition = p_animConfig.UseLocalPosition ? transform.localPosition : transform.position;
@@ -118,7 +122,7 @@ public class CardBehavior : MonoBehaviour
             l_tempRotation.z = Mathf.LerpAngle(l_initialRotation.z, p_cardTransform.Rotation.z, l_rotateTValue);
 
             l_tempPosition = Vector3.LerpUnclamped(l_initialPosition, p_cardTransform.Position, p_animConfig.MoveAnimCurve.Evaluate(time / p_animConfig.AnimTime));
-            l_tempPosition += Vector3.one * Mathf.Lerp(0, p_animConfig.CardYPump, p_animConfig.YPumpCurve.Evaluate(time / p_animConfig.AnimTime));
+            l_tempPosition.y += Mathf.Lerp(0, p_animConfig.CardYPump, p_animConfig.YPumpCurve.Evaluate(time / p_animConfig.AnimTime));
 
             l_tempScale = Vector3.Lerp(l_initialScale, p_cardTransform.Scale, l_rotateTValue);
 
@@ -138,19 +142,38 @@ public class CardBehavior : MonoBehaviour
             yield return null;
         }
 
+        p_onFinishAnim?.Invoke();
         m_currentAnim = null;
     }
+
+    private Vector3 l_startMousePos;
+    public void StartDrag(Vector3 p_mousePos)
+    {
+        transform.localScale = Vector3.one * 0.075f;
+
+        l_startMousePos = p_mousePos - Camera.main.WorldToScreenPoint(transform.position);
+    }
+
 
     private Vector3 l_tempDragPos;
     public void DragCard(Vector3 p_mousePosition)
     {
-        l_tempDragPos = Camera.main.ScreenToWorldPoint(p_mousePosition);
+        m_currentState = CardAnimType.DRAG;
+
+        l_tempDragPos = Camera.main.ScreenToWorldPoint(p_mousePosition - l_startMousePos);
         l_tempDragPos.z = transform.position.z;
+
         transform.position = l_tempDragPos;
     }
 
     public void EndDrag()
     {
         AnimateToPlace(m_idleCardTranform, CardAnimType.IDLE);
+    }
+
+    public void PlayCard(CardTransform p_targetTransform, Action p_onFinishAnim)
+    {
+        Debug.Log("Plasyyyy");
+        AnimateToPlace(p_targetTransform, CardAnimType.PLAY, p_onFinishAnim);
     }
 }

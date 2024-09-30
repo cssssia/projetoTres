@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
 public class CardsOnHandBehavior : MonoBehaviour
@@ -15,9 +16,15 @@ public class CardsOnHandBehavior : MonoBehaviour
     [SerializeField] private float m_handWidth;
     [SerializeField] private int m_cardsQuantity = 3;
 
+    [Header("Target")]
+    [SerializeField] private Transform[] m_targets;
+    [SerializeField] private CardTransform[] m_targetsTransform;
+    [SerializeField] private int m_currentTargetIndex;
+    PointerEventData m_pointerEventData;
     private void Start()
     {
         SetCardsIdlePosition(true);
+        m_pointerEventData = new PointerEventData(EventSystem.current);
     }
 
     public void SetCardsIdlePosition(bool p_alsoSetPosition)
@@ -52,6 +59,8 @@ public class CardsOnHandBehavior : MonoBehaviour
 
     public bool CheckHoverObject(GameObject p_gameObject)
     {
+        if (m_currentHoldingCard != null) return false;
+
         bool l_isCard = false;
         if (p_gameObject != null)
         {
@@ -59,7 +68,7 @@ public class CardsOnHandBehavior : MonoBehaviour
             {
                 if (m_cardsBehavior[i].gameObject == p_gameObject)
                 {
-                    if (m_cardsBehavior[i] != m_currentHoverCard)
+                    if (m_cardsBehavior[i] != m_currentHoverCard && m_cardsBehavior[i].CurrentState is not CardAnimType.PLAY)
                     {
                         m_currentHoverCard = m_cardsBehavior[i];
                         m_cardsBehavior[i].HighlightCard();
@@ -91,7 +100,7 @@ public class CardsOnHandBehavior : MonoBehaviour
 
     public void UpdateMousePos(Vector3 p_mousePos)
     {
-        if(m_currentHoldingCard != null)
+        if (m_currentHoldingCard != null)
         {
             m_currentHoldingCard.DragCard(p_mousePos);
         }
@@ -107,6 +116,7 @@ public class CardsOnHandBehavior : MonoBehaviour
                 if (m_cardsBehavior[i].gameObject == p_gameObject)
                 {
                     m_currentHoldingCard = m_cardsBehavior[i];
+                    m_currentHoldingCard.StartDrag(Input.mousePosition);
                     m_throwCardTargetImage.gameObject.SetActive(true);
 
                     l_isCard = true;
@@ -117,16 +127,62 @@ public class CardsOnHandBehavior : MonoBehaviour
         return l_isCard;
     }
 
-
+    List<RaycastResult> m_resultList;
     public void CheckClickUp()
     {
         if (m_currentHoldingCard != null)
         {
-            //Ray l_ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-            //RaycastHit[] l_hit = Physics.RaycastAll(l_ray, out )
+            m_pointerEventData.position = Input.mousePosition;
 
-            m_currentHoldingCard.EndDrag();
-            m_currentHoldingCard = null;
+            if (m_resultList == null) m_resultList = new List<RaycastResult>();
+            else m_resultList.Clear();
+
+            EventSystem.current.RaycastAll(m_pointerEventData, m_resultList);
+
+            bool l_playCard = false;
+            for (int i = 0; i < m_resultList.Count; i++)
+            {
+                if (m_resultList[i].gameObject == m_throwCardTargetImage.gameObject)
+                {
+                    PlayCard(m_currentHoldingCard);
+                    l_playCard = true;
+                    m_throwCardTargetImage.gameObject.SetActive(false);
+                    break;
+                }
+            }
+
+            if (!l_playCard)
+            {
+                m_currentHoldingCard.EndDrag();
+                m_currentHoldingCard = null;
+            }
+
+            m_throwCardTargetImage.gameObject.SetActive(false);
         }
+    }
+
+    private void PlayCard(CardBehavior cardBehavior)
+    {
+        cardBehavior.PlayCard(GetNextCardTarget(), delegate { print("finished anim"); });
+        m_currentHoldingCard = null;
+    }
+
+    private CardTransform GetNextCardTarget()
+    {
+        if (m_targetsTransform.Length < m_targets.Length)
+        {
+            m_targetsTransform = new CardTransform[m_targets.Length];
+
+            for (int i = 0; i < m_targetsTransform.Length; i++)
+            {
+                m_targetsTransform[i] = new
+                    (m_targets[i].position,
+                    m_targets[i].rotation.eulerAngles,
+                    Vector3.one * 0.1f);
+            }
+
+        }
+
+        return m_targetsTransform[m_currentTargetIndex];
     }
 }

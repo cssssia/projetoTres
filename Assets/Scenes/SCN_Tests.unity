@@ -1179,26 +1179,6 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7069966637958241455, guid: 3ab3ab04bee207942bd566ff92efd07f, type: 3}
-      propertyPath: m_idleScale.x
-      value: 0.1
-      objectReference: {fileID: 0}
-    - target: {fileID: 7069966637958241455, guid: 3ab3ab04bee207942bd566ff92efd07f, type: 3}
-      propertyPath: m_idleScale.y
-      value: 0.1
-      objectReference: {fileID: 0}
-    - target: {fileID: 7069966637958241455, guid: 3ab3ab04bee207942bd566ff92efd07f, type: 3}
-      propertyPath: m_idleScale.z
-      value: 0.1
-      objectReference: {fileID: 0}
-    - target: {fileID: 7069966637958241455, guid: 3ab3ab04bee207942bd566ff92efd07f, type: 3}
-      propertyPath: m_invertZPlayer
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 7069966637958241455, guid: 3ab3ab04bee207942bd566ff92efd07f, type: 3}
-      propertyPath: m_targets.Array.size
-      value: 3
-      objectReference: {fileID: 0}
-    - target: {fileID: 7069966637958241455, guid: 3ab3ab04bee207942bd566ff92efd07f, type: 3}
       propertyPath: m_throwCardTargetImage
       value: 
       objectReference: {fileID: 144450617}

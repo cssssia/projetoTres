@@ -47,13 +47,23 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bfa4eae0e0dce8e44bb1cc963f85a917, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  m_invertZPlayer: 1
+  m_idleScale: {x: 0.1, y: 0.1, z: 0.1}
   m_cardsBehavior:
   - {fileID: 5507363336741254846}
   - {fileID: 134262310808726510}
   - {fileID: 4979565127473886958}
   m_currentHoverCard: {fileID: 0}
+  m_currentHoldingCard: {fileID: 0}
+  m_throwCardTargetImage: {fileID: 0}
   m_handWidth: 1
   m_cardsQuantity: 3
+  m_targets:
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  m_targetsTransform: []
+  m_currentTargetIndex: 0
 --- !u!1001 &3041271533710874347
 PrefabInstance:
   m_ObjectHideFlags: 0

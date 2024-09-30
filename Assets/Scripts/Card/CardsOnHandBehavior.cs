@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -7,29 +8,50 @@ using UnityEngine.UI;
 public class CardsOnHandBehavior : MonoBehaviour
 {
     [SerializeField] private bool m_invertZPlayer;
-    [SerializeField] private Vector3 m_idleScale;
-    [SerializeField] private CardBehavior[] m_cardsBehavior;
-    [SerializeField] private CardBehavior m_currentHoverCard;
-    [SerializeField] private CardBehavior m_currentHoldingCard;
+    [SerializeField] private List<CardBehavior> m_cardsBehavior;
+    private CardBehavior m_currentHoverCard;
+    private CardBehavior m_currentHoldingCard;
     [SerializeField] private Image m_throwCardTargetImage;
 
+    [Header("Idle")]
+    [SerializeField] private Vector3 m_idleScale;
     [SerializeField] private float m_handWidth;
     [SerializeField] private int m_cardsQuantity = 3;
 
     [Header("Target")]
     [SerializeField] private Transform[] m_targets;
-    [SerializeField] private CardTransform[] m_targetsTransform;
+    private CardTransform[] m_targetsTransform;
     [SerializeField] private int m_currentTargetIndex;
     PointerEventData m_pointerEventData;
     private void Start()
     {
-        SetCardsIdlePosition(true);
+        //SetCardsIdlePosition(true);
         m_pointerEventData = new PointerEventData(EventSystem.current);
+    }
+
+    public void SetCardsOnHand(List<CardBehavior> p_cardObjects, Action p_eventToCallForEachCard)
+    {
+        for (int i = 0; i < p_cardObjects.Count; i++)
+        {
+            p_cardObjects[i].transform.SetParent(transform, true);
+            m_cardsBehavior.Add(p_cardObjects[i]);
+        }
+
+        SetCardsIdlePosition(false);
+    }
+
+    public void GetCardsAnim(int p_cardIndex, Action p_eventToCallForEachCard)
+    {
+        m_cardsBehavior[p_cardIndex].AnimToIdlePos(
+            delegate
+            {
+                p_eventToCallForEachCard.Invoke();
+            });
     }
 
     public void SetCardsIdlePosition(bool p_alsoSetPosition)
     {
-        for (int i = 0; i < m_cardsBehavior.Length; i++)
+        for (int i = 0; i < m_cardsBehavior.Count; i++)
         {
             bool l_useCard = m_cardsQuantity > i;
             m_cardsBehavior[i].gameObject.SetActive(l_useCard);
@@ -38,11 +60,11 @@ public class CardsOnHandBehavior : MonoBehaviour
 
         if (m_cardsQuantity == 1)
         {
-            m_cardsBehavior[0].transform.localPosition = Vector3.zero;
+            if (p_alsoSetPosition) m_cardsBehavior[0].transform.localPosition = Vector3.zero;
         }
         else if (m_cardsQuantity > 1)
         {
-            for (int i = 0; i < m_cardsBehavior.Length; i++)
+            for (int i = 0; i < m_cardsBehavior.Count; i++)
             {
                 if (m_cardsQuantity < i) return;
 
@@ -64,7 +86,7 @@ public class CardsOnHandBehavior : MonoBehaviour
         bool l_isCard = false;
         if (p_gameObject != null)
         {
-            for (int i = 0; i < m_cardsBehavior.Length; i++)
+            for (int i = 0; i < m_cardsBehavior.Count; i++)
             {
                 if (m_cardsBehavior[i].gameObject == p_gameObject)
                 {
@@ -89,7 +111,7 @@ public class CardsOnHandBehavior : MonoBehaviour
         }
         else
         {
-            for (int i = 0; i < m_cardsBehavior.Length; i++)
+            for (int i = 0; i < m_cardsBehavior.Count; i++)
             {
                 if (m_cardsBehavior[i] != m_currentHoverCard) m_cardsBehavior[i].HighlightOff();
             }
@@ -111,7 +133,7 @@ public class CardsOnHandBehavior : MonoBehaviour
         bool l_isCard = false;
         if (p_gameObject != null)
         {
-            for (int i = 0; i < m_cardsBehavior.Length; i++)
+            for (int i = 0; i < m_cardsBehavior.Count; i++)
             {
                 if (m_cardsBehavior[i].gameObject == p_gameObject)
                 {

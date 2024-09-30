@@ -106,6 +106,11 @@ public class CardBehavior : MonoBehaviour
             AnimateToPlace(m_idleCardTranform, CardAnimType.IDLE);
     }
 
+    public void AnimToIdlePos(Action p_action = null)
+    {
+        AnimateToPlace(m_idleCardTranform, CardAnimType.IDLE, p_action);
+    }
+
     Vector3 l_tempPosition, l_initialPosition, l_tempRotation, l_initialRotation, l_tempScale, l_initialScale;
     IEnumerator IAnimateToPlace(CardTransform p_cardTransform, CardAnimConfig p_animConfig, CardAnimType p_cardState, Action p_onFinishAnim = null)
     {

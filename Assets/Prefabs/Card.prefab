@@ -1,5 +1,36 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!1 &1415108166164331877
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 4337514763748464840}
+  m_Layer: 0
+  m_Name: DragAnchor
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &4337514763748464840
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1415108166164331877}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: -0, z: 4.39}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 7690226722388015351}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &6693041384023231204
 GameObject:
   m_ObjectHideFlags: 0
@@ -33,7 +64,8 @@ Transform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 0.1, y: 0.1, z: 0.1}
   m_ConstrainProportionsScale: 0
-  m_Children: []
+  m_Children:
+  - {fileID: 4337514763748464840}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!33 &1720985056977633985
@@ -119,31 +151,23 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2604990a27d30894cba88967583ca56d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_cardAnimTime: 0.5
-  m_cardAnimCurve:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 0
-      inSlope: 2
-      outSlope: 2
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0
-      outWeight: 0
-    - serializedVersion: 3
-      time: 1
-      value: 1
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0
-      outWeight: 0
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
+  m_idleCardTranform:
+    Position: {x: 0, y: 0, z: 0}
+    Rotation: {x: 0, y: 0, z: 0}
+    Scale: {x: 0, y: 0, z: 0}
+  m_highlightCardTranform:
+    Position: {x: 0, y: 0.15, z: 0.1}
+    Rotation: {x: 0, y: 0, z: 0}
+    Scale: {x: 0.125, y: 0.125, z: 0.125}
+  m_individualHighlightCardTranform:
+    Position: {x: 0, y: 0, z: 0}
+    Rotation: {x: 0, y: 0, z: 0}
+    Scale: {x: 0, y: 0, z: 0}
+  m_playCardAnim: {fileID: 11400000, guid: b46c9a421976e4c4ebba812cf2bc3405, type: 2}
+  m_idleCardAnim: {fileID: 11400000, guid: de68a7a4436d6ad4bb6d8323e5e8e750, type: 2}
+  m_hoverCardAnim: {fileID: 11400000, guid: 5a1ff09991fa28b40ada698f2bfe8856, type: 2}
+  m_dragOffset: {x: 0, y: 0, z: 0}
+  m_dragAnchor: {fileID: 4337514763748464840}
 --- !u!114 &937226932739149441
 MonoBehaviour:
   m_ObjectHideFlags: 0

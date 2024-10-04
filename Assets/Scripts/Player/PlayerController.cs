@@ -7,15 +7,16 @@ using UnityEngine;
 
 public class PlayerController : NetworkBehaviour
 {
-    public static PlayerController LocalInstance { get; private set;}
+    public static PlayerController LocalInstance { get; private set; }
 
     [SerializeField] private List<Vector3> m_spawnPositionList;
     [SerializeField] private CardsScriptableObject m_cardsSO;
+    [SerializeField] private CardsOnHandBehavior m_handBehavior;
     [SerializeField] private int m_index;
 
     [SerializeField] private List<UsableCard> m_myHand;
     [SerializeField] private List<NetworkObject> m_myHandNetworkObjects;
-	public event EventHandler OnMatchEnd;
+    public event EventHandler OnMatchEnd;
 
     void Start()
     {
@@ -42,14 +43,17 @@ public class PlayerController : NetworkBehaviour
             NetworkManager.Singleton.OnClientDisconnectCallback += NetworkManager_OnClientDisconnectCallback;
 
         if (IsOwner)
-    		GameInput.Instance.OnInteractAction += GameInput_OnInteractAction;
+        {
+            GameInput.Instance.OnInteractAction += GameInput_OnInteractAction;
+            GameInput.Instance.OnMoveMouse += GameInput_OnMoveMouse;
+        }
 
     }
 
     // private void TurnManager_OnCardPlayed(object p_playerType, EventArgs e)
     // {
     //     if (IsOwner && GameMultiplayerManager.Instance.GetPlayerDataIndexFromClientId(OwnerClientId) == (int)p_playerType)
-            
+
     // }
 
     private void TurnManager_OnRoundWon(object p_playerWonId, EventArgs e)
@@ -117,6 +121,27 @@ public class PlayerController : NetworkBehaviour
         }
     }
 
+    RaycastHit l_mousePosRaycastHit;
+    private void GameInput_OnMoveMouse(object p_sender, System.EventArgs e)
+    {
+        Ray l_ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+        if (Physics.Raycast(l_ray, out l_mousePosRaycastHit, 10f))
+        {
+            if (l_mousePosRaycastHit.transform != null)
+            {
+                //Our custom method.
+                CheckHoverOnObject(l_mousePosRaycastHit.transform.gameObject);
+            }
+        }
+    }
+
+    private void CheckHoverOnObject(GameObject p_gameObject)
+    {
+        bool l_find = m_handBehavior.CheckHoverObject(p_gameObject);
+
+        if (l_find) Debug.Log("hover");
+    }
+
     void Update()
     {
         if (!IsOwner)
@@ -125,7 +150,7 @@ public class PlayerController : NetworkBehaviour
 
     private void CurrentClickedGameObject(GameObject gameObject)
     {
-        if(gameObject.CompareTag("Card"))
+        if (gameObject.CompareTag("Card"))
         {
             for (int i = 0; i < m_myHand.Count; i++)
             {

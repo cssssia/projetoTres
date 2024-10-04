@@ -7,6 +7,7 @@ public enum Player { DEFAULT, HOST, CLIENT, DRAW };
 public class Trick
 {
     [HideInInspector] public Player WhoStartedTrick { get; private set; }
+    [HideInInspector] public Player WhoWonFirstTrick { get; set; }
     [HideInInspector] public Player LastTurnPlayer { get; set; }
 
     public List<CardsScriptableObject.Card> HostCardsPlayed;
@@ -23,6 +24,7 @@ public class Trick
     {
         WhoStartedTrick = p_whoStartsTrick;
         LastTurnPlayer = Player.DEFAULT;
+        WhoWonFirstTrick = Player.DEFAULT;
         HostCardsPlayed = new();
         ClientCardsPlayed = new();
 
@@ -68,12 +70,14 @@ public class Trick
         {
             CurrentTrick++;
             HostTurnsWon++;
+            if (WhoWonFirstTrick == Player.DEFAULT) WhoWonFirstTrick = Player.HOST;
             return Player.HOST;
         }
         else if (HostCardsPlayed[CurrentTrick].value < ClientCardsPlayed[CurrentTrick].value)
         {
             CurrentTrick++;
             ClientTurnsWon++;
+            if (WhoWonFirstTrick == Player.DEFAULT) WhoWonFirstTrick = Player.CLIENT;
             return Player.CLIENT;
         }
 

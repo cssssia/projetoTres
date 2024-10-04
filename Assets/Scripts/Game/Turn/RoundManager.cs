@@ -45,6 +45,8 @@ public class RoundManager : NetworkBehaviour
         WhoStartedRound.Value = (int)p_playerType;
     }
 
+    int draw;
+
     [ServerRpc (RequireOwnership = false)]
     public void PlayCardServerRpc(int p_index, Player p_playerType)
     {
@@ -56,6 +58,8 @@ public class RoundManager : NetworkBehaviour
             CurrentTrick.TurnsWonHistory.Add(CurrentTrick.GetCurrentTurnWinner());
             Debug.Log(CurrentTrick.GetTurnWinner(CurrentTrick.CurrentTrick - 1) + " Won Round");
             OnTrickWon?.Invoke(CurrentTrick.GetTurnWinner(CurrentTrick.CurrentTrick - 1), EventArgs.Empty);
+            if (CurrentTrick.GetTurnWinner(CurrentTrick.CurrentTrick - 1) == Player.DRAW)
+                draw++;
         }
 
         if (CurrentTrick.CurrentTrick > 1)
@@ -63,7 +67,21 @@ public class RoundManager : NetworkBehaviour
             if (CurrentTrick.HostTurnsWon > CurrentTrick.ClientTurnsWon) HostTrickWon = true;
             else if (CurrentTrick.HostTurnsWon < CurrentTrick.ClientTurnsWon) ClientTrickWon = true;
 
-            RoundWonHistory.Add((int)CurrentTrick.GetTurnWinner(CurrentTrick.CurrentTrick - 1));
+            if (draw == 1 && !HostTrickWon && !ClientTrickWon) //if there is one draw and host and client are both with 1 victory
+            {
+                if (CurrentTrick.WhoWonFirstTrick == Player.HOST) HostTrickWon = true;
+                else if (CurrentTrick.WhoWonFirstTrick == Player.CLIENT) ClientTrickWon = true;
+            }
+            else if (draw >= 2) //three draws
+            {
+                if (CurrentTrick.WhoStartedTrick == Player.HOST) HostTrickWon = true;
+                else if (CurrentTrick.WhoStartedTrick == Player.CLIENT) ClientTrickWon = true;
+            }
+
+            if (HostTrickWon)
+                RoundWonHistory.Add((int)Player.HOST);
+            else if (ClientTrickWon)
+                RoundWonHistory.Add((int)Player.CLIENT);
             YouWonClientRpc(HostTrickWon, ClientTrickWon);
         }
 

@@ -129,7 +129,7 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 3153275365992479969}
     m_Modifications:
-    - target: {fileID: 2825294862205622378, guid: 3ab3ab04bee207942bd566ff92efd07f, type: 3}
+    - target: {fileID: 4576019865235726286, guid: 3ab3ab04bee207942bd566ff92efd07f, type: 3}
       propertyPath: GlobalObjectIdHash
       value: 951099334
       objectReference: {fileID: 0}
@@ -173,17 +173,9 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 7202223858772493674, guid: 3ab3ab04bee207942bd566ff92efd07f, type: 3}
-      propertyPath: GlobalObjectIdHash
-      value: 951099334
-      objectReference: {fileID: 0}
     - target: {fileID: 7282387143442292224, guid: 3ab3ab04bee207942bd566ff92efd07f, type: 3}
       propertyPath: m_Name
       value: HandParent
-      objectReference: {fileID: 0}
-    - target: {fileID: 7676277469091087674, guid: 3ab3ab04bee207942bd566ff92efd07f, type: 3}
-      propertyPath: GlobalObjectIdHash
-      value: 951099334
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

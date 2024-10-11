@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using Unity.Netcode;
 using UnityEngine;
+using NaughtyAttributes;
 
 // C:\Users\Usuario\AppData\LocalLow\DefaultCompany\projetoTres > Player.log
 
@@ -121,16 +122,20 @@ public class PlayerController : NetworkBehaviour
         }
     }
 
+    public bool useHover;
     RaycastHit l_mousePosRaycastHit;
     private void GameInput_OnMoveMouse(object p_sender, System.EventArgs e)
     {
-        Ray l_ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-        if (Physics.Raycast(l_ray, out l_mousePosRaycastHit, 10f))
+        if (useHover)
         {
-            if (l_mousePosRaycastHit.transform != null)
+            Ray l_ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+            if (Physics.Raycast(l_ray, out l_mousePosRaycastHit, 10f))
             {
-                //Our custom method.
-                CheckHoverOnObject(l_mousePosRaycastHit.transform.gameObject);
+                if (l_mousePosRaycastHit.transform != null)
+                {
+                    //Our custom method.
+                    CheckHoverOnObject(l_mousePosRaycastHit.transform.gameObject);
+                }
             }
         }
     }
@@ -175,6 +180,7 @@ public class PlayerController : NetworkBehaviour
     void RemoveCardVisualFromMyHandServerRpc(NetworkObjectReference p_cardNetworkObjectReference)
     {
         p_cardNetworkObjectReference.TryGet(out NetworkObject l_cardNetworkObject);
+        Debug.Log(l_cardNetworkObject);
         l_cardNetworkObject.Despawn();
     }
 
@@ -186,6 +192,30 @@ public class PlayerController : NetworkBehaviour
         l_usableCard.OriginalSOIndex = p_cardIndexSO;
 
         m_myHand.Add(l_usableCard);
+    }
+
+    [ServerRpc]
+    public void RemoveAllCardsFromHandServerRpc()
+    {
+        RemoveAllCardsFromHandClientRpc();
+    }
+
+    [ClientRpc]
+    public void RemoveAllCardsFromHandClientRpc()
+    {
+        Debug.Log("remove all cards");
+
+        int l_myHandCount = m_myHand.Count - 1;
+
+        for (int i = l_myHandCount; i >= 0; i--)
+        {
+            Debug.Log(i);
+            m_myHand.RemoveAt(i);
+            NetworkObject l_removedNetworkObject = m_myHandNetworkObjects[i];
+            Debug.Log(l_removedNetworkObject);
+            m_myHandNetworkObjects.RemoveAt(i);
+            RemoveCardVisualFromMyHandServerRpc(l_removedNetworkObject);
+        }
     }
 
 }

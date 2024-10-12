@@ -74,10 +74,11 @@ MonoBehaviour:
   - {x: 10, y: 0, z: 0}
   - {x: 0, y: 0, z: 0}
   m_cardsSO: {fileID: 11400000, guid: f1e57d18c838241b2aaa61ff988810d9, type: 2}
-  m_handBehavior: {fileID: 0}
+  m_handBehavior: {fileID: 6279512811046593854}
   m_index: 0
   m_myHand: []
   m_myHandNetworkObjects: []
+  useHover: 0
 --- !u!114 &5396420236894118007
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -182,6 +183,17 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 3ab3ab04bee207942bd566ff92efd07f, type: 3}
+--- !u!114 &6279512811046593854 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 7069966637958241455, guid: 3ab3ab04bee207942bd566ff92efd07f, type: 3}
+  m_PrefabInstance: {fileID: 3835059806950881681}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bfa4eae0e0dce8e44bb1cc963f85a917, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!4 &8043249114061867251 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 6532333713274794338, guid: 3ab3ab04bee207942bd566ff92efd07f, type: 3}

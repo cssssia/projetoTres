@@ -11,6 +11,7 @@ public class CameraController : Singleton<CameraController>
     private int m_cameraIndex;
     [SerializeField] private CameraState m_currentState = CameraState.HAND;
     [SerializeField] private CameraAnimConfig[] m_animConfigs;
+    [SerializeField] private Transform m_cameraParent;
 
     private void Start()
     {
@@ -49,12 +50,12 @@ public class CameraController : Singleton<CameraController>
         m_currentState = p_state;
 
         l_initialPosition = m_camera.transform.localPosition;
-        m_cameraData = m_animConfigs[m_cameraIndex].GetAnimData(p_state);
+        m_cameraData = m_animConfigs[0].GetAnimData(p_state);
         l_finalPosition = m_cameraData.LocalPosition;
         l_initialRotation = m_camera.transform.localRotation.eulerAngles;
         l_finalRotation = m_cameraData.LocalRotation;
 
-        float l_animTime = m_animConfigs[m_cameraIndex].AnimTime;
+        float l_animTime = m_animConfigs[0].AnimTime;
         float l_time = 0f;
 
         while (l_time <= l_animTime)
@@ -87,10 +88,11 @@ public class CameraController : Singleton<CameraController>
 
     public void SetCamera(int p_index)
     {
+        m_cameraParent.rotation = Quaternion.Euler(0, p_index == 0 ? 0 : 180, 0);
         m_cameraIndex = p_index;
         m_camera.transform.SetLocalPositionAndRotation(
-            m_animConfigs[p_index].GetAnimData(CameraState.HAND).LocalPosition,
-               Quaternion.Euler(m_animConfigs[p_index].GetAnimData(CameraState.HAND).LocalRotation));
+            m_animConfigs[0].GetAnimData(CameraState.HAND).LocalPosition,
+               Quaternion.Euler(m_animConfigs[0].GetAnimData(CameraState.HAND).LocalRotation));
     }
 
 #if UNITY_EDITOR

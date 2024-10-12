@@ -78,7 +78,7 @@ MonoBehaviour:
   m_index: 0
   m_myHand: []
   m_myHandNetworkObjects: []
-  useHover: 0
+  useHover: 1
 --- !u!114 &5396420236894118007
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -172,6 +172,10 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6532333713274794338, guid: 3ab3ab04bee207942bd566ff92efd07f, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7069966637958241455, guid: 3ab3ab04bee207942bd566ff92efd07f, type: 3}
+      propertyPath: m_cardsBehavior.Array.size
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7282387143442292224, guid: 3ab3ab04bee207942bd566ff92efd07f, type: 3}

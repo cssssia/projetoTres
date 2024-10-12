@@ -73,7 +73,7 @@ public class CardBehavior : MonoBehaviour
 
     CardAnimConfig l_tempCardAnim;
     Coroutine m_currentAnim;
-    public void AnimateToPlace(CardTransform p_cardTransform, CardAnimType p_animType, Action p_action = null)
+    public void AnimateToPlace(CardTransform p_cardTransform, CardAnimType p_animType, Action<GameObject> p_action = null)
     {
         switch (p_animType)
         {
@@ -106,13 +106,13 @@ public class CardBehavior : MonoBehaviour
             AnimateToPlace(m_idleCardTranform, CardAnimType.IDLE);
     }
 
-    public void AnimToIdlePos(Action p_action = null)
+    public void AnimToIdlePos(Action<GameObject> p_action = null)
     {
         AnimateToPlace(m_idleCardTranform, CardAnimType.IDLE, p_action);
     }
 
     Vector3 l_tempPosition, l_initialPosition, l_tempRotation, l_initialRotation, l_tempScale, l_initialScale;
-    IEnumerator IAnimateToPlace(CardTransform p_cardTransform, CardAnimConfig p_animConfig, CardAnimType p_cardState, Action p_onFinishAnim = null)
+    IEnumerator IAnimateToPlace(CardTransform p_cardTransform, CardAnimConfig p_animConfig, CardAnimType p_cardState, Action<GameObject> p_onFinishAnim = null)
     {
         m_currentState = p_cardState;
         l_initialPosition = p_animConfig.UseLocalPosition ? transform.localPosition : transform.position;
@@ -147,7 +147,7 @@ public class CardBehavior : MonoBehaviour
             yield return null;
         }
 
-        p_onFinishAnim?.Invoke();
+        p_onFinishAnim?.Invoke(gameObject);
         m_currentAnim = null;
     }
 
@@ -176,7 +176,7 @@ public class CardBehavior : MonoBehaviour
         AnimateToPlace(m_idleCardTranform, CardAnimType.IDLE);
     }
 
-    public void PlayCard(CardTransform p_targetTransform, Action p_onFinishAnim)
+    public void PlayCard(CardTransform p_targetTransform, Action<GameObject> p_onFinishAnim)
     {
         Debug.Log("Plasyyyy");
         AnimateToPlace(p_targetTransform, CardAnimType.PLAY, p_onFinishAnim);

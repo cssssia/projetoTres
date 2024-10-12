@@ -55,6 +55,6 @@ public class TestCardAnimation : MonoBehaviour
 
     private void GameInput_OnClickUpMouse(object p_sender, System.EventArgs e)
     {
-        m_handBehavior.CheckClickUp();
+        m_handBehavior.CheckClickUp(null);
     }
 }

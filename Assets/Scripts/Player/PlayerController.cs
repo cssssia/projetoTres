@@ -47,6 +47,7 @@ public class PlayerController : NetworkBehaviour
         {
             GameInput.Instance.OnInteractAction += GameInput_OnInteractAction;
             GameInput.Instance.OnMoveMouse += GameInput_OnMoveMouse;
+            GameInput.Instance.OnStopInteractAction += GameInput_OnClickUpMouse;
         }
 
     }
@@ -76,6 +77,7 @@ public class PlayerController : NetworkBehaviour
 
     }
 
+
     private void CardsManager_OnAddCardToMyHand(object p_indexes, EventArgs e)
     {
         Indexes l_indexes = (Indexes)p_indexes;
@@ -91,6 +93,7 @@ public class PlayerController : NetworkBehaviour
 
             m_myHand.Add(l_usableCard);
             m_myHandNetworkObjects.Add(l_networkObject);
+            m_handBehavior.AddCardOnHand(l_networkObject, m_myHand.Count == 3);
         }
 
     }
@@ -104,23 +107,18 @@ public class PlayerController : NetworkBehaviour
         }
     }
 
+    Ray l_rayClickDown;
     private void GameInput_OnInteractAction(object p_sender, System.EventArgs e)
     {
-        if (GameManager.Instance.IsMyTurn(IsHost))
+        l_rayClickDown = Camera.main.ScreenPointToRay(Input.mousePosition);
+        if (Physics.Raycast(l_rayClickDown, out l_mousePosRaycastHit))
         {
-            RaycastHit l_raycastHit;
-
-            Ray l_ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-            if (Physics.Raycast(l_ray, out l_raycastHit, 10f))
-            {
-                if (l_raycastHit.transform != null)
-                {
-                    //Our custom method.
-                    CurrentClickedGameObject(l_raycastHit.transform.gameObject);
-                }
-            }
+            if (l_mousePosRaycastHit.transform != null)
+                CheckClickOnObjects(l_mousePosRaycastHit.transform.gameObject);
+            else CheckClickOnObjects(null);
         }
     }
+
 
     public bool useHover;
     RaycastHit l_mousePosRaycastHit;
@@ -129,17 +127,25 @@ public class PlayerController : NetworkBehaviour
         if (useHover)
         {
             Ray l_ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-            if (Physics.Raycast(l_ray, out l_mousePosRaycastHit, 10f))
+            if (Physics.Raycast(l_ray, out l_mousePosRaycastHit))
             {
-                if (l_mousePosRaycastHit.transform != null)
-                {
-                    //Our custom method.
-                    CheckHoverOnObject(l_mousePosRaycastHit.transform.gameObject);
-                }
+                CheckHoverOnObject(l_mousePosRaycastHit.transform.gameObject);
             }
+
+            m_handBehavior.UpdateMousePos(Input.mousePosition);
         }
     }
+    private void GameInput_OnClickUpMouse(object p_sender, System.EventArgs e)
+    {
+        m_handBehavior.CheckClickUp((go) => CurrentClickedGameObject(go));
+    }
 
+    private void CheckClickOnObjects(GameObject p_gameObject)
+    {
+        //atualmente, só está checando cartas, mas aqui podemos chegar itens tambem
+
+        bool l_find = m_handBehavior.CheckClickObject(p_gameObject);
+    }
     private void CheckHoverOnObject(GameObject p_gameObject)
     {
         bool l_find = m_handBehavior.CheckHoverObject(p_gameObject);
@@ -217,5 +223,7 @@ public class PlayerController : NetworkBehaviour
             RemoveCardVisualFromMyHandServerRpc(l_removedNetworkObject);
         }
     }
+
+
 
 }

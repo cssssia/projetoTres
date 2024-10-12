@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.Netcode;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
@@ -20,7 +21,7 @@ public class CardsOnHandBehavior : MonoBehaviour
 
     [Header("Target")]
     [SerializeField] private Transform[] m_targets;
-    private CardTransform[] m_targetsTransform;
+[SerializeField]    private CardTransform[] m_targetsTransform;
     [SerializeField] private int m_currentTargetIndex;
     PointerEventData m_pointerEventData;
     private void Start()
@@ -29,15 +30,20 @@ public class CardsOnHandBehavior : MonoBehaviour
         m_pointerEventData = new PointerEventData(EventSystem.current);
     }
 
-    public void SetCardsOnHand(List<CardBehavior> p_cardObjects, Action p_eventToCallForEachCard)
+    CardBehavior l_card;
+    public void AddCardOnHand(NetworkObject p_cardNetworkObject, bool p_lastCard)
     {
-        for (int i = 0; i < p_cardObjects.Count; i++)
-        {
-            p_cardObjects[i].transform.SetParent(transform, true);
-            m_cardsBehavior.Add(p_cardObjects[i]);
-        }
+        p_cardNetworkObject.TrySetParent(transform);
 
-        SetCardsIdlePosition(false);
+        p_cardNetworkObject.TryGetComponent(out l_card);
+
+        if (m_cardsBehavior == null) m_cardsBehavior = new();
+        m_cardsBehavior.Add(l_card);
+
+        if (p_lastCard)
+        {
+            SetCardsIdlePosition(false);
+        }
     }
 
     public void GetCardsAnim(int p_cardIndex, Action p_eventToCallForEachCard)
@@ -150,7 +156,7 @@ public class CardsOnHandBehavior : MonoBehaviour
     }
 
     List<RaycastResult> m_resultList;
-    public void CheckClickUp()
+    public void CheckClickUp(Action<GameObject> p_actionOnEndAnimation)
     {
         if (m_currentHoldingCard != null)
         {
@@ -166,7 +172,7 @@ public class CardsOnHandBehavior : MonoBehaviour
             {
                 if (m_resultList[i].gameObject == m_throwCardTargetImage.gameObject)
                 {
-                    PlayCard(m_currentHoldingCard);
+                    PlayCard(m_currentHoldingCard, p_actionOnEndAnimation);
                     l_playCard = true;
                     m_throwCardTargetImage.gameObject.SetActive(false);
                     break;
@@ -183,9 +189,9 @@ public class CardsOnHandBehavior : MonoBehaviour
         }
     }
 
-    private void PlayCard(CardBehavior cardBehavior)
+    private void PlayCard(CardBehavior cardBehavior, Action<GameObject> p_action)
     {
-        cardBehavior.PlayCard(GetNextCardTarget(), delegate { print("finished anim"); });
+        cardBehavior.PlayCard(GetNextCardTarget(), p_action);
         m_currentHoldingCard = null;
     }
 

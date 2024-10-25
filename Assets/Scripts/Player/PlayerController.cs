@@ -82,30 +82,47 @@ public class PlayerController : NetworkBehaviour
     {
         Indexes l_indexes = (Indexes)p_indexes;
 
-        UsableCard l_usableCard = new();
-
-        l_usableCard.Card = m_cardsSO.deck[l_indexes.cardIndexSO];
-        l_usableCard.OriginalSOIndex = l_indexes.cardIndexSO;
-
-        l_indexes.networkObjectReference.TryGet(out NetworkObject l_networkObject);
-
         if (IsOwner && l_indexes.cardIndexDeal % 2 == GameMultiplayerManager.Instance.GetPlayerDataIndexFromClientId(OwnerClientId))
         {
+
+            UsableCard l_usableCard = new();
+
+            l_usableCard.Card = m_cardsSO.deck[l_indexes.cardIndexSO];
+            l_usableCard.OriginalSOIndex = l_indexes.cardIndexSO;
+
+            l_indexes.networkObjectReference.TryGet(out NetworkObject l_networkObject);
+
             m_myHand.Add(l_usableCard);
             m_myHandNetworkObjects.Add(l_networkObject);
-            m_handBehavior.AddCardOnHand(l_networkObject, m_myHand.Count == 3);
+            Debug.Log(l_networkObject.name);
+
+            SetCardParentServerRpc(l_networkObject, m_myHand.Count == 3);
+
+
         }
 
-        SetCardParentClientRpc(l_networkObject);
 
     }
 
+    [ServerRpc]
+    public void SetCardParentServerRpc(NetworkObjectReference p_cardNetworkObjectReference, bool p_finishedHandCards)
+    {
+        Debug.Log("SetCardParentServerRpc");
+        p_cardNetworkObjectReference.TryGet(out NetworkObject l_cardNetworkObject);
+        SetCardParentClientRpc(p_cardNetworkObjectReference, p_finishedHandCards);
+    }
+
     [ClientRpc]
-    public void SetCardParentClientRpc(NetworkObjectReference p_cardNetworkObjectReference)
+    public void SetCardParentClientRpc(NetworkObjectReference p_cardNetworkObjectReference, bool p_finishedHandCards)
     {
         p_cardNetworkObjectReference.TryGet(out NetworkObject l_cardNetworkObject);
-     bool l_could =   l_cardNetworkObject.TrySetParent(transform, false);
-        if (!l_could) print("TO MENTINDO PRA CASSIA MEU NOME É " + gameObject.name + " " + OwnerClientId);
+        Debug.Log(l_cardNetworkObject.name + " " + transform.name);
+        if (IsOwner)
+        {
+            Debug.Log("hiiiiiii");
+            m_handBehavior.AddCardOnHand(l_cardNetworkObject, p_finishedHandCards);
+        }
+        l_cardNetworkObject.TrySetParent(transform, false);
     }
 
     private void NetworkManager_OnClientDisconnectCallback(ulong p_clientId)
@@ -152,7 +169,7 @@ public class PlayerController : NetworkBehaviour
 
     private void CheckClickOnObjects(GameObject p_gameObject)
     {
-        //atualmente, só está checando cartas, mas aqui podemos chegar itens tambem
+        //atualmente, sï¿½ estï¿½ checando cartas, mas aqui podemos chegar itens tambem
 
         bool l_find = m_handBehavior.CheckClickObject(p_gameObject);
     }

@@ -69,7 +69,8 @@ public class CardsManager : NetworkBehaviour
 
         for (int i = 0; i < 3 * GameMultiplayerManager.MAX_PLAYER_AMOUNT; i++)
         {
-            GameObject l_newCard = Instantiate(m_cardsSO.prefab, m_cardSpawnPositionList[i], Quaternion.Euler(m_cardSpawnRotationList[i]));
+            //GameObject l_newCard = Instantiate(m_cardsSO.prefab, m_cardSpawnPositionList[i], Quaternion.Euler(m_cardSpawnRotationList[i]));
+            GameObject l_newCard = Instantiate(m_cardsSO.prefab);
             NetworkObject l_cardNetworkObject = l_newCard.GetComponent<NetworkObject>();
             l_cardNetworkObject.Spawn(true);
             RenameCardServerRpc(l_cardNetworkObject, m_usableCardList[i].OriginalSOIndex, i);

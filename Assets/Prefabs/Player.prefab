@@ -72,7 +72,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_spawnPositionList:
   - {x: 1.15, y: 2.35, z: -10}
-  - {x: -0.31, y: 1.66, z: 10}
+  - {x: -1.15, y: 2.35, z: 10}
+  m_spawnRotationList: []
   m_cardsSO: {fileID: 11400000, guid: f1e57d18c838241b2aaa61ff988810d9, type: 2}
   m_handBehavior: {fileID: 4147424375562297416}
   m_index: 0

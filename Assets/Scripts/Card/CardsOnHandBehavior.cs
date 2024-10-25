@@ -21,7 +21,7 @@ public class CardsOnHandBehavior : MonoBehaviour
 
     [Header("Target")]
     [SerializeField] private Transform[] m_targets;
-[SerializeField]    private CardTransform[] m_targetsTransform;
+    [SerializeField]    private CardTransform[] m_targetsTransform;
     [SerializeField] private int m_currentTargetIndex;
     PointerEventData m_pointerEventData;
     private void Start()
@@ -39,7 +39,6 @@ public class CardsOnHandBehavior : MonoBehaviour
         if (m_cardsBehavior == null) m_cardsBehavior = new();
         m_cardsBehavior.Add(l_card);
 
-        Debug.Log("lastCard? " + p_lastCard);
         if (p_lastCard)
         {
             SetCardsIdlePosition(true);
@@ -219,4 +218,17 @@ public class CardsOnHandBehavior : MonoBehaviour
 
         return m_targetsTransform[m_currentTargetIndex];
     }
+
+
+    /*
+        ---- [TEST SECTION] ----
+        ---- [TEST SECTION] ----
+        ---- [TEST SECTION] ----
+    */
+
+    public void RemoveAllCardsFromHandBehavior()
+    {
+        m_cardsBehavior.Clear();
+    }
+
 }

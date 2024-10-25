@@ -36,6 +36,13 @@ public class CardsManager : NetworkBehaviour
         else Destroy(this);
     }
 
+    public override void OnNetworkSpawn()
+    {
+        base.OnNetworkSpawn();
+
+        SelectUsableCardsInSO();
+    }
+
     void Update()
     {
         if (!IsServer)
@@ -61,10 +68,8 @@ public class CardsManager : NetworkBehaviour
     [ServerRpc] //[ServerRpc(RequireOwnership = false)] clients can call the function, but it runs on the server
     public void SpawnNewPlayCardsServerRpc() //can only instantiate prefabs on server AND only destroy on server
     {
+        Debug.Log("[GAME] Spawn Cards");
 
-        Debug.Log("Spawn Cards");
-
-        SelectUsableCardsInSO();
         Shuffle(m_usableCardList);
 
         for (int i = 0; i < 3 * GameMultiplayerManager.MAX_PLAYER_AMOUNT; i++)

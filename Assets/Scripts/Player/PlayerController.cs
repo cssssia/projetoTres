@@ -12,13 +12,12 @@ public class PlayerController : NetworkBehaviour
 
     [SerializeField] private List<Vector3> m_spawnPositionList;
     [SerializeField] private List<Vector3> m_spawnRotationList;
+
     [SerializeField] private CardsScriptableObject m_cardsSO;
     [SerializeField] private CardsOnHandBehavior m_handBehavior;
-    [SerializeField] private int m_index;
 
     [SerializeField] private List<UsableCard> m_myHand;
     [SerializeField] private List<NetworkObject> m_myHandNetworkObjects;
-    public event EventHandler OnMatchEnd;
 
     void Start()
     {
@@ -70,7 +69,7 @@ public class PlayerController : NetworkBehaviour
         }
 
         if (IsOwner && GameMultiplayerManager.Instance.GetPlayerDataIndexFromClientId(OwnerClientId) == (int)p_playerWonId)
-            Debug.Log("You Won!");
+            Debug.Log("[GAME] You Won!");
 
         if (IsServer)
             RoundManager.Instance.RoundHasStarted.Value = false;
@@ -94,7 +93,8 @@ public class PlayerController : NetworkBehaviour
 
             m_myHand.Add(l_usableCard);
             m_myHandNetworkObjects.Add(l_networkObject);
-            Debug.Log(l_networkObject.name);
+
+            Debug.Log(m_myHand.Count);
 
             SetCardParentServerRpc(l_networkObject, m_myHand.Count == 3);
 
@@ -107,7 +107,6 @@ public class PlayerController : NetworkBehaviour
     [ServerRpc]
     public void SetCardParentServerRpc(NetworkObjectReference p_cardNetworkObjectReference, bool p_finishedHandCards)
     {
-        Debug.Log("SetCardParentServerRpc");
         p_cardNetworkObjectReference.TryGet(out NetworkObject l_cardNetworkObject);
         SetCardParentClientRpc(p_cardNetworkObjectReference, p_finishedHandCards);
     }
@@ -116,10 +115,8 @@ public class PlayerController : NetworkBehaviour
     public void SetCardParentClientRpc(NetworkObjectReference p_cardNetworkObjectReference, bool p_finishedHandCards)
     {
         p_cardNetworkObjectReference.TryGet(out NetworkObject l_cardNetworkObject);
-        Debug.Log(l_cardNetworkObject.name + " " + transform.name);
         if (IsOwner)
         {
-            Debug.Log("hiiiiiii");
             m_handBehavior.AddCardOnHand(l_cardNetworkObject, p_finishedHandCards);
         }
         l_cardNetworkObject.TrySetParent(transform, false);
@@ -129,7 +126,7 @@ public class PlayerController : NetworkBehaviour
     {
         if (p_clientId == OwnerClientId)
         {
-            Debug.Log("owner disconnected");
+            Debug.Log("[INFO] Owner Disconnected");
             // destroy network stuff
         }
     }
@@ -177,7 +174,7 @@ public class PlayerController : NetworkBehaviour
     {
         bool l_find = m_handBehavior.CheckHoverObject(p_gameObject);
 
-        if (l_find) Debug.Log("hover");
+        //if (l_find) Debug.Log("[INFO] Hover");
     }
 
     void Update()
@@ -213,7 +210,6 @@ public class PlayerController : NetworkBehaviour
     void RemoveCardVisualFromMyHandServerRpc(NetworkObjectReference p_cardNetworkObjectReference)
     {
         p_cardNetworkObjectReference.TryGet(out NetworkObject l_cardNetworkObject);
-        Debug.Log(l_cardNetworkObject);
         l_cardNetworkObject.Despawn();
     }
 
@@ -233,24 +229,42 @@ public class PlayerController : NetworkBehaviour
         RemoveAllCardsFromHandClientRpc();
     }
 
+
     [ClientRpc]
     public void RemoveAllCardsFromHandClientRpc()
     {
-        Debug.Log("remove all cards");
 
-        int l_myHandCount = m_myHand.Count - 1;
-
-        for (int i = l_myHandCount; i >= 0; i--)
+        if (IsOwner)
         {
-            Debug.Log(i);
-            m_myHand.RemoveAt(i);
-            NetworkObject l_removedNetworkObject = m_myHandNetworkObjects[i];
-            Debug.Log(l_removedNetworkObject);
-            m_myHandNetworkObjects.RemoveAt(i);
-            RemoveCardVisualFromMyHandServerRpc(l_removedNetworkObject);
+            int l_myHandCount = m_myHand.Count - 1;
+
+            for (int i = l_myHandCount; i >= 0; i--)
+            {
+                NetworkObject l_removedNetworkObject = m_myHandNetworkObjects[i];
+                m_myHand.RemoveAt(i);
+                m_myHandNetworkObjects.RemoveAt(i);
+                RemoveCardVisualFromMyHandServerRpc(l_removedNetworkObject);
+            }
+
+            m_handBehavior.RemoveAllCardsFromHandBehavior();
+            RemoveAllCardsServerRpc(1);
         }
+
     }
 
+    int aux = 0;
+    [ServerRpc (RequireOwnership = false)]
+    public void RemoveAllCardsServerRpc(int p_aux)
+    {
+        aux += p_aux;
 
+        if (aux == 2 && IsServer)
+        {
+            Debug.Log("aaa");
+            CardsManager.Instance.SpawnNewPlayCardsServerRpc();
+            aux = 0;
+        }
+
+    }
 
 }

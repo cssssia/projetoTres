@@ -178,7 +178,7 @@ public class CardBehavior : MonoBehaviour
 
     public void PlayCard(CardTransform p_targetTransform, Action<GameObject> p_onFinishAnim)
     {
-        Debug.Log("Plasyyyy");
+        Debug.Log("[GAME] Play Card");
         AnimateToPlace(p_targetTransform, CardAnimType.PLAY, p_onFinishAnim);
     }
 }

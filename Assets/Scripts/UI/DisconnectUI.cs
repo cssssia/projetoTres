@@ -37,12 +37,12 @@ public class DisconnectUI : MonoBehaviour
         if (NetworkManager.Singleton != null && p_clientId == NetworkManager.ServerClientId)
         {
             // server is shutting down
-            Debug.Log("server disconnected");
+            Debug.Log("[INFO] Server Disconnected");
             Show();
         }
         else
         {
-            Debug.Log("was not server disconnected");
+            Debug.Log("[INFO] Was Not Server Disconnected");
             Show();
         }
     }

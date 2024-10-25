@@ -39,7 +39,7 @@ public class RoundManager : NetworkBehaviour
     [ServerRpc (RequireOwnership = false)]
     public void StartMatchServerRpc(Player p_playerType)
     {
-        Debug.Log(p_playerType + " StartedMatch");
+        Debug.Log("[GAME] " + p_playerType + " StartedMatch");
         CurrentTrick = new Trick(p_playerType);
         RoundHasStarted.Value = true;
         WhoStartedRound.Value = (int)p_playerType;
@@ -56,7 +56,7 @@ public class RoundManager : NetworkBehaviour
         if (p_goToNextTrick)
         {
             CurrentTrick.TurnsWonHistory.Add(CurrentTrick.GetCurrentTurnWinner());
-            Debug.Log(CurrentTrick.GetTurnWinner(CurrentTrick.CurrentTrick - 1) + " Won Round");
+            Debug.Log("[GAME] " + CurrentTrick.GetTurnWinner(CurrentTrick.CurrentTrick - 1) + " Won Round");
             OnTrickWon?.Invoke(CurrentTrick.GetTurnWinner(CurrentTrick.CurrentTrick - 1), EventArgs.Empty);
             if (CurrentTrick.GetTurnWinner(CurrentTrick.CurrentTrick - 1) == Player.DRAW)
                 draw++;

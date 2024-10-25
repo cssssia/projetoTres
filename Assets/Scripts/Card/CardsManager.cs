@@ -95,7 +95,7 @@ public class CardsManager : NetworkBehaviour
         p_cardNetworkObjectReference.TryGet(out NetworkObject l_cardNetworkObject);
         l_cardNetworkObject.name = m_cardsSO.deck[p_cardIndexSO].name;
         l_cardNetworkObject.GetComponent<MeshRenderer>().material = m_cardsSO.deck[p_cardIndexSO].material;
-        l_cardNetworkObject.TrySetParent(m_deckParent, false); //false to ignore WorldPositionStays and to work as we are used to (also do it on the client to sync position)
+        //l_cardNetworkObject.TrySetParent(m_deckParent, false); //false to ignore WorldPositionStays and to work as we are used to (also do it on the client to sync position)
         OnAddCardToMyHand?.Invoke(l_indexes, EventArgs.Empty);
     }
 

@@ -11,6 +11,7 @@ public class PlayerController : NetworkBehaviour
     public static PlayerController LocalInstance { get; private set; }
 
     [SerializeField] private List<Vector3> m_spawnPositionList;
+    [SerializeField] private List<Vector3> m_spawnRotationList;
     [SerializeField] private CardsScriptableObject m_cardsSO;
     [SerializeField] private CardsOnHandBehavior m_handBehavior;
     [SerializeField] private int m_index;
@@ -27,12 +28,11 @@ public class PlayerController : NetworkBehaviour
 
     public override void OnNetworkSpawn() //research more the difference of this and awake
     {
-
         if (IsOwner)
             LocalInstance = this;
 
-        transform.position = m_spawnPositionList[GameMultiplayerManager.Instance.GetPlayerDataIndexFromClientId(OwnerClientId)]; //do this on camera later
-
+        transform.SetPositionAndRotation(m_spawnPositionList[GameMultiplayerManager.Instance.GetPlayerDataIndexFromClientId(OwnerClientId)], 
+                                        Quaternion.Euler(0, GameMultiplayerManager.Instance.GetPlayerDataIndexFromClientId(OwnerClientId) == 0 ? 0 : 180, 0));
         if (IsOwner)
             CameraController.Instance.SetCamera(GameMultiplayerManager.Instance.GetPlayerDataIndexFromClientId(OwnerClientId));
 
@@ -82,20 +82,30 @@ public class PlayerController : NetworkBehaviour
     {
         Indexes l_indexes = (Indexes)p_indexes;
 
+        UsableCard l_usableCard = new();
+
+        l_usableCard.Card = m_cardsSO.deck[l_indexes.cardIndexSO];
+        l_usableCard.OriginalSOIndex = l_indexes.cardIndexSO;
+
+        l_indexes.networkObjectReference.TryGet(out NetworkObject l_networkObject);
+
         if (IsOwner && l_indexes.cardIndexDeal % 2 == GameMultiplayerManager.Instance.GetPlayerDataIndexFromClientId(OwnerClientId))
         {
-            UsableCard l_usableCard = new();
-
-            l_usableCard.Card = m_cardsSO.deck[l_indexes.cardIndexSO];
-            l_usableCard.OriginalSOIndex = l_indexes.cardIndexSO;
-
-            l_indexes.networkObjectReference.TryGet(out NetworkObject l_networkObject);
-
             m_myHand.Add(l_usableCard);
             m_myHandNetworkObjects.Add(l_networkObject);
             m_handBehavior.AddCardOnHand(l_networkObject, m_myHand.Count == 3);
         }
 
+        SetCardParentClientRpc(l_networkObject);
+
+    }
+
+    [ClientRpc]
+    public void SetCardParentClientRpc(NetworkObjectReference p_cardNetworkObjectReference)
+    {
+        p_cardNetworkObjectReference.TryGet(out NetworkObject l_cardNetworkObject);
+     bool l_could =   l_cardNetworkObject.TrySetParent(transform, false);
+        if (!l_could) print("TO MENTINDO PRA CASSIA MEU NOME É " + gameObject.name + " " + OwnerClientId);
     }
 
     private void NetworkManager_OnClientDisconnectCallback(ulong p_clientId)

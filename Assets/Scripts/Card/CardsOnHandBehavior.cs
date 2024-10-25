@@ -28,21 +28,21 @@ public class CardsOnHandBehavior : MonoBehaviour
     {
         //SetCardsIdlePosition(true);
         m_pointerEventData = new PointerEventData(EventSystem.current);
+        m_throwCardTargetImage = FindAnyObjectByType<CardThrowTargetTag>().targetImage;
     }
 
     CardBehavior l_card;
     public void AddCardOnHand(NetworkObject p_cardNetworkObject, bool p_lastCard)
     {
-        p_cardNetworkObject.TrySetParent(transform);
-
         p_cardNetworkObject.TryGetComponent(out l_card);
 
         if (m_cardsBehavior == null) m_cardsBehavior = new();
         m_cardsBehavior.Add(l_card);
 
+        Debug.Log("lastCard? " + p_lastCard);
         if (p_lastCard)
         {
-            SetCardsIdlePosition(false);
+            SetCardsIdlePosition(true);
         }
     }
 
@@ -53,6 +53,12 @@ public class CardsOnHandBehavior : MonoBehaviour
             {
                 p_eventToCallForEachCard.Invoke();
             });
+    }
+
+    [NaughtyAttributes.Button]
+    public void DEBUG_SetCardsPOs()
+    {
+        SetCardsIdlePosition(true);
     }
 
     public void SetCardsIdlePosition(bool p_alsoSetPosition)

@@ -13,6 +13,7 @@ public class CardsOnHandBehavior : MonoBehaviour
     private CardBehavior m_currentHoverCard;
     private CardBehavior m_currentHoldingCard;
     [SerializeField] private Image m_throwCardTargetImage;
+    [SerializeField] private CardThrowTargetTag m_throwCardThrowTargetTag;
 
     [Header("Idle")]
     [SerializeField] private Vector3 m_idleScale;
@@ -20,15 +21,23 @@ public class CardsOnHandBehavior : MonoBehaviour
     [SerializeField] private int m_cardsQuantity = 3;
 
     [Header("Target")]
-    [SerializeField] private Transform[] m_targets;
-    [SerializeField]    private CardTransform[] m_targetsTransform;
+    [SerializeField] private List<Transform> m_targets;
+    [SerializeField] private CardTransform[] m_targetsTransform;
     [SerializeField] private int m_currentTargetIndex;
     PointerEventData m_pointerEventData;
     private void Start()
     {
         //SetCardsIdlePosition(true);
         m_pointerEventData = new PointerEventData(EventSystem.current);
-        m_throwCardTargetImage = FindAnyObjectByType<CardThrowTargetTag>().targetImage;
+    }
+
+    public void OnPlayerSpawned()
+    {
+        m_throwCardThrowTargetTag = FindObjectOfType<CardThrowTargetTag>();
+        print(m_throwCardThrowTargetTag == null);
+        m_throwCardTargetImage = m_throwCardThrowTargetTag.targetImage;
+        m_throwCardTargetImage.gameObject.SetActive(false);
+
     }
 
     CardBehavior l_card;
@@ -99,7 +108,7 @@ public class CardsOnHandBehavior : MonoBehaviour
         {
             for (int i = 0; i < m_cardsBehavior.Count; i++)
             {
-                if (m_cardsBehavior[i].gameObject == p_gameObject)
+                if (m_cardsBehavior[i] != null && m_cardsBehavior[i].gameObject == p_gameObject)
                 {
                     if (m_cardsBehavior[i] != m_currentHoverCard && m_cardsBehavior[i].CurrentState is not CardAnimType.PLAY)
                     {
@@ -194,17 +203,30 @@ public class CardsOnHandBehavior : MonoBehaviour
         }
     }
 
+    public void AddTarget(Transform p_target, int p_targetIndex)
+    {
+        if (m_targets == null || m_targets.Count < 3)
+        {
+            m_targets = new List<Transform>();
+            for (int i = 0; i < 3; i++) m_targets.Add(null);
+        }
+
+        m_targets[p_targetIndex] = p_target;
+    }
+
     private void PlayCard(CardBehavior cardBehavior, Action<GameObject> p_action)
     {
         cardBehavior.PlayCard(GetNextCardTarget(), p_action);
         m_currentHoldingCard = null;
+        m_cardsBehavior.Remove(cardBehavior);
+
     }
 
     private CardTransform GetNextCardTarget()
     {
-        if (m_targetsTransform.Length < m_targets.Length)
+        if (m_targetsTransform.Length < m_targets.Count)
         {
-            m_targetsTransform = new CardTransform[m_targets.Length];
+            m_targetsTransform = new CardTransform[m_targets.Count];
 
             for (int i = 0; i < m_targetsTransform.Length; i++)
             {

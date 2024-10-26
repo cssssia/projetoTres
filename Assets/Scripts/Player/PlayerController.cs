@@ -12,6 +12,7 @@ public class PlayerController : NetworkBehaviour
 
     [SerializeField] private List<Vector3> m_spawnPositionList;
     [SerializeField] private List<Vector3> m_spawnRotationList;
+    [SerializeField] private CardTarget[] m_cardTargetTransform;
 
     [SerializeField] private CardsScriptableObject m_cardsSO;
     [SerializeField] private CardsOnHandBehavior m_handBehavior;
@@ -28,7 +29,10 @@ public class PlayerController : NetworkBehaviour
     public override void OnNetworkSpawn() //research more the difference of this and awake
     {
         if (IsOwner)
+        {
             LocalInstance = this;
+            m_handBehavior.OnPlayerSpawned();
+        }
 
         transform.SetPositionAndRotation(m_spawnPositionList[GameMultiplayerManager.Instance.GetPlayerDataIndexFromClientId(OwnerClientId)], 
                                         Quaternion.Euler(0, GameMultiplayerManager.Instance.GetPlayerDataIndexFromClientId(OwnerClientId) == 0 ? 0 : 180, 0));
@@ -47,8 +51,14 @@ public class PlayerController : NetworkBehaviour
             GameInput.Instance.OnInteractAction += GameInput_OnInteractAction;
             GameInput.Instance.OnMoveMouse += GameInput_OnMoveMouse;
             GameInput.Instance.OnStopInteractAction += GameInput_OnClickUpMouse;
-        }
 
+            m_cardTargetTransform = FindObjectsByType<CardTarget>(FindObjectsSortMode.None);
+            for (int i = 0; i < m_cardTargetTransform.Length; i++)
+            {
+                if (m_cardTargetTransform[i].clientID == GameMultiplayerManager.Instance.GetPlayerDataIndexFromClientId(OwnerClientId)) 
+                    m_handBehavior.AddTarget(m_cardTargetTransform[i].transform, m_cardTargetTransform[i].targetIndex);
+            }
+        }
     }
 
     // private void TurnManager_OnCardPlayed(object p_playerType, EventArgs e)
@@ -185,6 +195,7 @@ public class PlayerController : NetworkBehaviour
 
     private void CurrentClickedGameObject(GameObject gameObject)
     {
+        Debug.Log("play card: " + gameObject.name);
         if (gameObject.CompareTag("Card"))
         {
             for (int i = 0; i < m_myHand.Count; i++)

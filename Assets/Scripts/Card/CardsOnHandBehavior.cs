@@ -170,7 +170,7 @@ public class CardsOnHandBehavior : MonoBehaviour
     }
 
     List<RaycastResult> m_resultList;
-    public void CheckClickUp(Action<GameObject> p_actionOnEndAnimation)
+    public void CheckClickUp(bool p_canPlay, Action<GameObject> p_actionOnEndAnimation)
     {
         if (m_currentHoldingCard != null)
         {
@@ -182,14 +182,18 @@ public class CardsOnHandBehavior : MonoBehaviour
             EventSystem.current.RaycastAll(m_pointerEventData, m_resultList);
 
             bool l_playCard = false;
-            for (int i = 0; i < m_resultList.Count; i++)
+
+            if (p_canPlay)
             {
-                if (m_resultList[i].gameObject == m_throwCardTargetImage.gameObject)
+                for (int i = 0; i < m_resultList.Count; i++)
                 {
-                    PlayCard(m_currentHoldingCard, p_actionOnEndAnimation);
-                    l_playCard = true;
-                    m_throwCardTargetImage.gameObject.SetActive(false);
-                    break;
+                    if (m_resultList[i].gameObject == m_throwCardTargetImage.gameObject)
+                    {
+                        PlayCard(m_currentHoldingCard, p_actionOnEndAnimation);
+                        l_playCard = true;
+                        m_throwCardTargetImage.gameObject.SetActive(false);
+                        break;
+                    }
                 }
             }
 
@@ -201,6 +205,11 @@ public class CardsOnHandBehavior : MonoBehaviour
 
             m_throwCardTargetImage.gameObject.SetActive(false);
         }
+    }
+
+    public void ResetTargetIndex()
+    {
+        m_currentTargetIndex = 0;
     }
 
     public void AddTarget(Transform p_target, int p_targetIndex)
@@ -219,7 +228,7 @@ public class CardsOnHandBehavior : MonoBehaviour
         cardBehavior.PlayCard(GetNextCardTarget(), p_action);
         m_currentHoldingCard = null;
         m_cardsBehavior.Remove(cardBehavior);
-
+        m_currentTargetIndex++;
     }
 
     private CardTransform GetNextCardTarget()

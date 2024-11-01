@@ -20,11 +20,30 @@ public class PlayerController : NetworkBehaviour
     [SerializeField] private List<UsableCard> m_myHand;
     [SerializeField] private List<NetworkObject> m_myHandNetworkObjects;
 
+    [Header("Game Info")]
+    [SerializeField] private GameManager.GameState currentGameState;
+
     void Start()
     {
         if (!IsOwner)
             return;
     }
+
+    private bool IsHostPlayer
+    {
+        get { return PlayerIndex == 0; }
+    }
+    private bool IsClientPlayer
+    {
+        get { return PlayerIndex == 1; }
+    }
+
+    private int PlayerIndex
+    {
+        get { return GameMultiplayerManager.Instance.GetPlayerDataIndexFromClientId(OwnerClientId); }
+    }
+
+    private bool canPlay;
 
     public override void OnNetworkSpawn() //research more the difference of this and awake
     {
@@ -34,10 +53,8 @@ public class PlayerController : NetworkBehaviour
             m_handBehavior.OnPlayerSpawned();
         }
 
-        transform.SetPositionAndRotation(m_spawnPositionList[GameMultiplayerManager.Instance.GetPlayerDataIndexFromClientId(OwnerClientId)], 
-                                        Quaternion.Euler(0, GameMultiplayerManager.Instance.GetPlayerDataIndexFromClientId(OwnerClientId) == 0 ? 0 : 180, 0));
-        if (IsOwner)
-            CameraController.Instance.SetCamera(GameMultiplayerManager.Instance.GetPlayerDataIndexFromClientId(OwnerClientId));
+        transform.SetPositionAndRotation(m_spawnPositionList[PlayerIndex], Quaternion.Euler(0, IsHostPlayer ? 0 : 180, 0));
+        if (IsOwner) CameraController.Instance.SetCamera(PlayerIndex);
 
         CardsManager.Instance.OnAddCardToMyHand += CardsManager_OnAddCardToMyHand;
         RoundManager.Instance.OnRoundWon += TurnManager_OnRoundWon;
@@ -55,10 +72,12 @@ public class PlayerController : NetworkBehaviour
             m_cardTargetTransform = FindObjectsByType<CardTarget>(FindObjectsSortMode.None);
             for (int i = 0; i < m_cardTargetTransform.Length; i++)
             {
-                if (m_cardTargetTransform[i].clientID == GameMultiplayerManager.Instance.GetPlayerDataIndexFromClientId(OwnerClientId)) 
+                if (m_cardTargetTransform[i].clientID == PlayerIndex)
                     m_handBehavior.AddTarget(m_cardTargetTransform[i].transform, m_cardTargetTransform[i].targetIndex);
             }
         }
+
+        GameManager.Instance.OnStateChanged += OnGameStateChanged;
     }
 
     // private void TurnManager_OnCardPlayed(object p_playerType, EventArgs e)
@@ -76,9 +95,10 @@ public class PlayerController : NetworkBehaviour
 
             m_myHand.Clear();
             m_myHandNetworkObjects.Clear();
+            m_handBehavior.ResetTargetIndex();
         }
 
-        if (IsOwner && GameMultiplayerManager.Instance.GetPlayerDataIndexFromClientId(OwnerClientId) == (int)p_playerWonId)
+        if (IsOwner && PlayerIndex == (int)p_playerWonId)
             Debug.Log("[GAME] You Won!");
 
         if (IsServer)
@@ -91,9 +111,8 @@ public class PlayerController : NetworkBehaviour
     {
         Indexes l_indexes = (Indexes)p_indexes;
 
-        if (IsOwner && l_indexes.cardIndexDeal % 2 == GameMultiplayerManager.Instance.GetPlayerDataIndexFromClientId(OwnerClientId))
+        if (IsOwner && l_indexes.cardIndexDeal % 2 == PlayerIndex)
         {
-
             UsableCard l_usableCard = new();
 
             l_usableCard.Card = m_cardsSO.deck[l_indexes.cardIndexSO];
@@ -107,11 +126,7 @@ public class PlayerController : NetworkBehaviour
             Debug.Log(m_myHand.Count);
 
             SetCardParentServerRpc(l_networkObject, m_myHand.Count == 3);
-
-
         }
-
-
     }
 
     [ServerRpc]
@@ -171,7 +186,7 @@ public class PlayerController : NetworkBehaviour
     }
     private void GameInput_OnClickUpMouse(object p_sender, System.EventArgs e)
     {
-        m_handBehavior.CheckClickUp((go) => CurrentClickedGameObject(go));
+        m_handBehavior.CheckClickUp(canPlay, (go) => ThrowCard(go));
     }
 
     private void CheckClickOnObjects(GameObject p_gameObject)
@@ -193,7 +208,7 @@ public class PlayerController : NetworkBehaviour
             return;
     }
 
-    private void CurrentClickedGameObject(GameObject gameObject)
+    private void ThrowCard(GameObject gameObject)
     {
         Debug.Log("play card: " + gameObject.name);
         if (gameObject.CompareTag("Card"))
@@ -206,12 +221,12 @@ public class PlayerController : NetworkBehaviour
                     if (!RoundManager.Instance.RoundHasStarted.Value)
                         RoundManager.Instance.StartMatchServerRpc(IsHost ? Player.HOST : Player.CLIENT);
 
-                    RoundManager.Instance.PlayCardServerRpc(m_myHand[i].OriginalSOIndex, IsHost ? Player.HOST : Player.CLIENT);
-
+                    int l_soIndex = m_myHand[i].OriginalSOIndex;
                     m_myHand.RemoveAt(i);
                     m_myHandNetworkObjects.RemoveAt(i);
                     RemoveCardVisualFromMyHandServerRpc(gameObject.GetComponent<NetworkObject>());
 
+                    RoundManager.Instance.PlayCardServerRpc(l_soIndex, IsHost ? Player.HOST : Player.CLIENT);
                 }
             }
         }
@@ -264,7 +279,7 @@ public class PlayerController : NetworkBehaviour
     }
 
     int aux = 0;
-    [ServerRpc (RequireOwnership = false)]
+    [ServerRpc(RequireOwnership = false)]
     public void RemoveAllCardsServerRpc(int p_aux)
     {
         aux += p_aux;
@@ -276,6 +291,18 @@ public class PlayerController : NetworkBehaviour
             aux = 0;
         }
 
+    }
+
+    public void OnGameStateChanged(object p_sender, EventArgs p_eventArgs)
+    {
+        if (!IsOwner) return;
+
+        currentGameState = ((GameManager)p_sender).gameState.Value;
+        canPlay = (currentGameState == GameManager.GameState.HostPlayerTurn && IsHostPlayer)
+                                            || (currentGameState == GameManager.GameState.ClientPlayerTurn && IsClientPlayer);
+
+        if (canPlay) Debug.Log("pode jogar");
+        else Debug.Log("não pode jogar");
     }
 
 }

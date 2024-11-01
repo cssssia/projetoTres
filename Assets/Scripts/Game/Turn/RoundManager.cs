@@ -50,7 +50,6 @@ public class RoundManager : NetworkBehaviour
     [ServerRpc (RequireOwnership = false)]
     public void PlayCardServerRpc(int p_index, Player p_playerType)
     {
-
         CurrentTrick.CardPlayed(CardsSO.deck[p_index], p_playerType, out bool p_goToNextTrick);
 
         if (p_goToNextTrick)

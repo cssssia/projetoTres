@@ -14,7 +14,7 @@ public class GameManager : NetworkBehaviour
 	public event EventHandler OnMultiplayerGameUnpaused;
 	public event EventHandler OnLocalPlayerReadyChanged;
 
-	private enum GameState
+	public enum GameState
 	{
 		WaitingToStart,
 		//CountdownToStart, //check if we will use something like this
@@ -28,6 +28,7 @@ public class GameManager : NetworkBehaviour
 	[SerializeField] private Transform m_playerPrefab;
 
 	[SerializeField] private NetworkVariable<GameState> m_gameState = new NetworkVariable<GameState>(GameState.WaitingToStart);
+	public NetworkVariable<GameState> gameState => m_gameState;
 	//private NetworkVariable<float> m_countdownToStartTimer = new NetworkVariable<float>(3f);
 	private bool m_isLocalPlayerReady;
 	private bool m_isLocalGamePaused = false;

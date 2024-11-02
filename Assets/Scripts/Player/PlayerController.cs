@@ -77,6 +77,9 @@ public class PlayerController : NetworkBehaviour
             }
         }
 
+        if (IsHostPlayer) name = "Player_0";
+        else if (IsClient) name = "Player_1";
+
         GameManager.Instance.OnStateChanged += OnGameStateChanged;
     }
 
@@ -88,6 +91,8 @@ public class PlayerController : NetworkBehaviour
 
     private void TurnManager_OnRoundWon(object p_playerWonId, EventArgs e)
     {
+        RemoveCardFromGameClientRpc();
+        
         if (IsOwner)
         {
             for (int i = 0; i < m_myHandNetworkObjects.Count; i++)
@@ -101,9 +106,9 @@ public class PlayerController : NetworkBehaviour
         if (IsOwner && PlayerIndex == (int)p_playerWonId)
             Debug.Log("[GAME] You Won!");
 
+
         if (IsServer)
             RoundManager.Instance.RoundHasStarted.Value = false;
-
     }
 
 
@@ -223,8 +228,9 @@ public class PlayerController : NetworkBehaviour
 
                     int l_soIndex = m_myHand[i].OriginalSOIndex;
                     m_myHand.RemoveAt(i);
+                    AnimCardThrowFromMyHandClientRpc(PlayerIndex, m_handBehavior.CurrentTargetIndex, m_myHandNetworkObjects[i]);
                     m_myHandNetworkObjects.RemoveAt(i);
-                    RemoveCardVisualFromMyHandServerRpc(gameObject.GetComponent<NetworkObject>());
+                    //RemoveCardVisualFromMyHandServerRpc(gameObject.GetComponent<NetworkObject>());
 
                     RoundManager.Instance.PlayCardServerRpc(l_soIndex, IsHost ? Player.HOST : Player.CLIENT);
                 }
@@ -232,11 +238,30 @@ public class PlayerController : NetworkBehaviour
         }
     }
 
+    [ClientRpc]
+    void RemoveCardFromGameClientRpc()
+    {
+        CardsManager.Instance.RemoveCardFromGame();
+    }
+
     [ServerRpc]
     void RemoveCardVisualFromMyHandServerRpc(NetworkObjectReference p_cardNetworkObjectReference)
     {
         p_cardNetworkObjectReference.TryGet(out NetworkObject l_cardNetworkObject);
         l_cardNetworkObject.Despawn();
+    }
+
+    [ClientRpc]
+    void AnimCardThrowFromMyHandClientRpc(int p_playerID, int p_targetIndex, NetworkObjectReference p_cardNetworkObjectReference)
+    {
+        if(p_playerID != PlayerIndex)
+        {
+            if (p_cardNetworkObjectReference.TryGet(out NetworkObject p_cardNetworkObject))
+            {
+                p_cardNetworkObject.GetComponent<CardBehavior>().AnimateToPlace(CardsManager.Instance.GetCardTargetByIndex(p_targetIndex), CardAnimType.PLAY);
+            }
+            
+        }
     }
 
     public void AddToMyHand(int p_cardIndexSO)

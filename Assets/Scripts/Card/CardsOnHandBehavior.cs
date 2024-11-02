@@ -24,6 +24,7 @@ public class CardsOnHandBehavior : MonoBehaviour
     [SerializeField] private List<Transform> m_targets;
     [SerializeField] private CardTransform[] m_targetsTransform;
     [SerializeField] private int m_currentTargetIndex;
+    public int CurrentTargetIndex { get { return m_currentTargetIndex; } }
     PointerEventData m_pointerEventData;
     private void Start()
     {
@@ -239,9 +240,11 @@ public class CardsOnHandBehavior : MonoBehaviour
 
             for (int i = 0; i < m_targetsTransform.Length; i++)
             {
+                Vector3 l_tempRot = m_targets[i].eulerAngles;
+                //l_tempRot.x -= 180f;
                 m_targetsTransform[i] = new
                     (m_targets[i].position,
-                    m_targets[i].rotation.eulerAngles,
+                    (l_tempRot),
                     Vector3.one * 0.1f);
             }
 

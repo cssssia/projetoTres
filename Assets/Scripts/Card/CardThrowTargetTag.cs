@@ -6,4 +6,5 @@ using UnityEngine.UI;
 public class CardThrowTargetTag : MonoBehaviour
 {
     public Image targetImage;
+    public int globalIndex;
 }

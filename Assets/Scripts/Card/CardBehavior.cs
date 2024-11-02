@@ -117,6 +117,7 @@ public class CardBehavior : MonoBehaviour
         m_currentState = p_cardState;
         l_initialPosition = p_animConfig.UseLocalPosition ? transform.localPosition : transform.position;
         l_initialRotation = p_animConfig.UseLocalPosition ? transform.localRotation.eulerAngles : transform.rotation.eulerAngles;
+        transform.rotation = Quaternion.Euler(l_initialRotation);
         l_initialScale = transform.localScale;
 
         for (float time = 0f; time < p_animConfig.AnimTime; time += Time.deltaTime)

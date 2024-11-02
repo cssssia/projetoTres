@@ -9,13 +9,18 @@ public class CardsManager : NetworkBehaviour
     public static CardsManager Instance;
 
     [SerializeField] private GameObject m_deckParent;
-    [SerializeField] private List<Vector3> m_cardSpawnPositionList;
-    [SerializeField] private List<Vector3> m_cardSpawnRotationList;
     [SerializeField] private CardsScriptableObject m_cardsSO;
 
     [SerializeField] private List<UsableCard> m_usableCardList;
+    [SerializeField] private List<Card> m_cardsOnGameList;
+    [SerializeField] private List<Card> m_cardsOnGameList2;
+    [SerializeField] private List<Card> m_cardsOnGameList3;
     [SerializeField] private HashSet<ulong>.Enumerator m_observers;
 	public event EventHandler OnAddCardToMyHand;
+
+    [Header("Targets")]
+    [SerializeField] private List<CardThrowTargetTag> m_targetsTranform;
+    [SerializeField] private List<CardTransform> m_targets;
 
     //NetworkVariable<float> testVariable = new NetworkVariable<float>(0f); //leave other parameters blank to everyone read, but only server write
     //network variables fire an event whenever the variable changes (as it is a network variable, listen to it on spawn, not start not awake)
@@ -41,6 +46,15 @@ public class CardsManager : NetworkBehaviour
         base.OnNetworkSpawn();
 
         SelectUsableCardsInSO();
+        SetCardTargets();
+    }
+
+    void SetCardTargets()
+    {
+        for (int i = 0; i < m_targetsTranform.Count; i++)
+        {
+            m_targets.Add(new(m_targetsTranform[i].transform.position, transform.rotation.eulerAngles, transform.localScale));
+        }
     }
 
     void Update()
@@ -70,11 +84,13 @@ public class CardsManager : NetworkBehaviour
     {
         Debug.Log("[GAME] Spawn Cards");
 
+        m_cardsOnGameList = new List<Card>();
+        m_cardsOnGameList2.Clear();
+
         Shuffle(m_usableCardList);
 
         for (int i = 0; i < 3 * GameMultiplayerManager.MAX_PLAYER_AMOUNT; i++)
         {
-            //GameObject l_newCard = Instantiate(m_cardsSO.prefab, m_cardSpawnPositionList[i], Quaternion.Euler(m_cardSpawnRotationList[i]));
             GameObject l_newCard = Instantiate(m_cardsSO.prefab);
             NetworkObject l_cardNetworkObject = l_newCard.GetComponent<NetworkObject>();
             l_cardNetworkObject.Spawn(true);
@@ -101,8 +117,22 @@ public class CardsManager : NetworkBehaviour
         p_cardNetworkObjectReference.TryGet(out NetworkObject l_cardNetworkObject);
         l_cardNetworkObject.name = m_cardsSO.deck[p_cardIndexSO].name;
         l_cardNetworkObject.GetComponent<MeshRenderer>().material = m_cardsSO.deck[p_cardIndexSO].material;
+
+        Card l_card = l_cardNetworkObject.GetComponent<Card>();
+
+        l_card.cardName = l_cardNetworkObject.name;
+        l_card.cardValue = m_cardsSO.deck[p_cardIndexSO].value;
+        l_card.cardIndexSO = p_cardIndexSO;
+        l_card.cardPlayer = p_cardIndex % 2;
+        m_cardsOnGameList.Add(l_card);
+        m_cardsOnGameList2.Add(l_card);
         //l_cardNetworkObject.TrySetParent(m_deckParent, false); //false to ignore WorldPositionStays and to work as we are used to (also do it on the client to sync position)
         OnAddCardToMyHand?.Invoke(l_indexes, EventArgs.Empty);
+    }
+
+    public void RemoveCardFromGame()
+    {
+        m_cardsOnGameList.Clear();
     }
 
     void Shuffle<T>(List<T> list)
@@ -117,4 +147,13 @@ public class CardsManager : NetworkBehaviour
         }
     }
 
+    public CardTransform GetCardTargetByIndex(int p_index)
+    {
+        for (int i = 0; i < m_targets.Count; i++)
+        {
+            if (m_targetsTranform[i].globalIndex == p_index) return m_targets[i];
+        }
+
+        return null;
+    }
 }

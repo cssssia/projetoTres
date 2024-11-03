@@ -1,10 +1,12 @@
-using Unity.VisualScripting;
+using Unity.Netcode;
 using UnityEngine;
 
-public class Card : MonoBehaviour
+[System.Serializable]
+public class Card
 {
-    public string cardName;
-    public int cardValue;
-    public int cardIndexSO;
-    public int cardPlayer;
+    [SerializeField] public string cardName;
+    [SerializeField] public int cardValue;
+    [SerializeField] public int cardIndexSO;
+    [SerializeField] public int cardPlayer;
+    [SerializeField] public NetworkObject cardNetworkObject;
 }

@@ -48,7 +48,7 @@ public class RoundManager : NetworkBehaviour
     int draw;
 
     [ServerRpc (RequireOwnership = false)]
-    public void PlayCardServerRpc(int p_index, Player p_playerType)
+    public void PlayCardServerRpc(int p_index, Player p_playerType, int p_targetIndex, NetworkObjectReference p_cardNetworkObjectReference)
     {
         CurrentTrick.CardPlayed(CardsSO.deck[p_index], p_playerType, out bool p_goToNextTrick);
 
@@ -84,7 +84,12 @@ public class RoundManager : NetworkBehaviour
             YouWonClientRpc(HostTrickWon, ClientTrickWon);
         }
 
-        OnCardPlayed?.Invoke(p_playerType, EventArgs.Empty);
+        CustomSender l_customSender = new();
+        l_customSender.playerType = (int)p_playerType;
+        l_customSender.targetIndex = p_targetIndex;
+        l_customSender.cardNO = p_cardNetworkObjectReference;
+
+        OnCardPlayed?.Invoke(l_customSender, EventArgs.Empty);
 
     }
 
@@ -98,4 +103,11 @@ public class RoundManager : NetworkBehaviour
         ClientTrickWon = false;
     }
 
+}
+
+public class CustomSender
+{
+    public int playerType;
+    public int targetIndex;
+    public NetworkObjectReference cardNO;
 }

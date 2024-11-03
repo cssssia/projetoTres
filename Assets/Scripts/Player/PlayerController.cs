@@ -11,14 +11,10 @@ public class PlayerController : NetworkBehaviour
     public static PlayerController LocalInstance { get; private set; }
 
     [SerializeField] private List<Vector3> m_spawnPositionList;
-    [SerializeField] private List<Vector3> m_spawnRotationList;
     [SerializeField] private CardTarget[] m_cardTargetTransform;
-
-    [SerializeField] private CardsScriptableObject m_cardsSO;
     [SerializeField] private CardsOnHandBehavior m_handBehavior;
+    [SerializeField] private List<Card> m_myHand;
 
-    [SerializeField] private List<UsableCard> m_myHand;
-    [SerializeField] private List<NetworkObject> m_myHandNetworkObjects;
 
     [Header("Game Info")]
     [SerializeField] private GameManager.GameState currentGameState;
@@ -61,7 +57,10 @@ public class PlayerController : NetworkBehaviour
         //TurnManager.Instance.OnCardPlayed += TurnManager_OnCardPlayed;
 
         if (IsServer)
+        {
             NetworkManager.Singleton.OnClientDisconnectCallback += NetworkManager_OnClientDisconnectCallback;
+	        RoundManager.Instance.OnCardPlayed += TurnManager_OnCardPlayed;
+        }
 
         if (IsOwner)
         {
@@ -83,23 +82,32 @@ public class PlayerController : NetworkBehaviour
         GameManager.Instance.OnStateChanged += OnGameStateChanged;
     }
 
-    // private void TurnManager_OnCardPlayed(object p_playerType, EventArgs e)
-    // {
-    //     if (IsOwner && GameMultiplayerManager.Instance.GetPlayerDataIndexFromClientId(OwnerClientId) == (int)p_playerType)
+    private void TurnManager_OnCardPlayed(object p_customSender, EventArgs e)
+    {
+        CustomSender l_customSender = (CustomSender)p_customSender;
+        AnimCardClientRpc(l_customSender.playerType, l_customSender.targetIndex, l_customSender.cardNO);
+    }
 
-    // }
+    [ClientRpc]
+    void AnimCardClientRpc(int p_playerType, int p_targetIndex, NetworkObjectReference p_cardNetworkObjectReference)
+    {
+        if (IsOwner && p_playerType - 1 != PlayerIndex)
+        {
+            if (p_cardNetworkObjectReference.TryGet(out NetworkObject p_cardNetworkObject))
+            {
+                Debug.Log("target index " + p_targetIndex);
+                p_cardNetworkObject.GetComponent<CardBehavior>().AnimateToPlace(CardsManager.Instance.GetCardTargetByIndex(p_targetIndex, (int)p_playerType), CardAnimType.PLAY);
+            }
+        }
+    }
 
     private void TurnManager_OnRoundWon(object p_playerWonId, EventArgs e)
     {
         RemoveCardFromGameClientRpc();
-        
+
         if (IsOwner)
         {
-            for (int i = 0; i < m_myHandNetworkObjects.Count; i++)
-                RemoveCardVisualFromMyHandServerRpc(m_myHandNetworkObjects[i]);
-
             m_myHand.Clear();
-            m_myHandNetworkObjects.Clear();
             m_handBehavior.ResetTargetIndex();
         }
 
@@ -112,25 +120,14 @@ public class PlayerController : NetworkBehaviour
     }
 
 
-    private void CardsManager_OnAddCardToMyHand(object p_indexes, EventArgs e)
+    private void CardsManager_OnAddCardToMyHand(object p_card, EventArgs e)
     {
-        Indexes l_indexes = (Indexes)p_indexes;
+        Card l_card = (Card)p_card;
 
-        if (IsOwner && l_indexes.cardIndexDeal % 2 == PlayerIndex)
+        if (IsOwner && l_card.cardPlayer == PlayerIndex)
         {
-            UsableCard l_usableCard = new();
-
-            l_usableCard.Card = m_cardsSO.deck[l_indexes.cardIndexSO];
-            l_usableCard.OriginalSOIndex = l_indexes.cardIndexSO;
-
-            l_indexes.networkObjectReference.TryGet(out NetworkObject l_networkObject);
-
-            m_myHand.Add(l_usableCard);
-            m_myHandNetworkObjects.Add(l_networkObject);
-
-            Debug.Log(m_myHand.Count);
-
-            SetCardParentServerRpc(l_networkObject, m_myHand.Count == 3);
+            m_myHand.Add(l_card);
+            SetCardParentServerRpc(l_card.cardNetworkObject, m_myHand.Count == 3);
         }
     }
 
@@ -215,24 +212,22 @@ public class PlayerController : NetworkBehaviour
 
     private void ThrowCard(GameObject gameObject)
     {
-        Debug.Log("play card: " + gameObject.name);
+        Debug.Log("[GAME] Play Card " + gameObject.name);
         if (gameObject.CompareTag("Card"))
         {
             for (int i = 0; i < m_myHand.Count; i++)
             {
-                if (m_myHand[i].Card.name == gameObject.name)
+                if (m_myHand[i].cardName == gameObject.name)
                 {
 
                     if (!RoundManager.Instance.RoundHasStarted.Value)
                         RoundManager.Instance.StartMatchServerRpc(IsHost ? Player.HOST : Player.CLIENT);
 
-                    int l_soIndex = m_myHand[i].OriginalSOIndex;
-                    m_myHand.RemoveAt(i);
-                    AnimCardThrowFromMyHandClientRpc(PlayerIndex, m_handBehavior.CurrentTargetIndex, m_myHandNetworkObjects[i]);
-                    m_myHandNetworkObjects.RemoveAt(i);
-                    //RemoveCardVisualFromMyHandServerRpc(gameObject.GetComponent<NetworkObject>());
+                    int l_soIndex = m_myHand[i].cardIndexSO;
+                    NetworkObject l_cardNetworkObject = m_myHand[i].cardNetworkObject;
 
-                    RoundManager.Instance.PlayCardServerRpc(l_soIndex, IsHost ? Player.HOST : Player.CLIENT);
+                    m_myHand.RemoveAt(i);
+                    RoundManager.Instance.PlayCardServerRpc(l_soIndex, IsHost ? Player.HOST : Player.CLIENT, m_handBehavior.CurrentTargetIndex, l_cardNetworkObject);
                 }
             }
         }
@@ -249,29 +244,6 @@ public class PlayerController : NetworkBehaviour
     {
         p_cardNetworkObjectReference.TryGet(out NetworkObject l_cardNetworkObject);
         l_cardNetworkObject.Despawn();
-    }
-
-    [ClientRpc]
-    void AnimCardThrowFromMyHandClientRpc(int p_playerID, int p_targetIndex, NetworkObjectReference p_cardNetworkObjectReference)
-    {
-        if(p_playerID != PlayerIndex)
-        {
-            if (p_cardNetworkObjectReference.TryGet(out NetworkObject p_cardNetworkObject))
-            {
-                p_cardNetworkObject.GetComponent<CardBehavior>().AnimateToPlace(CardsManager.Instance.GetCardTargetByIndex(p_targetIndex), CardAnimType.PLAY);
-            }
-            
-        }
-    }
-
-    public void AddToMyHand(int p_cardIndexSO)
-    {
-        UsableCard l_usableCard = new();
-
-        l_usableCard.Card = m_cardsSO.deck[p_cardIndexSO];
-        l_usableCard.OriginalSOIndex = p_cardIndexSO;
-
-        m_myHand.Add(l_usableCard);
     }
 
     [ServerRpc]
@@ -291,10 +263,8 @@ public class PlayerController : NetworkBehaviour
 
             for (int i = l_myHandCount; i >= 0; i--)
             {
-                NetworkObject l_removedNetworkObject = m_myHandNetworkObjects[i];
+                RemoveCardVisualFromMyHandServerRpc(m_myHand[i].cardNetworkObject);
                 m_myHand.RemoveAt(i);
-                m_myHandNetworkObjects.RemoveAt(i);
-                RemoveCardVisualFromMyHandServerRpc(l_removedNetworkObject);
             }
 
             m_handBehavior.RemoveAllCardsFromHandBehavior();
@@ -311,7 +281,6 @@ public class PlayerController : NetworkBehaviour
 
         if (aux == 2 && IsServer)
         {
-            Debug.Log("aaa");
             CardsManager.Instance.SpawnNewPlayCardsServerRpc();
             aux = 0;
         }

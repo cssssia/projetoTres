@@ -45,7 +45,6 @@ GameObject:
   - component: {fileID: 1959226694205372338}
   - component: {fileID: 3163843079088258309}
   - component: {fileID: 937226932739149441}
-  - component: {fileID: -3596923186060714353}
   m_Layer: 0
   m_Name: Card
   m_TagString: Card
@@ -185,19 +184,3 @@ MonoBehaviour:
   AlwaysReplicateAsRoot: 0
   DontDestroyWithOwner: 0
   AutoObjectParentSync: 1
---- !u!114 &-3596923186060714353
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6693041384023231204}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 318e9345e3f043c4ca8c54432e446f66, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  cardName: 
-  cardValue: 0
-  cardIndexSO: 0
-  cardPlayer: 0

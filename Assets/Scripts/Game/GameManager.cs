@@ -77,15 +77,18 @@ public class GameManager : NetworkBehaviour
 			m_gameState.Value = GameState.DealingCards;
     }
 
-    private void TurnManager_OnCardPlayed(object p_playerType, EventArgs e)
+    private void TurnManager_OnCardPlayed(object p_customSender, EventArgs e)
     {
+		CustomSender l_customSender = (CustomSender)p_customSender;
+		Player l_playerType = (Player)l_customSender.playerType;
+
 		if (RoundManager.Instance.RoundHasStarted.Value)
 		{
 			if (m_wonTrickPlayer == Player.DEFAULT) //logic turn flow
 			{
-				if ((Player)p_playerType == Player.HOST)
-					m_gameState.Value = GameState.ClientPlayerTurn; 
-				else if ((Player)p_playerType == Player.CLIENT)
+				if (l_playerType == Player.HOST)
+					m_gameState.Value = GameState.ClientPlayerTurn;
+				else if (l_playerType == Player.CLIENT)
 					m_gameState.Value = GameState.HostPlayerTurn;
 			}
 			else //trick win
@@ -188,6 +191,7 @@ public class GameManager : NetworkBehaviour
 				break;
 			case GameState.DealingCards:
 				CardsManager.Instance.SpawnNewPlayCardsServerRpc();
+				m_wonTrickPlayer = Player.DEFAULT;
 
 				if (RoundManager.Instance.RoundWonHistory.Count == 0) //logic round flow
 					m_gameState.Value = GameState.HostPlayerTurn;

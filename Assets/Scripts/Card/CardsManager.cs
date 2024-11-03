@@ -134,7 +134,6 @@ public class CardsManager : NetworkBehaviour
     void RemoveCardVisualGameServerRpc(NetworkObjectReference p_cardNetworkObjectReference)
     {
         p_cardNetworkObjectReference.TryGet(out NetworkObject l_cardNetworkObject);
-        Debug.Log("despawn card: " + l_cardNetworkObject.name);
         l_cardNetworkObject.Despawn();
     }
 

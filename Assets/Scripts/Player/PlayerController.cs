@@ -54,7 +54,6 @@ public class PlayerController : NetworkBehaviour
 
         CardsManager.Instance.OnAddCardToMyHand += CardsManager_OnAddCardToMyHand;
         RoundManager.Instance.OnRoundWon += TurnManager_OnRoundWon;
-        //TurnManager.Instance.OnCardPlayed += TurnManager_OnCardPlayed;
 
         if (IsServer)
         {
@@ -64,8 +63,8 @@ public class PlayerController : NetworkBehaviour
 
         if (IsOwner)
         {
-            GameInput.Instance.OnInteractAction += GameInput_OnInteractAction;
             GameInput.Instance.OnMoveMouse += GameInput_OnMoveMouse;
+            GameInput.Instance.OnInteractAction += GameInput_OnInteractAction;
             GameInput.Instance.OnStopInteractAction += GameInput_OnClickUpMouse;
 
             m_cardTargetTransform = FindObjectsByType<CardTarget>(FindObjectsSortMode.None);
@@ -82,43 +81,14 @@ public class PlayerController : NetworkBehaviour
         GameManager.Instance.OnStateChanged += OnGameStateChanged;
     }
 
-    private void TurnManager_OnCardPlayed(object p_customSender, EventArgs e)
+    private void NetworkManager_OnClientDisconnectCallback(ulong p_clientId)
     {
-        CustomSender l_customSender = (CustomSender)p_customSender;
-        AnimCardClientRpc(l_customSender.playerType, l_customSender.targetIndex, l_customSender.cardNO);
-    }
-
-    [ClientRpc]
-    void AnimCardClientRpc(int p_playerType, int p_targetIndex, NetworkObjectReference p_cardNetworkObjectReference)
-    {
-        if (IsOwner && p_playerType - 1 != PlayerIndex)
+        if (p_clientId == OwnerClientId)
         {
-            if (p_cardNetworkObjectReference.TryGet(out NetworkObject p_cardNetworkObject))
-            {
-                Debug.Log("target index " + p_targetIndex);
-                p_cardNetworkObject.GetComponent<CardBehavior>().AnimateToPlace(CardsManager.Instance.GetCardTargetByIndex(p_targetIndex, (int)p_playerType), CardAnimType.PLAY);
-            }
+            Debug.Log("[INFO] Owner Disconnected");
+            // destroy network stuff
         }
     }
-
-    private void TurnManager_OnRoundWon(object p_playerWonId, EventArgs e)
-    {
-        RemoveCardFromGameClientRpc();
-
-        if (IsOwner)
-        {
-            m_myHand.Clear();
-            m_handBehavior.ResetTargetIndex();
-        }
-
-        if (IsOwner && PlayerIndex == (int)p_playerWonId)
-            Debug.Log("[GAME] You Won!");
-
-
-        if (IsServer)
-            RoundManager.Instance.RoundHasStarted.Value = false;
-    }
-
 
     private void CardsManager_OnAddCardToMyHand(object p_card, EventArgs e)
     {
@@ -131,31 +101,27 @@ public class PlayerController : NetworkBehaviour
         }
     }
 
-    [ServerRpc]
-    public void SetCardParentServerRpc(NetworkObjectReference p_cardNetworkObjectReference, bool p_finishedHandCards)
+    private void TurnManager_OnCardPlayed(object p_customSender, EventArgs e)
     {
-        p_cardNetworkObjectReference.TryGet(out NetworkObject l_cardNetworkObject);
-        SetCardParentClientRpc(p_cardNetworkObjectReference, p_finishedHandCards);
+        CustomSender l_customSender = (CustomSender)p_customSender;
+        AnimCardClientRpc(l_customSender.playerType, l_customSender.targetIndex, l_customSender.cardNO);
     }
 
-    [ClientRpc]
-    public void SetCardParentClientRpc(NetworkObjectReference p_cardNetworkObjectReference, bool p_finishedHandCards)
+    private void TurnManager_OnRoundWon(object p_playerWonId, EventArgs e)
     {
-        p_cardNetworkObjectReference.TryGet(out NetworkObject l_cardNetworkObject);
         if (IsOwner)
         {
-            m_handBehavior.AddCardOnHand(l_cardNetworkObject, p_finishedHandCards);
+            m_myHand.Clear();
+            m_handBehavior.ResetCardsOnHandBehavior();
         }
-        l_cardNetworkObject.TrySetParent(transform, false);
-    }
 
-    private void NetworkManager_OnClientDisconnectCallback(ulong p_clientId)
-    {
-        if (p_clientId == OwnerClientId)
-        {
-            Debug.Log("[INFO] Owner Disconnected");
-            // destroy network stuff
-        }
+        RemoveCardFromGameClientRpc();
+
+        if (IsOwner && PlayerIndex == (int)p_playerWonId)
+            Debug.Log("[GAME] You Won!");
+
+        if (IsServer)
+            RoundManager.Instance.RoundHasStarted.Value = false;
     }
 
     Ray l_rayClickDown;
@@ -169,7 +135,6 @@ public class PlayerController : NetworkBehaviour
             else CheckClickOnObjects(null);
         }
     }
-
 
     public bool useHover;
     RaycastHit l_mousePosRaycastHit;
@@ -186,6 +151,7 @@ public class PlayerController : NetworkBehaviour
             m_handBehavior.UpdateMousePos(Input.mousePosition);
         }
     }
+
     private void GameInput_OnClickUpMouse(object p_sender, System.EventArgs e)
     {
         m_handBehavior.CheckClickUp(canPlay, (go) => ThrowCard(go));
@@ -193,21 +159,12 @@ public class PlayerController : NetworkBehaviour
 
     private void CheckClickOnObjects(GameObject p_gameObject)
     {
-        //atualmente, s� est� checando cartas, mas aqui podemos chegar itens tambem
-
-        bool l_find = m_handBehavior.CheckClickObject(p_gameObject);
+        m_handBehavior.CheckClickObject(p_gameObject);
     }
+
     private void CheckHoverOnObject(GameObject p_gameObject)
     {
-        bool l_find = m_handBehavior.CheckHoverObject(p_gameObject);
-
-        //if (l_find) Debug.Log("[INFO] Hover");
-    }
-
-    void Update()
-    {
-        if (!IsOwner)
-            return;
+        m_handBehavior.CheckHoverObject(p_gameObject);
     }
 
     private void ThrowCard(GameObject gameObject)
@@ -233,60 +190,6 @@ public class PlayerController : NetworkBehaviour
         }
     }
 
-    [ClientRpc]
-    void RemoveCardFromGameClientRpc()
-    {
-        CardsManager.Instance.RemoveCardFromGame();
-    }
-
-    [ServerRpc]
-    void RemoveCardVisualFromMyHandServerRpc(NetworkObjectReference p_cardNetworkObjectReference)
-    {
-        p_cardNetworkObjectReference.TryGet(out NetworkObject l_cardNetworkObject);
-        l_cardNetworkObject.Despawn();
-    }
-
-    [ServerRpc]
-    public void RemoveAllCardsFromHandServerRpc()
-    {
-        RemoveAllCardsFromHandClientRpc();
-    }
-
-
-    [ClientRpc]
-    public void RemoveAllCardsFromHandClientRpc()
-    {
-
-        if (IsOwner)
-        {
-            int l_myHandCount = m_myHand.Count - 1;
-
-            for (int i = l_myHandCount; i >= 0; i--)
-            {
-                RemoveCardVisualFromMyHandServerRpc(m_myHand[i].cardNetworkObject);
-                m_myHand.RemoveAt(i);
-            }
-
-            m_handBehavior.RemoveAllCardsFromHandBehavior();
-            RemoveAllCardsServerRpc(1);
-        }
-
-    }
-
-    int aux = 0;
-    [ServerRpc(RequireOwnership = false)]
-    public void RemoveAllCardsServerRpc(int p_aux)
-    {
-        aux += p_aux;
-
-        if (aux == 2 && IsServer)
-        {
-            CardsManager.Instance.SpawnNewPlayCardsServerRpc();
-            aux = 0;
-        }
-
-    }
-
     public void OnGameStateChanged(object p_sender, EventArgs p_eventArgs)
     {
         if (!IsOwner) return;
@@ -297,6 +200,42 @@ public class PlayerController : NetworkBehaviour
 
         if (canPlay) Debug.Log("pode jogar");
         else Debug.Log("não pode jogar");
+    }
+
+    [ServerRpc]
+    public void SetCardParentServerRpc(NetworkObjectReference p_cardNetworkObjectReference, bool p_finishedHandCards)
+    {
+        p_cardNetworkObjectReference.TryGet(out NetworkObject l_cardNetworkObject);
+        SetCardParentClientRpc(p_cardNetworkObjectReference, p_finishedHandCards);
+    }
+
+    [ClientRpc]
+    public void SetCardParentClientRpc(NetworkObjectReference p_cardNetworkObjectReference, bool p_finishedHandCards)
+    {
+        p_cardNetworkObjectReference.TryGet(out NetworkObject l_cardNetworkObject);
+        if (IsOwner)
+        {
+            m_handBehavior.AddCardOnHand(l_cardNetworkObject, p_finishedHandCards);
+        }
+        l_cardNetworkObject.TrySetParent(transform, false);
+    }
+
+    [ClientRpc]
+    void RemoveCardFromGameClientRpc()
+    {
+        CardsManager.Instance.RemoveCardFromGame();
+    }
+
+    [ClientRpc]
+    void AnimCardClientRpc(int p_playerType, int p_targetIndex, NetworkObjectReference p_cardNetworkObjectReference)
+    {
+        if (IsOwner && p_playerType - 1 != PlayerIndex)
+        {
+            if (p_cardNetworkObjectReference.TryGet(out NetworkObject p_cardNetworkObject))
+            {
+                p_cardNetworkObject.GetComponent<CardBehavior>().AnimateToPlace(CardsManager.Instance.GetCardTargetByIndex(p_targetIndex, (int)p_playerType), CardAnimType.PLAY);
+            }
+        }
     }
 
 }

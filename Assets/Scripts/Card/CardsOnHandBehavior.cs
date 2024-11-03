@@ -208,8 +208,10 @@ public class CardsOnHandBehavior : MonoBehaviour
         }
     }
 
-    public void ResetTargetIndex()
+    public void ResetCardsOnHandBehavior()
     {
+        m_currentHoldingCard = null;
+        m_cardsBehavior.Clear();
         m_currentTargetIndex = 0;
     }
 
@@ -251,18 +253,6 @@ public class CardsOnHandBehavior : MonoBehaviour
         }
 
         return m_targetsTransform[m_currentTargetIndex];
-    }
-
-
-    /*
-        ---- [TEST SECTION] ----
-        ---- [TEST SECTION] ----
-        ---- [TEST SECTION] ----
-    */
-
-    public void RemoveAllCardsFromHandBehavior()
-    {
-        m_cardsBehavior.Clear();
     }
 
 }

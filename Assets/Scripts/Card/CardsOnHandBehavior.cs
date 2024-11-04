@@ -171,7 +171,7 @@ public class CardsOnHandBehavior : MonoBehaviour
     }
 
     List<RaycastResult> m_resultList;
-    public void CheckClickUp(bool p_canPlay, Action<GameObject> p_actionOnEndAnimation)
+    public void CheckClickUp(bool p_canPlay, Action<GameObject> p_actionOnStartAnimation, Action<GameObject> p_actionOnEndAnimation)
     {
         if (m_currentHoldingCard != null)
         {
@@ -190,6 +190,7 @@ public class CardsOnHandBehavior : MonoBehaviour
                 {
                     if (m_resultList[i].gameObject == m_throwCardTargetImage.gameObject)
                     {
+                        p_actionOnStartAnimation.Invoke(m_currentHoldingCard.gameObject);
                         PlayCard(m_currentHoldingCard, p_actionOnEndAnimation);
                         l_playCard = true;
                         m_throwCardTargetImage.gameObject.SetActive(false);

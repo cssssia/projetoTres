@@ -10,9 +10,12 @@ public class RoundManager : NetworkBehaviour
 
     public CardsScriptableObject CardsSO;
 
-    [SerializeField] public NetworkList<int> RoundWonHistory;
-    [SerializeField] public NetworkVariable<bool> RoundHasStarted;
-    [SerializeField] public NetworkVariable<int> WhoStartedRound;
+    public List<Player> MatchWonHistory;
+    public NetworkVariable<bool> RoundHasStarted;
+    public NetworkVariable<int> WhoStartedRound;
+
+    public NetworkVariable<int> VictoriesHost;
+    public NetworkVariable<int> VictoriesClient;
 
     public Trick CurrentTrick;
     [HideInInspector] public bool HostTrickWon;
@@ -21,6 +24,8 @@ public class RoundManager : NetworkBehaviour
 	public event EventHandler OnRoundWon;
     public event EventHandler OnTrickWon;
 	public event EventHandler OnCardPlayed;
+	public event EventHandler OnStartPlayingCard;
+
 
     void Awake()
     {
@@ -32,14 +37,14 @@ public class RoundManager : NetworkBehaviour
 
         RoundHasStarted.Value = false;
         WhoStartedRound.Value = 0;
-
-        RoundWonHistory = new NetworkList<int>();
+        VictoriesHost.Value = 0;
+        VictoriesClient.Value = 0;
     }
 
     [ServerRpc (RequireOwnership = false)]
-    public void StartMatchServerRpc(Player p_playerType)
+    public void StartRoundServerRpc(Player p_playerType)
     {
-        Debug.Log("[GAME] " + p_playerType + " StartedMatch");
+        Debug.Log("[GAME] " + p_playerType + " StartedRound");
         CurrentTrick = new Trick(p_playerType);
         RoundHasStarted.Value = true;
         WhoStartedRound.Value = (int)p_playerType;
@@ -78,9 +83,16 @@ public class RoundManager : NetworkBehaviour
             }
 
             if (HostTrickWon)
-                RoundWonHistory.Add((int)Player.HOST);
+            {
+                MatchWonHistory.Add(Player.HOST);
+                VictoriesHost.Value += CurrentTrick.TrickBetMultiplier;
+            }
             else if (ClientTrickWon)
-                RoundWonHistory.Add((int)Player.CLIENT);
+            {
+                MatchWonHistory.Add(Player.CLIENT);
+                VictoriesClient.Value += CurrentTrick.TrickBetMultiplier;
+            }
+
             YouWonClientRpc(HostTrickWon, ClientTrickWon);
         }
 
@@ -103,11 +115,23 @@ public class RoundManager : NetworkBehaviour
         ClientTrickWon = false;
     }
 
+    [ServerRpc (RequireOwnership = false)]
+    public void OnStartAnimServerRpc(int p_playerIndex, int p_targetIndex, NetworkObjectReference p_cardNetworkObjectReference)
+    {
+        OnStartPlayingCard?.Invoke(new CustomSender(p_playerIndex, p_targetIndex, p_cardNetworkObjectReference), EventArgs.Empty);
+    }
 }
 
-public class CustomSender
+public struct CustomSender
 {
     public int playerType;
     public int targetIndex;
     public NetworkObjectReference cardNO;
+
+    public CustomSender(int p_playerType, int p_targetIndex, NetworkObjectReference p_cardNO)
+    {
+        playerType = p_playerType;
+        targetIndex = p_targetIndex;
+        cardNO = p_cardNO;
+    }
 }

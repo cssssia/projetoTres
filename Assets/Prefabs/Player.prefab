@@ -15,6 +15,7 @@ GameObject:
   - component: {fileID: -7920416680504153039}
   - component: {fileID: 7551673745850367150}
   - component: {fileID: 4147424375562297416}
+  - component: {fileID: 4519521580299488874}
   m_Layer: 0
   m_Name: Player
   m_TagString: Untagged
@@ -73,12 +74,11 @@ MonoBehaviour:
   m_spawnPositionList:
   - {x: 1.15, y: 2.35, z: -10}
   - {x: -1.15, y: 2.35, z: 10}
-  m_spawnRotationList: []
-  m_cardsSO: {fileID: 11400000, guid: f1e57d18c838241b2aaa61ff988810d9, type: 2}
+  m_cardTargetTransform: []
   m_handBehavior: {fileID: 4147424375562297416}
-  m_index: 0
   m_myHand: []
-  m_myHandNetworkObjects: []
+  m_betBehavior: {fileID: 4519521580299488874}
+  currentGameState: 0
   useHover: 1
 --- !u!114 &5396420236894118007
 MonoBehaviour:
@@ -138,6 +138,7 @@ MonoBehaviour:
   m_invertZPlayer: 1
   m_cardsBehavior: []
   m_throwCardTargetImage: {fileID: 0}
+  m_throwCardThrowTargetTag: {fileID: 0}
   m_idleScale: {x: 0.1, y: 0.1, z: 0.1}
   m_handWidth: 1
   m_cardsQuantity: 3
@@ -147,3 +148,16 @@ MonoBehaviour:
   - {fileID: 0}
   m_targetsTransform: []
   m_currentTargetIndex: 0
+--- !u!114 &4519521580299488874
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5153222700290797854}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d5bcc1dd2d4455f4bb2815927c0a3357, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_myBet: {fileID: 0}

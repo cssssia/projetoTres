@@ -15,6 +15,8 @@ public class PlayerController : NetworkBehaviour
     [SerializeField] private CardsOnHandBehavior m_handBehavior;
     [SerializeField] private List<Card> m_myHand;
 
+    [SerializeField] private BetBehavior m_betBehavior;
+
 
     [Header("Game Info")]
     [SerializeField] private GameManager.GameState currentGameState;
@@ -47,6 +49,7 @@ public class PlayerController : NetworkBehaviour
         {
             LocalInstance = this;
             m_handBehavior.OnPlayerSpawned();
+            m_betBehavior.OnPlayerSpawned(PlayerIndex);
         }
 
         transform.SetPositionAndRotation(m_spawnPositionList[PlayerIndex], Quaternion.Euler(0, IsHostPlayer ? 0 : 180, 0));
@@ -58,7 +61,7 @@ public class PlayerController : NetworkBehaviour
         if (IsServer)
         {
             NetworkManager.Singleton.OnClientDisconnectCallback += NetworkManager_OnClientDisconnectCallback;
-	        RoundManager.Instance.OnCardPlayed += TurnManager_OnCardPlayed;
+	        RoundManager.Instance.OnStartPlayingCard += TurnManager_OnStartPlayingCard;
         }
 
         if (IsOwner)
@@ -101,7 +104,7 @@ public class PlayerController : NetworkBehaviour
         }
     }
 
-    private void TurnManager_OnCardPlayed(object p_customSender, EventArgs e)
+    private void TurnManager_OnStartPlayingCard(object p_customSender, EventArgs e)
     {
         CustomSender l_customSender = (CustomSender)p_customSender;
         AnimCardClientRpc(l_customSender.playerType, l_customSender.targetIndex, l_customSender.cardNO);
@@ -154,17 +157,24 @@ public class PlayerController : NetworkBehaviour
 
     private void GameInput_OnClickUpMouse(object p_sender, System.EventArgs e)
     {
-        m_handBehavior.CheckClickUp(canPlay, (go) => ThrowCard(go));
+        m_handBehavior.CheckClickUp(canPlay, (go) => StartAnim(go), (go) => ThrowCard(go));
+        m_betBehavior.CheckClickUp(canPlay, (go) => IncreaseBet(go));
     }
 
     private void CheckClickOnObjects(GameObject p_gameObject)
     {
         m_handBehavior.CheckClickObject(p_gameObject);
+        m_betBehavior.CheckClickObject(p_gameObject);
     }
 
     private void CheckHoverOnObject(GameObject p_gameObject)
     {
         m_handBehavior.CheckHoverObject(p_gameObject);
+    }
+
+    private void StartAnim(GameObject gameObject)
+    {
+        RoundManager.Instance.OnStartAnimServerRpc(PlayerIndex, m_handBehavior.CurrentTargetIndex, gameObject.GetComponent<NetworkObject>());
     }
 
     private void ThrowCard(GameObject gameObject)
@@ -178,7 +188,7 @@ public class PlayerController : NetworkBehaviour
                 {
 
                     if (!RoundManager.Instance.RoundHasStarted.Value)
-                        RoundManager.Instance.StartMatchServerRpc(IsHost ? Player.HOST : Player.CLIENT);
+                        RoundManager.Instance.StartRoundServerRpc(IsHost ? Player.HOST : Player.CLIENT);
 
                     int l_soIndex = m_myHand[i].cardIndexSO;
                     NetworkObject l_cardNetworkObject = m_myHand[i].cardNetworkObject;
@@ -187,6 +197,14 @@ public class PlayerController : NetworkBehaviour
                     RoundManager.Instance.PlayCardServerRpc(l_soIndex, IsHost ? Player.HOST : Player.CLIENT, m_handBehavior.CurrentTargetIndex, l_cardNetworkObject);
                 }
             }
+        }
+    }
+
+    private void IncreaseBet(GameObject gameObject)
+    {
+        if (gameObject.CompareTag("Bet"))
+        {
+            Debug.Log("Bet " + gameObject.name);
         }
     }
 
@@ -229,11 +247,11 @@ public class PlayerController : NetworkBehaviour
     [ClientRpc]
     void AnimCardClientRpc(int p_playerType, int p_targetIndex, NetworkObjectReference p_cardNetworkObjectReference)
     {
-        if (IsOwner && p_playerType - 1 != PlayerIndex)
+        if (IsOwner && p_playerType != PlayerIndex)
         {
             if (p_cardNetworkObjectReference.TryGet(out NetworkObject p_cardNetworkObject))
             {
-                p_cardNetworkObject.GetComponent<CardBehavior>().AnimateToPlace(CardsManager.Instance.GetCardTargetByIndex(p_targetIndex, (int)p_playerType), CardAnimType.PLAY);
+                p_cardNetworkObject.GetComponent<CardBehavior>().AnimateToPlace(CardsManager.Instance.GetCardTargetByIndex(p_targetIndex, p_playerType), CardAnimType.PLAY);
             }
         }
     }

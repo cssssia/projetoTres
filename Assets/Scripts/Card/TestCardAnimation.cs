@@ -29,7 +29,7 @@ public class TestCardAnimation : MonoBehaviour
 
     private void CheckHoverOnObject(GameObject p_gameObject)
     {
-        //atualmente, só está checando cartas, mas aqui podemos chegar itens tambem
+        //atualmente, sï¿½ estï¿½ checando cartas, mas aqui podemos chegar itens tambem
 
         bool l_find = m_handBehavior.CheckHoverObject(p_gameObject);
     }
@@ -48,13 +48,13 @@ public class TestCardAnimation : MonoBehaviour
 
     private void CheckClickOnObjects(GameObject p_gameObject)
     {
-        //atualmente, só está checando cartas, mas aqui podemos chegar itens tambem
+        //atualmente, sï¿½ estï¿½ checando cartas, mas aqui podemos chegar itens tambem
 
         bool l_find = m_handBehavior.CheckClickObject(p_gameObject);
     }
 
     private void GameInput_OnClickUpMouse(object p_sender, System.EventArgs e)
     {
-        m_handBehavior.CheckClickUp(true, null);
+        m_handBehavior.CheckClickUp(true, null, null);
     }
 }

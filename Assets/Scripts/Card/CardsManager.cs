@@ -170,7 +170,7 @@ public class CardsManager : NetworkBehaviour
     {
         for (int i = 0; i < m_targets.Count; i++)
         {
-            if (m_targetsTranform[i].targetIndex == p_index && m_targetsTranform[i].clientID == p_playerType - 1) return m_targets[i];
+            if (m_targetsTranform[i].targetIndex == p_index && m_targetsTranform[i].clientID == p_playerType) return m_targets[i];
         }
 
         return null;

@@ -193,7 +193,7 @@ public class GameManager : NetworkBehaviour
 				CardsManager.Instance.SpawnNewPlayCardsServerRpc();
 				m_wonTrickPlayer = Player.DEFAULT;
 
-				if (RoundManager.Instance.RoundWonHistory.Count == 0) //logic round flow
+				if (RoundManager.Instance.MatchWonHistory.Count == 0) //logic round flow
 					m_gameState.Value = GameState.HostPlayerTurn;
 				else if ((Player)RoundManager.Instance.WhoStartedRound.Value == Player.HOST)
 					m_gameState.Value = GameState.ClientPlayerTurn;

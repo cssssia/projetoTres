@@ -45,6 +45,9 @@ public class CardBehavior : MonoBehaviour
     [SerializeField] private Vector3 m_dragOffset;
     [SerializeField] private Transform m_dragAnchor;
 
+    [Header("Card Data")]
+    public Card card;
+
     private Vector3 m_startPosition;
     private Vector3 m_startRotation;
 
@@ -52,6 +55,11 @@ public class CardBehavior : MonoBehaviour
     {
         m_startPosition = transform.position;
         m_startRotation = transform.rotation.eulerAngles;
+    }
+
+    public void SetCardData(Card p_card)
+    {
+        card = p_card;
     }
 
     public void SetIdleTransform(CardTransform p_cardTransform, bool l_invertZ)

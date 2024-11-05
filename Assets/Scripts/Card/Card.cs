@@ -9,4 +9,5 @@ public class Card
     [SerializeField] public int cardIndexSO;
     [SerializeField] public int cardPlayer;
     [SerializeField] public NetworkObject cardNetworkObject;
+    public bool playedCard;
 }

@@ -27,6 +27,18 @@ public class PlayerController : NetworkBehaviour
             return;
     }
 
+    [Header("Debug buttons")]
+    public bool debug_useScissors;
+    private void Update()
+    {
+        if (!IsOwner) return;
+        if (debug_useScissors)
+        {
+            UseScissors();
+            debug_useScissors = false;
+        }
+    }
+
     private bool IsHostPlayer
     {
         get { return PlayerIndex == 0; }
@@ -61,7 +73,7 @@ public class PlayerController : NetworkBehaviour
         if (IsServer)
         {
             NetworkManager.Singleton.OnClientDisconnectCallback += NetworkManager_OnClientDisconnectCallback;
-	        RoundManager.Instance.OnStartPlayingCard += TurnManager_OnStartPlayingCard;
+            RoundManager.Instance.OnStartPlayingCard += TurnManager_OnStartPlayingCard;
         }
 
         if (IsOwner)
@@ -100,7 +112,7 @@ public class PlayerController : NetworkBehaviour
         if (IsOwner && l_card.cardPlayer == PlayerIndex)
         {
             m_myHand.Add(l_card);
-            SetCardParentServerRpc(l_card.cardNetworkObject, m_myHand.Count == 3);
+            SetCardParentServerRpc(l_card.cardNetworkObject, m_myHand.Count - 1, m_myHand.Count == 3);
         }
     }
 
@@ -157,7 +169,7 @@ public class PlayerController : NetworkBehaviour
 
     private void GameInput_OnClickUpMouse(object p_sender, System.EventArgs e)
     {
-        m_handBehavior.CheckClickUp(canPlay, (go) => StartAnim(go), (go) => ThrowCard(go));
+        m_handBehavior.CheckClickUp(canPlay, (go, id) => StartAnim(go, id), (go) => ThrowCard(go));
         m_betBehavior.CheckClickUp(canPlay, (go) => IncreaseBet(go));
     }
 
@@ -172,9 +184,10 @@ public class PlayerController : NetworkBehaviour
         m_handBehavior.CheckHoverObject(p_gameObject);
     }
 
-    private void StartAnim(GameObject gameObject)
+    private void StartAnim(GameObject gameObject, int p_cardIndex)
     {
-        RoundManager.Instance.OnStartAnimServerRpc(PlayerIndex, m_handBehavior.CurrentTargetIndex, gameObject.GetComponent<NetworkObject>());
+
+        RoundManager.Instance.OnStartAnimServerRpc(PlayerIndex, m_handBehavior.CurrentTargetIndex, p_cardIndex, gameObject.GetComponent<NetworkObject>());
     }
 
     private void ThrowCard(GameObject gameObject)
@@ -221,19 +234,19 @@ public class PlayerController : NetworkBehaviour
     }
 
     [ServerRpc]
-    public void SetCardParentServerRpc(NetworkObjectReference p_cardNetworkObjectReference, bool p_finishedHandCards)
+    public void SetCardParentServerRpc(NetworkObjectReference p_cardNetworkObjectReference, int p_indexOnHand, bool p_finishedHandCards)
     {
         p_cardNetworkObjectReference.TryGet(out NetworkObject l_cardNetworkObject);
-        SetCardParentClientRpc(p_cardNetworkObjectReference, p_finishedHandCards);
+        SetCardParentClientRpc(p_cardNetworkObjectReference, p_indexOnHand, p_finishedHandCards);
     }
 
     [ClientRpc]
-    public void SetCardParentClientRpc(NetworkObjectReference p_cardNetworkObjectReference, bool p_finishedHandCards)
+    public void SetCardParentClientRpc(NetworkObjectReference p_cardNetworkObjectReference, int p_indexOnHand, bool p_finishedHandCards)
     {
         p_cardNetworkObjectReference.TryGet(out NetworkObject l_cardNetworkObject);
         if (IsOwner)
         {
-            m_handBehavior.AddCardOnHand(l_cardNetworkObject, p_finishedHandCards);
+            m_handBehavior.AddCardOnHand(l_cardNetworkObject, m_myHand[p_indexOnHand], p_finishedHandCards);
         }
         l_cardNetworkObject.TrySetParent(transform, false);
     }
@@ -255,5 +268,14 @@ public class PlayerController : NetworkBehaviour
             }
         }
     }
+
+    #region Items
+    [Button]
+    public void UseScissors()
+    {
+        CardsManager.Instance.UseScissorServerRpc(PlayerIndex);
+
+    }
+    #endregion
 
 }

@@ -42,12 +42,13 @@ public class CardsOnHandBehavior : MonoBehaviour
     }
 
     CardBehavior l_card;
-    public void AddCardOnHand(NetworkObject p_cardNetworkObject, bool p_lastCard)
+    public void AddCardOnHand(NetworkObject p_cardNetworkObject, Card p_card, bool p_lastCard)
     {
         p_cardNetworkObject.TryGetComponent(out l_card);
 
         if (m_cardsBehavior == null) m_cardsBehavior = new();
         m_cardsBehavior.Add(l_card);
+        m_cardsBehavior[^1].SetCardData(p_card);
 
         if (p_lastCard)
         {
@@ -171,7 +172,7 @@ public class CardsOnHandBehavior : MonoBehaviour
     }
 
     List<RaycastResult> m_resultList;
-    public void CheckClickUp(bool p_canPlay, Action<GameObject> p_actionOnStartAnimation, Action<GameObject> p_actionOnEndAnimation)
+    public void CheckClickUp(bool p_canPlay, Action<GameObject, int> p_actionOnStartAnimation, Action<GameObject> p_actionOnEndAnimation)
     {
         if (m_currentHoldingCard != null)
         {
@@ -190,7 +191,7 @@ public class CardsOnHandBehavior : MonoBehaviour
                 {
                     if (m_resultList[i].gameObject == m_throwCardTargetImage.gameObject)
                     {
-                        p_actionOnStartAnimation.Invoke(m_currentHoldingCard.gameObject);
+                        p_actionOnStartAnimation.Invoke(m_currentHoldingCard.gameObject, m_currentHoldingCard.card.cardIndexSO);
                         PlayCard(m_currentHoldingCard, p_actionOnEndAnimation);
                         l_playCard = true;
                         m_throwCardTargetImage.gameObject.SetActive(false);

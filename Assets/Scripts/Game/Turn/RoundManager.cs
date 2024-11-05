@@ -100,6 +100,7 @@ public class RoundManager : NetworkBehaviour
         l_customSender.playerType = (int)p_playerType;
         l_customSender.targetIndex = p_targetIndex;
         l_customSender.cardNO = p_cardNetworkObjectReference;
+        l_customSender.cardIndex = p_index;
 
         OnCardPlayed?.Invoke(l_customSender, EventArgs.Empty);
 
@@ -116,9 +117,9 @@ public class RoundManager : NetworkBehaviour
     }
 
     [ServerRpc (RequireOwnership = false)]
-    public void OnStartAnimServerRpc(int p_playerIndex, int p_targetIndex, NetworkObjectReference p_cardNetworkObjectReference)
+    public void OnStartAnimServerRpc(int p_playerIndex, int p_targetIndex, int p_cardIndex, NetworkObjectReference p_cardNetworkObjectReference)
     {
-        OnStartPlayingCard?.Invoke(new CustomSender(p_playerIndex, p_targetIndex, p_cardNetworkObjectReference), EventArgs.Empty);
+        OnStartPlayingCard?.Invoke(new CustomSender(p_playerIndex, p_targetIndex, p_cardNetworkObjectReference, p_cardIndex), EventArgs.Empty);
     }
 }
 
@@ -127,11 +128,13 @@ public struct CustomSender
     public int playerType;
     public int targetIndex;
     public NetworkObjectReference cardNO;
+    public int cardIndex;
 
-    public CustomSender(int p_playerType, int p_targetIndex, NetworkObjectReference p_cardNO)
+    public CustomSender(int p_playerType, int p_targetIndex, NetworkObjectReference p_cardNO, int p_cardIndex)
     {
         playerType = p_playerType;
         targetIndex = p_targetIndex;
         cardNO = p_cardNO;
+        cardIndex = p_cardIndex;
     }
 }

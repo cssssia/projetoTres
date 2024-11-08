@@ -10,7 +10,7 @@ public class PlayerController : NetworkBehaviour
 {
     public static PlayerController LocalInstance { get; private set; }
 
-    [SerializeField] private List<Vector3> m_spawnPositionList;
+    [SerializeField] private PlayerSpawnData m_spawnData;
     [SerializeField] private CardTarget[] m_cardTargetTransform;
     [SerializeField] private CardsOnHandBehavior m_handBehavior;
     [SerializeField] private List<Card> m_myHand;
@@ -64,7 +64,7 @@ public class PlayerController : NetworkBehaviour
             m_betBehavior.OnPlayerSpawned(PlayerIndex);
         }
 
-        transform.SetPositionAndRotation(m_spawnPositionList[PlayerIndex], Quaternion.Euler(0, IsHostPlayer ? 0 : 180, 0));
+        transform.SetPositionAndRotation(m_spawnData.spawnPosition[PlayerIndex], Quaternion.Euler(m_spawnData.spawnRotation[PlayerIndex]));
         if (IsOwner) CameraController.Instance.SetCamera(PlayerIndex);
 
         CardsManager.Instance.OnAddCardToMyHand += CardsManager_OnAddCardToMyHand;

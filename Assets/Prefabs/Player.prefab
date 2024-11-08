@@ -71,14 +71,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ee49794fd52c36a428a80cd44377e30d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_spawnPositionList:
-  - {x: 1.15, y: 2.35, z: -10}
-  - {x: -1.15, y: 2.35, z: 10}
+  m_spawnData: {fileID: 11400000, guid: 4649014b84a3564459883757e6da77a1, type: 2}
   m_cardTargetTransform: []
   m_handBehavior: {fileID: 4147424375562297416}
   m_myHand: []
   m_betBehavior: {fileID: 4519521580299488874}
   currentGameState: 0
+  debug_useScissors: 0
   useHover: 1
 --- !u!114 &5396420236894118007
 MonoBehaviour:

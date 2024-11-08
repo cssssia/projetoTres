@@ -168,6 +168,13 @@ MonoBehaviour:
   m_hoverCardAnim: {fileID: 11400000, guid: 5a1ff09991fa28b40ada698f2bfe8856, type: 2}
   m_dragOffset: {x: 0, y: 0, z: 0}
   m_dragAnchor: {fileID: 4337514763748464840}
+  card:
+    cardName: 
+    cardValue: 0
+    cardIndexSO: 0
+    cardPlayer: 0
+    cardNetworkObject: {fileID: 0}
+    playedCard: 0
 --- !u!114 &937226932739149441
 MonoBehaviour:
   m_ObjectHideFlags: 0

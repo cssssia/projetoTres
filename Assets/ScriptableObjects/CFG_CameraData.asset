@@ -10,11 +10,11 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 1512b10b10f7f534bbef59561401f23d, type: 3}
-  m_Name: CFG_CardAnim_Player0
+  m_Name: CFG_CameraData
   m_EditorClassIdentifier: 
   m_animData:
   - State: 0
-    LocalPosition: {x: 0, y: 3.25, z: -12}
+    LocalPosition: {x: 0, y: 3.15, z: -7.2}
     PositionCurve:
       serializedVersion: 2
       m_Curve:
@@ -39,7 +39,7 @@ MonoBehaviour:
       m_PreInfinity: 2
       m_PostInfinity: 2
       m_RotationOrder: 4
-    LocalRotation: {x: 0, y: -0, z: -0}
+    LocalRotation: {x: 7.5, y: 0, z: 0}
     RotationCurve:
       serializedVersion: 2
       m_Curve:
@@ -65,7 +65,7 @@ MonoBehaviour:
       m_PostInfinity: 2
       m_RotationOrder: 4
   - State: 1
-    LocalPosition: {x: 0, y: 3.25, z: -7.65}
+    LocalPosition: {x: 0, y: 3.25, z: -3.5}
     PositionCurve:
       serializedVersion: 2
       m_Curve:
@@ -90,7 +90,7 @@ MonoBehaviour:
       m_PreInfinity: 2
       m_PostInfinity: 2
       m_RotationOrder: 4
-    LocalRotation: {x: 44.601967, y: -0, z: -0}
+    LocalRotation: {x: 45, y: -0, z: -0}
     RotationCurve:
       serializedVersion: 2
       m_Curve:

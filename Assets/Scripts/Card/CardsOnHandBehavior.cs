@@ -49,10 +49,31 @@ public class CardsOnHandBehavior : MonoBehaviour
         if (m_cardsBehavior == null) m_cardsBehavior = new();
         m_cardsBehavior.Add(l_card);
         m_cardsBehavior[^1].SetCardData(p_card);
+        m_cardsBehavior[^1].OnDestroyAction += RemoveNullCardsFromList;
 
         if (p_lastCard)
         {
             SetCardsIdlePosition(true);
+        }
+    }
+
+    private void RemoveNullCardsFromList()
+    {
+        StartCoroutine(IRemoveNullItensFromList());
+    }
+
+    IEnumerator IRemoveNullItensFromList()
+    {
+        yield return null;
+        yield return null;
+        yield return null;
+        for (int i = m_cardsBehavior.Count - 1; i >= 0; i--)
+        {
+            if (m_cardsBehavior[i] == null)
+            {
+                m_cardsBehavior.RemoveAt(i);
+
+            }
         }
     }
 

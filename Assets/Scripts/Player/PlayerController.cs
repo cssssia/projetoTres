@@ -68,6 +68,8 @@ public class PlayerController : NetworkBehaviour
         if (IsOwner) CameraController.Instance.SetCamera(PlayerIndex);
 
         CardsManager.Instance.OnAddCardToMyHand += CardsManager_OnAddCardToMyHand;
+        CardsManager.Instance.OnRemoveCardFromMyHand += CardsManager_OnRemoveCardFromMyHand;
+
         RoundManager.Instance.OnRoundWon += TurnManager_OnRoundWon;
 
         if (IsServer)
@@ -104,15 +106,35 @@ public class PlayerController : NetworkBehaviour
             // destroy network stuff
         }
     }
-
+    Card l_card;
     private void CardsManager_OnAddCardToMyHand(object p_card, EventArgs e)
     {
-        Card l_card = (Card)p_card;
+        l_card = (Card)p_card;
 
         if (IsOwner && l_card.cardPlayer == PlayerIndex)
         {
             m_myHand.Add(l_card);
             SetCardParentServerRpc(l_card.cardNetworkObject, m_myHand.Count - 1, m_myHand.Count == 3);
+        }
+    }
+
+    private void CardsManager_OnRemoveCardFromMyHand(object p_card, EventArgs e)
+    {
+        l_card = (Card)p_card;
+        Debug.Log("from my hand");
+        if (IsOwner && l_card.cardPlayer == PlayerIndex)
+        {
+            Debug.Log("id: " + PlayerIndex);
+            for (int i = 0; i < m_myHand.Count; i++)
+            {
+                if (m_myHand[i].cardIndexSO == l_card.cardIndexSO)
+                {
+                    Debug.Log("card id: " + l_card.cardIndexSO);
+                    m_myHand.RemoveAt(i);
+                    break;
+                }
+            }
+            //SetCardParentServerRpc(l_card.cardNetworkObject, m_myHand.Count - 1, m_myHand.Count == 3);
         }
     }
 

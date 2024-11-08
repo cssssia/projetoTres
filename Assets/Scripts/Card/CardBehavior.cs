@@ -51,10 +51,17 @@ public class CardBehavior : MonoBehaviour
     private Vector3 m_startPosition;
     private Vector3 m_startRotation;
 
+    public Action OnDestroyAction;
+
     private void Start()
     {
         m_startPosition = transform.position;
         m_startRotation = transform.rotation.eulerAngles;
+    }
+
+    private void OnDestroy()
+    {
+        OnDestroyAction?.Invoke();
     }
 
     public void SetCardData(Card p_card)

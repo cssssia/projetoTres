@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public enum Player { DEFAULT, HOST, CLIENT, DRAW };
+public enum Truco { DEFAULT = 1, TRUCO, RETRUCO, VALEQUATRO }
 [System.Serializable]
 public class Trick
 {
@@ -19,7 +20,25 @@ public class Trick
     [HideInInspector] public int CurrentTrick;
     [HideInInspector] public List<Player> TurnsWonHistory;
     [HideInInspector] public List<Player> TurnsStartedHistory;
-    [HideInInspector] public int TrickBetMultiplier = 1;
+    [HideInInspector] public int TrickBetMultiplier;
+
+    // public bool IsNoBet
+    // {
+    //     get { return TrickBetMultiplier == Truco.DEFAULT; }
+    // }
+    // public bool IsTruco
+    // {
+    //     get { return TrickBetMultiplier == Truco.TRUCO; }
+    // }
+    // public bool IsRetruco
+    // {
+    //     get { return TrickBetMultiplier == Truco.RETRUCO; }
+    // }
+    // public bool IsValeQuatro
+    // {
+    //     get { return TrickBetMultiplier == Truco.VALEQUATRO; }
+    // }
+
 
     public Trick(Player p_whoStartsTrick)
     {

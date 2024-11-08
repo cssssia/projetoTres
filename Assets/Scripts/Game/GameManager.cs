@@ -7,7 +7,8 @@ public class GameManager : NetworkBehaviour
 {
 	public static GameManager Instance { get; private set;}
 
-	public event EventHandler OnStateChanged;
+	public event EventHandler OnGameStateChanged;
+	public event EventHandler OnBetStateChanged;
 	public event EventHandler OnLocalGamePaused;
 	public event EventHandler OnLocalGameUnpaused;
 	public event EventHandler OnMultiplayerGamePaused;
@@ -19,16 +20,26 @@ public class GameManager : NetworkBehaviour
 		WaitingToStart,
 		//CountdownToStart, //check if we will use something like this
 		DealingCards,
-		HostPlayerTurn,
-		ClientPlayerTurn,
+		HostTurn,
+		ClientTurn,
 		//GamePlaying,
 		GameOver,
+	}
+
+	public enum BetState
+	{
+		WaitingToStart,
+		HostTurn,
+		ClientTurn,
+		MaxBet,
 	}
 
 	[SerializeField] private Transform m_playerPrefab;
 
 	[SerializeField] private NetworkVariable<GameState> m_gameState = new NetworkVariable<GameState>(GameState.WaitingToStart);
+	[SerializeField] private NetworkVariable<BetState> m_betState = new NetworkVariable<BetState>(BetState.WaitingToStart);
 	public NetworkVariable<GameState> gameState => m_gameState;
+	public NetworkVariable<BetState> betState => m_betState;
 	//private NetworkVariable<float> m_countdownToStartTimer = new NetworkVariable<float>(3f);
 	private bool m_isLocalPlayerReady;
 	private bool m_isLocalGamePaused = false;
@@ -53,6 +64,7 @@ public class GameManager : NetworkBehaviour
     public override void OnNetworkSpawn()
     {
         m_gameState.OnValueChanged += GameState_OnValueChanged;
+        m_betState.OnValueChanged += BetState_OnValueChanged;
 		m_isGamePaused.OnValueChanged += IsGamePaused_OnValueChanged;
 
 		if (IsServer)
@@ -60,12 +72,29 @@ public class GameManager : NetworkBehaviour
             NetworkManager.Singleton.OnClientDisconnectCallback += NetworkManager_OnClientDisconnectCallback;
 			NetworkManager.Singleton.SceneManager.OnLoadEventCompleted += SceneManager_OnLoadEventCompleted; //triggered on all the clients have loaded the final scene
 	        RoundManager.Instance.OnCardPlayed += TurnManager_OnCardPlayed;
+			RoundManager.Instance.OnBet += TurnManager_OnBet;
 			RoundManager.Instance.OnTrickWon += RoundManager_OnTrickWon;
 			RoundManager.Instance.RoundHasStarted.OnValueChanged += MatchHasStarted_OnValueChanged;
 		}
     }
 
-	private Player m_wonTrickPlayer;
+    private void TurnManager_OnBet(object sender, EventArgs e)
+    {
+        if ((bool)sender)
+		{
+			SetBetState(BetState.MaxBet);
+		}
+		else if (m_betState.Value == BetState.HostTurn)
+		{
+			SetBetState(BetState.ClientTurn);
+		}
+		else if (m_betState.Value == BetState.ClientTurn)
+		{
+			SetBetState(BetState.HostTurn);
+		}
+    }
+
+    private Player m_wonTrickPlayer;
     private void RoundManager_OnTrickWon(object l_wonTrickPlayer, EventArgs e)
     {
         m_wonTrickPlayer = (Player)l_wonTrickPlayer;
@@ -74,7 +103,7 @@ public class GameManager : NetworkBehaviour
     private void MatchHasStarted_OnValueChanged(bool previousValue, bool newValue)
     {
         if (!newValue)
-			m_gameState.Value = GameState.DealingCards;
+			SetGameState(GameState.DealingCards);
     }
 
     private void TurnManager_OnCardPlayed(object p_customSender, EventArgs e)
@@ -87,22 +116,22 @@ public class GameManager : NetworkBehaviour
 			if (m_wonTrickPlayer == Player.DEFAULT) //logic turn flow
 			{
 				if (l_playerType == Player.HOST)
-					m_gameState.Value = GameState.ClientPlayerTurn;
+					SetGameState(GameState.ClientTurn);
 				else if (l_playerType == Player.CLIENT)
-					m_gameState.Value = GameState.HostPlayerTurn;
+					SetGameState(GameState.HostTurn);
 			}
 			else //trick win
 			{
 				if (m_wonTrickPlayer == Player.HOST)
-					m_gameState.Value = GameState.HostPlayerTurn;
+					SetGameState(GameState.HostTurn);
 				else if (m_wonTrickPlayer == Player.CLIENT)
-					m_gameState.Value = GameState.ClientPlayerTurn;
+					SetGameState(GameState.ClientTurn);
 				else if (m_wonTrickPlayer == Player.DRAW)
 				{
 					if ((Player)RoundManager.Instance.WhoStartedRound.Value == Player.HOST)
-						m_gameState.Value = GameState.HostPlayerTurn;
+						SetGameState(GameState.HostTurn);
 					else if ((Player)RoundManager.Instance.WhoStartedRound.Value == Player.CLIENT)
-						m_gameState.Value = GameState.ClientPlayerTurn;
+						SetGameState(GameState.ClientTurn);
 				}
 
 				m_wonTrickPlayer = Player.DEFAULT;
@@ -123,7 +152,12 @@ public class GameManager : NetworkBehaviour
 
     private void GameState_OnValueChanged(GameState p_previousValue, GameState p_newValue)
 	{
-		OnStateChanged?.Invoke(this, EventArgs.Empty);
+		OnGameStateChanged?.Invoke(this, EventArgs.Empty);
+	}
+
+	private void BetState_OnValueChanged(BetState p_previousValue, BetState p_newValue)
+	{
+		OnBetStateChanged?.Invoke(this, EventArgs.Empty);
 	}
 
 	private void IsGamePaused_OnValueChanged(bool p_previousValue, bool p_newValue)
@@ -152,7 +186,7 @@ public class GameManager : NetworkBehaviour
 
 	private void GameInput_OnInteractAction(object p_sender, EventArgs e)
 	{
-		if (m_gameState.Value == GameState.WaitingToStart)
+		if (IsWaitingToStart())
 		{
 			m_isLocalPlayerReady = true;
 			OnLocalPlayerReadyChanged?.Invoke(this, EventArgs.Empty);
@@ -177,7 +211,7 @@ public class GameManager : NetworkBehaviour
 		}
 
 		if (l_allClientsReady)
-			m_gameState.Value = GameState.DealingCards;
+			SetGameState(GameState.DealingCards);
 	}
 
 	void Update()
@@ -194,18 +228,27 @@ public class GameManager : NetworkBehaviour
 				m_wonTrickPlayer = Player.DEFAULT;
 
 				if (RoundManager.Instance.MatchWonHistory.Count == 0) //logic round flow
-					m_gameState.Value = GameState.HostPlayerTurn;
+				{
+					SetGameState(GameState.HostTurn);
+					SetBetState(BetState.HostTurn);
+				}
 				else if ((Player)RoundManager.Instance.WhoStartedRound.Value == Player.HOST)
-					m_gameState.Value = GameState.ClientPlayerTurn;
+				{
+					SetGameState(GameState.ClientTurn);
+					SetBetState(BetState.ClientTurn);
+				}
 				else if ((Player)RoundManager.Instance.WhoStartedRound.Value == Player.CLIENT)
-					m_gameState.Value = GameState.HostPlayerTurn;
+				{
+					SetGameState(GameState.HostTurn);
+					SetBetState(BetState.HostTurn);
+				}
 
 				break;
-			case GameState.HostPlayerTurn:
+			case GameState.HostTurn:
 				// if (loseMatch)
-				// 	m_gameState.Value = GameState.GameOver;
+				// 	SetGameState(GameState.GameOver);
 				break;
-			case GameState.ClientPlayerTurn:
+			case GameState.ClientTurn:
 				break;
 			case GameState.GameOver:
 				break;
@@ -213,40 +256,26 @@ public class GameManager : NetworkBehaviour
 
 	}
 
-	[ServerRpc(RequireOwnership = false)]
-	public void EndTurnServerRpc(int p_clientID)
+	public void SetGameState(GameState p_gameState)
     {
-        switch (p_clientID)
-        {
-			case 0: //host
-				break;
-			case 1: //outro
-				break;
-            default:
-                break;
-        }
+		if (!IsServer)
+		{
+			Debug.Log("[ERROR] Client cannot set Network Variables");
+			return;
+		}
+
+        m_gameState.Value = p_gameState;
     }
 
-	void SetState(GameState p_gameState)
+	public void SetBetState(BetState p_betState)
     {
-        switch (p_gameState)
-        {
-            case GameState.WaitingToStart:
-                break;
-            case GameState.DealingCards:
-				//start new match
-				//decide quem come�a a proxima partida baseada na ultima partida
-				//decidindo isso, set game state pra HostPlayerTurn || ClientPlayerTurn
-				break;
-            case GameState.HostPlayerTurn:
-				//informar o host q ele ta pronto pra jogar
-				break;
-            case GameState.ClientPlayerTurn:
-				//informar o cliente q ele ta pronto pra jogar
-				break;
-            case GameState.GameOver:
-                break;
-        }
+		if (!IsServer)
+		{
+			Debug.Log("[ERROR] Client cannot set Network Variables");
+			return;
+		}
+
+        m_betState.Value = p_betState;
     }
 
     void LateUpdate()
@@ -268,19 +297,19 @@ public class GameManager : NetworkBehaviour
 		return m_gameState.Value == GameState.DealingCards;
 	}
 
-	public bool IsHostPlayerTurn()
+	public bool IsHostTurn()
 	{
-		return m_gameState.Value == GameState.HostPlayerTurn;
+		return m_gameState.Value == GameState.HostTurn;
 	}
 
-	public bool IsClientPlayerTurn()
+	public bool IsClientTurn()
 	{
-		return m_gameState.Value == GameState.ClientPlayerTurn;
+		return m_gameState.Value == GameState.ClientTurn;
 	}
 
 	public bool IsMyTurn(bool p_isHost)
 	{
-		return p_isHost ? IsHostPlayerTurn() : IsClientPlayerTurn();
+		return p_isHost ? IsHostTurn() : IsClientTurn();
 	}
 
 	public bool IsGameOver()

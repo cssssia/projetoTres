@@ -21,10 +21,13 @@ public class RoundManager : NetworkBehaviour
     [HideInInspector] public bool HostTrickWon;
     [HideInInspector] public bool ClientTrickWon;
 
+    public NetworkVariable<bool> BetHasStarted;
+
 	public event EventHandler OnRoundWon;
     public event EventHandler OnTrickWon;
 	public event EventHandler OnCardPlayed;
 	public event EventHandler OnStartPlayingCard;
+	public event EventHandler OnBet;
 
 
     void Awake()
@@ -35,6 +38,7 @@ public class RoundManager : NetworkBehaviour
         HostTrickWon = false;
         ClientTrickWon = false;
 
+        BetHasStarted.Value = false;
         RoundHasStarted.Value = false;
         WhoStartedRound.Value = 0;
         VictoriesHost.Value = 0;
@@ -104,6 +108,19 @@ public class RoundManager : NetworkBehaviour
 
         OnCardPlayed?.Invoke(l_customSender, EventArgs.Empty);
 
+    }
+
+    [ServerRpc (RequireOwnership = false)]
+    public void BetServerRpc(bool p_increaseBet)
+    {
+        if (p_increaseBet)
+        {
+            BetHasStarted.Value = true;
+            CurrentTrick.TrickBetMultiplier++;
+        }
+        else BetHasStarted.Value = false;
+
+        OnBet?.Invoke(CurrentTrick.TrickBetMultiplier == 4, EventArgs.Empty);
     }
 
     [ClientRpc]

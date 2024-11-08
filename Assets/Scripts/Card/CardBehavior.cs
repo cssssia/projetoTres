@@ -11,16 +11,13 @@ public class CardTransform
     public Vector3 Rotation;
     public Vector3 Scale;
 
+    public CardTransform() { }
     public CardTransform(Vector3 p_position, Vector3 p_rotation, Vector3 p_scale)
     {
         Position = p_position;
         Rotation = p_rotation;
         Scale = p_scale;
     }
-    public CardTransform()
-    {
-    }
-
     public CardTransform(CardTransform p_cardTransform)
     {
         Position = p_cardTransform.Position;

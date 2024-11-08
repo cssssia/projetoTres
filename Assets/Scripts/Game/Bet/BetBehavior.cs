@@ -1,55 +1,68 @@
 using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
+[Serializable]
+public class BetTransform
+{
+    public Vector3 Position;
+    public Vector3 Rotation;
+    public Vector3 Scale;
+
+    public BetTransform() { }
+    public BetTransform(Vector3 p_position, Vector3 p_rotation, Vector3 p_scale)
+    {
+        Position = p_position;
+        Rotation = p_rotation;
+        Scale = p_scale;
+    }
+    public BetTransform(CardTransform p_cardTransform)
+    {
+        Position = p_cardTransform.Position;
+        Rotation = p_cardTransform.Rotation;
+        Scale = p_cardTransform.Scale;
+    }
+}
+
+public enum BetAnimType { PLAY, IDLE, HIGHLIGHT, DRAG }
 public class BetBehavior : MonoBehaviour
 {
-    [SerializeField] private BetTag m_myBet;
+    public int playerId;
+    private BetAnimType m_currentState = BetAnimType.IDLE;
+    private Vector3 m_startPosition;
+    private Vector3 m_startRotation;
 
-    public void OnPlayerSpawned(int p_playerId)
+    private void Start()
     {
-        BetTag[] l_bets = FindObjectsOfType<BetTag>();
-
-        foreach (BetTag betTag in l_bets)
-        {
-            if (betTag.playerId == p_playerId)
-                m_myBet = betTag;
-        }
+        m_startPosition = transform.position;
+        m_startRotation = transform.rotation.eulerAngles;
     }
 
-    bool m_amBetting;
-    public bool CheckClickObject(GameObject p_gameObject)
+    public void AnimateToPlace(bool p_isIncrease, Action<GameObject, bool> p_action = null)
     {
-        bool l_isBet = false;
-        m_amBetting = false;
-
-        if (p_gameObject != null && m_myBet.gameObject == p_gameObject)
-        {
-            m_amBetting = l_isBet = true;
-        }
-
-        return l_isBet;
+        p_action?.Invoke(gameObject, p_isIncrease);
     }
 
-    public void CheckClickUp(bool p_canPlay, Action<GameObject> p_actionOnEndAnimation)
+    private Vector3 l_startMousePos;
+    public void StartDrag(Vector3 p_mousePos)
     {
-        bool l_bet = false;
+        transform.localScale = Vector3.one * 0.075f;
 
-        if (m_amBetting && p_canPlay)
-        {
-            Bet();
-            l_bet = true;
-        }
-
-        if (!l_bet)
-        {
-            m_amBetting = false;
-        }
+        l_startMousePos = p_mousePos - Camera.main.WorldToScreenPoint(transform.position);
     }
 
-    private void Bet()
+    private Vector3 l_tempDragPos;
+    public void DragBet(Vector3 p_mousePosition)
     {
-        Debug.Log("bet");
+        m_currentState = BetAnimType.DRAG;
+
+        l_tempDragPos = Camera.main.ScreenToWorldPoint(p_mousePosition - l_startMousePos);
+        l_tempDragPos.y = transform.position.y;
+
+        transform.position = l_tempDragPos;
+    }
+
+    public void EndDrag()
+    {
+
     }
 }

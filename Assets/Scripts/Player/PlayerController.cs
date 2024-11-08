@@ -13,13 +13,12 @@ public class PlayerController : NetworkBehaviour
     [SerializeField] private PlayerSpawnData m_spawnData;
     [SerializeField] private CardTarget[] m_cardTargetTransform;
     [SerializeField] private CardsOnHandBehavior m_handBehavior;
+    [SerializeField] private BetOnHandBehavior m_betBehavior;
     [SerializeField] private List<Card> m_myHand;
-
-    [SerializeField] private BetBehavior m_betBehavior;
-
 
     [Header("Game Info")]
     [SerializeField] private GameManager.GameState currentGameState;
+    [SerializeField] private GameManager.BetState currentBetState;
 
     void Start()
     {
@@ -54,6 +53,7 @@ public class PlayerController : NetworkBehaviour
     }
 
     private bool canPlay;
+    private bool canBet;
 
     public override void OnNetworkSpawn() //research more the difference of this and awake
     {
@@ -95,7 +95,8 @@ public class PlayerController : NetworkBehaviour
         if (IsHostPlayer) name = "Player_0";
         else if (IsClient) name = "Player_1";
 
-        GameManager.Instance.OnStateChanged += OnGameStateChanged;
+        GameManager.Instance.OnGameStateChanged += OnGameStateChanged;
+        GameManager.Instance.OnBetStateChanged += OnBetStateChanged;
     }
 
     private void NetworkManager_OnClientDisconnectCallback(ulong p_clientId)
@@ -186,13 +187,14 @@ public class PlayerController : NetworkBehaviour
             }
 
             m_handBehavior.UpdateMousePos(Input.mousePosition);
+            m_betBehavior.UpdateMousePos(Input.mousePosition);
         }
     }
 
     private void GameInput_OnClickUpMouse(object p_sender, System.EventArgs e)
     {
         m_handBehavior.CheckClickUp(canPlay, (go, id) => StartAnim(go, id), (go) => ThrowCard(go));
-        m_betBehavior.CheckClickUp(canPlay, (go) => IncreaseBet(go));
+        m_betBehavior.CheckClickUp(canBet, (go, increase) => IncreaseBet(go, increase));
     }
 
     private void CheckClickOnObjects(GameObject p_gameObject)
@@ -235,11 +237,11 @@ public class PlayerController : NetworkBehaviour
         }
     }
 
-    private void IncreaseBet(GameObject gameObject)
+    private void IncreaseBet(GameObject gameObject, bool increase)
     {
         if (gameObject.CompareTag("Bet"))
         {
-            Debug.Log("Bet " + gameObject.name);
+            Debug.Log("Bet " + gameObject.name + increase);
         }
     }
 
@@ -248,11 +250,23 @@ public class PlayerController : NetworkBehaviour
         if (!IsOwner) return;
 
         currentGameState = ((GameManager)p_sender).gameState.Value;
-        canPlay = (currentGameState == GameManager.GameState.HostPlayerTurn && IsHostPlayer)
-                                            || (currentGameState == GameManager.GameState.ClientPlayerTurn && IsClientPlayer);
+        canPlay = (currentGameState == GameManager.GameState.HostTurn && IsHostPlayer)
+                                            || (currentGameState == GameManager.GameState.ClientTurn && IsClientPlayer);
 
         if (canPlay) Debug.Log("pode jogar");
         else Debug.Log("não pode jogar");
+    }
+
+    public void OnBetStateChanged(object p_sender, EventArgs p_eventArgs)
+    {
+        if (!IsOwner) return;
+
+        currentBetState = ((GameManager)p_sender).betState.Value;
+        canBet = (currentBetState == GameManager.BetState.HostTurn && IsHostPlayer)
+                                            || (currentBetState == GameManager.BetState.ClientTurn && IsClientPlayer);
+
+        if (canBet) Debug.Log("pode apostar");
+        else Debug.Log("não pode apostar");
     }
 
     [ServerRpc]

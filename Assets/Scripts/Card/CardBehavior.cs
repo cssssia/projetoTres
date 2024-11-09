@@ -1,7 +1,5 @@
 using System;
 using System.Collections;
-using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
 
 [Serializable]
@@ -32,10 +30,13 @@ public class CardBehavior : MonoBehaviour
 {
     private CardAnimType m_currentState = CardAnimType.IDLE;
     public CardAnimType CurrentState { get { return m_currentState; } }
+
+    [Header("Card Transform")]
     [SerializeField] private CardTransform m_idleCardTranform;
     [SerializeField] private CardTransform m_highlightCardTranform;
     [SerializeField] private CardTransform m_individualHighlightCardTranform;
 
+    [Header("Card AnimConfig")]
     [SerializeField] private CardAnimConfig m_playCardAnim;
     [SerializeField] private CardAnimConfig m_idleCardAnim;
     [SerializeField] private CardAnimConfig m_hoverCardAnim;

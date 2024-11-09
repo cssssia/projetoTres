@@ -79,26 +79,24 @@ public class GameManager : NetworkBehaviour
 		}
     }
 
-    private void TurnManager_OnBet(object sender, EventArgs e)
+    private void TurnManager_OnBet(object p_isIncrease, EventArgs e)
     {
 		if (RoundManager.Instance.CurrentTrick.TrickBetMultiplier == 4)
 		{
 			SetBetState(BetState.MaxBet);
 		}
-		else if (m_betState.Value == BetState.HostTurn)
-		{
-			SetBetState(BetState.ClientTurn);
-		}
-		else if (m_betState.Value == BetState.ClientTurn)
-		{
-			SetBetState(BetState.HostTurn);
-		}
 
-		if ((int)sender == 3)
+		if ((bool)p_isIncrease)
 		{
-			//RPC DAI CHAMA O DE BAIXO
-            OnStopIncreaseBet?.Invoke(this, EventArgs.Empty);
-        }
+			if (m_betState.Value == BetState.HostTurn)
+			{
+				SetBetState(BetState.ClientTurn);
+			}
+			else if (m_betState.Value == BetState.ClientTurn)
+			{
+				SetBetState(BetState.HostTurn);
+			}
+		}
     }
 
     private Player m_wonTrickPlayer;
@@ -143,7 +141,11 @@ public class GameManager : NetworkBehaviour
 
 				m_wonTrickPlayer = Player.DEFAULT;
 			}
-
+			if (RoundManager.Instance.CurrentTrick.TrickBetMultiplier == 1)
+			{
+				m_betState.Value = (BetState)m_gameState.Value;
+				Debug.Log("[GAME] Bet: " + m_betState.Value + " Game: " + m_gameState.Value);
+			}
 		}
     }
 

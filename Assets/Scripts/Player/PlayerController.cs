@@ -14,6 +14,7 @@ public class PlayerController : NetworkBehaviour
     [SerializeField] private CardTarget[] m_cardTargetTransform;
     [SerializeField] private CardsOnHandBehavior m_handBehavior;
     [SerializeField] private BetOnHandBehavior m_betBehavior;
+    [SerializeField] private DeckOnTableBehavior m_deckBehavior;
     [SerializeField] private List<Card> m_myHand;
 
     [Header("Game Info")]
@@ -194,7 +195,8 @@ public class PlayerController : NetworkBehaviour
     private void GameInput_OnClickUpMouse(object p_sender, System.EventArgs e)
     {
         m_handBehavior.CheckClickUp(canPlay, (go, id) => StartAnim(go, id), (go) => ThrowCard(go));
-        m_betBehavior.CheckClickUp(canBet, (go, increase) => IncreaseBet(go, increase));
+        if (canPlay || RoundManager.Instance.BetHasStarted.Value) m_betBehavior.CheckClickUp(canBet, (go, increase) => IncreaseBet(go, increase));
+        if (RoundManager.Instance.BetHasStarted.Value && canBet) m_deckBehavior.CheckClickUp((go) => GiveUp(go));
     }
 
     private void CheckClickOnObjects(GameObject p_gameObject)
@@ -241,8 +243,19 @@ public class PlayerController : NetworkBehaviour
     {
         if (gameObject.CompareTag("Bet"))
         {
+            if (!RoundManager.Instance.RoundHasStarted.Value)
+                RoundManager.Instance.StartRoundServerRpc(IsHost ? Player.HOST : Player.CLIENT);
+
             Debug.Log("Bet " + gameObject.name + increase);
             RoundManager.Instance.BetServerRpc(increase);
+        }
+    }
+
+    private void GiveUp(GameObject gameObject)
+    {
+        if (gameObject.CompareTag("Deck"))
+        {
+            RoundManager.Instance.GiveUpServerRpc(PlayerIndex);
         }
     }
 
@@ -251,8 +264,9 @@ public class PlayerController : NetworkBehaviour
         if (!IsOwner) return;
 
         currentGameState = ((GameManager)p_sender).gameState.Value;
-        canPlay = (currentGameState == GameManager.GameState.HostTurn && IsHostPlayer)
-                                            || (currentGameState == GameManager.GameState.ClientTurn && IsClientPlayer);
+        canPlay = ((currentGameState == GameManager.GameState.HostTurn && IsHostPlayer)
+                                            || (currentGameState == GameManager.GameState.ClientTurn && IsClientPlayer))
+                                            && !RoundManager.Instance.BetHasStarted.Value;
 
         if (canPlay) Debug.Log("pode jogar");
         else Debug.Log("não pode jogar");

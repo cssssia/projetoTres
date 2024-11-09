@@ -22,6 +22,8 @@ public class RoundManager : NetworkBehaviour
     [HideInInspector] public bool ClientTrickWon;
 
     public NetworkVariable<bool> BetHasStarted;
+    public NetworkVariable<bool> StopIncreaseBet;
+    public NetworkVariable<int> BetAsked;
 
 	public event EventHandler OnRoundWon;
     public event EventHandler OnTrickWon;
@@ -39,10 +41,12 @@ public class RoundManager : NetworkBehaviour
         ClientTrickWon = false;
 
         BetHasStarted.Value = false;
+        StopIncreaseBet.Value = false;
         RoundHasStarted.Value = false;
         WhoStartedRound.Value = 0;
         VictoriesHost.Value = 0;
         VictoriesClient.Value = 0;
+        BetAsked.Value = 1;
     }
 
     [ServerRpc (RequireOwnership = false)]
@@ -110,22 +114,31 @@ public class RoundManager : NetworkBehaviour
 
     }
 
-    public int betAsked = 1;
     [ServerRpc (RequireOwnership = false)]
     public void BetServerRpc(bool p_increaseBet)
     {
-        CurrentTrick.TrickBetMultiplier = betAsked;
+        Debug.Log("[GAME] BetServerRpc");
+        CurrentTrick.TrickBetMultiplier = BetAsked.Value;
         if (!BetHasStarted.Value) BetHasStarted.Value = true;
         if (p_increaseBet)
         {
-            betAsked++;
+            BetAsked.Value++;
+            if (BetAsked.Value == 4) StopIncreaseBet.Value = true;
+            Debug.Log("[GAME] Increase Bet: " + BetAsked.Value + " " + CurrentTrick.TrickBetMultiplier);
         }
         else
         {
+            Debug.Log("[GAME] Accept Bet: " + BetAsked.Value + " " + CurrentTrick.TrickBetMultiplier);
             BetHasStarted.Value = false;
         }
 
-        OnBet?.Invoke(betAsked, EventArgs.Empty);
+        OnBet?.Invoke(p_increaseBet, EventArgs.Empty);
+    }
+
+    [ServerRpc]
+    public void GiveUpServerRpc(int p_playerId)
+    {
+        Debug.Log("[GAME] GiveUpServerRpc " + p_playerId);
     }
 
     [ClientRpc]
@@ -136,6 +149,13 @@ public class RoundManager : NetworkBehaviour
 
         HostTrickWon = false;
         ClientTrickWon = false;
+
+        if (IsServer)
+        {
+            BetHasStarted.Value = false;
+            StopIncreaseBet.Value = false;
+            BetAsked.Value = 1;
+        }
     }
 
     [ServerRpc (RequireOwnership = false)]

@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using UnityEngine;
 
 [Serializable]
@@ -15,11 +16,11 @@ public class BetTransform
         Rotation = p_rotation;
         Scale = p_scale;
     }
-    public BetTransform(CardTransform p_cardTransform)
+    public BetTransform(BetTransform p_BetTransform)
     {
-        Position = p_cardTransform.Position;
-        Rotation = p_cardTransform.Rotation;
-        Scale = p_cardTransform.Scale;
+        Position = p_BetTransform.Position;
+        Rotation = p_BetTransform.Rotation;
+        Scale = p_BetTransform.Scale;
     }
 }
 
@@ -28,6 +29,17 @@ public class BetBehavior : MonoBehaviour
 {
     public int playerId;
     private BetAnimType m_currentState = BetAnimType.IDLE;
+
+    [Header("Bet Transform")]
+    [SerializeField] private BetTransform m_idleBetTranform;
+    [SerializeField] private BetTransform m_highlightBetTranform;
+    [SerializeField] private BetTransform m_individualHighlightBetTranform;
+
+    [Header("Bet AnimConfig")]
+    [SerializeField] private BetAnimConfig m_playBetAnim;
+    [SerializeField] private BetAnimConfig m_idleBetAnim;
+    [SerializeField] private BetAnimConfig m_hoverBetAnim;
+
     private Vector3 m_startPosition;
     private Vector3 m_startRotation;
 
@@ -37,19 +49,76 @@ public class BetBehavior : MonoBehaviour
         m_startRotation = transform.rotation.eulerAngles;
     }
 
-    public void AnimateToPlace(bool p_isIncrease, Action<GameObject, bool> p_action = null)
+    BetAnimConfig l_tempBetAnim;
+    Coroutine m_currentAnim;
+    public void AnimateToPlace(BetTransform p_betTransform, BetAnimType p_animType, bool p_isIncrease = false, Action<GameObject, bool> p_action = null)
     {
-        p_action?.Invoke(gameObject, p_isIncrease);
+        switch (p_animType)
+        {
+            case BetAnimType.PLAY:
+                l_tempBetAnim = m_playBetAnim;
+                break;
+            case BetAnimType.IDLE:
+                l_tempBetAnim = m_idleBetAnim;
+                break;
+            case BetAnimType.HIGHLIGHT:
+                l_tempBetAnim = m_hoverBetAnim;
+                break;
+        }
+
+        if (m_currentAnim != null) StopCoroutine(m_currentAnim);
+
+        m_currentAnim = StartCoroutine(IAnimateToPlace(p_betTransform, l_tempBetAnim, p_animType, p_isIncrease, p_action));
+
+    }
+
+    Vector3 l_tempPosition, l_initialPosition, l_tempRotation, l_initialRotation, l_tempScale, l_initialScale;
+    IEnumerator IAnimateToPlace(BetTransform p_betTransform, BetAnimConfig p_animConfig, BetAnimType p_betState, bool p_isIncrease = false, Action<GameObject, bool> p_onFinishAnim = null)
+    {
+        m_currentState = p_betState;
+        l_initialPosition = p_animConfig.UseLocalPosition ? transform.localPosition : transform.position;
+        l_initialRotation = p_animConfig.UseLocalPosition ? transform.localRotation.eulerAngles : transform.rotation.eulerAngles;
+        transform.rotation = Quaternion.Euler(l_initialRotation);
+        l_initialScale = transform.localScale;
+
+        for (float time = 0f; time < p_animConfig.AnimTime; time += Time.deltaTime)
+        {
+            float l_rotateTValue = p_animConfig.RotationAnimCurve.Evaluate(time / p_animConfig.AnimTime);
+            l_tempRotation.x = Mathf.LerpAngle(l_initialRotation.x, p_betTransform.Rotation.x, l_rotateTValue);
+            l_tempRotation.y = Mathf.LerpAngle(l_initialRotation.y, p_betTransform.Rotation.y, l_rotateTValue);
+            l_tempRotation.z = Mathf.LerpAngle(l_initialRotation.z, p_betTransform.Rotation.z, l_rotateTValue);
+
+            l_tempPosition = Vector3.LerpUnclamped(l_initialPosition, p_betTransform.Position, p_animConfig.MoveAnimCurve.Evaluate(time / p_animConfig.AnimTime));
+            l_tempPosition.z += Mathf.Lerp(0, p_animConfig.betZPump, p_animConfig.ZPumpCurve.Evaluate(time / p_animConfig.AnimTime));
+
+            //l_tempScale = Vector3.Lerp(l_initialScale, p_betTransform.Scale, l_rotateTValue);
+
+            if (p_animConfig.UseLocalPosition)
+            {
+                transform.localPosition = l_tempPosition;
+                transform.localRotation = Quaternion.Euler(l_tempRotation);
+                //transform.localScale = l_tempScale;
+            }
+            else
+            {
+                transform.position = l_tempPosition;
+                transform.rotation = Quaternion.Euler(l_tempRotation);
+                //transform.localScale = l_tempScale;
+            }
+
+            yield return null;
+        }
+
+        p_onFinishAnim?.Invoke(gameObject, p_isIncrease);
+        m_currentAnim = null;
     }
 
     bool m_dragging;
     private Vector3 l_startMousePos;
     public void StartDrag(Vector3 p_mousePos)
     {
-        //transform.localScale = Vector3.one * 0.075f;
         m_dragging = true;
         m_currentState = BetAnimType.DRAG;
-        //l_startMousePos = p_mousePos - Camera.main.WorldToScreenPoint(transform.position);
     }
 
     private Vector3 l_tempDragPos;
@@ -58,8 +127,6 @@ public class BetBehavior : MonoBehaviour
         if (!m_dragging) return;
 
         l_tempDragPos = p_raycastHit.point;
-        //l_tempDragPos = Camera.main.ScreenToWorldPoint(p_mousePosition - l_startMousePos);
-        //l_tempDragPos.y = transform.position.y;
 
         transform.position = l_tempDragPos;
     }
@@ -67,5 +134,12 @@ public class BetBehavior : MonoBehaviour
     public void EndDrag()
     {
         m_dragging = false;
+        AnimateToPlace(m_idleBetTranform, BetAnimType.IDLE);
+    }
+
+    public void Bet(bool p_isIncrease, Action<GameObject, bool> p_onFinishAnim)
+    {
+        Debug.Log("[GAME] BetBehavior");
+        p_onFinishAnim?.Invoke(gameObject, p_isIncrease);
     }
 }

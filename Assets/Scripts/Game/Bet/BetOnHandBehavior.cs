@@ -15,6 +15,12 @@ public class BetOnHandBehavior : MonoBehaviour
     [SerializeField] private BetTargetTag m_increaseBetTargetTag;
     PointerEventData m_pointerEventData;
 
+    private bool m_stopIncrease;
+
+    [Header("Drag")]
+    [SerializeField] private LayerMask m_tableLayer;
+    [SerializeField] private LayerMask m_betLayer;
+
     void Start()
     {
         m_pointerEventData = new PointerEventData(EventSystem.current);
@@ -52,11 +58,17 @@ public class BetOnHandBehavior : MonoBehaviour
         }
     }
 
+    RaycastHit l_mousePosRaycastHit; Ray l_ray;
     public void UpdateMousePos(Vector3 p_mousePos)
     {
-        if (m_currentBet != null)
+        l_ray = Camera.main.ScreenPointToRay(p_mousePos);
+        
+        if (Physics.Raycast(l_ray, out l_mousePosRaycastHit, 100f, m_tableLayer))
         {
-            m_currentBet.DragBet(p_mousePos);
+            if (m_currentBet != null)
+            {
+                m_currentBet.DragBet(p_mousePos, l_mousePosRaycastHit);
+            }
         }
     }
 
@@ -73,7 +85,7 @@ public class BetOnHandBehavior : MonoBehaviour
                     m_currentBet = m_betsBehavior[i];
                     m_currentBet.StartDrag(Input.mousePosition);
                     m_acceptTargetRect.gameObject.SetActive(true);
-                    m_increaseTargetRect.gameObject.SetActive(true);
+                    if (!m_stopIncrease) m_increaseTargetRect.gameObject.SetActive(true);
 
                     l_isBet = true;
                 }
@@ -86,44 +98,37 @@ public class BetOnHandBehavior : MonoBehaviour
     public List<RaycastResult> m_resultList;
     public void CheckClickUp(bool p_canBet, Action<GameObject, bool> p_actionOnEndAnimation)
     {
-
+        bool l_bet = false;
+     
         if (m_currentBet != null)
         {
-            m_pointerEventData.position = Input.mousePosition;
+            l_ray = Camera.main.ScreenPointToRay(Input.mousePosition);
 
-            if (m_resultList == null) m_resultList = new List<RaycastResult>();
-            else m_resultList.Clear();
+            Debug.Log("b");
 
-            EventSystem.current.RaycastAll(m_pointerEventData, m_resultList);
-
-            bool l_bet = false;
-            Debug.Log(p_canBet);
-
-            if (p_canBet)
+            if (Physics.Raycast(l_ray, out l_mousePosRaycastHit, 100f, m_betLayer))
             {
-                for (int i = 0; i < m_resultList.Count; i++)
+                Debug.Log("a");
+                if (p_canBet)
                 {
-
-                Debug.Log(m_resultList[i].gameObject.name);
-                    if (m_resultList[i].gameObject == m_acceptTargetRect.gameObject)
+                    Debug.Log("aaaaaaaaa" + l_mousePosRaycastHit.transform.gameObject.name);
+                    if (l_mousePosRaycastHit.transform.gameObject == m_acceptTargetRect.gameObject)
                     {
                         Bet(true, m_currentBet, p_actionOnEndAnimation);
                         l_bet = true;
                         m_acceptTargetRect.gameObject.SetActive(false);
                         m_increaseTargetRect.gameObject.SetActive(false);
-                        break;
                     }
-                    else if (m_resultList[i].gameObject == m_increaseTargetRect.gameObject)
+                    else if (l_mousePosRaycastHit.transform.gameObject == m_increaseTargetRect.gameObject)
                     {
                         Bet(false, m_currentBet, p_actionOnEndAnimation);
                         l_bet = true;
                         m_acceptTargetRect.gameObject.SetActive(false);
                         m_increaseTargetRect.gameObject.SetActive(false);
-                        break;
                     }
                 }
-            }
 
+            }
 
             if (!l_bet)
             {
@@ -134,9 +139,15 @@ public class BetOnHandBehavior : MonoBehaviour
 
     }
 
+    public void StopIncreasing()
+    {
+        m_stopIncrease = true;
+    }
+
     private void Bet(bool p_isIncrease, BetBehavior p_myBet, Action<GameObject, bool> p_action)
     {
         Debug.Log("bet");
         p_myBet.AnimateToPlace(p_isIncrease, p_action);
+        m_currentBet = null;
     }
 }

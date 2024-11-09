@@ -242,6 +242,7 @@ public class PlayerController : NetworkBehaviour
         if (gameObject.CompareTag("Bet"))
         {
             Debug.Log("Bet " + gameObject.name + increase);
+            RoundManager.Instance.BetServerRpc(increase);
         }
     }
 

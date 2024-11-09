@@ -4,6 +4,7 @@ using UnityEngine.UI;
 public enum Type { ACCEPT, INCREASE }
 public class BetTargetTag : MonoBehaviour
 {
+    public Image targetImage;
     public RectTransform targetRect;
     public Type type;
     public bool IsAccept

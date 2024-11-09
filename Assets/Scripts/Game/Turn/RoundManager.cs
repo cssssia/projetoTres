@@ -110,17 +110,22 @@ public class RoundManager : NetworkBehaviour
 
     }
 
+    public int betAsked = 1;
     [ServerRpc (RequireOwnership = false)]
     public void BetServerRpc(bool p_increaseBet)
     {
+        CurrentTrick.TrickBetMultiplier = betAsked;
+        if (!BetHasStarted.Value) BetHasStarted.Value = true;
         if (p_increaseBet)
         {
-            BetHasStarted.Value = true;
-            CurrentTrick.TrickBetMultiplier++;
+            betAsked++;
         }
-        else BetHasStarted.Value = false;
+        else
+        {
+            BetHasStarted.Value = false;
+        }
 
-        OnBet?.Invoke(CurrentTrick.TrickBetMultiplier == 4, EventArgs.Empty);
+        OnBet?.Invoke(betAsked, EventArgs.Empty);
     }
 
     [ClientRpc]

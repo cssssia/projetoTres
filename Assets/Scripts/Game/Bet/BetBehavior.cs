@@ -42,27 +42,30 @@ public class BetBehavior : MonoBehaviour
         p_action?.Invoke(gameObject, p_isIncrease);
     }
 
+    bool m_dragging;
     private Vector3 l_startMousePos;
     public void StartDrag(Vector3 p_mousePos)
     {
-        transform.localScale = Vector3.one * 0.075f;
-
-        l_startMousePos = p_mousePos - Camera.main.WorldToScreenPoint(transform.position);
+        //transform.localScale = Vector3.one * 0.075f;
+        m_dragging = true;
+        m_currentState = BetAnimType.DRAG;
+        //l_startMousePos = p_mousePos - Camera.main.WorldToScreenPoint(transform.position);
     }
 
     private Vector3 l_tempDragPos;
-    public void DragBet(Vector3 p_mousePosition)
+    public void DragBet(Vector3 p_mousePosition, RaycastHit p_raycastHit)
     {
-        m_currentState = BetAnimType.DRAG;
+        if (!m_dragging) return;
 
-        l_tempDragPos = Camera.main.ScreenToWorldPoint(p_mousePosition - l_startMousePos);
-        l_tempDragPos.y = transform.position.y;
+        l_tempDragPos = p_raycastHit.point;
+        //l_tempDragPos = Camera.main.ScreenToWorldPoint(p_mousePosition - l_startMousePos);
+        //l_tempDragPos.y = transform.position.y;
 
         transform.position = l_tempDragPos;
     }
 
     public void EndDrag()
     {
-
+        m_dragging = false;
     }
 }

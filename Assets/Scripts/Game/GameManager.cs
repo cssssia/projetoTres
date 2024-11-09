@@ -14,8 +14,9 @@ public class GameManager : NetworkBehaviour
 	public event EventHandler OnMultiplayerGamePaused;
 	public event EventHandler OnMultiplayerGameUnpaused;
 	public event EventHandler OnLocalPlayerReadyChanged;
+    public event EventHandler OnStopIncreaseBet;
 
-	public enum GameState
+    public enum GameState
 	{
 		WaitingToStart,
 		//CountdownToStart, //check if we will use something like this
@@ -80,7 +81,7 @@ public class GameManager : NetworkBehaviour
 
     private void TurnManager_OnBet(object sender, EventArgs e)
     {
-        if ((bool)sender)
+		if (RoundManager.Instance.CurrentTrick.TrickBetMultiplier == 4)
 		{
 			SetBetState(BetState.MaxBet);
 		}
@@ -92,6 +93,12 @@ public class GameManager : NetworkBehaviour
 		{
 			SetBetState(BetState.HostTurn);
 		}
+
+		if ((int)sender == 3)
+		{
+			//RPC DAI CHAMA O DE BAIXO
+            OnStopIncreaseBet?.Invoke(this, EventArgs.Empty);
+        }
     }
 
     private Player m_wonTrickPlayer;

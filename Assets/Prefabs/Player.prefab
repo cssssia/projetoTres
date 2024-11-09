@@ -74,9 +74,10 @@ MonoBehaviour:
   m_spawnData: {fileID: 11400000, guid: 4649014b84a3564459883757e6da77a1, type: 2}
   m_cardTargetTransform: []
   m_handBehavior: {fileID: 4147424375562297416}
-  m_myHand: []
   m_betBehavior: {fileID: 4519521580299488874}
+  m_myHand: []
   currentGameState: 0
+  currentBetState: 0
   debug_useScissors: 0
   useHover: 1
 --- !u!114 &5396420236894118007
@@ -159,4 +160,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5bcc1dd2d4455f4bb2815927c0a3357, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_myBet: {fileID: 0}
+  m_betsBehavior: []
+  m_currentBet: {fileID: 0}
+  m_acceptTargetRect: {fileID: 0}
+  m_increaseTargetRect: {fileID: 0}
+  m_acceptBetTargetTag: {fileID: 0}
+  m_increaseBetTargetTag: {fileID: 0}
+  m_tableLayer:
+    serializedVersion: 2
+    m_Bits: 64
+  m_betLayer:
+    serializedVersion: 2
+    m_Bits: 128

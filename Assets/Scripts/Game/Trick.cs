@@ -10,8 +10,8 @@ public class Trick
     [HideInInspector] public Player WhoWonFirstTrick { get; set; }
     [HideInInspector] public Player LastTurnPlayer { get; set; }
 
-    public List<CardsScriptableObject.Card> HostCardsPlayed;
-    public List<CardsScriptableObject.Card> ClientCardsPlayed;
+    public List<Card> HostCardsPlayed;
+    public List<Card> ClientCardsPlayed;
 
     [HideInInspector] public int HostTurnsWon;
     [HideInInspector] public int ClientTurnsWon;
@@ -42,7 +42,7 @@ public class Trick
         };
     }
 
-    public void CardPlayed(CardsScriptableObject.Card p_card, Player p_player, out bool p_goToNextTrick)
+    public void CardPlayed(Card p_card, Player p_player, out bool p_goToNextTrick)
     {
 
         p_goToNextTrick = false;
@@ -61,21 +61,21 @@ public class Trick
 
     public Player GetTurnWinner(int p_round)
     {
-        if (HostCardsPlayed[p_round].value > ClientCardsPlayed[p_round].value) return Player.HOST;
-        else if (HostCardsPlayed[p_round].value < ClientCardsPlayed[p_round].value) return Player.CLIENT;
+        if (HostCardsPlayed[p_round].cardValue > ClientCardsPlayed[p_round].cardValue) return Player.HOST;
+        else if (HostCardsPlayed[p_round].cardValue < ClientCardsPlayed[p_round].cardValue) return Player.CLIENT;
         return Player.DRAW;
     }
 
     public Player GetCurrentTurnWinner()
     {
-        if (HostCardsPlayed[CurrentTrick].value > ClientCardsPlayed[CurrentTrick].value)
+        if (HostCardsPlayed[CurrentTrick].cardValue > ClientCardsPlayed[CurrentTrick].cardValue)
         {
             CurrentTrick++;
             HostTurnsWon++;
             if (WhoWonFirstTrick == Player.DEFAULT) WhoWonFirstTrick = Player.HOST;
             return Player.HOST;
         }
-        else if (HostCardsPlayed[CurrentTrick].value < ClientCardsPlayed[CurrentTrick].value)
+        else if (HostCardsPlayed[CurrentTrick].cardValue < ClientCardsPlayed[CurrentTrick].cardValue)
         {
             CurrentTrick++;
             ClientTurnsWon++;

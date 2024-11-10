@@ -111,10 +111,9 @@ public class GameManager : NetworkBehaviour
 			SetGameState(GameState.DealingCards);
     }
 
-    private void TurnManager_OnCardPlayed(object p_customSender, EventArgs e)
+    private void TurnManager_OnCardPlayed(object p_cardIndex, EventArgs e)
     {
-		CustomSender l_customSender = (CustomSender)p_customSender;
-		Player l_playerType = (Player)l_customSender.playerType;
+		Player l_playerType = CardsManager.Instance.GetCardByIndex((int)p_cardIndex).cardPlayer;
 
 		if (RoundManager.Instance.RoundHasStarted.Value)
 		{
@@ -236,7 +235,7 @@ public class GameManager : NetworkBehaviour
 				CardsManager.Instance.SpawnNewPlayCardsServerRpc();
 				m_wonTrickPlayer = Player.DEFAULT;
 
-				if (RoundManager.Instance.RoundWonHistory.Count == 0) //logic round flow
+				if (RoundManager.Instance.RoundWonHistory == null) //logic round flow
 				{
 					SetGameState(GameState.HostTurn);
 					SetBetState(BetState.HostTurn);

@@ -10,9 +10,10 @@ public class CardsManager : NetworkBehaviour
     public static CardsManager Instance;
 
     [Header("Cards")]
-    public List<Card> cardsOnGameList;
-    [SerializeField] private List<Card> m_deckOnGameList;
-    [SerializeField] private List<Card> m_usableDeckList;
+    public List<int> CardsOnGameList;
+    public List<int> DeckOnGameList;
+    public List<Card> UsableDeckList;
+    [SerializeField] private NetworkObject m_deckParent;
     [SerializeField] private CardsScriptableObject m_cardsSO;
 
     public event EventHandler OnAddCardToMyHand;
@@ -21,19 +22,6 @@ public class CardsManager : NetworkBehaviour
     [Header("Targets")]
     [SerializeField] private List<CardTarget> m_targetsTranform;
     [SerializeField] private List<CardTransform> m_targets;
-
-    //NetworkVariable<float> testVariable = new NetworkVariable<float>(0f); //leave other parameters blank to everyone read, but only server write
-    //network variables fire an event whenever the variable changes (as it is a network variable, listen to it on spawn, not start not awake)
-
-    // public override void OnNetworkSpawn()
-    // {
-    //     testVariable.OnValueChanged += TestVariable_OnValueChanged;
-    // }
-
-    // private void TestVariable_OnValueChanged(float previousValue, float newValue)
-    // {
-    //        testVariable.Value //to access the variable
-    // }
 
     void Awake()
     {
@@ -45,7 +33,9 @@ public class CardsManager : NetworkBehaviour
     {
         base.OnNetworkSpawn();
 
-        SelectUsableCardsInSO();
+        DeckOnGameList = new List<int>();
+
+        if (IsServer) SelectUsableCardsInSO();
         SetCardTargets();
 
         RoundManager.Instance.OnCardPlayed += OnCardPlayed;
@@ -67,110 +57,122 @@ public class CardsManager : NetworkBehaviour
 
     void SelectUsableCardsInSO()
     {
-        m_usableDeckList = new List<Card>();
-
         for (int i = 0; i < m_cardsSO.deck.Count; i++)
         {
             if (m_cardsSO.deck[i].value == 0)
                 continue;
 
-            Card l_usableCard = new Card();
-
-            l_usableCard.cardName = m_cardsSO.deck[i].name;
-            l_usableCard.cardValue = m_cardsSO.deck[i].value;
-            l_usableCard.cardIndexSO = i;
-            l_usableCard.cardPlayer = 3;
-
-            m_usableDeckList.Add(l_usableCard);
+            SpawnCardServerRpc(i);
         }
     }
 
-    [ServerRpc] //[ServerRpc(RequireOwnership = false)] clients can call the function, but it runs on the server
-    public void SpawnNewPlayCardsServerRpc() //can only instantiate prefabs on server AND only destroy on server
+    [ServerRpc]
+    public void SpawnNewPlayCardsServerRpc()
     {
         Debug.Log("[GAME] Spawn Cards");
 
-        cardsOnGameList = new List<Card>();
-        m_deckOnGameList = new List<Card>();
+        CardsOnGameList = new List<int>();
 
-        Shuffle(m_usableDeckList);
-        m_deckOnGameList = m_usableDeckList.ToList();
+        Shuffle(DeckOnGameList);
 
         for (int i = 0; i < 3 * GameMultiplayerManager.MAX_PLAYER_AMOUNT; i++)
         {
-            SpawnOneCard(m_usableDeckList[i], i % 2);
+            SetPlayerUsableDeckClientRpc(DeckOnGameList[i], (Player)(i % 2));
+            DealOneCard(DeckOnGameList[i]);
         }
 
     }
 
-    /// <summary>
-    /// Has to be called by a ServerRpc
-    /// </summary>
-    void SpawnOneCard(Card p_card, int p_playerIndex)
+    [ClientRpc]
+    public void SetPlayerUsableDeckClientRpc(int p_cardIndex, Player p_player)
+    {
+        GetCardByIndex(p_cardIndex).cardPlayer = p_player;
+    }
+
+    void DealOneCard(int p_cardIndex)
+    {
+        DeckOnGameList.Remove(p_cardIndex);
+
+        DealOneCardClientRpc(p_cardIndex);
+    }
+
+    [ClientRpc]
+    void DealOneCardClientRpc(int p_cardIndex)
+    {
+        CardsOnGameList.Add(p_cardIndex);
+        OnAddCardToMyHand?.Invoke(p_cardIndex, EventArgs.Empty);
+    }
+
+    [ServerRpc]
+    void SpawnCardServerRpc(int p_indexSO)
     {
         GameObject l_newCard = Instantiate(m_cardsSO.prefab);
         NetworkObject l_cardNetworkObject = l_newCard.GetComponent<NetworkObject>();
         l_cardNetworkObject.Spawn(true);
-        p_card.cardNetworkObject = l_cardNetworkObject;
-        m_deckOnGameList.Remove(p_card);
-        RenameCardServerRpc(l_cardNetworkObject, p_card.cardIndexSO, p_playerIndex);
+
+        RenameCardServerRpc(l_cardNetworkObject, p_indexSO);
     }
 
     [ServerRpc]
-    void RenameCardServerRpc(NetworkObjectReference p_cardNetworkObjectReference, int p_cardIndexSO, int p_playerIndex) //for a pattern, maybe ? (the tutorial guy does it)
+    void RenameCardServerRpc(NetworkObjectReference p_cardNetworkObjectReference, int p_cardIndexSO) //for a pattern, maybe ? (the tutorial guy does it)
     {
-        RenameCardClientRpc(p_cardNetworkObjectReference, p_cardIndexSO, p_playerIndex);
+        RenameCardClientRpc(p_cardNetworkObjectReference, p_cardIndexSO);
     }
 
     [ClientRpc]
-    void RenameCardClientRpc(NetworkObjectReference p_cardNetworkObjectReference, int p_cardIndexSO, int p_playerIndex)
+    void RenameCardClientRpc(NetworkObjectReference p_cardNetworkObjectReference, int p_cardIndexSO)
     {
         p_cardNetworkObjectReference.TryGet(out NetworkObject l_cardNetworkObject);
         l_cardNetworkObject.name = m_cardsSO.deck[p_cardIndexSO].name;
         l_cardNetworkObject.GetComponent<MeshRenderer>().material = m_cardsSO.deck[p_cardIndexSO].material;
+        l_cardNetworkObject.TrySetParent(m_deckParent, false);
 
-        Card l_card = new Card();
+        Card l_usableCard = new(m_cardsSO.deck[p_cardIndexSO].name, m_cardsSO.deck[p_cardIndexSO].value, p_cardIndexSO, p_cardNetworkObjectReference);
 
-        l_card.cardName = l_cardNetworkObject.name;
-        l_card.cardValue = m_cardsSO.deck[p_cardIndexSO].value;
-        l_card.cardIndexSO = p_cardIndexSO;
-        l_card.cardPlayer = p_playerIndex;
-        l_card.cardNetworkObject = l_cardNetworkObject;
-        cardsOnGameList.Add(l_card);
-        //l_cardNetworkObject.TrySetParent(m_deckParent, false); //false to ignore WorldPositionStays and to work as we are used to (also do it on the client to sync position)
-        OnAddCardToMyHand?.Invoke(l_card, EventArgs.Empty);
+        UsableDeckList.Add(l_usableCard);
+        DeckOnGameList.Add(UsableDeckList.Count - 1);
     }
 
-    private void OnCardPlayed(object p_sender, EventArgs p_args)
+    private void OnCardPlayed(object p_cardIndex, EventArgs p_args)
     {
-        CustomSender l_customSender = (CustomSender)p_sender;
-        for (int i = 0; i < cardsOnGameList.Count; i++)
+        for (int i = 0; i < CardsOnGameList.Count; i++)
         {
-            if (cardsOnGameList[i].cardIndexSO == l_customSender.cardIndex)
+            if (CardsOnGameList[i] == (int)p_cardIndex)
             {
-                cardsOnGameList[i].playedCard = true;
+                SetPlayedCardUsableDeckClientRpc(CardsOnGameList[i], true);
                 return;
             }
         }
     }
 
+    [ClientRpc]
+    void SetPlayedCardUsableDeckClientRpc(int p_cardIndex, bool p_playedCard)
+    {
+        GetCardByIndex(p_cardIndex).playedCard = p_playedCard;
+    }
+
 
     [ServerRpc(RequireOwnership = false)]
-    public void UseScissorServerRpc(int p_playerID)
+    public void UseScissorServerRpc(Player p_playerId)
     {
-        List<int> l_cardsToRemove = cardsOnGameList.Where(c => c.cardPlayer == p_playerID && !c.playedCard).Select(s => s.cardIndexSO).ToList();
+        List<int> l_cardsToRemove = new List<int>();
+        Card l_card;
+
+        for (int i = 0; i < CardsOnGameList.Count; i++)
+        {
+            l_card = GetCardByIndex(CardsOnGameList[i]);
+            if (l_card.cardPlayer == p_playerId && !l_card.playedCard) l_cardsToRemove.Add(CardsOnGameList[i]);
+        }
+
         int l_quantityOfCardsRemoved = l_cardsToRemove.Count;
 
-        Card l_card = new Card();
-        for (int j = 0; j < cardsOnGameList.Count; j++)
+        for (int j = 0; j < CardsOnGameList.Count; j++)
         {
             for (int i = 0; i < l_cardsToRemove.Count; i++)
             {
-                if (cardsOnGameList[j].cardIndexSO == l_cardsToRemove[i])
+                if (CardsOnGameList[j] == l_cardsToRemove[i])
                 {
-                    l_card = cardsOnGameList[j];
-                    RemoveCardVisualGameServerRpc(l_card.cardNetworkObject);
-                    RemoveCardClientRpc(l_card.cardIndexSO);
+                    RemoveCardClientRpc(CardsOnGameList[j]);
                     break;
                 }
             }
@@ -178,28 +180,29 @@ public class CardsManager : NetworkBehaviour
 
         for (int i = 0; i < l_quantityOfCardsRemoved; i++)
         {
-            int l_rand = UnityEngine.Random.Range(0, m_deckOnGameList.Count);
-            //cardsOnGameList.Add(l_cardsToAdd[i]);
+            int l_rand = UnityEngine.Random.Range(0, DeckOnGameList.Count);
 
-            SpawnOneCard(m_deckOnGameList[l_rand], p_playerID);
-            AddCardClientRpc(m_deckOnGameList[l_rand].cardIndexSO);
+            UsableDeckList[DeckOnGameList[l_rand]].cardPlayer = p_playerId;
+            DealOneCard(DeckOnGameList[l_rand]);
+            AddCardClientRpc(DeckOnGameList[l_rand]);
 
-            m_deckOnGameList.RemoveAt(l_rand);
+            DeckOnGameList.RemoveAt(l_rand);
         }
 
     }
 
     [ClientRpc]
-    private void RemoveCardClientRpc(int p_cardID)
+    private void RemoveCardClientRpc(int p_cardIndex)
     {
-        //if (IsHost) return;
-
-        for (int i = 0; i < cardsOnGameList.Count; i++)
+        for (int i = 0; i < CardsOnGameList.Count; i++)
         {
-            if (cardsOnGameList[i].cardIndexSO == p_cardID)
+            if (CardsOnGameList[i] == p_cardIndex)
             {
-                OnRemoveCardFromMyHand?.Invoke(cardsOnGameList[i], EventArgs.Empty);
-                cardsOnGameList.RemoveAt(i);
+                OnRemoveCardFromMyHand?.Invoke(p_cardIndex, EventArgs.Empty);
+                CardsOnGameList.RemoveAt(i);
+
+                SetPlayerUsableDeckClientRpc(p_cardIndex, Player.DEFAULT);
+                SetPlayedCardUsableDeckClientRpc(p_cardIndex, false);
 
                 break;
             }
@@ -207,42 +210,32 @@ public class CardsManager : NetworkBehaviour
     }
 
     [ClientRpc]
-    private void AddCardClientRpc(int p_cardID)
+    private void AddCardClientRpc(int p_cardIndex)
     {
-        //if (IsHost) return;
-
-        for (int i = 0; i < m_usableDeckList.Count; i++)
-        {
-            if (m_usableDeckList[i].cardIndexSO == p_cardID)
-            {
-                cardsOnGameList.Add(m_usableDeckList[i]);
-
-                break;
-            }
-        }
+        CardsOnGameList.Add(p_cardIndex);
     }
 
 
     [ServerRpc]
-    void RemoveCardVisualGameServerRpc(NetworkObjectReference p_cardNetworkObjectReference)
+    void RemoveCardVisualGameServerRpc(int p_cardIndex)
     {
-        p_cardNetworkObjectReference.TryGet(out NetworkObject l_cardNetworkObject);
-        l_cardNetworkObject.Despawn();
+        //GetCardByIndex(p_cardIndex).cardNetworkObjectReference.TryGet(out NetworkObject l_cardNetworkObject);
+        //l_cardNetworkObject.Despawn();
     }
 
     public void RemoveCardFromGame()
     {
         if (!IsServer)
         {
-            cardsOnGameList.Clear();
+            CardsOnGameList.Clear();
             return;
         }
 
-        for (int i = cardsOnGameList.Count - 1; i >= 0; i--)
+        for (int i = CardsOnGameList.Count - 1; i >= 0; i--)
         {
-            Card l_removeCard = cardsOnGameList[i];
-            cardsOnGameList.Remove(l_removeCard);
-            RemoveCardVisualGameServerRpc(l_removeCard.cardNetworkObject);
+            int l_removeCard = CardsOnGameList[i];
+            CardsOnGameList.Remove(l_removeCard);
+            RemoveCardVisualGameServerRpc(l_removeCard);
         }
 
     }
@@ -267,5 +260,10 @@ public class CardsManager : NetworkBehaviour
         }
 
         return null;
+    }
+
+    public Card GetCardByIndex(int index)
+    {
+        return UsableDeckList[index];
     }
 }

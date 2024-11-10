@@ -16,8 +16,6 @@ public class RoundManager : NetworkBehaviour
     public int VictoriesClient;
 
     public Trick CurrentTrick;
-    // [HideInInspector] public bool HostTrickWon;
-    // [HideInInspector] public bool ClientTrickWon;
 
     public NetworkVariable<bool> BetHasStarted;
     public NetworkVariable<bool> StopIncreaseBet;
@@ -37,6 +35,7 @@ public class RoundManager : NetworkBehaviour
 
         if (!IsServer) return;
 
+        RoundWonHistory = new List<VictoryHistory>();
         RoundHasStarted.Value = false;
         BetHasStarted.Value = false;
         StopIncreaseBet.Value = false;
@@ -52,11 +51,11 @@ public class RoundManager : NetworkBehaviour
     }
 
     [ServerRpc (RequireOwnership = false)]
-    public void PlayCardServerRpc(int p_index, Player p_playerType, int p_targetIndex, NetworkObjectReference p_cardNetworkObjectReference)
+    public void PlayCardServerRpc(int p_cardIndex, Player p_playerType, int p_targetIndex)
     {
         Player l_wonRound = Player.DEFAULT;
 
-        CurrentTrick.CardPlayed(CardsSO.deck[p_index], p_playerType, out bool p_goToNextTrick);
+        CurrentTrick.CardPlayed(CardsManager.Instance.GetCardByIndex(p_cardIndex), p_playerType, out bool p_goToNextTrick);
 
         if (p_goToNextTrick)
         {
@@ -84,14 +83,7 @@ public class RoundManager : NetworkBehaviour
             AdjustVictoryServerRpc(l_wonRound);
         }
 
-        CustomSender l_customSender = new();
-        l_customSender.playerType = (int)p_playerType;
-        l_customSender.targetIndex = p_targetIndex;
-        l_customSender.cardNO = p_cardNetworkObjectReference;
-        l_customSender.cardIndex = p_index;
-
-        OnCardPlayed?.Invoke(l_customSender, EventArgs.Empty);
-
+        OnCardPlayed?.Invoke(p_cardIndex, EventArgs.Empty);
     }
 
     [ServerRpc (RequireOwnership = false)]

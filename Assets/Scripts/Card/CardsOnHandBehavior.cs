@@ -42,13 +42,15 @@ public class CardsOnHandBehavior : MonoBehaviour
     }
 
     CardBehavior l_card;
-    public void AddCardOnHand(NetworkObject p_cardNetworkObject, Card p_card, bool p_lastCard)
+    public void AddCardOnHand(int p_cardIndex, bool p_lastCard)
     {
-        p_cardNetworkObject.TryGetComponent(out l_card);
+        CardsManager.Instance.GetCardByIndex(p_cardIndex).cardNetworkObjectReference.TryGet(out NetworkObject l_cardNetworkObject);
+
+        l_cardNetworkObject.TryGetComponent(out l_card);
 
         if (m_cardsBehavior == null) m_cardsBehavior = new();
         m_cardsBehavior.Add(l_card);
-        m_cardsBehavior[^1].SetCardData(p_card);
+        m_cardsBehavior[^1].SetCardData(CardsManager.Instance.GetCardByIndex(p_cardIndex));
         m_cardsBehavior[^1].OnDestroyAction += RemoveNullCardsFromList;
 
         if (p_lastCard)

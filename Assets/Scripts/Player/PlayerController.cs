@@ -15,7 +15,7 @@ public class PlayerController : NetworkBehaviour
     [SerializeField] private CardsOnHandBehavior m_handBehavior;
     [SerializeField] private BetOnHandBehavior m_betBehavior;
     [SerializeField] private DeckOnTableBehavior m_deckBehavior;
-    [SerializeField] private List<Card> m_myHand;
+    [SerializeField] private List<int> m_myHand;
 
     [Header("Game Info")]
     [SerializeField] private GameManager.GameState currentGameState;
@@ -109,32 +109,30 @@ public class PlayerController : NetworkBehaviour
             // destroy network stuff
         }
     }
-    Card l_card;
-    private void CardsManager_OnAddCardToMyHand(object p_card, EventArgs e)
-    {
-        l_card = (Card)p_card;
 
-        if (IsOwner && l_card.cardPlayer == PlayerIndex)
+    private void CardsManager_OnAddCardToMyHand(object p_cardIndex, EventArgs e)
+    {
+        Debug.Log((int)p_cardIndex);
+        Debug.Log(CardsManager.Instance.GetCardByIndex((int)p_cardIndex).cardPlayer);
+        if (IsOwner && CardsManager.Instance.GetCardByIndex((int)p_cardIndex).cardPlayer == (Player)PlayerIndex)
         {
-            m_myHand.Add(l_card);
-            SetCardParentServerRpc(l_card.cardNetworkObject, m_myHand.Count - 1, m_myHand.Count == 3);
+            m_myHand.Add((int)p_cardIndex);
+            SetCardParentServerRpc((int)p_cardIndex, m_myHand.Count == 3);
         }
     }
 
-    private void CardsManager_OnRemoveCardFromMyHand(object p_card, EventArgs e)
+    private void CardsManager_OnRemoveCardFromMyHand(object p_cardIndex, EventArgs e)
     {
-        l_card = (Card)p_card;
-        if (IsOwner && l_card.cardPlayer == PlayerIndex)
+        if (IsOwner && CardsManager.Instance.GetCardByIndex((int)p_cardIndex).cardPlayer == (Player)PlayerIndex)
         {
             for (int i = 0; i < m_myHand.Count; i++)
             {
-                if (m_myHand[i].cardIndexSO == l_card.cardIndexSO)
+                if (m_myHand[i] == (int)p_cardIndex)
                 {
                     m_myHand.RemoveAt(i);
                     break;
                 }
             }
-            //SetCardParentServerRpc(l_card.cardNetworkObject, m_myHand.Count - 1, m_myHand.Count == 3);
         }
     }
 
@@ -221,17 +219,14 @@ public class PlayerController : NetworkBehaviour
         {
             for (int i = 0; i < m_myHand.Count; i++)
             {
-                if (m_myHand[i].cardName == gameObject.name)
+                if (CardsManager.Instance.GetCardByIndex(m_myHand[i]).cardName == gameObject.name)
                 {
 
                     if (!RoundManager.Instance.RoundHasStarted.Value)
                         RoundManager.Instance.StartRoundServerRpc(IsHost ? Player.HOST : Player.CLIENT);
 
-                    int l_soIndex = m_myHand[i].cardIndexSO;
-                    NetworkObject l_cardNetworkObject = m_myHand[i].cardNetworkObject;
-
+                    RoundManager.Instance.PlayCardServerRpc(m_myHand[i], IsHost ? Player.HOST : Player.CLIENT, m_handBehavior.CurrentTargetIndex);
                     m_myHand.RemoveAt(i);
-                    RoundManager.Instance.PlayCardServerRpc(l_soIndex, IsHost ? Player.HOST : Player.CLIENT, m_handBehavior.CurrentTargetIndex, l_cardNetworkObject);
                 }
             }
         }
@@ -282,20 +277,19 @@ public class PlayerController : NetworkBehaviour
     }
 
     [ServerRpc]
-    public void SetCardParentServerRpc(NetworkObjectReference p_cardNetworkObjectReference, int p_indexOnHand, bool p_finishedHandCards)
+    public void SetCardParentServerRpc(int p_cardIndex, bool p_finishedHandCards)
     {
-        p_cardNetworkObjectReference.TryGet(out NetworkObject l_cardNetworkObject);
-        SetCardParentClientRpc(p_cardNetworkObjectReference, p_indexOnHand, p_finishedHandCards);
+        SetCardParentClientRpc(p_cardIndex, p_finishedHandCards);
     }
 
     [ClientRpc]
-    public void SetCardParentClientRpc(NetworkObjectReference p_cardNetworkObjectReference, int p_indexOnHand, bool p_finishedHandCards)
+    public void SetCardParentClientRpc(int p_cardIndex, bool p_finishedHandCards)
     {
-        p_cardNetworkObjectReference.TryGet(out NetworkObject l_cardNetworkObject);
         if (IsOwner)
         {
-            m_handBehavior.AddCardOnHand(l_cardNetworkObject, m_myHand[p_indexOnHand], p_finishedHandCards);
+            m_handBehavior.AddCardOnHand(p_cardIndex, p_finishedHandCards);
         }
+        CardsManager.Instance.GetCardByIndex(p_cardIndex).cardNetworkObjectReference.TryGet(out NetworkObject l_cardNetworkObject);
         l_cardNetworkObject.TrySetParent(transform, false);
     }
 
@@ -321,7 +315,7 @@ public class PlayerController : NetworkBehaviour
     [Button]
     public void UseScissors()
     {
-        CardsManager.Instance.UseScissorServerRpc(PlayerIndex);
+        CardsManager.Instance.UseScissorServerRpc((Player)PlayerIndex);
 
     }
     #endregion

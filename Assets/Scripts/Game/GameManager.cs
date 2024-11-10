@@ -133,9 +133,9 @@ public class GameManager : NetworkBehaviour
 					SetGameState(GameState.ClientTurn);
 				else if (m_wonTrickPlayer == Player.DRAW)
 				{
-					if ((Player)RoundManager.Instance.WhoStartedRound.Value == Player.HOST)
+					if (RoundManager.Instance.CurrentTrick.WhoStartedTrick == Player.HOST)
 						SetGameState(GameState.HostTurn);
-					else if ((Player)RoundManager.Instance.WhoStartedRound.Value == Player.CLIENT)
+					else if (RoundManager.Instance.CurrentTrick.WhoStartedTrick == Player.CLIENT)
 						SetGameState(GameState.ClientTurn);
 				}
 
@@ -236,17 +236,17 @@ public class GameManager : NetworkBehaviour
 				CardsManager.Instance.SpawnNewPlayCardsServerRpc();
 				m_wonTrickPlayer = Player.DEFAULT;
 
-				if (RoundManager.Instance.MatchWonHistory.Count == 0) //logic round flow
+				if (RoundManager.Instance.RoundWonHistory.Count == 0) //logic round flow
 				{
 					SetGameState(GameState.HostTurn);
 					SetBetState(BetState.HostTurn);
 				}
-				else if ((Player)RoundManager.Instance.WhoStartedRound.Value == Player.HOST)
+				else if (RoundManager.Instance.CurrentTrick.WhoStartedTrick == Player.HOST)
 				{
 					SetGameState(GameState.ClientTurn);
 					SetBetState(BetState.ClientTurn);
 				}
-				else if ((Player)RoundManager.Instance.WhoStartedRound.Value == Player.CLIENT)
+				else if (RoundManager.Instance.CurrentTrick.WhoStartedTrick == Player.CLIENT)
 				{
 					SetGameState(GameState.HostTurn);
 					SetBetState(BetState.HostTurn);
@@ -254,8 +254,6 @@ public class GameManager : NetworkBehaviour
 
 				break;
 			case GameState.HostTurn:
-				// if (loseMatch)
-				// 	SetGameState(GameState.GameOver);
 				break;
 			case GameState.ClientTurn:
 				break;

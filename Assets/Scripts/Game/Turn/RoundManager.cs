@@ -9,16 +9,15 @@ public class RoundManager : NetworkBehaviour
 
     public CardsScriptableObject CardsSO;
 
-    public List<Player> MatchWonHistory;
     public NetworkVariable<bool> RoundHasStarted;
-    public NetworkVariable<int> WhoStartedRound;
 
-    public NetworkVariable<int> VictoriesHost;
-    public NetworkVariable<int> VictoriesClient;
+    public List<VictoryHistory> RoundWonHistory;
+    public int VictoriesHost;
+    public int VictoriesClient;
 
     public Trick CurrentTrick;
-    [HideInInspector] public bool HostTrickWon;
-    [HideInInspector] public bool ClientTrickWon;
+    // [HideInInspector] public bool HostTrickWon;
+    // [HideInInspector] public bool ClientTrickWon;
 
     public NetworkVariable<bool> BetHasStarted;
     public NetworkVariable<bool> StopIncreaseBet;
@@ -36,62 +35,53 @@ public class RoundManager : NetworkBehaviour
         if (Instance == null) Instance = this;
         else Destroy(this);
 
-        HostTrickWon = false;
-        ClientTrickWon = false;
-
         if (!IsServer) return;
 
+        RoundHasStarted.Value = false;
         BetHasStarted.Value = false;
         StopIncreaseBet.Value = false;
-        RoundHasStarted.Value = false;
-        WhoStartedRound.Value = 0;
-        VictoriesHost.Value = 0;
-        VictoriesClient.Value = 0;
         BetAsked.Value = 1;
     }
 
     [ServerRpc (RequireOwnership = false)]
     public void StartRoundServerRpc(Player p_playerType)
     {
-        Debug.Log("[GAME] " + p_playerType + " StartedRound");
+        Debug.Log("[GAME] " + p_playerType + " StartedTrick");
         CurrentTrick = new Trick(p_playerType);
         RoundHasStarted.Value = true;
-        WhoStartedRound.Value = (int)p_playerType;
     }
-
-    int draw;
 
     [ServerRpc (RequireOwnership = false)]
     public void PlayCardServerRpc(int p_index, Player p_playerType, int p_targetIndex, NetworkObjectReference p_cardNetworkObjectReference)
     {
+        Player l_wonRound = Player.DEFAULT;
+
         CurrentTrick.CardPlayed(CardsSO.deck[p_index], p_playerType, out bool p_goToNextTrick);
 
         if (p_goToNextTrick)
         {
             CurrentTrick.TurnsWonHistory.Add(CurrentTrick.GetCurrentTurnWinner());
-            Debug.Log("[GAME] " + CurrentTrick.GetTurnWinner(CurrentTrick.CurrentTrick - 1) + " Won Round");
-            OnTrickWon?.Invoke(CurrentTrick.GetTurnWinner(CurrentTrick.CurrentTrick - 1), EventArgs.Empty);
-            if (CurrentTrick.GetTurnWinner(CurrentTrick.CurrentTrick - 1) == Player.DRAW)
-                draw++;
+            Debug.Log("[GAME] " + CurrentTrick.TurnsWonHistory[^1] + " Won Turn");
+            OnTrickWon?.Invoke(CurrentTrick.TurnsWonHistory[^1], EventArgs.Empty);
         }
 
         if (CurrentTrick.CurrentTrick > 1)
         {
-            if (CurrentTrick.HostTurnsWon > CurrentTrick.ClientTurnsWon) HostTrickWon = true;
-            else if (CurrentTrick.HostTurnsWon < CurrentTrick.ClientTurnsWon) ClientTrickWon = true;
+            if (CurrentTrick.HostTurnsWon > CurrentTrick.ClientTurnsWon) l_wonRound = Player.HOST;
+            else if (CurrentTrick.HostTurnsWon < CurrentTrick.ClientTurnsWon) l_wonRound = Player.CLIENT;
 
-            if (draw == 1 && !HostTrickWon && !ClientTrickWon) //if there is one draw and host and client are both with 1 victory
+            if (CurrentTrick.TurnsDraw == 1 && CurrentTrick.HostTurnsWon == CurrentTrick.ClientTurnsWon) //if there is one draw and host and client are both with 1 victory
             {
-                if (CurrentTrick.WhoWonFirstTrick == Player.HOST) HostTrickWon = true;
-                else if (CurrentTrick.WhoWonFirstTrick == Player.CLIENT) ClientTrickWon = true;
+                if (CurrentTrick.WhoWonFirstTrick == Player.HOST) l_wonRound = Player.HOST;
+                else if (CurrentTrick.WhoWonFirstTrick == Player.CLIENT) l_wonRound = Player.CLIENT;
             }
-            else if (draw >= 2) //three draws
+            else if (CurrentTrick.TurnsDraw >= 2) //three draws
             {
-                if (CurrentTrick.WhoStartedTrick == Player.HOST) HostTrickWon = true;
-                else if (CurrentTrick.WhoStartedTrick == Player.CLIENT) ClientTrickWon = true;
+                if (CurrentTrick.WhoStartedTrick == Player.HOST) l_wonRound = Player.HOST;
+                else if (CurrentTrick.WhoStartedTrick == Player.CLIENT) l_wonRound = Player.CLIENT;
             }
 
-            AdjustVictoryServerRpc(HostTrickWon, ClientTrickWon);
+            AdjustVictoryServerRpc(l_wonRound);
         }
 
         CustomSender l_customSender = new();
@@ -126,40 +116,25 @@ public class RoundManager : NetworkBehaviour
     }
 
     [ServerRpc (RequireOwnership = false)]
-    public void GiveUpServerRpc(int p_playerId)
+    public void GiveUpServerRpc(Player p_playerLost)
     {
-        Debug.Log("[GAME] GiveUpServerRpc " + p_playerId);
-        if (p_playerId == 0) ClientTrickWon = true;
-        else if (p_playerId == 1) HostTrickWon = true;
+        Debug.Log("[GAME] GiveUpServerRpc " + p_playerLost);
 
-        AdjustVictoryServerRpc(HostTrickWon, ClientTrickWon);
+        AdjustVictoryServerRpc(p_playerLost == Player.HOST ? Player.CLIENT : Player.HOST);
     }
 
     [ServerRpc (RequireOwnership = false)]
-    public void AdjustVictoryServerRpc(bool p_HostTrickWon, bool p_ClientTrickWon)
+    public void AdjustVictoryServerRpc(Player p_wonRound)
     {
-        if (p_HostTrickWon)
-        {
-            MatchWonHistory.Add(Player.HOST);
-            VictoriesHost.Value += CurrentTrick.TrickBetMultiplier;
-        }
-        else if (p_ClientTrickWon)
-        {
-            MatchWonHistory.Add(Player.CLIENT);
-            VictoriesClient.Value += CurrentTrick.TrickBetMultiplier;
-        }
+        RoundWonHistory.Add(new VictoryHistory(p_wonRound, CurrentTrick.TrickBetMultiplier));
 
-        YouWonClientRpc(HostTrickWon, ClientTrickWon);
+        YouWonClientRpc(p_wonRound);
     }
 
     [ClientRpc]
-    public void YouWonClientRpc(bool p_HostTrickWon, bool p_ClientTrickWon)
+    public void YouWonClientRpc(Player p_wonRound)
     {
-        if (p_HostTrickWon) OnRoundWon?.Invoke(0, EventArgs.Empty);
-        else if (p_ClientTrickWon) OnRoundWon?.Invoke(1, EventArgs.Empty);
-
-        HostTrickWon = false;
-        ClientTrickWon = false;
+        OnRoundWon?.Invoke(p_wonRound, EventArgs.Empty);
 
         if (IsServer)
         {
@@ -189,5 +164,17 @@ public struct CustomSender
         targetIndex = p_targetIndex;
         cardNO = p_cardNO;
         cardIndex = p_cardIndex;
+    }
+}
+
+public struct VictoryHistory
+{
+    public Player player;
+    public int roundValue;
+
+    public  VictoryHistory(Player p_player, int p_roundValue)
+    {
+        player = p_player;
+        roundValue = p_roundValue;
     }
 }

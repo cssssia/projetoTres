@@ -150,12 +150,12 @@ public class PlayerController : NetworkBehaviour
         {
             m_myHand.Clear();
             m_handBehavior.ResetCardsOnHandBehavior();
+
+            if (PlayerIndex == (int)p_playerWonId)
+                Debug.Log("[GAME] You Won!");
         }
 
         RemoveCardFromGameClientRpc();
-
-        if (IsOwner && PlayerIndex == (int)p_playerWonId)
-            Debug.Log("[GAME] You Won!");
 
         if (IsServer)
             RoundManager.Instance.RoundHasStarted.Value = false;
@@ -252,7 +252,7 @@ public class PlayerController : NetworkBehaviour
     {
         if (gameObject.CompareTag("Deck"))
         {
-            RoundManager.Instance.GiveUpServerRpc(PlayerIndex);
+            RoundManager.Instance.GiveUpServerRpc((Player)PlayerIndex);
         }
     }
 

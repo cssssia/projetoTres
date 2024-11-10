@@ -831,10 +831,10 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 430329692}
-  - component: {fileID: 430329693}
   - component: {fileID: 430329696}
   - component: {fileID: 430329695}
   - component: {fileID: 430329694}
+  - component: {fileID: 430329697}
   m_Layer: 8
   m_Name: Deck
   m_TagString: Deck
@@ -857,22 +857,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 2052521495}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &430329693
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 430329691}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  GlobalObjectIdHash: 366779405
-  AlwaysReplicateAsRoot: 0
-  DontDestroyWithOwner: 0
-  AutoObjectParentSync: 1
 --- !u!65 &430329694
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -944,6 +928,18 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 430329691}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!114 &430329697
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 430329691}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a27bf2d43d168ad4cb6c169dd0bc7835, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &439848325
 GameObject:
   m_ObjectHideFlags: 0
@@ -2559,7 +2555,8 @@ MonoBehaviour:
     m_InternalValue: 0
   StopIncreaseBet:
     m_InternalValue: 0
-  betAsked: 1
+  BetAsked:
+    m_InternalValue: 0
 --- !u!1 &719113044
 GameObject:
   m_ObjectHideFlags: 0

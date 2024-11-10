@@ -144,7 +144,6 @@ public class CardsManager : NetworkBehaviour
     private void OnCardPlayed(object p_sender, EventArgs p_args)
     {
         CustomSender l_customSender = (CustomSender)p_sender;
-        Debug.Log("card played index " + l_customSender.cardIndex);
         for (int i = 0; i < cardsOnGameList.Count; i++)
         {
             if (cardsOnGameList[i].cardIndexSO == l_customSender.cardIndex)

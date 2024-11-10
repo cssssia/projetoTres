@@ -16,6 +16,7 @@ GameObject:
   - component: {fileID: 7551673745850367150}
   - component: {fileID: 4147424375562297416}
   - component: {fileID: 4519521580299488874}
+  - component: {fileID: 5862204906535283086}
   m_Layer: 0
   m_Name: Player
   m_TagString: Untagged
@@ -75,6 +76,7 @@ MonoBehaviour:
   m_cardTargetTransform: []
   m_handBehavior: {fileID: 4147424375562297416}
   m_betBehavior: {fileID: 4519521580299488874}
+  m_deckBehavior: {fileID: 5862204906535283086}
   m_myHand: []
   currentGameState: 0
   currentBetState: 0
@@ -172,3 +174,16 @@ MonoBehaviour:
   m_betLayer:
     serializedVersion: 2
     m_Bits: 128
+--- !u!114 &5862204906535283086
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5153222700290797854}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1af936c32c07d5f489f57589cf4f99e1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_currentDeck: {fileID: 0}

@@ -63,6 +63,7 @@ public class PlayerController : NetworkBehaviour
             LocalInstance = this;
             m_handBehavior.OnPlayerSpawned();
             m_betBehavior.OnPlayerSpawned(PlayerIndex);
+            m_deckBehavior.OnPlayerSpawned();
         }
 
         transform.SetPositionAndRotation(m_spawnData.spawnPosition[PlayerIndex], Quaternion.Euler(m_spawnData.spawnRotation[PlayerIndex]));
@@ -123,15 +124,12 @@ public class PlayerController : NetworkBehaviour
     private void CardsManager_OnRemoveCardFromMyHand(object p_card, EventArgs e)
     {
         l_card = (Card)p_card;
-        Debug.Log("from my hand");
         if (IsOwner && l_card.cardPlayer == PlayerIndex)
         {
-            Debug.Log("id: " + PlayerIndex);
             for (int i = 0; i < m_myHand.Count; i++)
             {
                 if (m_myHand[i].cardIndexSO == l_card.cardIndexSO)
                 {
-                    Debug.Log("card id: " + l_card.cardIndexSO);
                     m_myHand.RemoveAt(i);
                     break;
                 }
@@ -246,7 +244,6 @@ public class PlayerController : NetworkBehaviour
             if (!RoundManager.Instance.RoundHasStarted.Value)
                 RoundManager.Instance.StartRoundServerRpc(IsHost ? Player.HOST : Player.CLIENT);
 
-            Debug.Log("Bet " + gameObject.name + increase);
             RoundManager.Instance.BetServerRpc(increase);
         }
     }

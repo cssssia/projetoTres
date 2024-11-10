@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using Unity.Netcode;
-using Unity.VisualScripting;
 using UnityEngine;
 
 public class RoundManager : NetworkBehaviour
@@ -39,6 +38,8 @@ public class RoundManager : NetworkBehaviour
 
         HostTrickWon = false;
         ClientTrickWon = false;
+
+        if (!IsServer) return;
 
         BetHasStarted.Value = false;
         StopIncreaseBet.Value = false;
@@ -90,18 +91,7 @@ public class RoundManager : NetworkBehaviour
                 else if (CurrentTrick.WhoStartedTrick == Player.CLIENT) ClientTrickWon = true;
             }
 
-            if (HostTrickWon)
-            {
-                MatchWonHistory.Add(Player.HOST);
-                VictoriesHost.Value += CurrentTrick.TrickBetMultiplier;
-            }
-            else if (ClientTrickWon)
-            {
-                MatchWonHistory.Add(Player.CLIENT);
-                VictoriesClient.Value += CurrentTrick.TrickBetMultiplier;
-            }
-
-            YouWonClientRpc(HostTrickWon, ClientTrickWon);
+            AdjustVictoryServerRpc(HostTrickWon, ClientTrickWon);
         }
 
         CustomSender l_customSender = new();
@@ -135,10 +125,31 @@ public class RoundManager : NetworkBehaviour
         OnBet?.Invoke(p_increaseBet, EventArgs.Empty);
     }
 
-    [ServerRpc]
+    [ServerRpc (RequireOwnership = false)]
     public void GiveUpServerRpc(int p_playerId)
     {
         Debug.Log("[GAME] GiveUpServerRpc " + p_playerId);
+        if (p_playerId == 0) ClientTrickWon = true;
+        else if (p_playerId == 1) HostTrickWon = true;
+
+        AdjustVictoryServerRpc(HostTrickWon, ClientTrickWon);
+    }
+
+    [ServerRpc (RequireOwnership = false)]
+    public void AdjustVictoryServerRpc(bool p_HostTrickWon, bool p_ClientTrickWon)
+    {
+        if (p_HostTrickWon)
+        {
+            MatchWonHistory.Add(Player.HOST);
+            VictoriesHost.Value += CurrentTrick.TrickBetMultiplier;
+        }
+        else if (p_ClientTrickWon)
+        {
+            MatchWonHistory.Add(Player.CLIENT);
+            VictoriesClient.Value += CurrentTrick.TrickBetMultiplier;
+        }
+
+        YouWonClientRpc(HostTrickWon, ClientTrickWon);
     }
 
     [ClientRpc]

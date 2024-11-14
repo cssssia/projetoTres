@@ -15,6 +15,7 @@ public class CardsManager : NetworkBehaviour
     public List<Card> UsableDeckList;
     [SerializeField] private NetworkObject m_deckParent;
     [SerializeField] private CardsScriptableObject m_cardsSO;
+    [SerializeField] private ItemCardScriptableObject m_itemsSO;
 
     public event EventHandler OnAddCardToMyHand;
     public event EventHandler OnRemoveCardFromMyHand;
@@ -106,7 +107,7 @@ public class CardsManager : NetworkBehaviour
     [ServerRpc]
     void SpawnCardServerRpc(int p_indexSO)
     {
-        GameObject l_newCard = Instantiate(m_cardsSO.prefab);
+        GameObject l_newCard = Instantiate(m_cardsSO.Prefab);
         NetworkObject l_cardNetworkObject = l_newCard.GetComponent<NetworkObject>();
         l_cardNetworkObject.Spawn(true);
 

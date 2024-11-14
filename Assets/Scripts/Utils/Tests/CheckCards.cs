@@ -51,7 +51,7 @@ public class CheckCards : MonoBehaviour
     {
         for (int i = 0; i < m_deck.Count; i++)
         {
-            GameObject l_newCard = Instantiate(m_cardsSO.prefab, new Vector3(i, 0f, 0f), Quaternion.identity);
+            GameObject l_newCard = Instantiate(m_cardsSO.Prefab, new Vector3(i, 0f, 0f), Quaternion.identity);
             l_newCard.name = m_deck[i].name;
             l_newCard.GetComponent<MeshRenderer>().material = m_deck[i].material;
         }

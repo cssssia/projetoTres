@@ -3,9 +3,10 @@ using Unity.VisualScripting;
 using UnityEngine;
 
 [CreateAssetMenu(fileName = "Data", menuName = "ScriptableObjects/CardsScriptableObject", order = 1)]
-public class CardsScriptableObject : ScriptableObject
+public class CardsScriptableObject : ScriptableObject, ICardScriptableObject
 {
-    public GameObject prefab;
+    [SerializeField] private GameObject prefab;
+    public GameObject Prefab { get { return prefab; } }
     [SerializeField] public List<Card> deck;
 
     [System.Serializable]

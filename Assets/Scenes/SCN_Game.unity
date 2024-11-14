@@ -6838,6 +6838,7 @@ MonoBehaviour:
   UsableDeckList: []
   m_deckParent: {fileID: 458482229}
   m_cardsSO: {fileID: 11400000, guid: f1e57d18c838241b2aaa61ff988810d9, type: 2}
+  m_itemsSO: {fileID: 11400000, guid: d812e892897aca74eb5dd6baaa63ea87, type: 2}
   m_targetsTranform:
   - {fileID: 3646608986920129432}
   - {fileID: 1515064480}

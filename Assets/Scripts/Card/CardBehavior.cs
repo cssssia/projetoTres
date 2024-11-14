@@ -24,7 +24,7 @@ public class CardTransform
     }
 }
 
-public enum CardAnimType { PLAY, IDLE, HIGHLIGHT, DRAG }
+public enum CardAnimType { PLAY, IDLE, HIGHLIGHT, DRAG, DEAL }
 
 public class CardBehavior : MonoBehaviour
 {
@@ -40,6 +40,7 @@ public class CardBehavior : MonoBehaviour
     [SerializeField] private CardAnimConfig m_playCardAnim;
     [SerializeField] private CardAnimConfig m_idleCardAnim;
     [SerializeField] private CardAnimConfig m_hoverCardAnim;
+    [SerializeField] private CardAnimConfig m_dealCardAnim;
     [SerializeField] private Vector3 m_dragOffset;
     [SerializeField] private Transform m_dragAnchor;
 
@@ -51,8 +52,9 @@ public class CardBehavior : MonoBehaviour
 
     public Action OnDestroyAction;
 
-    private void Start()
+    private IEnumerator Start()
     {
+        yield return null;
         m_startPosition = transform.position;
         m_startRotation = transform.rotation.eulerAngles;
     }
@@ -86,7 +88,7 @@ public class CardBehavior : MonoBehaviour
 
     CardAnimConfig l_tempCardAnim;
     Coroutine m_currentAnim;
-    public void AnimateToPlace(CardTransform p_cardTransform, CardAnimType p_animType, Action<GameObject> p_action = null)
+    public Coroutine AnimateToPlace(CardTransform p_cardTransform, CardAnimType p_animType, Action<GameObject> p_action = null)
     {
         switch (p_animType)
         {
@@ -99,11 +101,15 @@ public class CardBehavior : MonoBehaviour
             case CardAnimType.HIGHLIGHT:
                 l_tempCardAnim = m_hoverCardAnim;
                 break;
+            case CardAnimType.DEAL:
+                l_tempCardAnim = m_dealCardAnim;
+                break;
         }
 
         if (m_currentAnim != null) StopCoroutine(m_currentAnim);
 
         m_currentAnim = StartCoroutine(IAnimateToPlace(p_cardTransform, l_tempCardAnim, p_animType, p_action));
+        return m_currentAnim;
     }
 
     public void HighlightCard()
@@ -119,26 +125,37 @@ public class CardBehavior : MonoBehaviour
             AnimateToPlace(m_idleCardTranform, CardAnimType.IDLE);
     }
 
-    public void AnimToIdlePos(Action<GameObject> p_action = null)
+    public Vector3 Rotation;
+    public Vector3 LocalRotation;
+    private void Update()
     {
-        AnimateToPlace(m_idleCardTranform, CardAnimType.IDLE, p_action);
+        Rotation = transform.rotation.eulerAngles;
+        LocalRotation = transform.localRotation.eulerAngles;
     }
 
-    Vector3 l_tempPosition, l_initialPosition, l_tempRotation, l_initialRotation, l_tempScale, l_initialScale;
+    public Coroutine AnimToIdlePos(CardAnimType p_animType = CardAnimType.IDLE, Action<GameObject> p_action = null)
+    {
+
+        return AnimateToPlace(m_idleCardTranform, p_animType, p_action);
+    }
+
+    public Vector3 playerPosition;
+    Vector3 l_tempPosition, l_initialPosition, l_tempScale, l_initialScale;
+    Quaternion l_initialQuat, l_tempQuat, l_finalQuat;
     IEnumerator IAnimateToPlace(CardTransform p_cardTransform, CardAnimConfig p_animConfig, CardAnimType p_cardState, Action<GameObject> p_onFinishAnim = null)
     {
         m_currentState = p_cardState;
         l_initialPosition = p_animConfig.UseLocalPosition ? transform.localPosition : transform.position;
-        l_initialRotation = p_animConfig.UseLocalPosition ? transform.localRotation.eulerAngles : transform.rotation.eulerAngles;
-        transform.rotation = Quaternion.Euler(l_initialRotation);
+        l_initialQuat = p_animConfig.UseLocalPosition ? transform.localRotation : transform.rotation;
+        l_tempQuat = l_initialQuat;
+        l_finalQuat = Quaternion.Euler(p_cardTransform.Rotation);
+
         l_initialScale = transform.localScale;
 
         for (float time = 0f; time < p_animConfig.AnimTime; time += Time.deltaTime)
         {
             float l_rotateTValue = p_animConfig.RotationAnimCurve.Evaluate(time / p_animConfig.AnimTime);
-            l_tempRotation.x = Mathf.LerpAngle(l_initialRotation.x, p_cardTransform.Rotation.x, l_rotateTValue);
-            l_tempRotation.y = Mathf.LerpAngle(l_initialRotation.y, p_cardTransform.Rotation.y, l_rotateTValue);
-            l_tempRotation.z = Mathf.LerpAngle(l_initialRotation.z, p_cardTransform.Rotation.z, l_rotateTValue);
+            l_tempQuat = Quaternion.Lerp(l_initialQuat, l_finalQuat, l_rotateTValue);
 
             l_tempPosition = Vector3.LerpUnclamped(l_initialPosition, p_cardTransform.Position, p_animConfig.MoveAnimCurve.Evaluate(time / p_animConfig.AnimTime));
             l_tempPosition.y += Mathf.Lerp(0, p_animConfig.CardYPump, p_animConfig.YPumpCurve.Evaluate(time / p_animConfig.AnimTime));
@@ -148,17 +165,35 @@ public class CardBehavior : MonoBehaviour
             if (p_animConfig.UseLocalPosition)
             {
                 transform.localPosition = l_tempPosition;
-                transform.localRotation = Quaternion.Euler(l_tempRotation);
+                transform.rotation = l_tempQuat;
                 transform.localScale = l_tempScale;
             }
             else
             {
                 transform.position = l_tempPosition;
-                transform.rotation = Quaternion.Euler(l_tempRotation);
+                transform.rotation = l_tempQuat;
                 transform.localScale = l_tempScale;
             }
 
             yield return null;
+        }
+
+        l_tempQuat = Quaternion.Lerp(l_initialQuat, l_finalQuat, 1f);
+        l_tempPosition = Vector3.LerpUnclamped(l_initialPosition, p_cardTransform.Position, p_animConfig.MoveAnimCurve.Evaluate(1f));
+        l_tempPosition.y += Mathf.Lerp(0, p_animConfig.CardYPump, p_animConfig.YPumpCurve.Evaluate(1f));
+        l_tempScale = Vector3.Lerp(l_initialScale, p_cardTransform.Scale, 1f);
+
+        if (p_animConfig.UseLocalPosition)
+        {
+            transform.localPosition = l_tempPosition;
+            transform.rotation = l_tempQuat;
+            transform.localScale = l_tempScale;
+        }
+        else
+        {
+            transform.position = l_tempPosition;
+            transform.rotation = l_tempQuat;
+            transform.localScale = l_tempScale;
         }
 
         p_onFinishAnim?.Invoke(gameObject);

@@ -9,7 +9,12 @@ public class CardAnimConfig : ScriptableObject
     public float AnimTime { get => m_animTime; }
     public AnimationCurve MoveAnimCurve;
     public bool UseLocalPosition = true;
+    [Header("Rotation")]
     public AnimationCurve RotationAnimCurve;
+    public bool freezeXRotation, freezeYRotation, freezeZRotation;
+    //public bool lookAtPlayer;
+    //public AnimationCurve LookAtPlayerAnimCurve;
+
     [SerializeField] private float m_cardYPump;
     public float CardYPump { get => m_cardYPump; }
     public AnimationCurve YPumpCurve;

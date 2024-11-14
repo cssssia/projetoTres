@@ -166,6 +166,7 @@ MonoBehaviour:
   m_playCardAnim: {fileID: 11400000, guid: b46c9a421976e4c4ebba812cf2bc3405, type: 2}
   m_idleCardAnim: {fileID: 11400000, guid: de68a7a4436d6ad4bb6d8323e5e8e750, type: 2}
   m_hoverCardAnim: {fileID: 11400000, guid: 5a1ff09991fa28b40ada698f2bfe8856, type: 2}
+  m_dealCardAnim: {fileID: 11400000, guid: 5b3765b58e247d0468a5a3f48938ebc6, type: 2}
   m_dragOffset: {x: 0, y: 0, z: 0}
   m_dragAnchor: {fileID: 4337514763748464840}
   card:
@@ -173,8 +174,8 @@ MonoBehaviour:
     cardValue: 0
     cardIndexSO: 0
     cardPlayer: 0
-    cardNetworkObject: {fileID: 0}
     playedCard: 0
+  playerPosition: {x: 0, y: 3.15, z: -7.2}
 --- !u!114 &937226932739149441
 MonoBehaviour:
   m_ObjectHideFlags: 0

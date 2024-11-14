@@ -55,7 +55,8 @@ public class CardsOnHandBehavior : MonoBehaviour
 
         if (p_lastCard)
         {
-            SetCardsIdlePosition(true);
+            SetCardsIdlePosition(false);
+            AnimCardsDealing();
         }
     }
 
@@ -79,14 +80,15 @@ public class CardsOnHandBehavior : MonoBehaviour
         }
     }
 
-    public void GetCardsAnim(int p_cardIndex, Action p_eventToCallForEachCard)
-    {
-        m_cardsBehavior[p_cardIndex].AnimToIdlePos(
-            delegate
-            {
-                p_eventToCallForEachCard.Invoke();
-            });
-    }
+    //public void GetCardsAnim(int p_cardIndex, Action p_eventToCallForEachCard)
+    //{
+    //    m_cardsBehavior[p_cardIndex].AnimToIdlePos(
+
+    //        delegate
+    //        {
+    //            p_eventToCallForEachCard.Invoke();
+    //        });
+    //}
 
     [NaughtyAttributes.Button]
     public void DEBUG_SetCardsPOs()
@@ -122,6 +124,32 @@ public class CardsOnHandBehavior : MonoBehaviour
                 if (p_alsoSetPosition) m_cardsBehavior[i].transform.localPosition = l_newPos;
             }
         }
+    }
+    [NaughtyAttributes.Button]
+    public void DEBUG_CardDealing() => AnimCardsDealing();
+    private void AnimCardsDealing()
+    {
+        for (int i = 0; i < m_cardsBehavior.Count; i++)
+        {
+            m_cardsBehavior[i].ResetTransform();
+        }
+
+        StartCoroutine(AnimCardsDeal());
+    }
+
+    IEnumerator AnimCardsDeal()
+    {
+        for (int i = 0; i < m_cardsBehavior.Count; i++)
+        {
+            yield return AnimSingleCardDeal(m_cardsBehavior[i]);
+
+            yield return new WaitForSeconds(.5f);
+        }
+    }
+
+    IEnumerator AnimSingleCardDeal(CardBehavior p_card)
+    {
+        yield return p_card.AnimToIdlePos(CardAnimType.DEAL);
     }
 
     public bool CheckHoverObject(GameObject p_gameObject)

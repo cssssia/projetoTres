@@ -8,6 +8,8 @@ public class CardsScriptableObject : ScriptableObject, ICardScriptableObject
     [SerializeField] private GameObject prefab;
     public GameObject Prefab { get { return prefab; } }
     [SerializeField] public List<Card> deck;
+    public Vector3 InitialPosition;
+    public Vector3 InitialRotation;
 
     [System.Serializable]
     [IncludeInSettings(true)]

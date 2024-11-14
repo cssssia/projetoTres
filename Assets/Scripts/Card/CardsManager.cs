@@ -107,7 +107,7 @@ public class CardsManager : NetworkBehaviour
     [ServerRpc]
     void SpawnCardServerRpc(int p_indexSO)
     {
-        GameObject l_newCard = Instantiate(m_cardsSO.Prefab);
+        GameObject l_newCard = Instantiate(m_cardsSO.Prefab, m_cardsSO.InitialPosition, Quaternion.Euler(m_cardsSO.InitialRotation));
         NetworkObject l_cardNetworkObject = l_newCard.GetComponent<NetworkObject>();
         l_cardNetworkObject.Spawn(true);
 

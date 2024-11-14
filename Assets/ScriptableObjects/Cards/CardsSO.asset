@@ -171,4 +171,4 @@ MonoBehaviour:
     value: 16
     material: {fileID: 2100000, guid: 2ca0fe2bbbfb6c045a1e2569cbcf63d6, type: 2}
   InitialPosition: {x: 3.5, y: 0.6, z: -0.25}
-  InitialRotation: {x: 0, y: 180, z: 180}
+  InitialRotation: {x: 180, y: 0, z: 0}

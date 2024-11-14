@@ -26,7 +26,7 @@ public class RoundManager : NetworkBehaviour
 	public event EventHandler OnCardPlayed;
 	public event EventHandler OnStartPlayingCard;
 	public event EventHandler OnBet;
-
+    public event EventHandler OnEndedDealing;
 
     void Awake()
     {
@@ -140,6 +140,12 @@ public class RoundManager : NetworkBehaviour
     public void OnStartAnimServerRpc(int p_playerIndex, int p_targetIndex, int p_cardIndex, NetworkObjectReference p_cardNetworkObjectReference)
     {
         OnStartPlayingCard?.Invoke(new CustomSender(p_playerIndex, p_targetIndex, p_cardNetworkObjectReference, p_cardIndex), EventArgs.Empty);
+    }
+
+    [ServerRpc(RequireOwnership = false)]
+    public void OnEndedDealingCardsServerRpc(int p_playerID)
+    {
+        OnEndedDealing?.Invoke(p_playerID, EventArgs.Empty);
     }
 }
 

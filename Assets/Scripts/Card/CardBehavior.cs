@@ -165,7 +165,7 @@ public class CardBehavior : MonoBehaviour
             if (p_animConfig.UseLocalPosition)
             {
                 transform.localPosition = l_tempPosition;
-                transform.rotation = l_tempQuat;
+                transform.localRotation = l_tempQuat;
                 transform.localScale = l_tempScale;
             }
             else
@@ -186,7 +186,7 @@ public class CardBehavior : MonoBehaviour
         if (p_animConfig.UseLocalPosition)
         {
             transform.localPosition = l_tempPosition;
-            transform.rotation = l_tempQuat;
+            transform.localRotation = l_tempQuat;
             transform.localScale = l_tempScale;
         }
         else

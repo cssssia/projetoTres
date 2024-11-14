@@ -39,16 +39,16 @@ public class PlayerController : NetworkBehaviour
         }
     }
 
-    private bool IsHostPlayer
+    public bool IsHostPlayer
     {
         get { return PlayerIndex == 0; }
     }
-    private bool IsClientPlayer
+    public bool IsClientPlayer
     {
         get { return PlayerIndex == 1; }
     }
 
-    private int PlayerIndex
+    public int PlayerIndex
     {
         get { return GameMultiplayerManager.Instance.GetPlayerDataIndexFromClientId(OwnerClientId); }
     }
@@ -61,10 +61,10 @@ public class PlayerController : NetworkBehaviour
         if (IsOwner)
         {
             LocalInstance = this;
-            m_handBehavior.OnPlayerSpawned();
             m_betBehavior.OnPlayerSpawned(PlayerIndex);
             m_deckBehavior.OnPlayerSpawned();
         }
+            m_handBehavior.OnPlayerSpawned(this);
 
         transform.SetPositionAndRotation(m_spawnData.spawnPosition[PlayerIndex], Quaternion.Euler(m_spawnData.spawnRotation[PlayerIndex]));
         if (IsOwner) CameraController.Instance.SetCamera(PlayerIndex);
@@ -285,10 +285,7 @@ public class PlayerController : NetworkBehaviour
     [ClientRpc]
     public void SetCardParentClientRpc(int p_cardIndex, bool p_finishedHandCards)
     {
-        if (IsOwner)
-        {
-            m_handBehavior.AddCardOnHand(p_cardIndex, p_finishedHandCards);
-        }
+        m_handBehavior.AddCardOnHand(p_cardIndex, p_finishedHandCards);
         CardsManager.Instance.GetCardByIndex(p_cardIndex).cardNetworkObjectReference.TryGet(out NetworkObject l_cardNetworkObject);
         l_cardNetworkObject.TrySetParent(transform, false);
     }

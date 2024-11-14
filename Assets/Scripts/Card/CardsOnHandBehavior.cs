@@ -30,15 +30,20 @@ public class CardsOnHandBehavior : MonoBehaviour
     {
         //SetCardsIdlePosition(true);
         m_pointerEventData = new PointerEventData(EventSystem.current);
+
+
     }
 
-    public void OnPlayerSpawned()
+    private PlayerController m_player;
+    public void OnPlayerSpawned(PlayerController p_playerController)
     {
+        m_player = p_playerController;
+
+        if (!m_player.IsOwner) return;
+
         m_throwCardThrowTargetTag = FindObjectOfType<CardThrowTargetTag>();
-        print(m_throwCardThrowTargetTag == null);
         m_throwCardTargetImage = m_throwCardThrowTargetTag.targetImage;
         m_throwCardTargetImage.gameObject.SetActive(false);
-
     }
 
     CardBehavior l_card;
@@ -55,7 +60,7 @@ public class CardsOnHandBehavior : MonoBehaviour
 
         if (p_lastCard)
         {
-            SetCardsIdlePosition(false);
+            SetCardsIdlePosition(true);
             AnimCardsDealing();
         }
     }
@@ -139,12 +144,18 @@ public class CardsOnHandBehavior : MonoBehaviour
 
     IEnumerator AnimCardsDeal()
     {
+        if (GameManager.Instance.nextGameState.Value is GameManager.GameState.HostTurn && m_player.IsClientPlayer
+            || GameManager.Instance.nextGameState.Value is GameManager.GameState.ClientTurn && m_player.IsHostPlayer)
+            yield return new WaitForSeconds(0.25f);
+
         for (int i = 0; i < m_cardsBehavior.Count; i++)
         {
             yield return AnimSingleCardDeal(m_cardsBehavior[i]);
 
-            yield return new WaitForSeconds(.5f);
+            if (i + 1 < m_cardsBehavior.Count) yield return new WaitForSeconds(.5f);
         }
+
+        RoundManager.Instance.OnEndedDealingCardsServerRpc(m_player.PlayerIndex);
     }
 
     IEnumerator AnimSingleCardDeal(CardBehavior p_card)

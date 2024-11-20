@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using Unity.Netcode;
@@ -13,12 +14,20 @@ public class CardsManager : NetworkBehaviour
     public List<int> CardsOnGameList;
     public List<int> DeckOnGameList;
     public List<Card> UsableDeckList;
+    public List<Item> UsableItemsList;
+
     [SerializeField] private NetworkObject m_deckParent;
     [SerializeField] private CardsScriptableObject m_cardsSO;
     [SerializeField] private ItemCardScriptableObject m_itemsSO;
 
     public event EventHandler OnAddCardToMyHand;
     public event EventHandler OnRemoveCardFromMyHand;
+
+    public event EventHandler OnAddItemCardToMyHand;
+
+    [Header("Items")]
+    public List<bool> PlayersHaveItem = new List<bool> { false, false };
+    public bool BothPlayersHaveItem => PlayersHaveItem[0] && PlayersHaveItem[1];
 
     [Header("Targets")]
     [SerializeField] private List<CardTarget> m_targetsTranform;
@@ -81,7 +90,6 @@ public class CardsManager : NetworkBehaviour
             SetPlayerUsableDeckClientRpc(DeckOnGameList[i], (Player)(i % 2));
             DealOneCard(DeckOnGameList[i]);
         }
-
     }
 
     [ClientRpc]
@@ -133,6 +141,45 @@ public class CardsManager : NetworkBehaviour
         UsableDeckList.Add(l_usableCard);
         DeckOnGameList.Add(UsableDeckList.Count - 1);
     }
+
+    [ServerRpc]
+    public void DealItemsToPlayersServerRpc()
+    {
+        ItemType l_randomItem = ItemType.SCISSORS;//randomize it
+
+        if (!PlayersHaveItem[0]) SpawnItemCardServerRpc(l_randomItem, 0);
+        if (!PlayersHaveItem[1]) SpawnItemCardServerRpc(l_randomItem, 1);
+    }
+
+    [ServerRpc]
+    void SpawnItemCardServerRpc(ItemType p_itemType, int p_playerIndex)
+    {
+        GameObject l_newCard = Instantiate(m_itemsSO.Prefab, m_itemsSO.InitialPosition, Quaternion.Euler(m_itemsSO.InitialRotation));
+        NetworkObject l_cardNetworkObject = l_newCard.GetComponent<NetworkObject>();
+        l_cardNetworkObject.Spawn(true);
+
+        RenameItemCardServerRpc(l_cardNetworkObject, p_itemType, p_playerIndex);
+    }
+
+    [ServerRpc]
+    void RenameItemCardServerRpc(NetworkObjectReference p_cardNetworkObjectReference, ItemType p_itemType, int p_playerIndex) //for a pattern, maybe ? (the tutorial guy does it)
+    {
+        RenameItemCardClientRpc(p_cardNetworkObjectReference, p_itemType, p_playerIndex);
+    }
+
+    [ClientRpc]
+    void RenameItemCardClientRpc(NetworkObjectReference p_cardNetworkObjectReference, ItemType p_itemType, int p_playerIndex)
+    {
+        p_cardNetworkObjectReference.TryGet(out NetworkObject l_cardNetworkObject);
+        l_cardNetworkObject.name = m_itemsSO.GetItemConfig(p_itemType).objectName;
+        l_cardNetworkObject.GetComponent<MeshRenderer>().material = m_itemsSO.GetItemConfig(p_itemType).material;
+        l_cardNetworkObject.TrySetParent(m_deckParent, false);
+
+        Item l_usableCard = new(p_itemType, p_cardNetworkObjectReference, p_playerIndex);
+
+        UsableItemsList.Add(l_usableCard);
+    }
+
 
     private void OnCardPlayed(object p_cardIndex, EventArgs p_args)
     {
@@ -190,6 +237,13 @@ public class CardsManager : NetworkBehaviour
             DeckOnGameList.RemoveAt(l_rand);
         }
 
+        SetHasItemClientRpc((int)p_playerId, false);
+    }
+
+    [ClientRpc]
+    private void SetHasItemClientRpc(int p_playerIndex, bool p_hasItem)
+    {
+        PlayersHaveItem[p_playerIndex] = p_hasItem;
     }
 
     [ClientRpc]
@@ -266,5 +320,42 @@ public class CardsManager : NetworkBehaviour
     public Card GetCardByIndex(int index)
     {
         return UsableDeckList[index];
+    }
+
+    public void GetItemNetworkObject(ItemType p_itemType, int p_playerdId, Action<Item> p_onSpawn)
+    {
+        bool l_found = false;
+
+        for (int i = 0; i < UsableItemsList.Count; i++)
+        {
+            if (UsableItemsList[i].Type == p_itemType && !UsableItemsList[i].isOnGame)
+            {
+                l_found = true;
+                break;
+            }
+        }
+
+        if (!l_found) SpawnItemCardServerRpc(p_itemType, p_playerdId);
+        StartCoroutine(WaitItemSpawn(p_itemType, p_onSpawn));
+    }
+
+    IEnumerator WaitItemSpawn(ItemType p_itemType, Action<Item> p_onSpawn)
+    {
+        bool l_found = false;
+        while (!l_found)
+        {
+            for (int i = 0; i < UsableItemsList.Count; i++)
+            {
+                if (UsableItemsList[i].Type == p_itemType && !UsableItemsList[i].isOnGame)
+                {
+                    p_onSpawn?.Invoke(UsableItemsList[i]);
+                    l_found = true;
+                    break;
+                }
+            }
+
+            if (l_found) break;
+            else yield return null;
+        }
     }
 }

@@ -54,15 +54,38 @@ public class CardsOnHandBehavior : MonoBehaviour
         l_cardNetworkObject.TryGetComponent(out l_card);
 
         if (m_cardsBehavior == null) m_cardsBehavior = new();
-        m_cardsBehavior.Add(l_card);
-        m_cardsBehavior[^1].SetCardData(CardsManager.Instance.GetCardByIndex(p_cardIndex));
-        m_cardsBehavior[^1].OnDestroyAction += RemoveNullCardsFromList;
+
+        bool l_hasItem = false;
+        for (int i = 0; i < m_cardsBehavior.Count; i++) if (m_cardsBehavior[i].itemType is not ItemType.NONE) l_hasItem = true;
+
+        if (!l_hasItem) m_cardsBehavior.Add(l_card);
+        else m_cardsBehavior.Insert(0, l_card);
+
+        l_card.SetCardData(CardsManager.Instance.GetCardByIndex(p_cardIndex));
+        l_card.OnDestroyAction += RemoveNullCardsFromList;
 
         if (p_lastCard)
         {
-            SetCardsIdlePosition(true);
+            SetCardsIdlePosition(false);
             AnimCardsDealing();
         }
+    }
+
+    public void AddItemOnHand(Item p_item)
+    {
+        p_item.cardNetworkObjectReference.TryGet(out NetworkObject l_itemCardNetworkObject);
+
+        if (l_itemCardNetworkObject.TryGetComponent(out l_card))
+        {
+            l_card.SetCardData(p_item.Type);
+            l_card.OnDestroyAction += RemoveNullCardsFromList;
+
+            m_cardsBehavior.Add(l_card);
+        }
+        else Debug.LogError("naao achou card behavrio aqui");
+
+        SetCardsIdlePosition(true);
+        StartCoroutine(AnimSingleCardDeal(l_card, () => { RoundManager.Instance.OnEndedDealingItemServerRpc(m_player.PlayerIndex); }));
     }
 
     private void RemoveNullCardsFromList()
@@ -142,25 +165,36 @@ public class CardsOnHandBehavior : MonoBehaviour
         StartCoroutine(AnimCardsDeal());
     }
 
+
+    List<int> l_tempCardsIDOnHand;
     IEnumerator AnimCardsDeal()
     {
         if (GameManager.Instance.nextGameState.Value is GameManager.GameState.HostTurn && m_player.IsClientPlayer
             || GameManager.Instance.nextGameState.Value is GameManager.GameState.ClientTurn && m_player.IsHostPlayer)
             yield return new WaitForSeconds(0.25f);
 
+        if (l_tempCardsIDOnHand == null) l_tempCardsIDOnHand = new();
+        l_tempCardsIDOnHand.Clear();
         for (int i = 0; i < m_cardsBehavior.Count; i++)
         {
-            yield return AnimSingleCardDeal(m_cardsBehavior[i]);
+            if (m_cardsBehavior[i].itemType is ItemType.NONE) l_tempCardsIDOnHand.Add(i);
+        }
 
-            if (i + 1 < m_cardsBehavior.Count) yield return new WaitForSeconds(.5f);
+        Debug.Log("is not item cars count " + l_tempCardsIDOnHand.Count);
+        for (int i = 0; i < l_tempCardsIDOnHand.Count; i++)
+        {
+            yield return AnimSingleCardDeal(m_cardsBehavior[l_tempCardsIDOnHand[i]]);
+
+            if (i + 1 < l_tempCardsIDOnHand.Count) yield return new WaitForSeconds(.5f);
         }
 
         RoundManager.Instance.OnEndedDealingCardsServerRpc(m_player.PlayerIndex);
     }
 
-    IEnumerator AnimSingleCardDeal(CardBehavior p_card)
+    IEnumerator AnimSingleCardDeal(CardBehavior p_card, Action p_actionOnEnd = null)
     {
         yield return p_card.AnimToIdlePos(CardAnimType.DEAL);
+        p_actionOnEnd?.Invoke();
     }
 
     public bool CheckHoverObject(GameObject p_gameObject)

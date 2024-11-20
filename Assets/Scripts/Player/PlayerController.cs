@@ -64,15 +64,17 @@ public class PlayerController : NetworkBehaviour
             m_betBehavior.OnPlayerSpawned(PlayerIndex);
             m_deckBehavior.OnPlayerSpawned();
         }
-            m_handBehavior.OnPlayerSpawned(this);
+        m_handBehavior.OnPlayerSpawned(this);
 
         transform.SetPositionAndRotation(m_spawnData.spawnPosition[PlayerIndex], Quaternion.Euler(m_spawnData.spawnRotation[PlayerIndex]));
         if (IsOwner) CameraController.Instance.SetCamera(PlayerIndex);
 
         CardsManager.Instance.OnAddCardToMyHand += CardsManager_OnAddCardToMyHand;
         CardsManager.Instance.OnRemoveCardFromMyHand += CardsManager_OnRemoveCardFromMyHand;
+        CardsManager.Instance.OnAddItemCardToMyHand += CardsManager_OnAddItemCardToMyHand;
 
         RoundManager.Instance.OnRoundWon += TurnManager_OnRoundWon;
+
 
         if (IsServer)
         {
@@ -117,8 +119,16 @@ public class PlayerController : NetworkBehaviour
         if (IsOwner && CardsManager.Instance.GetCardByIndex((int)p_cardIndex).cardPlayer == (Player)PlayerIndex)
         {
             m_myHand.Add((int)p_cardIndex);
+            print($"deal? {m_myHand.Count == 3}");
             SetCardParentServerRpc((int)p_cardIndex, m_myHand.Count == 3);
         }
+    }
+    private void CardsManager_OnAddItemCardToMyHand(object p_itemTypeAndPlayer, EventArgs e)
+    {
+        ItemType p_itemType = (((ItemType, int))p_itemTypeAndPlayer).Item1;
+        int p_playerId = (((ItemType, int))p_itemTypeAndPlayer).Item2;
+
+        if (IsOwner && p_playerId == PlayerIndex) SetItemCardParentServerRpc(p_itemType);
     }
 
     private void CardsManager_OnRemoveCardFromMyHand(object p_cardIndex, EventArgs e)
@@ -289,6 +299,25 @@ public class PlayerController : NetworkBehaviour
         CardsManager.Instance.GetCardByIndex(p_cardIndex).cardNetworkObjectReference.TryGet(out NetworkObject l_cardNetworkObject);
         l_cardNetworkObject.TrySetParent(transform, false);
     }
+
+    [ServerRpc]
+    public void SetItemCardParentServerRpc(ItemType p_itemType)
+    {
+        SetItemCardParentClientRpc(p_itemType);
+    }
+
+    [ClientRpc]
+    public void SetItemCardParentClientRpc(ItemType p_itemType)
+    {
+        CardsManager.Instance.GetItemNetworkObject(p_itemType, PlayerIndex, (item) =>
+        {
+            item.cardNetworkObjectReference.TryGet(out NetworkObject l_cardNetworkObject);
+            l_cardNetworkObject.TrySetParent(transform, false);
+
+            m_handBehavior.AddItemOnHand(item);
+        });
+    }
+
 
     [ClientRpc]
     void RemoveCardFromGameClientRpc()

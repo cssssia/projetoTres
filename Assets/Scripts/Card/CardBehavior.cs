@@ -46,6 +46,7 @@ public class CardBehavior : MonoBehaviour
 
     [Header("Card Data")]
     public Card card;
+    public ItemType itemType = ItemType.NONE;
 
     private Vector3 m_startPosition;
     private Vector3 m_startRotation;
@@ -67,6 +68,13 @@ public class CardBehavior : MonoBehaviour
     public void SetCardData(Card p_card)
     {
         card = p_card;
+        itemType = ItemType.NONE;
+    }
+
+    public void SetCardData(ItemType p_item)
+    {
+        card = null;
+        itemType = p_item;
     }
 
     public void SetIdleTransform(CardTransform p_cardTransform, bool l_invertZ)
@@ -135,7 +143,6 @@ public class CardBehavior : MonoBehaviour
 
     public Coroutine AnimToIdlePos(CardAnimType p_animType = CardAnimType.IDLE, Action<GameObject> p_action = null)
     {
-
         return AnimateToPlace(m_idleCardTranform, p_animType, p_action);
     }
 

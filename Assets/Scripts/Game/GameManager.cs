@@ -21,6 +21,7 @@ public class GameManager : NetworkBehaviour
         WaitingToStart,
         //CountdownToStart, //check if we will use something like this
         DealingCards,
+        DealingItems,
         HostTurn,
         ClientTurn,
         //GamePlaying,
@@ -40,7 +41,8 @@ public class GameManager : NetworkBehaviour
     [SerializeField] private NetworkVariable<GameState> m_gameState = new NetworkVariable<GameState>(GameState.WaitingToStart);
     [SerializeField] private NetworkVariable<GameState> m_nextGameState = new NetworkVariable<GameState>(GameState.WaitingToStart);
 
-    [SerializeField] private List<bool> m_readyToStartTrick;
+    [SerializeField] private List<bool> m_endedDealingCards;
+    [SerializeField] private List<bool> m_endedDealingItems;
 
     [SerializeField] private NetworkVariable<BetState> m_betState = new NetworkVariable<BetState>(BetState.WaitingToStart);
     public NetworkVariable<GameState> gameState => m_gameState;
@@ -59,7 +61,8 @@ public class GameManager : NetworkBehaviour
         Instance = this;
         m_playerReadyDictionary = new Dictionary<ulong, bool>();
         m_playerPauseDictionary = new Dictionary<ulong, bool>();
-        m_readyToStartTrick = new List<bool>() { false, false };
+        m_endedDealingCards = new List<bool>() { false, false };
+        m_endedDealingItems = new List<bool>() { false, false };
     }
 
     void Start()
@@ -83,6 +86,7 @@ public class GameManager : NetworkBehaviour
             RoundManager.Instance.OnTrickWon += RoundManager_OnTrickWon;
             RoundManager.Instance.RoundHasStarted.OnValueChanged += MatchHasStarted_OnValueChanged;
             RoundManager.Instance.OnEndedDealing += OnEndDealingCards;
+            RoundManager.Instance.OnEndedDealingItem += OnEndDealingItem;
 
             OnSetGameState();
         }
@@ -248,15 +252,15 @@ public class GameManager : NetworkBehaviour
                 {
                     SetNextGameState(GameState.HostTurn);
                 }
-                else if (RoundManager.Instance.CurrentTrick.WhoStartedTrick == Player.HOST)
+                else if (RoundManager.Instance.RoundWonHistory.Count > 0 && RoundManager.Instance.RoundWonHistory.Count % 3 == 0 && !CardsManager.Instance.BothPlayersHaveItem)
                 {
-                    SetNextGameState(GameState.ClientTurn);
+                    SetNextGameState(GameState.DealingCards);
                 }
-                else if (RoundManager.Instance.CurrentTrick.WhoStartedTrick == Player.CLIENT)
-                {
-                    SetNextGameState(GameState.HostTurn);
-                }
-
+                else SetNextGameStateToPlayers();
+                break;
+            case GameState.DealingItems:
+                CardsManager.Instance.DealItemsToPlayersServerRpc();
+                //start deal items
                 break;
             case GameState.HostTurn:
                 break;
@@ -268,12 +272,47 @@ public class GameManager : NetworkBehaviour
 
     }
 
+    void SetNextGameStateToPlayers()
+    {
+        if (RoundManager.Instance.CurrentTrick.WhoStartedTrick == Player.HOST)
+        {
+            SetNextGameState(GameState.ClientTurn);
+        }
+        else if (RoundManager.Instance.CurrentTrick.WhoStartedTrick == Player.CLIENT)
+        {
+            SetNextGameState(GameState.HostTurn);
+        }
+    }
+
     public void OnEndDealingCards(object p_index, EventArgs p_args)
     {
         if (m_gameState.Value is not GameState.DealingCards) return;
 
-        m_readyToStartTrick[(int)p_index] = true;
-        if (!m_readyToStartTrick[0] || !m_readyToStartTrick[1]) return; 
+        m_endedDealingCards[(int)p_index] = true;
+        if (!m_endedDealingCards[0] || !m_endedDealingCards[1]) return;
+
+        if (m_nextGameState.Value is GameState.HostTurn)
+        {
+            SetGameState(GameState.HostTurn);
+            SetBetState(BetState.HostTurn);
+        }
+        else if (m_nextGameState.Value is GameState.ClientTurn)
+        {
+            SetGameState(GameState.ClientTurn);
+            SetBetState(BetState.ClientTurn);
+        }else if (m_nextGameState.Value is GameState.DealingItems)
+        {
+            SetGameState(GameState.DealingItems);
+            SetBetState(BetState.WaitingToStart);
+        }
+    }
+
+    public void OnEndDealingItem(object p_index, EventArgs p_args)
+    {
+        if (m_gameState.Value is not GameState.DealingItems) return;
+
+        m_endedDealingItems[(int)p_index] = true;
+        if (!m_endedDealingItems[0] || !m_endedDealingItems[1]) return;
 
         if (m_nextGameState.Value is GameState.HostTurn) //logic round flow
         {
@@ -286,6 +325,7 @@ public class GameManager : NetworkBehaviour
             SetBetState(BetState.HostTurn);
         }
     }
+
 
     public void SetGameState(GameState p_gameState)
     {

@@ -293,23 +293,25 @@ public class CardsManager : NetworkBehaviour
     [ServerRpc]
     void RemoveCardVisualGameServerRpc(int p_cardIndex)
     {
-        //GetCardByIndex(p_cardIndex).cardNetworkObjectReference.TryGet(out NetworkObject l_cardNetworkObject);
+        GetCardByIndex(p_cardIndex).cardNetworkObjectReference.TryGet(out NetworkObject l_cardNetworkObject);
+
+        l_cardNetworkObject.transform.SetPositionAndRotation(m_cardsSO.InitialPosition, Quaternion.Euler(m_cardsSO.InitialRotation));
         //l_cardNetworkObject.Despawn();
     }
 
     public void RemoveCardFromGame()
     {
-        if (!IsServer)
-        {
-            CardsOnGameList.Clear();
-            return;
-        }
 
         for (int i = CardsOnGameList.Count - 1; i >= 0; i--)
         {
             int l_removeCard = CardsOnGameList[i];
             CardsOnGameList.Remove(l_removeCard);
-            RemoveCardVisualGameServerRpc(l_removeCard);
+
+            GetCardByIndex(l_removeCard).cardNetworkObjectReference.TryGet(out NetworkObject l_cardNetworkObject);
+            l_cardNetworkObject.transform.SetPositionAndRotation(m_cardsSO.InitialPosition, Quaternion.Euler(m_cardsSO.InitialRotation));
+            l_cardNetworkObject.TrySetParent(m_deckParent, false);
+
+            DeckOnGameList.Add(l_removeCard);
         }
 
     }

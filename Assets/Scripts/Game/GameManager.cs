@@ -55,6 +55,7 @@ public class GameManager : NetworkBehaviour
     private Dictionary<ulong, bool> m_playerReadyDictionary;
     private Dictionary<ulong, bool> m_playerPauseDictionary;
     private bool m_autoTestGamePauseState;
+    private bool debug_itemEveryRound = true;
 
     void Awake()
     {
@@ -248,19 +249,23 @@ public class GameManager : NetworkBehaviour
                 CardsManager.Instance.SpawnNewPlayCardsServerRpc();
                 m_wonTrickPlayer = Player.DEFAULT;
 
-                if (RoundManager.Instance.RoundWonHistory == null) //logic round flow
+                if (debug_itemEveryRound)
+                {
+                    SetNextGameState(GameState.DealingItems);
+                }
+                else if (RoundManager.Instance.RoundWonHistory == null) //logic round flow
                 {
                     SetNextGameState(GameState.HostTurn);
                 }
                 else if (RoundManager.Instance.RoundWonHistory.Count > 0 && RoundManager.Instance.RoundWonHistory.Count % 3 == 0 && !CardsManager.Instance.BothPlayersHaveItem)
                 {
-                    SetNextGameState(GameState.DealingCards);
+                    SetNextGameState(GameState.DealingItems);
                 }
                 else SetNextGameStateToPlayers();
                 break;
             case GameState.DealingItems:
                 CardsManager.Instance.DealItemsToPlayersServerRpc();
-                //start deal items
+                SetNextGameStateToPlayers();
                 break;
             case GameState.HostTurn:
                 break;
@@ -274,7 +279,11 @@ public class GameManager : NetworkBehaviour
 
     void SetNextGameStateToPlayers()
     {
-        if (RoundManager.Instance.CurrentTrick.WhoStartedTrick == Player.HOST)
+        if (RoundManager.Instance.RoundWonHistory == null)
+        {
+            SetNextGameState(GameState.HostTurn);
+        }
+        else if (RoundManager.Instance.CurrentTrick.WhoStartedTrick == Player.HOST)
         {
             SetNextGameState(GameState.ClientTurn);
         }
@@ -300,7 +309,8 @@ public class GameManager : NetworkBehaviour
         {
             SetGameState(GameState.ClientTurn);
             SetBetState(BetState.ClientTurn);
-        }else if (m_nextGameState.Value is GameState.DealingItems)
+        }
+        else if (m_nextGameState.Value is GameState.DealingItems)
         {
             SetGameState(GameState.DealingItems);
             SetBetState(BetState.WaitingToStart);
@@ -309,9 +319,12 @@ public class GameManager : NetworkBehaviour
 
     public void OnEndDealingItem(object p_index, EventArgs p_args)
     {
+        Debug.Log("is diealewg items " + (m_gameState.Value is not GameState.DealingItems));
         if (m_gameState.Value is not GameState.DealingItems) return;
 
         m_endedDealingItems[(int)p_index] = true;
+        Debug.Log("idnex 0: " + (m_endedDealingItems[0]));
+        Debug.Log("idnex 1: " + (m_endedDealingItems[1]));
         if (!m_endedDealingItems[0] || !m_endedDealingItems[1]) return;
 
         if (m_nextGameState.Value is GameState.HostTurn) //logic round flow
@@ -319,10 +332,10 @@ public class GameManager : NetworkBehaviour
             SetGameState(GameState.HostTurn);
             SetBetState(BetState.HostTurn);
         }
-        else if (m_nextGameState.Value is GameState.HostTurn)
+        else if (m_nextGameState.Value is GameState.ClientTurn)
         {
-            SetGameState(GameState.HostTurn);
-            SetBetState(BetState.HostTurn);
+            SetGameState(GameState.ClientTurn);
+            SetBetState(BetState.ClientTurn);
         }
     }
 

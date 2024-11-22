@@ -13,6 +13,10 @@ MonoBehaviour:
   m_Name: ItemsSO
   m_EditorClassIdentifier: 
   prefab: {fileID: 6552211688483175772, guid: 2a123caf6abeb0544825351c68a78add, type: 3}
+  InitialPosition: {x: 3.5, y: 0.6, z: -0.25}
+  InitialRotation: {x: 180, y: 0, z: 0}
   items:
   - item: 1
     material: {fileID: 2100000, guid: c8d5c5cb6214ea945b360242352fcab9, type: 2}
+    objectName: Item_Scissors
+  initialItems: 0100000001000000010000000100000001000000010000000100000001000000

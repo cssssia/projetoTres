@@ -309,13 +309,11 @@ public class PlayerController : NetworkBehaviour
     [ClientRpc]
     public void SetItemCardParentClientRpc(ItemType p_itemType)
     {
-        CardsManager.Instance.GetItemNetworkObject(p_itemType, PlayerIndex, (item) =>
-        {
-            item.cardNetworkObjectReference.TryGet(out NetworkObject l_cardNetworkObject);
-            l_cardNetworkObject.TrySetParent(transform, false);
+        Item l_item = CardsManager.Instance.GetItemNetworkObject(p_itemType, PlayerIndex);
+        l_item.cardNetworkObjectReference.TryGet(out NetworkObject l_cardNetworkObject);
+        l_cardNetworkObject.TrySetParent(transform, false);
 
-            m_handBehavior.AddItemOnHand(item);
-        });
+        m_handBehavior.AddItemOnHand(l_item);
     }
 
 

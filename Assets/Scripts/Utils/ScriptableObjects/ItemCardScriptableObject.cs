@@ -15,6 +15,8 @@ public class ItemCardScriptableObject : ScriptableObject, ICardScriptableObject
 
     public ItemConfig[] items;
 
+    public ItemType[] initialItems;
+
     public ItemConfig GetItemConfig(ItemType p_type)
     {
         for (int i = 0; i < items.Length; i++)

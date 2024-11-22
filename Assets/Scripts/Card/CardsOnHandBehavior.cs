@@ -17,7 +17,7 @@ public class CardsOnHandBehavior : MonoBehaviour
 
     [Header("Idle")]
     [SerializeField] private Vector3 m_idleScale;
-    [SerializeField] private float m_handWidth;
+    [SerializeField] private float m_handWidthPerCard;
     [SerializeField] private int m_cardsQuantity = 3;
 
     [Header("Target")]
@@ -84,7 +84,7 @@ public class CardsOnHandBehavior : MonoBehaviour
         }
         else Debug.LogError("naao achou card behavrio aqui");
 
-        SetCardsIdlePosition(true);
+        SetCardsIdlePosition(false);
         StartCoroutine(AnimSingleCardDeal(l_card, () => { RoundManager.Instance.OnEndedDealingItemServerRpc(m_player.PlayerIndex); }));
     }
 
@@ -108,16 +108,6 @@ public class CardsOnHandBehavior : MonoBehaviour
         }
     }
 
-    //public void GetCardsAnim(int p_cardIndex, Action p_eventToCallForEachCard)
-    //{
-    //    m_cardsBehavior[p_cardIndex].AnimToIdlePos(
-
-    //        delegate
-    //        {
-    //            p_eventToCallForEachCard.Invoke();
-    //        });
-    //}
-
     [NaughtyAttributes.Button]
     public void DEBUG_SetCardsPOs()
     {
@@ -126,24 +116,17 @@ public class CardsOnHandBehavior : MonoBehaviour
 
     public void SetCardsIdlePosition(bool p_alsoSetPosition)
     {
-        for (int i = 0; i < m_cardsBehavior.Count; i++)
-        {
-            bool l_useCard = m_cardsQuantity > i;
-            m_cardsBehavior[i].gameObject.SetActive(l_useCard);
-            if (!l_useCard) return;
-        }
-
         if (m_cardsQuantity == 1)
         {
             if (p_alsoSetPosition) m_cardsBehavior[0].transform.localPosition = Vector3.zero;
         }
         else if (m_cardsQuantity > 1)
         {
+            float l_totalWidht = m_cardsQuantity * m_handWidthPerCard; 
             for (int i = 0; i < m_cardsBehavior.Count; i++)
             {
                 if (m_cardsQuantity < i) return;
-
-                float l_axisPosition = (m_handWidth / (float)m_cardsQuantity) * i - m_handWidth / 2f;
+                float l_axisPosition = (l_totalWidht / (float)m_cardsQuantity) * i - l_totalWidht / 2f;
 
                 Vector3 l_newPos = new Vector3(l_axisPosition, 0, -0.01f * i);
                 CardTransform l_transform = new(l_newPos, new Vector3(270f, 0, 0), m_idleScale);
@@ -301,8 +284,17 @@ public class CardsOnHandBehavior : MonoBehaviour
                 m_currentHoldingCard.EndDrag();
                 m_currentHoldingCard = null;
             }
+            else
+            {
+                SetCardsIdlePosition(false);
+                for (int i = 0; i < m_cardsBehavior.Count; i++)
+                {
+                    if (m_cardsBehavior[i] == m_currentHoldingCard) continue;
+                    m_cardsBehavior[i].AnimToIdlePos();
+                }
+            }
 
-            m_throwCardTargetImage.gameObject.SetActive(false);
+                m_throwCardTargetImage.gameObject.SetActive(false);
         }
     }
 

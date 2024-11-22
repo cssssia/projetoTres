@@ -120,7 +120,9 @@ public class RoundManager : NetworkBehaviour
     [ServerRpc (RequireOwnership = false)]
     public void AdjustVictoryServerRpc(Player p_wonRound)
     {
-        RoundWonHistory.Add(new VictoryHistory(p_wonRound, CurrentTrick.TrickBetMultiplier));
+        VictoryHistory l_victoryHistory = new VictoryHistory(p_wonRound, CurrentTrick.TrickBetMultiplier);
+
+        RoundWonHistory.Add(l_victoryHistory);
 
         YouWonClientRpc(p_wonRound);
     }
@@ -191,7 +193,8 @@ public struct CustomSender
     }
 }
 
-public struct VictoryHistory
+[Serializable]
+public class VictoryHistory
 {
     public Player player;
     public int roundValue;

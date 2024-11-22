@@ -253,7 +253,7 @@ public class GameManager : NetworkBehaviour
                 {
                     SetNextGameState(GameState.DealingItems);
                 }
-                else if (RoundManager.Instance.RoundWonHistory == null) //logic round flow
+                else if (RoundManager.Instance.RoundWonHistory.Count > 0) //logic round flow
                 {
                     SetNextGameState(GameState.HostTurn);
                 }

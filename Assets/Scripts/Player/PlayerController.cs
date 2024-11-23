@@ -27,17 +27,17 @@ public class PlayerController : NetworkBehaviour
             return;
     }
 
-    [Header("Debug buttons")]
-    public bool debug_useScissors;
-    private void Update()
-    {
-        if (!IsOwner) return;
-        if (debug_useScissors)
-        {
-            UseScissors();
-            debug_useScissors = false;
-        }
-    }
+    //[Header("Debug buttons")]
+    //public bool debug_useScissors;
+    //private void Update()
+    //{
+    //    if (!IsOwner) return;
+    //    if (debug_useScissors)
+    //    {
+    //        UseScissors();
+    //        debug_useScissors = false;
+    //    }
+    //}
 
     public bool IsHostPlayer
     {
@@ -53,7 +53,7 @@ public class PlayerController : NetworkBehaviour
         get { return GameMultiplayerManager.Instance.GetPlayerDataIndexFromClientId(OwnerClientId); }
     }
 
-    private bool canPlay;
+    public bool CanPlay { get;  private set; }
     private bool canBet;
 
     public override void OnNetworkSpawn() //research more the difference of this and awake
@@ -135,17 +135,21 @@ public class PlayerController : NetworkBehaviour
 
     private void CardsManager_OnRemoveCardFromMyHand(object p_cardIndex, EventArgs e)
     {
+        int l_cardID = (int)p_cardIndex;
         if (IsOwner && CardsManager.Instance.GetCardByIndex((int)p_cardIndex).cardPlayer == (Player)PlayerIndex)
         {
             for (int i = 0; i < m_myHand.Count; i++)
             {
-                if (m_myHand[i] == (int)p_cardIndex)
+                if (m_myHand[i] == l_cardID)
                 {
                     m_myHand.RemoveAt(i);
                     break;
                 }
             }
         }
+
+        m_handBehavior.RemoveCardFromHand(l_cardID);
+        CardsManager.Instance.ResetCard(l_cardID);
     }
 
     private void TurnManager_OnStartPlayingCard(object p_customSender, EventArgs e)
@@ -203,8 +207,10 @@ public class PlayerController : NetworkBehaviour
 
     private void GameInput_OnClickUpMouse(object p_sender, System.EventArgs e)
     {
-        m_handBehavior.CheckClickUp(canPlay, (go, id) => StartAnim(go, id), (go) => ThrowCard(go));
-        if (canPlay || RoundManager.Instance.BetHasStarted.Value) m_betBehavior.CheckClickUp(canBet, (go, increase) => IncreaseBet(go, increase));
+        m_handBehavior.CheckClickUp(CanPlay,
+                                    (go, isItem, id) => StartAnim(go, isItem, id),
+                                    (go) => ThrowCard(go), (go) => UseItemCard(go));
+        if (CanPlay || RoundManager.Instance.BetHasStarted.Value) m_betBehavior.CheckClickUp(canBet, (go, increase) => IncreaseBet(go, increase));
         if (RoundManager.Instance.BetHasStarted.Value && canBet) m_deckBehavior.CheckClickUp((go) => GiveUp(go));
     }
 
@@ -219,10 +225,10 @@ public class PlayerController : NetworkBehaviour
         m_handBehavior.CheckHoverObject(p_gameObject);
     }
 
-    private void StartAnim(GameObject gameObject, int p_cardIndex)
+    private void StartAnim(GameObject gameObject, bool p_isItem, int p_cardIndex)
     {
-
-        RoundManager.Instance.OnStartAnimServerRpc(PlayerIndex, m_handBehavior.CurrentTargetIndex, p_cardIndex, gameObject.GetComponent<NetworkObject>());
+        RoundManager.Instance.OnStartAnimServerRpc(PlayerIndex, m_handBehavior.CurrentTargetIndex,
+                                                    p_cardIndex, gameObject.GetComponent<NetworkObject>());
     }
 
     private void ThrowCard(GameObject gameObject)
@@ -240,6 +246,23 @@ public class PlayerController : NetworkBehaviour
 
                     RoundManager.Instance.PlayCardServerRpc(m_myHand[i], IsHost ? Player.HOST : Player.CLIENT, m_handBehavior.CurrentTargetIndex);
                     m_myHand.RemoveAt(i);
+                }
+            }
+        }
+    }
+
+    private void UseItemCard(GameObject gameObject)
+    {
+        Debug.Log("[GAME] Play Card " + gameObject.name);
+        if (gameObject.CompareTag("Card"))
+        {
+            for (int i = 0; i < m_handBehavior.CardBehaviors.Count; i++)
+            {
+                if (m_handBehavior.CardBehaviors[i].item != null)
+                {
+                    int l_itemID = m_handBehavior.CardBehaviors[i].item.itemID;
+                    RoundManager.Instance.PlayItemCardServerRpc(l_itemID);
+                    break;
                 }
             }
         }
@@ -269,11 +292,11 @@ public class PlayerController : NetworkBehaviour
         if (!IsOwner) return;
 
         currentGameState = ((GameManager)p_sender).gameState.Value;
-        canPlay = ((currentGameState == GameManager.GameState.HostTurn && IsHostPlayer)
+        CanPlay = ((currentGameState == GameManager.GameState.HostTurn && IsHostPlayer)
                                             || (currentGameState == GameManager.GameState.ClientTurn && IsClientPlayer))
                                             && !RoundManager.Instance.BetHasStarted.Value;
 
-        if (canPlay) Debug.Log("pode jogar");
+        if (CanPlay) Debug.Log("pode jogar");
         else Debug.Log("não pode jogar");
     }
 
@@ -312,7 +335,7 @@ public class PlayerController : NetworkBehaviour
     [ClientRpc]
     public void SetItemCardParentClientRpc(ItemType p_itemType)
     {
-        Item l_item = CardsManager.Instance.GetItemNetworkObject(p_itemType, PlayerIndex);
+        Item l_item = CardsManager.Instance.GetItemNetworkObject(p_itemType, (Player)PlayerIndex);
         l_item.cardNetworkObjectReference.TryGet(out NetworkObject l_cardNetworkObject);
         l_cardNetworkObject.TrySetParent(transform, true);
 
@@ -331,14 +354,4 @@ public class PlayerController : NetworkBehaviour
             }
         }
     }
-
-    #region Items
-    [Button]
-    public void UseScissors()
-    {
-        CardsManager.Instance.UseScissorServerRpc((Player)PlayerIndex);
-
-    }
-    #endregion
-
 }

@@ -10,6 +10,7 @@ public class CardsOnHandBehavior : MonoBehaviour
 {
     [SerializeField] private bool m_invertZPlayer;
     [SerializeField] private List<CardBehavior> m_cardsBehavior;
+    public List<CardBehavior> CardBehaviors => m_cardsBehavior;
     private CardBehavior m_currentHoverCard;
     private CardBehavior m_currentHoldingCard;
     [SerializeField] private Image m_throwCardTargetImage;
@@ -23,6 +24,7 @@ public class CardsOnHandBehavior : MonoBehaviour
     [Header("Target")]
     [SerializeField] private List<Transform> m_targets;
     [SerializeField] private CardTransform[] m_targetsTransform;
+    [SerializeField] private CardTransform m_itemUseCardTransform;
     [SerializeField] private int m_currentTargetIndex;
     public int CurrentTargetIndex { get { return m_currentTargetIndex; } }
     PointerEventData m_pointerEventData;
@@ -56,7 +58,7 @@ public class CardsOnHandBehavior : MonoBehaviour
         if (m_cardsBehavior == null) m_cardsBehavior = new();
 
         bool l_hasItem = false;
-        for (int i = 0; i < m_cardsBehavior.Count; i++) if (m_cardsBehavior[i].itemType is not ItemType.NONE) l_hasItem = true;
+        for (int i = 0; i < m_cardsBehavior.Count; i++) if (m_cardsBehavior[i].item != null) l_hasItem = true;
 
         if (!l_hasItem) m_cardsBehavior.Add(l_card);
         else m_cardsBehavior.Insert(0, l_card);
@@ -77,7 +79,7 @@ public class CardsOnHandBehavior : MonoBehaviour
 
         if (l_itemCardNetworkObject.TryGetComponent(out l_card))
         {
-            l_card.SetCardData(p_item.Type);
+            l_card.SetCardData(p_item);
             l_card.OnDestroyAction += RemoveNullCardsFromList;
 
             m_cardsBehavior.Add(l_card);
@@ -121,7 +123,7 @@ public class CardsOnHandBehavior : MonoBehaviour
         }
         else if (m_cardsQuantity > 1)
         {
-            float l_totalWidht = m_cardsQuantity * m_handWidthPerCard; 
+            float l_totalWidht = m_cardsQuantity * m_handWidthPerCard;
             for (int i = 0; i < m_cardsBehavior.Count; i++)
             {
                 if (m_cardsQuantity < i) return;
@@ -159,7 +161,7 @@ public class CardsOnHandBehavior : MonoBehaviour
         l_tempCardsIDOnHand.Clear();
         for (int i = 0; i < m_cardsBehavior.Count; i++)
         {
-            if (m_cardsBehavior[i].itemType is ItemType.NONE) l_tempCardsIDOnHand.Add(i);
+            if (m_cardsBehavior[i].item == null) l_tempCardsIDOnHand.Add(i);
         }
 
         for (int i = 0; i < l_tempCardsIDOnHand.Count; i++)
@@ -181,6 +183,7 @@ public class CardsOnHandBehavior : MonoBehaviour
     public bool CheckHoverObject(GameObject p_gameObject)
     {
         if (m_currentHoldingCard != null) return false;
+        if (!m_player.CanPlay) return false;
 
         bool l_isCard = false;
         if (p_gameObject != null)
@@ -249,7 +252,8 @@ public class CardsOnHandBehavior : MonoBehaviour
     }
 
     List<RaycastResult> m_resultList;
-    public void CheckClickUp(bool p_canPlay, Action<GameObject, int> p_actionOnStartAnimation, Action<GameObject> p_actionOnEndAnimation)
+    public void CheckClickUp(bool p_canPlay, Action<GameObject, bool, int> p_actionOnStartAnimation, Action<GameObject> p_actionOnEndAnimation,
+                            Action<GameObject> p_actionOnEndItemAnim)
     {
         if (m_currentHoldingCard != null)
         {
@@ -268,10 +272,21 @@ public class CardsOnHandBehavior : MonoBehaviour
                 {
                     if (m_resultList[i].gameObject == m_throwCardTargetImage.gameObject)
                     {
-                        p_actionOnStartAnimation.Invoke(m_currentHoldingCard.gameObject, m_currentHoldingCard.card.cardIndexSO);
-                        PlayCard(m_currentHoldingCard, p_actionOnEndAnimation);
-                        l_playCard = true;
-                        m_throwCardTargetImage.gameObject.SetActive(false);
+                        if (m_currentHoldingCard.item == null)
+                        {
+                            p_actionOnStartAnimation.Invoke(m_currentHoldingCard.gameObject, false, m_currentHoldingCard.card.cardIndexSO);
+                            PlayCard(m_currentHoldingCard, p_actionOnEndAnimation);
+                            l_playCard = true;
+                            m_throwCardTargetImage.gameObject.SetActive(false);
+                        }
+                        else
+                        {
+                            p_actionOnStartAnimation.Invoke(m_currentHoldingCard.gameObject, true, m_currentHoldingCard.item.itemID);
+                            UseItem(m_currentHoldingCard, p_actionOnEndItemAnim);
+                            l_playCard = true;
+                            m_throwCardTargetImage.gameObject.SetActive(false);
+
+                        }
                         break;
                     }
                 }
@@ -292,17 +307,35 @@ public class CardsOnHandBehavior : MonoBehaviour
                 }
             }
 
-                m_throwCardTargetImage.gameObject.SetActive(false);
+            m_throwCardTargetImage.gameObject.SetActive(false);
         }
     }
 
     public void ResetCardsOnHandBehavior()
     {
-        Debug.Log("ResetCardsOnHandBehavior");
+        //Debug.Log("ResetCardsOnHandBehavior");
         m_currentHoldingCard = null;
         m_cardsBehavior.Clear();
-        Debug.Log(m_cardsBehavior.Count);
+        //Debug.Log(m_cardsBehavior.Count);
         m_currentTargetIndex = 0;
+    }
+
+    public void RemoveCardFromHand(int p_cardID)
+    {
+        for (int i = m_cardsBehavior.Count - 1; i >= 0; i--)
+        {
+            if (m_cardsBehavior[i].card == null)
+            {
+                print("card is null " + m_cardsBehavior[i].gameObject.name);
+                continue;
+            }
+            Debug.Log($"cardsIndex SO {m_cardsBehavior[i].card.cardIndexSO} e p_cardID: {p_cardID}");
+            if (m_cardsBehavior[i].card != null && m_cardsBehavior[i].card.cardIndexSO == p_cardID)
+            {
+                m_cardsBehavior.RemoveAt(i);
+                break;
+            }
+        }
     }
 
     public void AddTarget(Transform p_target, int p_targetIndex)
@@ -324,6 +357,11 @@ public class CardsOnHandBehavior : MonoBehaviour
         m_currentTargetIndex++;
     }
 
+    private void UseItem(CardBehavior p_cardBehavior, Action<GameObject> p_action)
+    {
+        p_cardBehavior.PlayCard(m_itemUseCardTransform, p_action);
+    }
+
     private CardTransform GetNextCardTarget()
     {
         if (m_targetsTransform.Length < m_targets.Count)
@@ -334,22 +372,21 @@ public class CardsOnHandBehavior : MonoBehaviour
             {
                 Vector3 l_tempRot = m_targets[i].eulerAngles;
                 //l_tempRot.x -= 180f;
-                m_targetsTransform[i] = new
-                    (m_targets[i].position,
-                    (l_tempRot),
-                    Vector3.one * 0.1f);
+                m_targetsTransform[i] = new(m_targets[i].position, (l_tempRot), Vector3.one * 0.1f);
             }
-
         }
-
         return m_targetsTransform[m_currentTargetIndex];
     }
 
+    private CardTransform GetItemTargetTransform()
+    {
+        return null;
+    }
     void OnDestroy()
     {
         for (int i = 0; i < m_cardsBehavior.Count; i++)
         {
-            m_cardsBehavior[i].OnDestroyAction -=RemoveNullCardsFromList;
+            m_cardsBehavior[i].OnDestroyAction -= RemoveNullCardsFromList;
         }
     }
 }

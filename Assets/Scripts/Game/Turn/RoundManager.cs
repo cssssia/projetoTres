@@ -25,7 +25,8 @@ public class RoundManager : NetworkBehaviour
     public event EventHandler OnAddItemToPlayer;
     public event EventHandler OnTrickWon;
 	public event EventHandler OnCardPlayed;
-	public event EventHandler OnStartPlayingCard;
+	public event EventHandler OnItemUsed;
+    public event EventHandler OnStartPlayingCard;
 	public event EventHandler OnBet;
     public event EventHandler OnEndedDealing;
     public event EventHandler OnEndedDealingItem;
@@ -86,6 +87,14 @@ public class RoundManager : NetworkBehaviour
         }
 
         if (l_wonRound == Player.DEFAULT) OnCardPlayed?.Invoke(p_cardIndex, EventArgs.Empty);
+    }
+
+    [ServerRpc(RequireOwnership = false)]
+    public void PlayItemCardServerRpc(int p_itemIndex)
+    {
+        //CurrentTrick.CardPlayed(CardsManager.Instance.GetCardByIndex(p_cardIndex), p_playerType, out bool p_goToNextTrick);
+        CardsManager.Instance.UseItemServerRpc(p_itemIndex);
+        OnItemUsed?.Invoke(p_itemIndex, EventArgs.Empty);
     }
 
     [ServerRpc (RequireOwnership = false)]

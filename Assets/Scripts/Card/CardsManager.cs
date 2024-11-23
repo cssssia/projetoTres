@@ -247,6 +247,8 @@ public class CardsManager : NetworkBehaviour
                 if (CardsOnGameList[i] == l_cardsToRemove[j])
                 {
                     RemoveCardClientRpc(CardsOnGameList[i]);
+                    SoftResetCard(CardsOnGameList[i]);
+
                     break;
                 }
             }
@@ -279,10 +281,6 @@ public class CardsManager : NetworkBehaviour
                 Debug.Log("remove card id: " + p_cardIndex);
                 OnRemoveCardFromMyHand?.Invoke(p_cardIndex, EventArgs.Empty);
                 CardsOnGameList.RemoveAt(i);
-
-                SetPlayerUsableDeckClientRpc(p_cardIndex, Player.DEFAULT);
-                SetPlayedCardUsableDeckClientRpc(p_cardIndex, false);
-                SetDeckAsCardParentClientRpc(p_cardIndex);
 
                 break;
             }
@@ -331,6 +329,24 @@ public class CardsManager : NetworkBehaviour
 
         CardsOnGameList.Remove(p_cardIndex);
         DeckOnGameList.Add(p_cardIndex);
+
+        if (m_softResetedCards.Count > 0)
+        {
+            for (int i = 0; i < m_softResetedCards.Count; i++)
+            {
+                DeckOnGameList.Add(m_softResetedCards[i]);
+            }
+        }
+    }
+
+    List<int> m_softResetedCards = new List<int>();
+    public void SoftResetCard(int p_cardIndex)
+    {
+        SetPlayerUsableDeckClientRpc(p_cardIndex, Player.DEFAULT);
+        SetPlayedCardUsableDeckClientRpc(p_cardIndex, false);
+        SetDeckAsCardParentClientRpc(p_cardIndex);
+
+        m_softResetedCards.Add(p_cardIndex);
     }
 
     public CardTransform GetCardTargetByIndex(int p_index, int p_playerType)

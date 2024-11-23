@@ -345,4 +345,11 @@ public class CardsOnHandBehavior : MonoBehaviour
         return m_targetsTransform[m_currentTargetIndex];
     }
 
+    void OnDestroy()
+    {
+        for (int i = 0; i < m_cardsBehavior.Count; i++)
+        {
+            m_cardsBehavior[i].OnDestroyAction -=RemoveNullCardsFromList;
+        }
+    }
 }

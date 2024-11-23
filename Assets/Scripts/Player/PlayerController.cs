@@ -109,6 +109,11 @@ public class PlayerController : NetworkBehaviour
         {
             Debug.Log("[INFO] Owner Disconnected");
             // destroy network stuff
+
+            for (int i = 0; i < m_myHand.Count; i++)
+            {
+                CardsManager.Instance.ResetCard(m_myHand[i]);
+            }
         }
     }
 
@@ -158,7 +163,7 @@ public class PlayerController : NetworkBehaviour
             if (PlayerIndex == (int)p_playerWonId)
                 Debug.Log("[GAME] You Won!");
 
-            CardsManager.Instance.RemoveCardFromGame();
+            CardsManager.Instance.RemoveCardsFromGame();
         }
 
         m_handBehavior.ResetCardsOnHandBehavior();
@@ -295,7 +300,7 @@ public class PlayerController : NetworkBehaviour
     {
         m_handBehavior.AddCardOnHand(p_cardIndex, p_finishedHandCards);
         CardsManager.Instance.GetCardByIndex(p_cardIndex).cardNetworkObjectReference.TryGet(out NetworkObject l_cardNetworkObject);
-        l_cardNetworkObject.TrySetParent(transform, false);
+        l_cardNetworkObject.TrySetParent(transform, true);
     }
 
     [ServerRpc]
@@ -309,7 +314,7 @@ public class PlayerController : NetworkBehaviour
     {
         Item l_item = CardsManager.Instance.GetItemNetworkObject(p_itemType, PlayerIndex);
         l_item.cardNetworkObjectReference.TryGet(out NetworkObject l_cardNetworkObject);
-        l_cardNetworkObject.TrySetParent(transform, false);
+        l_cardNetworkObject.TrySetParent(transform, true);
 
         m_handBehavior.AddItemOnHand(l_item);
     }

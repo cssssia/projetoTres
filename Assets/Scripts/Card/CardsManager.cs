@@ -94,20 +94,12 @@ public class CardsManager : NetworkBehaviour
     {
         Debug.Log("[GAME] Spawn Cards");
 
-        //Shuffle(DeckOnGameList);
-
         for (int i = 0; i < 3 * GameMultiplayerManager.MAX_PLAYER_AMOUNT; i++)
         {
             int l_rand = UnityEngine.Random.Range(0, DeckOnGameList.Count);
             SetPlayerUsableDeckClientRpc(DeckOnGameList[l_rand], (Player)(i % 2));
             DealOneCardClientRpc(DeckOnGameList[l_rand]);
         }
-    }
-
-    [ClientRpc]
-    public void SetPlayerUsableDeckClientRpc(int p_cardIndex, Player p_player)
-    {
-        GetCardByIndex(p_cardIndex).cardPlayer = p_player;
     }
 
     [ClientRpc]
@@ -140,7 +132,7 @@ public class CardsManager : NetworkBehaviour
         p_cardNetworkObjectReference.TryGet(out NetworkObject l_cardNetworkObject);
         l_cardNetworkObject.name = m_cardsSO.deck[p_cardIndexSO].name;
         l_cardNetworkObject.GetComponent<MeshRenderer>().material = m_cardsSO.deck[p_cardIndexSO].material;
-        l_cardNetworkObject.TrySetParent(m_deckParent, false);
+        l_cardNetworkObject.TrySetParent(m_deckParent, true);
 
         Card l_usableCard = new(m_cardsSO.deck[p_cardIndexSO].name, m_cardsSO.deck[p_cardIndexSO].value, p_cardIndexSO, p_cardNetworkObjectReference);
 
@@ -185,7 +177,7 @@ public class CardsManager : NetworkBehaviour
         p_cardNetworkObjectReference.TryGet(out NetworkObject l_cardNetworkObject);
         l_cardNetworkObject.name = m_itemsSO.GetItemConfig(p_itemType).objectName;
         l_cardNetworkObject.GetComponent<MeshRenderer>().material = m_itemsSO.GetItemConfig(p_itemType).material;
-        l_cardNetworkObject.TrySetParent(m_deckParent, false);
+        l_cardNetworkObject.TrySetParent(m_deckParent, true);
 
         Item l_usableCard = new(p_itemType, p_cardNetworkObjectReference, -1);
 
@@ -205,13 +197,6 @@ public class CardsManager : NetworkBehaviour
             }
         }
     }
-
-    [ClientRpc]
-    void SetPlayedCardUsableDeckClientRpc(int p_cardIndex, bool p_playedCard)
-    {
-        GetCardByIndex(p_cardIndex).playedCard = p_playedCard;
-    }
-
 
     [ServerRpc(RequireOwnership = false)]
     public void UseScissorServerRpc(Player p_playerId)
@@ -283,55 +268,42 @@ public class CardsManager : NetworkBehaviour
         CardsOnGameList.Add(p_cardIndex);
     }
 
+    [ClientRpc]
+    public void SetPlayerUsableDeckClientRpc(int p_cardIndex, Player p_player)
+    {
+        GetCardByIndex(p_cardIndex).cardPlayer = p_player;
+    }
 
-    [ServerRpc]
-    void RemoveCardVisualGameServerRpc(int p_cardIndex)
+    [ClientRpc]
+    void SetPlayedCardUsableDeckClientRpc(int p_cardIndex, bool p_playedCard)
+    {
+        GetCardByIndex(p_cardIndex).playedCard = p_playedCard;
+    }
+
+    [ClientRpc]
+    public void SetDeckAsCardParentClientRpc(int p_cardIndex)
     {
         GetCardByIndex(p_cardIndex).cardNetworkObjectReference.TryGet(out NetworkObject l_cardNetworkObject);
-
         l_cardNetworkObject.transform.SetPositionAndRotation(m_cardsSO.InitialPosition, Quaternion.Euler(m_cardsSO.InitialRotation));
-        //l_cardNetworkObject.Despawn();
+        l_cardNetworkObject.TrySetParent(m_deckParent, true);
     }
 
-    public void RemoveCardFromGame()
+    public void RemoveCardsFromGame()
     {
-        Debug.Log("RemoveCardFromGame");
-
         for (int i = CardsOnGameList.Count - 1; i >= 0; i--)
         {
-            int l_removeCard = CardsOnGameList[i];
-            CardsOnGameList.Remove(l_removeCard);
-
-            GetCardByIndex(l_removeCard).cardNetworkObjectReference.TryGet(out NetworkObject l_cardNetworkObject);
-            l_cardNetworkObject.transform.SetPositionAndRotation(m_cardsSO.InitialPosition, Quaternion.Euler(m_cardsSO.InitialRotation));
-            l_cardNetworkObject.TrySetParent(m_deckParent, false);
-
-            ResetCard(l_removeCard);
-
-            DeckOnGameList.Add(l_removeCard);
+            ResetCard(CardsOnGameList[i]);
         }
-
     }
 
-    void ResetCard(int p_cardIndex)
+    public void ResetCard(int p_cardIndex)
     {
-        Debug.Log("ResetCard " + PlayerController.LocalInstance.PlayerIndex);
+        SetPlayerUsableDeckClientRpc(p_cardIndex, Player.DEFAULT);
+        SetPlayedCardUsableDeckClientRpc(p_cardIndex, false);
+        SetDeckAsCardParentClientRpc(p_cardIndex);
 
-        Card l_card = GetCardByIndex(p_cardIndex);
-        l_card.playedCard = false;
-        l_card.cardPlayer = Player.DEFAULT;
-    }
-
-    void Shuffle<T>(List<T> list)
-    {
-        System.Random random = new System.Random();
-        int n = list.Count;
-        while (n > 0)
-        {
-            int k = random.Next(n);
-            n--;
-            (list[n], list[k]) = (list[k], list[n]);
-        }
+        CardsOnGameList.Remove(p_cardIndex);
+        DeckOnGameList.Add(p_cardIndex);
     }
 
     public CardTransform GetCardTargetByIndex(int p_index, int p_playerType)
@@ -351,7 +323,7 @@ public class CardsManager : NetworkBehaviour
 
     public Item GetItemNetworkObject(ItemType p_itemType, int p_playerdId)
     {
-        bool l_found = false;
+        //bool l_found = false;
 
         for (int i = 0; i < UsableItemsList.Count; i++)
         {

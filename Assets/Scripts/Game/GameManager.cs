@@ -14,7 +14,6 @@ public class GameManager : NetworkBehaviour
     public event EventHandler OnMultiplayerGamePaused;
     public event EventHandler OnMultiplayerGameUnpaused;
     public event EventHandler OnLocalPlayerReadyChanged;
-    public event EventHandler OnStopIncreaseBet;
 
     public enum GameState
     {

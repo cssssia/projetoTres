@@ -324,14 +324,13 @@ public class CardsOnHandBehavior : MonoBehaviour
     {
         for (int i = m_cardsBehavior.Count - 1; i >= 0; i--)
         {
-            if (m_cardsBehavior[i].card == null)
+            if (m_cardsBehavior[i].card == null) continue;
+
+            if (m_player.IsOwner)
+                Debug.Log($"cardsIndex SO {m_cardsBehavior[i].card.cardIndexSO} e p_cardID: {p_cardID}");
+            if (m_cardsBehavior[i].card.cardIndexSO == CardsManager.Instance.GetCardByIndex(p_cardID).cardIndexSO)
             {
-                print("card is null " + m_cardsBehavior[i].gameObject.name);
-                continue;
-            }
-            Debug.Log($"cardsIndex SO {m_cardsBehavior[i].card.cardIndexSO} e p_cardID: {p_cardID}");
-            if (m_cardsBehavior[i].card != null && m_cardsBehavior[i].card.cardIndexSO == p_cardID)
-            {
+                Debug.Log("o sangue de jesus " + p_cardID);
                 m_cardsBehavior.RemoveAt(i);
                 break;
             }

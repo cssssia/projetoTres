@@ -149,7 +149,7 @@ public class PlayerController : NetworkBehaviour
         }
 
         m_handBehavior.RemoveCardFromHand(l_cardID);
-        CardsManager.Instance.ResetCard(l_cardID);
+        //CardsManager.Instance.ResetCard(l_cardID);
     }
 
     private void TurnManager_OnStartPlayingCard(object p_customSender, EventArgs e)

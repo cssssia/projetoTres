@@ -143,7 +143,6 @@ public class CardBehavior : MonoBehaviour
 
     public Coroutine AnimToIdlePos(CardAnimType p_animType = CardAnimType.IDLE, Action<GameObject> p_action = null)
     {
-        Debug.Log($"Anim card {gameObject.name}");
         return AnimateToPlace(m_idleCardTranform, p_animType, p_action);
     }
 

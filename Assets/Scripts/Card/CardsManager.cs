@@ -223,12 +223,14 @@ public class CardsManager : NetworkBehaviour
 
     }
 
+    public List<int> l_cardsToRemove = new List<int>();
     [ServerRpc(RequireOwnership = false)]
     public void UseScissorServerRpc(Player p_playerId)
     {
-        Debug.Log("player " + p_playerId);
-        List<int> l_cardsToRemove = new List<int>();
         Card l_card;
+
+        if (l_cardsToRemove == null) l_cardsToRemove = new();
+        else l_cardsToRemove.Clear();
 
         for (int i = 0; i < CardsOnGameList.Count; i++)
         {
@@ -238,7 +240,7 @@ public class CardsManager : NetworkBehaviour
 
         int l_quantityOfCardsRemoved = l_cardsToRemove.Count;
 
-        for (int i = CardsOnGameList.Count -1; i >= 0; i--)
+        for (int i = CardsOnGameList.Count - 1; i >= 0; i--)
         {
             for (int j = 0; j < l_cardsToRemove.Count; j++)
             {
@@ -250,13 +252,11 @@ public class CardsManager : NetworkBehaviour
             }
         }
 
-        Debug.Log("cards on game count: " + CardsOnGameList.Count);
-        Debug.Log("quantity od cards removed: " + l_quantityOfCardsRemoved);
         for (int i = 0; i < l_quantityOfCardsRemoved; i++)
         {
             int l_rand = UnityEngine.Random.Range(0, DeckOnGameList.Count);
 
-            UsableDeckList[DeckOnGameList[l_rand]].cardPlayer = p_playerId;
+            SetPlayerUsableDeckClientRpc(DeckOnGameList[l_rand], p_playerId);
             DealOneCardClientRpc(DeckOnGameList[l_rand]);
         }
 
@@ -272,17 +272,17 @@ public class CardsManager : NetworkBehaviour
     [ClientRpc]
     private void RemoveCardClientRpc(int p_cardIndex)
     {
-        Debug.Log("remove card id: " + p_cardIndex);
         for (int i = 0; i < CardsOnGameList.Count; i++)
         {
             if (CardsOnGameList[i] == p_cardIndex)
             {
-                print("Entrou no if " + p_cardIndex);
+                Debug.Log("remove card id: " + p_cardIndex);
                 OnRemoveCardFromMyHand?.Invoke(p_cardIndex, EventArgs.Empty);
                 CardsOnGameList.RemoveAt(i);
 
                 SetPlayerUsableDeckClientRpc(p_cardIndex, Player.DEFAULT);
                 SetPlayedCardUsableDeckClientRpc(p_cardIndex, false);
+                SetDeckAsCardParentClientRpc(p_cardIndex);
 
                 break;
             }

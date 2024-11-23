@@ -330,6 +330,8 @@ public class CardsManager : NetworkBehaviour
 
     public void ResetCard(int p_cardIndex)
     {
+        Debug.Log("ResetCard");
+
         SetPlayerUsableDeckClientRpc(p_cardIndex, Player.DEFAULT);
         SetPlayedCardUsableDeckClientRpc(p_cardIndex, false);
         SetDeckAsCardParentClientRpc(p_cardIndex);

@@ -166,13 +166,15 @@ public class PlayerController : NetworkBehaviour
 
             if (PlayerIndex == (int)p_playerWonId)
                 Debug.Log("[GAME] You Won!");
+
+            CardsManager.Instance.RemoveCardsFromGame();
         }
 
         m_handBehavior.ResetCardsOnHandBehavior();
 
         if (IsServer)
         {
-            CardsManager.Instance.RemoveCardsFromGame();
+            // CardsManager.Instance.RemoveCardsFromGame();
             RoundManager.Instance.RoundHasStarted.Value = false;
         }
     }

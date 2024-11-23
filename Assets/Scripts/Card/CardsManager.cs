@@ -321,22 +321,30 @@ public class CardsManager : NetworkBehaviour
         }
     }
 
+    [ClientRpc]
+    public void AddCardToDeckClientRpc(int p_cardIndex)
+    {
+        CardsOnGameList.Remove(p_cardIndex);
+        DeckOnGameList.Add(p_cardIndex);
+    }
+
     public void ResetCard(int p_cardIndex)
     {
         SetPlayerUsableDeckClientRpc(p_cardIndex, Player.DEFAULT);
         SetPlayedCardUsableDeckClientRpc(p_cardIndex, false);
         SetDeckAsCardParentClientRpc(p_cardIndex);
 
-        CardsOnGameList.Remove(p_cardIndex);
-        DeckOnGameList.Add(p_cardIndex);
+        AddCardToDeckClientRpc(p_cardIndex);
 
         if (m_softResetedCards.Count > 0)
         {
             for (int i = 0; i < m_softResetedCards.Count; i++)
             {
-                DeckOnGameList.Add(m_softResetedCards[i]);
+                AddCardToDeckClientRpc(m_softResetedCards[i]);
             }
         }
+
+        m_softResetedCards.Clear();
     }
 
     List<int> m_softResetedCards = new List<int>();

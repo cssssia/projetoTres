@@ -253,7 +253,7 @@ public class GameManager : NetworkBehaviour
                 {
                     SetNextGameState(GameState.DealingItems);
                 }
-                else if (RoundManager.Instance.RoundWonHistory.Count > 0) //logic round flow
+                else if (RoundManager.Instance.RoundWonHistory.Count == 0) //logic round flow
                 {
                     SetNextGameState(GameState.HostTurn);
                 }
@@ -279,7 +279,7 @@ public class GameManager : NetworkBehaviour
 
     void SetNextGameStateToPlayers()
     {
-        if (RoundManager.Instance.RoundWonHistory == null)
+        if (RoundManager.Instance.RoundWonHistory.Count == 0)
         {
             SetNextGameState(GameState.HostTurn);
         }
@@ -319,12 +319,9 @@ public class GameManager : NetworkBehaviour
 
     public void OnEndDealingItem(object p_index, EventArgs p_args)
     {
-        Debug.Log("is diealewg items " + (m_gameState.Value is not GameState.DealingItems));
         if (m_gameState.Value is not GameState.DealingItems) return;
 
         m_endedDealingItems[(int)p_index] = true;
-        Debug.Log("idnex 0: " + (m_endedDealingItems[0]));
-        Debug.Log("idnex 1: " + (m_endedDealingItems[1]));
         if (!m_endedDealingItems[0] || !m_endedDealingItems[1]) return;
 
         if (m_nextGameState.Value is GameState.HostTurn) //logic round flow

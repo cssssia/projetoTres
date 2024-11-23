@@ -85,7 +85,7 @@ public class RoundManager : NetworkBehaviour
             if (l_wonRound != Player.DEFAULT) AdjustVictoryServerRpc(l_wonRound);
         }
 
-        OnCardPlayed?.Invoke(p_cardIndex, EventArgs.Empty);
+        if (l_wonRound == Player.DEFAULT) OnCardPlayed?.Invoke(p_cardIndex, EventArgs.Empty);
     }
 
     [ServerRpc (RequireOwnership = false)]

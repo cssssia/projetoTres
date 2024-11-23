@@ -82,7 +82,6 @@ public class CardsOnHandBehavior : MonoBehaviour
 
             m_cardsBehavior.Add(l_card);
         }
-        else Debug.LogError("naao achou card behavrio aqui");
 
         SetCardsIdlePosition(false);
         StartCoroutine(AnimSingleCardDeal(l_card, () => { RoundManager.Instance.OnEndedDealingItemServerRpc(m_player.PlayerIndex); }));
@@ -163,7 +162,6 @@ public class CardsOnHandBehavior : MonoBehaviour
             if (m_cardsBehavior[i].itemType is ItemType.NONE) l_tempCardsIDOnHand.Add(i);
         }
 
-        Debug.Log("is not item cars count " + l_tempCardsIDOnHand.Count);
         for (int i = 0; i < l_tempCardsIDOnHand.Count; i++)
         {
             yield return AnimSingleCardDeal(m_cardsBehavior[l_tempCardsIDOnHand[i]]);
@@ -300,8 +298,10 @@ public class CardsOnHandBehavior : MonoBehaviour
 
     public void ResetCardsOnHandBehavior()
     {
+        Debug.Log("ResetCardsOnHandBehavior");
         m_currentHoldingCard = null;
         m_cardsBehavior.Clear();
+        Debug.Log(m_cardsBehavior.Count);
         m_currentTargetIndex = 0;
     }
 

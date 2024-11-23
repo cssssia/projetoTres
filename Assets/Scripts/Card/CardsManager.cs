@@ -44,6 +44,7 @@ public class CardsManager : NetworkBehaviour
         base.OnNetworkSpawn();
 
         DeckOnGameList = new List<int>();
+        CardsOnGameList = new List<int>();
 
         if (IsServer)
         {
@@ -93,14 +94,13 @@ public class CardsManager : NetworkBehaviour
     {
         Debug.Log("[GAME] Spawn Cards");
 
-        CardsOnGameList = new List<int>();
-
-        Shuffle(DeckOnGameList);
+        //Shuffle(DeckOnGameList);
 
         for (int i = 0; i < 3 * GameMultiplayerManager.MAX_PLAYER_AMOUNT; i++)
         {
-            SetPlayerUsableDeckClientRpc(DeckOnGameList[i], (Player)(i % 2));
-            DealOneCard(DeckOnGameList[i]);
+            int l_rand = UnityEngine.Random.Range(0, DeckOnGameList.Count);
+            SetPlayerUsableDeckClientRpc(DeckOnGameList[l_rand], (Player)(i % 2));
+            DealOneCardClientRpc(DeckOnGameList[l_rand]);
         }
     }
 
@@ -110,16 +110,10 @@ public class CardsManager : NetworkBehaviour
         GetCardByIndex(p_cardIndex).cardPlayer = p_player;
     }
 
-    void DealOneCard(int p_cardIndex)
-    {
-        DeckOnGameList.Remove(p_cardIndex);
-
-        DealOneCardClientRpc(p_cardIndex);
-    }
-
     [ClientRpc]
     void DealOneCardClientRpc(int p_cardIndex)
     {
+        DeckOnGameList.Remove(p_cardIndex);
         CardsOnGameList.Add(p_cardIndex);
         OnAddCardToMyHand?.Invoke(p_cardIndex, EventArgs.Empty);
     }
@@ -250,7 +244,7 @@ public class CardsManager : NetworkBehaviour
             int l_rand = UnityEngine.Random.Range(0, DeckOnGameList.Count);
 
             UsableDeckList[DeckOnGameList[l_rand]].cardPlayer = p_playerId;
-            DealOneCard(DeckOnGameList[l_rand]);
+            DealOneCardClientRpc(DeckOnGameList[l_rand]);
             AddCardClientRpc(DeckOnGameList[l_rand]);
 
             DeckOnGameList.RemoveAt(l_rand);
@@ -301,6 +295,7 @@ public class CardsManager : NetworkBehaviour
 
     public void RemoveCardFromGame()
     {
+        Debug.Log("RemoveCardFromGame");
 
         for (int i = CardsOnGameList.Count - 1; i >= 0; i--)
         {
@@ -311,9 +306,20 @@ public class CardsManager : NetworkBehaviour
             l_cardNetworkObject.transform.SetPositionAndRotation(m_cardsSO.InitialPosition, Quaternion.Euler(m_cardsSO.InitialRotation));
             l_cardNetworkObject.TrySetParent(m_deckParent, false);
 
+            ResetCard(l_removeCard);
+
             DeckOnGameList.Add(l_removeCard);
         }
 
+    }
+
+    void ResetCard(int p_cardIndex)
+    {
+        Debug.Log("ResetCard " + PlayerController.LocalInstance.PlayerIndex);
+
+        Card l_card = GetCardByIndex(p_cardIndex);
+        l_card.playedCard = false;
+        l_card.cardPlayer = Player.DEFAULT;
     }
 
     void Shuffle<T>(List<T> list)

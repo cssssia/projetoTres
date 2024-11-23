@@ -114,12 +114,9 @@ public class PlayerController : NetworkBehaviour
 
     private void CardsManager_OnAddCardToMyHand(object p_cardIndex, EventArgs e)
     {
-        Debug.Log((int)p_cardIndex);
-        Debug.Log(CardsManager.Instance.GetCardByIndex((int)p_cardIndex).cardPlayer);
         if (IsOwner && CardsManager.Instance.GetCardByIndex((int)p_cardIndex).cardPlayer == (Player)PlayerIndex)
         {
             m_myHand.Add((int)p_cardIndex);
-            print($"deal? {m_myHand.Count == 3}");
             SetCardParentServerRpc((int)p_cardIndex, m_myHand.Count == 3);
         }
     }
@@ -157,13 +154,14 @@ public class PlayerController : NetworkBehaviour
         if (IsOwner)
         {
             m_myHand.Clear();
-            m_handBehavior.ResetCardsOnHandBehavior();
 
             if (PlayerIndex == (int)p_playerWonId)
                 Debug.Log("[GAME] You Won!");
+
+            CardsManager.Instance.RemoveCardFromGame();
         }
 
-        RemoveCardFromGameClientRpc();
+        m_handBehavior.ResetCardsOnHandBehavior();
 
         if (IsServer)
             RoundManager.Instance.RoundHasStarted.Value = false;
@@ -316,12 +314,6 @@ public class PlayerController : NetworkBehaviour
         m_handBehavior.AddItemOnHand(l_item);
     }
 
-
-    [ClientRpc]
-    void RemoveCardFromGameClientRpc()
-    {
-        CardsManager.Instance.RemoveCardFromGame();
-    }
 
     [ClientRpc]
     void AnimCardClientRpc(int p_playerType, int p_targetIndex, NetworkObjectReference p_cardNetworkObjectReference)

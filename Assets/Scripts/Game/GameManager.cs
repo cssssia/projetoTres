@@ -248,7 +248,7 @@ public class GameManager : NetworkBehaviour
                 CardsManager.Instance.SpawnNewPlayCardsServerRpc();
                 m_wonTrickPlayer = Player.DEFAULT;
 
-                if (debug_itemEveryRound)
+                if (debug_itemEveryRound && !CardsManager.Instance.BothPlayersHaveItem)
                 {
                     SetNextGameState(GameState.DealingItems);
                 }

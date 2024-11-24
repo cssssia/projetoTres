@@ -53,7 +53,7 @@ public class PlayerController : NetworkBehaviour
         get { return GameMultiplayerManager.Instance.GetPlayerDataIndexFromClientId(OwnerClientId); }
     }
 
-    public bool CanPlay { get;  private set; }
+    public bool CanPlay { get; private set; }
     private bool canBet;
 
     public override void OnNetworkSpawn() //research more the difference of this and awake
@@ -154,8 +154,9 @@ public class PlayerController : NetworkBehaviour
 
     private void TurnManager_OnStartPlayingCard(object p_customSender, EventArgs e)
     {
-        CustomSender l_customSender = (CustomSender)p_customSender;
-        AnimCardClientRpc(l_customSender.playerType, l_customSender.targetIndex, l_customSender.cardNO);
+        CustomSender l_customSender = (((CustomSender, bool))p_customSender).Item1;
+        bool l_isItem = (((CustomSender, bool))p_customSender).Item2;
+        AnimCardClientRpc(l_customSender.playerType, l_customSender.targetIndex, l_isItem, l_customSender.cardNO);
     }
 
     private void TurnManager_OnRoundWon(object p_playerWonId, EventArgs e)
@@ -167,7 +168,7 @@ public class PlayerController : NetworkBehaviour
             if (PlayerIndex == (int)p_playerWonId)
                 Debug.Log("[GAME] You Won!");
 
-            CardsManager.Instance.RemoveCardsFromGame();
+            if(IsServer) CardsManager.Instance.RemoveCardsFromGame();
         }
 
         m_handBehavior.ResetCardsOnHandBehavior();
@@ -230,7 +231,7 @@ public class PlayerController : NetworkBehaviour
 
     private void StartAnim(GameObject gameObject, bool p_isItem, int p_cardIndex)
     {
-        RoundManager.Instance.OnStartAnimServerRpc(PlayerIndex, m_handBehavior.CurrentTargetIndex,
+        RoundManager.Instance.OnStartAnimServerRpc(PlayerIndex, p_isItem, m_handBehavior.CurrentTargetIndex,
                                                     p_cardIndex, gameObject.GetComponent<NetworkObject>());
     }
 
@@ -243,7 +244,6 @@ public class PlayerController : NetworkBehaviour
             {
                 if (CardsManager.Instance.GetCardByIndex(m_myHand[i]).cardName == gameObject.name)
                 {
-
                     if (!RoundManager.Instance.RoundHasStarted.Value)
                         RoundManager.Instance.StartRoundServerRpc(IsHost ? Player.HOST : Player.CLIENT);
 
@@ -347,13 +347,16 @@ public class PlayerController : NetworkBehaviour
 
 
     [ClientRpc]
-    void AnimCardClientRpc(int p_playerType, int p_targetIndex, NetworkObjectReference p_cardNetworkObjectReference)
+    void AnimCardClientRpc(int p_playerType, int p_targetIndex, bool p_isItem, NetworkObjectReference p_cardNetworkObjectReference)
     {
         if (IsOwner && p_playerType != PlayerIndex)
         {
             if (p_cardNetworkObjectReference.TryGet(out NetworkObject p_cardNetworkObject))
             {
-                p_cardNetworkObject.GetComponent<CardBehavior>().AnimateToPlace(CardsManager.Instance.GetCardTargetByIndex(p_targetIndex, p_playerType), CardAnimType.PLAY);
+                if (!p_isItem)
+                    p_cardNetworkObject.GetComponent<CardBehavior>().AnimateToPlace(CardsManager.Instance.GetCardTargetByIndex(p_targetIndex, p_playerType), CardAnimType.PLAY);
+                else
+                    p_cardNetworkObject.GetComponent<CardBehavior>().AnimateToPlace(CardsManager.Instance.ItemTarget, CardAnimType.PLAY);
             }
         }
     }

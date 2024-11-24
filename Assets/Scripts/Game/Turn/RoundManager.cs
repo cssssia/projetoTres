@@ -150,9 +150,9 @@ public class RoundManager : NetworkBehaviour
     }
 
     [ServerRpc (RequireOwnership = false)]
-    public void OnStartAnimServerRpc(int p_playerIndex, int p_targetIndex, int p_cardIndex, NetworkObjectReference p_cardNetworkObjectReference)
+    public void OnStartAnimServerRpc(int p_playerIndex,bool p_isItem, int p_targetIndex, int p_cardIndex, NetworkObjectReference p_cardNetworkObjectReference)
     {
-        OnStartPlayingCard?.Invoke(new CustomSender(p_playerIndex, p_targetIndex, p_cardNetworkObjectReference, p_cardIndex), EventArgs.Empty);
+        OnStartPlayingCard?.Invoke((new CustomSender(p_playerIndex, p_targetIndex, p_cardNetworkObjectReference, p_cardIndex), p_isItem), EventArgs.Empty);
     }
 
     [ServerRpc(RequireOwnership = false)]

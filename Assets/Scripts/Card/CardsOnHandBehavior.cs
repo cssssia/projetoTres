@@ -24,7 +24,6 @@ public class CardsOnHandBehavior : MonoBehaviour
     [Header("Target")]
     [SerializeField] private List<Transform> m_targets;
     [SerializeField] private CardTransform[] m_targetsTransform;
-    [SerializeField] private CardTransform m_itemUseCardTransform;
     [SerializeField] private int m_currentTargetIndex;
     public int CurrentTargetIndex { get { return m_currentTargetIndex; } }
     PointerEventData m_pointerEventData;
@@ -143,7 +142,7 @@ public class CardsOnHandBehavior : MonoBehaviour
     {
         for (int i = 0; i < m_cardsBehavior.Count; i++)
         {
-            m_cardsBehavior[i].ResetTransform();
+            if (m_cardsBehavior[i].item == null) m_cardsBehavior[i].ResetTransform();
         }
 
         StartCoroutine(AnimCardsDeal());
@@ -162,6 +161,7 @@ public class CardsOnHandBehavior : MonoBehaviour
         for (int i = 0; i < m_cardsBehavior.Count; i++)
         {
             if (m_cardsBehavior[i].item == null) l_tempCardsIDOnHand.Add(i);
+            else yield return m_cardsBehavior[i].AnimToIdlePos();
         }
 
         for (int i = 0; i < l_tempCardsIDOnHand.Count; i++)
@@ -315,7 +315,12 @@ public class CardsOnHandBehavior : MonoBehaviour
     {
         //Debug.Log("ResetCardsOnHandBehavior");
         m_currentHoldingCard = null;
-        m_cardsBehavior.Clear();
+        for (int i = m_cardsBehavior.Count - 1; i >= 0; i--)
+        {
+            if (m_cardsBehavior[i].card == null) continue;
+
+            m_cardsBehavior.RemoveAt(i);
+        }
         //Debug.Log(m_cardsBehavior.Count);
         m_currentTargetIndex = 0;
     }
@@ -326,11 +331,8 @@ public class CardsOnHandBehavior : MonoBehaviour
         {
             if (m_cardsBehavior[i].card == null) continue;
 
-            if (m_player.IsOwner)
-                Debug.Log($"cardsIndex SO {m_cardsBehavior[i].card.cardIndexSO} e p_cardID: {p_cardID}");
             if (m_cardsBehavior[i].card.cardIndexSO == CardsManager.Instance.GetCardByIndex(p_cardID).cardIndexSO)
             {
-                Debug.Log("o sangue de jesus " + p_cardID);
                 m_cardsBehavior.RemoveAt(i);
                 break;
             }
@@ -358,7 +360,9 @@ public class CardsOnHandBehavior : MonoBehaviour
 
     private void UseItem(CardBehavior p_cardBehavior, Action<GameObject> p_action)
     {
-        p_cardBehavior.PlayCard(m_itemUseCardTransform, p_action);
+        p_cardBehavior.PlayCard(CardsManager.Instance.ItemTarget, p_action);
+        m_currentHoldingCard = null;
+        m_cardsBehavior.Remove(p_cardBehavior);
     }
 
     private CardTransform GetNextCardTarget()
@@ -375,11 +379,6 @@ public class CardsOnHandBehavior : MonoBehaviour
             }
         }
         return m_targetsTransform[m_currentTargetIndex];
-    }
-
-    private CardTransform GetItemTargetTransform()
-    {
-        return null;
     }
     void OnDestroy()
     {

@@ -32,6 +32,8 @@ public class CardsManager : NetworkBehaviour
     [Header("Targets")]
     [SerializeField] private List<CardTarget> m_targetsTranform;
     [SerializeField] private List<CardTransform> m_targets;
+    [Space, SerializeField] private Transform m_itemTargetTranform;
+    public CardTransform ItemTarget { get; private set; }
 
     void Awake()
     {
@@ -51,6 +53,7 @@ public class CardsManager : NetworkBehaviour
             SpawnItems();
         }
         SetCardTargets();
+        SetItemTargets();
 
         RoundManager.Instance.OnCardPlayed += OnCardPlayed;
         RoundManager.Instance.OnItemUsed += OnItemUsed;
@@ -62,6 +65,11 @@ public class CardsManager : NetworkBehaviour
         {
             m_targets.Add(new(m_targetsTranform[i].transform.position, m_targetsTranform[i].transform.rotation.eulerAngles, m_targetsTranform[i].transform.localScale));
         }
+    }
+
+    void SetItemTargets()
+    {
+        ItemTarget = new(m_itemTargetTranform.position, m_itemTargetTranform.rotation.eulerAngles, m_itemTargetTranform.localScale);
     }
 
     void Update()
@@ -149,8 +157,16 @@ public class CardsManager : NetworkBehaviour
     {
         ItemType l_randomItem = ItemType.SCISSORS;//randomize it
 
-        if (!PlayersHaveItem[0]) OnAddItemCardToMyHand.Invoke((l_randomItem, 0), EventArgs.Empty);
-        if (!PlayersHaveItem[1]) OnAddItemCardToMyHand.Invoke((l_randomItem, 1), EventArgs.Empty);
+        if (!PlayersHaveItem[0])
+        {
+            PlayersHaveItem[0] = true;
+            OnAddItemCardToMyHand.Invoke((l_randomItem, 0), EventArgs.Empty);
+        }
+        if (!PlayersHaveItem[1])
+        {
+            PlayersHaveItem[1] = true;
+            OnAddItemCardToMyHand.Invoke((l_randomItem, 1), EventArgs.Empty);
+        }
     }
 
     [ServerRpc]
@@ -200,13 +216,7 @@ public class CardsManager : NetworkBehaviour
     private void OnItemUsed(object p_itemIndex, EventArgs p_args)
     {
         int l_itemID = (int)p_itemIndex;
-        for (int i = 0; i < UsableItemsList.Count; i++)
-        {
-            if (UsableItemsList[i].itemID == l_itemID)
-            {
-
-            }
-        }
+        PlayersHaveItem[(int)UsableItemsList[l_itemID].playerID] = false;
     }
 
     [ServerRpc(RequireOwnership = false)]
@@ -246,8 +256,9 @@ public class CardsManager : NetworkBehaviour
             {
                 if (CardsOnGameList[i] == l_cardsToRemove[j])
                 {
-                    RemoveCardClientRpc(CardsOnGameList[i]);
-                    SoftResetCard(CardsOnGameList[i]);
+                    int l_cardID = CardsOnGameList[i];
+                    RemoveCardClientRpc(l_cardID);
+                    SoftResetCard(l_cardID);
 
                     break;
                 }

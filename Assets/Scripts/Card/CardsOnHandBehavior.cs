@@ -382,6 +382,7 @@ public class CardsOnHandBehavior : MonoBehaviour
     }
     void OnDestroy()
     {
+        Debug.Log("OnDestroy");
         for (int i = 0; i < m_cardsBehavior.Count; i++)
         {
             m_cardsBehavior[i].OnDestroyAction -= RemoveNullCardsFromList;

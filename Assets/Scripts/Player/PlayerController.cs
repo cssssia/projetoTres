@@ -112,17 +112,19 @@ public class PlayerController : NetworkBehaviour
 
             for (int i = 0; i < m_myHand.Count; i++)
             {
-                CardsManager.Instance.ResetCard(m_myHand[i]);
+                CardsManager.Instance.ResetCardServerRpc(m_myHand[i]);
             }
         }
     }
 
     private void CardsManager_OnAddCardToMyHand(object p_cardIndex, EventArgs e)
     {
-        if (IsOwner && CardsManager.Instance.GetCardByIndex((int)p_cardIndex).cardPlayer == (Player)PlayerIndex)
+        if (CardsManager.Instance.GetCardByIndex((int)p_cardIndex).cardPlayer == (Player)PlayerIndex)
         {
             m_myHand.Add((int)p_cardIndex);
-            SetCardParentServerRpc((int)p_cardIndex, m_myHand.Count == 3);
+            m_handBehavior.AddCardOnHand((int)p_cardIndex, m_myHand.Count == 3);
+            CardsManager.Instance.GetCardByIndex((int)p_cardIndex).cardNetworkObjectReference.TryGet(out NetworkObject l_cardNetworkObject);
+            l_cardNetworkObject.TrySetParent(transform, true);
         }
     }
     private void CardsManager_OnAddItemCardToMyHand(object p_itemTypeAndPlayer, EventArgs e)
@@ -136,18 +138,7 @@ public class PlayerController : NetworkBehaviour
     private void CardsManager_OnRemoveCardFromMyHand(object p_cardIndex, EventArgs e)
     {
         int l_cardID = (int)p_cardIndex;
-        if (IsOwner && CardsManager.Instance.GetCardByIndex((int)p_cardIndex).cardPlayer == (Player)PlayerIndex)
-        {
-            for (int i = 0; i < m_myHand.Count; i++)
-            {
-                if (m_myHand[i] == l_cardID)
-                {
-                    m_myHand.RemoveAt(i);
-                    break;
-                }
-            }
-        }
-
+        m_myHand.Remove(l_cardID);
         m_handBehavior.RemoveCardFromHand(l_cardID);
         //CardsManager.Instance.ResetCard(l_cardID);
     }
@@ -163,19 +154,23 @@ public class PlayerController : NetworkBehaviour
     {
         if (IsOwner)
         {
-            m_myHand.Clear();
-
             if (PlayerIndex == (int)p_playerWonId)
                 Debug.Log("[GAME] You Won!");
 
-            if(IsServer) CardsManager.Instance.RemoveCardsFromGame();
+            if(IsServer)
+            {
+                CardsManager.Instance.RemoveCardsFromGame();
+            }
         }
 
+        Debug.Log("TurnManager_OnRoundWon " + (Player)PlayerIndex + 
+        " IsClient: " + IsClient + " IsHost " + IsHost + " IsServer " + IsServer + " IsOwner " + IsOwner);
+
+        m_myHand.Clear();
         m_handBehavior.ResetCardsOnHandBehavior();
 
-        if (IsServer)
+        if (!IsOwner && IsServer)
         {
-            // CardsManager.Instance.RemoveCardsFromGame();
             RoundManager.Instance.RoundHasStarted.Value = false;
         }
     }
@@ -247,8 +242,9 @@ public class PlayerController : NetworkBehaviour
                     if (!RoundManager.Instance.RoundHasStarted.Value)
                         RoundManager.Instance.StartRoundServerRpc(IsHost ? Player.HOST : Player.CLIENT);
 
-                    RoundManager.Instance.PlayCardServerRpc(m_myHand[i], IsHost ? Player.HOST : Player.CLIENT, m_handBehavior.CurrentTargetIndex);
-                    m_myHand.RemoveAt(i);
+                    int l_cardPlayedIndex = m_myHand[i];
+                    m_myHand.Remove(l_cardPlayedIndex);
+                    RoundManager.Instance.PlayCardServerRpc(l_cardPlayedIndex, IsHost ? Player.HOST : Player.CLIENT, m_handBehavior.CurrentTargetIndex);
                 }
             }
         }
@@ -324,6 +320,7 @@ public class PlayerController : NetworkBehaviour
     [ClientRpc]
     public void SetCardParentClientRpc(int p_cardIndex, bool p_finishedHandCards)
     {
+        //m_myHand.Add(p_cardIndex);
         m_handBehavior.AddCardOnHand(p_cardIndex, p_finishedHandCards);
         CardsManager.Instance.GetCardByIndex(p_cardIndex).cardNetworkObjectReference.TryGet(out NetworkObject l_cardNetworkObject);
         l_cardNetworkObject.TrySetParent(transform, true);

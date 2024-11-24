@@ -55,7 +55,6 @@ public class CardsManager : NetworkBehaviour
         SetCardTargets();
         SetItemTargets();
 
-        RoundManager.Instance.OnCardPlayed += OnCardPlayed;
         RoundManager.Instance.OnItemUsed += OnItemUsed;
     }
 
@@ -200,19 +199,6 @@ public class CardsManager : NetworkBehaviour
         UsableItemsList.Add(l_usableCard);
     }
 
-
-    private void OnCardPlayed(object p_cardIndex, EventArgs p_args)
-    {
-        for (int i = 0; i < CardsOnGameList.Count; i++)
-        {
-            if (CardsOnGameList[i] == (int)p_cardIndex)
-            {
-                SetPlayedCardUsableDeckClientRpc(CardsOnGameList[i], true);
-                return;
-            }
-        }
-    }
-
     private void OnItemUsed(object p_itemIndex, EventArgs p_args)
     {
         int l_itemID = (int)p_itemIndex;
@@ -311,7 +297,7 @@ public class CardsManager : NetworkBehaviour
     }
 
     [ClientRpc]
-    void SetPlayedCardUsableDeckClientRpc(int p_cardIndex, bool p_playedCard)
+    public void SetPlayedCardUsableDeckClientRpc(int p_cardIndex, bool p_playedCard)
     {
         GetCardByIndex(p_cardIndex).playedCard = p_playedCard;
     }
@@ -328,7 +314,7 @@ public class CardsManager : NetworkBehaviour
     {
         for (int i = CardsOnGameList.Count - 1; i >= 0; i--)
         {
-            ResetCard(CardsOnGameList[i]);
+            ResetCardServerRpc(CardsOnGameList[i]);
         }
     }
 
@@ -339,9 +325,9 @@ public class CardsManager : NetworkBehaviour
         DeckOnGameList.Add(p_cardIndex);
     }
 
-    public void ResetCard(int p_cardIndex)
+    [ServerRpc]
+    public void ResetCardServerRpc(int p_cardIndex)
     {
-        Debug.Log("ResetCard");
 
         SetPlayerUsableDeckClientRpc(p_cardIndex, Player.DEFAULT);
         SetPlayedCardUsableDeckClientRpc(p_cardIndex, false);

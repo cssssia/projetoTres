@@ -83,10 +83,12 @@ public class RoundManager : NetworkBehaviour
                 else if (CurrentTrick.WhoStartedTrick == Player.CLIENT) l_wonRound = Player.CLIENT;
             }
 
-            if (l_wonRound != Player.DEFAULT) AdjustVictoryServerRpc(l_wonRound);
         }
 
-        if (l_wonRound == Player.DEFAULT) OnCardPlayed?.Invoke(p_cardIndex, EventArgs.Empty);
+        CardsManager.Instance.SetPlayedCardUsableDeckClientRpc(p_cardIndex, true);
+        OnCardPlayed?.Invoke(p_cardIndex, EventArgs.Empty);
+
+        if (l_wonRound != Player.DEFAULT) AdjustVictoryServerRpc(l_wonRound);
     }
 
     [ServerRpc(RequireOwnership = false)]

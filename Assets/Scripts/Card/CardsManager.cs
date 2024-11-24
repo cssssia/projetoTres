@@ -1,7 +1,5 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
 using Unity.Netcode;
 using UnityEngine;
 
@@ -10,20 +8,20 @@ public class CardsManager : NetworkBehaviour
 {
     public static CardsManager Instance;
 
-    [Header("Cards")]
+    public event EventHandler OnAddCardToMyHand;
+    public event EventHandler OnRemoveCardFromMyHand;
+    public event EventHandler OnAddItemCardToMyHand;
+
+    [Header("Cards Lists")]
     public List<int> CardsOnGameList;
     public List<int> DeckOnGameList;
     public List<Card> UsableDeckList;
     public List<Item> UsableItemsList;
 
+    [Header("Cards")]
     [SerializeField] private NetworkObject m_deckParent;
     [SerializeField] private CardsScriptableObject m_cardsSO;
     [SerializeField] private ItemCardScriptableObject m_itemsSO;
-
-    public event EventHandler OnAddCardToMyHand;
-    public event EventHandler OnRemoveCardFromMyHand;
-
-    public event EventHandler OnAddItemCardToMyHand;
 
     [Header("Items")]
     public List<bool> PlayersHaveItem = new List<bool> { false, false };
@@ -244,7 +242,7 @@ public class CardsManager : NetworkBehaviour
                 {
                     int l_cardID = CardsOnGameList[i];
                     RemoveCardClientRpc(l_cardID);
-                    SoftResetCard(l_cardID);
+                    SoftResetCardServerRpc(l_cardID);
 
                     break;
                 }
@@ -285,12 +283,6 @@ public class CardsManager : NetworkBehaviour
     }
 
     [ClientRpc]
-    private void AddCardClientRpc(int p_cardIndex)
-    {
-        //CardsOnGameList.Add(p_cardIndex);
-    }
-
-    [ClientRpc]
     public void SetPlayerUsableDeckClientRpc(int p_cardIndex, Player p_player)
     {
         GetCardByIndex(p_cardIndex).cardPlayer = p_player;
@@ -328,7 +320,6 @@ public class CardsManager : NetworkBehaviour
     [ServerRpc]
     public void ResetCardServerRpc(int p_cardIndex)
     {
-
         SetPlayerUsableDeckClientRpc(p_cardIndex, Player.DEFAULT);
         SetPlayedCardUsableDeckClientRpc(p_cardIndex, false);
         SetDeckAsCardParentClientRpc(p_cardIndex);
@@ -341,13 +332,15 @@ public class CardsManager : NetworkBehaviour
             {
                 AddCardToDeckClientRpc(m_softResetedCards[i]);
             }
+
+            m_softResetedCards.Clear();
         }
 
-        m_softResetedCards.Clear();
     }
 
     List<int> m_softResetedCards = new List<int>();
-    public void SoftResetCard(int p_cardIndex)
+    [ServerRpc]
+    public void SoftResetCardServerRpc(int p_cardIndex)
     {
         SetPlayerUsableDeckClientRpc(p_cardIndex, Player.DEFAULT);
         SetPlayedCardUsableDeckClientRpc(p_cardIndex, false);

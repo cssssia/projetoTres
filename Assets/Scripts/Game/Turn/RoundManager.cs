@@ -56,6 +56,8 @@ public class RoundManager : NetworkBehaviour
     [ServerRpc (RequireOwnership = false)]
     public void PlayCardServerRpc(int p_cardIndex, Player p_playerType, int p_targetIndex)
     {
+        Debug.Log("[GAME] Play Card " + CardsManager.Instance.GetCardByIndex(p_cardIndex).cardName);
+
         Player l_wonRound = Player.DEFAULT;
 
         CurrentTrick.CardPlayed(CardsManager.Instance.GetCardByIndex(p_cardIndex), p_playerType, out bool p_goToNextTrick);

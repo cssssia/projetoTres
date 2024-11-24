@@ -152,6 +152,9 @@ public class PlayerController : NetworkBehaviour
 
     private void TurnManager_OnRoundWon(object p_playerWonId, EventArgs e)
     {
+        if (IsServer)
+            Debug.Log($"[GAME] {(Player)p_playerWonId} Won!");
+
         if (IsOwner)
         {
             if (PlayerIndex == (int)p_playerWonId)
@@ -232,7 +235,7 @@ public class PlayerController : NetworkBehaviour
 
     private void ThrowCard(GameObject gameObject)
     {
-        Debug.Log("[GAME] Play Card " + gameObject.name);
+        Debug.Log("[GAME] Will Throw Card " + gameObject.name);
         if (gameObject.CompareTag("Card"))
         {
             for (int i = 0; i < m_myHand.Count; i++)
@@ -309,21 +312,6 @@ public class PlayerController : NetworkBehaviour
 
         if (canBet) Debug.Log("pode apostar");
         else Debug.Log("não pode apostar");
-    }
-
-    [ServerRpc]
-    public void SetCardParentServerRpc(int p_cardIndex, bool p_finishedHandCards)
-    {
-        SetCardParentClientRpc(p_cardIndex, p_finishedHandCards);
-    }
-
-    [ClientRpc]
-    public void SetCardParentClientRpc(int p_cardIndex, bool p_finishedHandCards)
-    {
-        //m_myHand.Add(p_cardIndex);
-        m_handBehavior.AddCardOnHand(p_cardIndex, p_finishedHandCards);
-        CardsManager.Instance.GetCardByIndex(p_cardIndex).cardNetworkObjectReference.TryGet(out NetworkObject l_cardNetworkObject);
-        l_cardNetworkObject.TrySetParent(transform, true);
     }
 
     [ServerRpc]

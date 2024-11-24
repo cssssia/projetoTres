@@ -16,6 +16,7 @@ public class PlayerController : NetworkBehaviour
     [SerializeField] private BetOnHandBehavior m_betBehavior;
     [SerializeField] private DeckOnTableBehavior m_deckBehavior;
     [SerializeField] private List<int> m_myHand;
+    [SerializeField] private int m_itemOnHand;
 
     [Header("Game Info")]
     [SerializeField] private GameManager.GameState currentGameState;
@@ -117,12 +118,15 @@ public class PlayerController : NetworkBehaviour
         }
     }
 
-    private void CardsManager_OnAddCardToMyHand(object p_cardIndex, EventArgs e)
+    private void CardsManager_OnAddCardToMyHand(object p_cardSended, EventArgs e)
     {
+        int p_cardIndex = (((int, bool))p_cardSended).Item1;
+        bool p_lastCard = (((int, bool))p_cardSended).Item2;
+
         if (CardsManager.Instance.GetCardByIndex((int)p_cardIndex).cardPlayer == (Player)PlayerIndex)
         {
             m_myHand.Add((int)p_cardIndex);
-            m_handBehavior.AddCardOnHand((int)p_cardIndex, m_myHand.Count == 3);
+            m_handBehavior.AddCardOnHand((int)p_cardIndex, p_lastCard);
             CardsManager.Instance.GetCardByIndex((int)p_cardIndex).cardNetworkObjectReference.TryGet(out NetworkObject l_cardNetworkObject);
             l_cardNetworkObject.TrySetParent(transform, true);
         }
@@ -160,13 +164,13 @@ public class PlayerController : NetworkBehaviour
             if (PlayerIndex == (int)p_playerWonId)
                 Debug.Log("[GAME] You Won!");
 
-            if(IsServer)
+            if (IsServer)
             {
                 CardsManager.Instance.RemoveCardsFromGame();
             }
         }
 
-        Debug.Log("TurnManager_OnRoundWon " + (Player)PlayerIndex + 
+        Debug.Log("TurnManager_OnRoundWon " + (Player)PlayerIndex +
         " IsClient: " + IsClient + " IsHost " + IsHost + " IsServer " + IsServer + " IsOwner " + IsOwner);
 
         m_myHand.Clear();
@@ -253,21 +257,11 @@ public class PlayerController : NetworkBehaviour
         }
     }
 
-    private void UseItemCard(GameObject gameObject)
+    private void UseItemCard(GameObject p_gameObject)
     {
-        Debug.Log("[GAME] Play Card " + gameObject.name);
-        if (gameObject.CompareTag("Card"))
-        {
-            for (int i = 0; i < m_handBehavior.CardBehaviors.Count; i++)
-            {
-                if (m_handBehavior.CardBehaviors[i].item != null)
-                {
-                    int l_itemID = m_handBehavior.CardBehaviors[i].item.itemID;
-                    RoundManager.Instance.PlayItemCardServerRpc(l_itemID);
-                    break;
-                }
-            }
-        }
+        Debug.Log("[GAME] Use Item " + p_gameObject.name);
+        RoundManager.Instance.PlayItemCardServerRpc(m_itemOnHand);
+        m_itemOnHand = -1;
     }
 
     private void IncreaseBet(GameObject gameObject, bool increase)
@@ -326,6 +320,7 @@ public class PlayerController : NetworkBehaviour
         Item l_item = CardsManager.Instance.GetItemNetworkObject(p_itemType, (Player)PlayerIndex);
         l_item.cardNetworkObjectReference.TryGet(out NetworkObject l_cardNetworkObject);
         l_cardNetworkObject.TrySetParent(transform, true);
+        m_itemOnHand = l_item.itemID;
 
         m_handBehavior.AddItemOnHand(l_item);
     }

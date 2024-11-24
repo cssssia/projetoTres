@@ -160,7 +160,7 @@ public class CardsOnHandBehavior : MonoBehaviour
         l_tempCardsIDOnHand.Clear();
         for (int i = 0; i < m_cardsBehavior.Count; i++)
         {
-            if (m_cardsBehavior[i].item == null) l_tempCardsIDOnHand.Add(i);
+            if (m_cardsBehavior[i].item == null || m_cardsBehavior[i].item.Type is ItemType.NONE) l_tempCardsIDOnHand.Add(i);
             else yield return m_cardsBehavior[i].AnimToIdlePos();
         }
 
@@ -272,7 +272,7 @@ public class CardsOnHandBehavior : MonoBehaviour
                 {
                     if (m_resultList[i].gameObject == m_throwCardTargetImage.gameObject)
                     {
-                        if (m_currentHoldingCard.item == null)
+                        if (m_currentHoldingCard.item == null || m_currentHoldingCard.item.Type == ItemType.NONE)
                         {
                             p_actionOnStartAnimation.Invoke(m_currentHoldingCard.gameObject, false, m_currentHoldingCard.card.cardIndexSO);
                             PlayCard(m_currentHoldingCard, p_actionOnEndAnimation);

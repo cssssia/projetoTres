@@ -103,15 +103,17 @@ public class CardsManager : NetworkBehaviour
         {
             int l_rand = UnityEngine.Random.Range(0, DeckOnGameList.Count);
             SetPlayerUsableDeckClientRpc(DeckOnGameList[l_rand], (Player)(i % 2));
-            DealOneCardClientRpc(DeckOnGameList[l_rand]);
+            bool l_lastCartd = (Player)(i % 2) == Player.HOST ? i == 4 : i == 5;
+            Debug.Log($"is {i} last card? " + l_lastCartd);
+            DealOneCardClientRpc(DeckOnGameList[l_rand], l_lastCartd);
         }
     }
     [ClientRpc]
-    void DealOneCardClientRpc(int p_cardIndex)
+    void DealOneCardClientRpc(int p_cardIndex, bool p_isLastCard)
     {
         DeckOnGameList.Remove(p_cardIndex);
         CardsOnGameList.Add(p_cardIndex);
-        OnAddCardToMyHand?.Invoke(p_cardIndex, EventArgs.Empty);
+        OnAddCardToMyHand?.Invoke((p_cardIndex, p_isLastCard), EventArgs.Empty);
     }
     [ServerRpc]
     void SpawnCardServerRpc(int p_indexSO)
@@ -254,7 +256,7 @@ public class CardsManager : NetworkBehaviour
             int l_rand = UnityEngine.Random.Range(0, DeckOnGameList.Count);
 
             SetPlayerUsableDeckClientRpc(DeckOnGameList[l_rand], p_playerId);
-            DealOneCardClientRpc(DeckOnGameList[l_rand]);
+            DealOneCardClientRpc(DeckOnGameList[l_rand], i + 1 == l_quantityOfCardsRemoved);
         }
 
         SetHasItemClientRpc((int)p_playerId, false);
@@ -362,6 +364,11 @@ public class CardsManager : NetworkBehaviour
     public Card GetCardByIndex(int index)
     {
         return UsableDeckList[index];
+    }
+
+    public Item GetItemByIndex(int p_index)
+    {
+        return UsableItemsList[p_index];
     }
 
     public Item GetItemNetworkObject(ItemType p_itemType, Player p_playerdId)

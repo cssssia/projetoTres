@@ -17,4 +17,14 @@ public class Item
         itemID = p_itemID;
         isOnGame = false;
     }
+
+    public Item(bool isNUll = true)
+    {
+        Type = ItemType.NONE;
+        cardNetworkObjectReference = new();
+        playerID = Player.DEFAULT;
+        itemID = -1;
+        isOnGame = false;
+    }
+
 }

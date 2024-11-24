@@ -68,7 +68,7 @@ public class CardBehavior : MonoBehaviour
     public void SetCardData(Card p_card)
     {
         card = p_card;
-        item = null;
+        item = new();
     }
 
     public void SetCardData(Item p_item)

@@ -1,3 +1,4 @@
+using QFSW.QC;
 using System;
 using System.Collections.Generic;
 using Unity.Netcode;
@@ -53,6 +54,9 @@ public class GameManager : NetworkBehaviour
     private NetworkVariable<bool> m_isGamePaused = new NetworkVariable<bool>(false);
     private Dictionary<ulong, bool> m_playerReadyDictionary;
     private Dictionary<ulong, bool> m_playerPauseDictionary;
+    [Header("Animating")]
+    private Dictionary<ulong, bool> m_playerAnimatingDictionary;
+    public NetworkVariable<bool> IsAnyAnimationPlaying = new NetworkVariable<bool>(false);
     private bool m_autoTestGamePauseState;
     private bool debug_itemEveryRound = true;
 
@@ -61,6 +65,8 @@ public class GameManager : NetworkBehaviour
         Instance = this;
         m_playerReadyDictionary = new Dictionary<ulong, bool>();
         m_playerPauseDictionary = new Dictionary<ulong, bool>();
+        m_playerAnimatingDictionary = new Dictionary<ulong, bool>();
+
         m_endedDealingCards = new List<bool>() { false, false };
         m_endedDealingItems = new List<bool>() { false, false };
     }
@@ -461,4 +467,34 @@ public class GameManager : NetworkBehaviour
         m_isGamePaused.Value = false;
     }
 
+    [ServerRpc(RequireOwnership = false)]
+    public void SetPlayerAnimatingServerRpc(bool p_set, ServerRpcParams p_serverRpcParams = default)
+    {
+        Debug.Log($"player {p_serverRpcParams.Receive.SenderClientId} set anim: " + p_set);
+        m_playerAnimatingDictionary[p_serverRpcParams.Receive.SenderClientId] = p_set;
+        TestCallActionsOnWait();
+    }
+
+    [Command]
+    public static void playerAnimating(ulong id)
+    {
+        Debug.Log(Instance.m_playerAnimatingDictionary[id]);
+    }
+
+
+    void TestCallActionsOnWait()
+    {
+        bool l_stillAnimating = false;
+        foreach (ulong clientId in NetworkManager.Singleton.ConnectedClientsIds)
+        {
+            if (m_playerAnimatingDictionary.TryGetValue(clientId, out bool l_animating) && l_animating)
+            {
+                // this player is paused
+                l_stillAnimating = true;
+                break;
+            }
+        }
+
+        IsAnyAnimationPlaying.Value = l_stillAnimating;
+    }
 }

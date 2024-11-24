@@ -22,6 +22,9 @@ public class PlayerController : NetworkBehaviour
     [SerializeField] private GameManager.GameState currentGameState;
     [SerializeField] private GameManager.BetState currentBetState;
 
+    [Space]
+    private Queue<Action> m_actionsQueue;
+
     void Start()
     {
         if (!IsOwner)
@@ -64,6 +67,8 @@ public class PlayerController : NetworkBehaviour
             LocalInstance = this;
             m_betBehavior.OnPlayerSpawned(PlayerIndex);
             m_deckBehavior.OnPlayerSpawned();
+            m_actionsQueue = new();
+            GameManager.Instance.IsAnyAnimationPlaying.OnValueChanged += OnAnyAnimationPlayingChanged;
         }
         m_handBehavior.OnPlayerSpawned(this);
 
@@ -237,31 +242,42 @@ public class PlayerController : NetworkBehaviour
                                                     p_cardIndex, gameObject.GetComponent<NetworkObject>());
     }
 
-    private void ThrowCard(GameObject gameObject)
+    private void ThrowCard(GameObject p_gameObject)
     {
-        Debug.Log("[GAME] Will Throw Card " + gameObject.name);
-        if (gameObject.CompareTag("Card"))
-        {
-            for (int i = 0; i < m_myHand.Count; i++)
-            {
-                if (CardsManager.Instance.GetCardByIndex(m_myHand[i]).cardName == gameObject.name)
-                {
-                    if (!RoundManager.Instance.RoundHasStarted.Value)
-                        RoundManager.Instance.StartRoundServerRpc(IsHost ? Player.HOST : Player.CLIENT);
+        GameManager.Instance.SetPlayerAnimatingServerRpc(false);
 
-                    int l_cardPlayedIndex = m_myHand[i];
-                    m_myHand.Remove(l_cardPlayedIndex);
-                    RoundManager.Instance.PlayCardServerRpc(l_cardPlayedIndex, IsHost ? Player.HOST : Player.CLIENT, m_handBehavior.CurrentTargetIndex);
+        AddFunctionToQueue(() =>
+        {
+            Debug.Log("[GAME] Will Throw Card " + p_gameObject.name);
+            if (p_gameObject.CompareTag("Card"))
+            {
+                for (int i = 0; i < m_myHand.Count; i++)
+                {
+                    if (CardsManager.Instance.GetCardByIndex(m_myHand[i]).cardName == p_gameObject.name)
+                    {
+                        if (!RoundManager.Instance.RoundHasStarted.Value)
+                            RoundManager.Instance.StartRoundServerRpc(IsHost ? Player.HOST : Player.CLIENT);
+
+                        int l_cardPlayedIndex = m_myHand[i];
+                        m_myHand.Remove(l_cardPlayedIndex);
+                        RoundManager.Instance.PlayCardServerRpc(l_cardPlayedIndex, IsHost ? Player.HOST : Player.CLIENT, m_handBehavior.CurrentTargetIndex);
+                    }
                 }
             }
-        }
+        });
     }
+
+    //private void ThrowCardOnQueue()
 
     private void UseItemCard(GameObject p_gameObject)
     {
-        Debug.Log("[GAME] Use Item " + p_gameObject.name);
-        RoundManager.Instance.PlayItemCardServerRpc(m_itemOnHand);
-        m_itemOnHand = -1;
+        GameManager.Instance.SetPlayerAnimatingServerRpc(false);
+        AddFunctionToQueue(() =>
+        {
+            Debug.Log("[GAME] Use Item " + p_gameObject.name);
+            RoundManager.Instance.PlayItemCardServerRpc(m_itemOnHand);
+            m_itemOnHand = -1;
+        });
     }
 
     private void IncreaseBet(GameObject gameObject, bool increase)
@@ -333,11 +349,43 @@ public class PlayerController : NetworkBehaviour
         {
             if (p_cardNetworkObjectReference.TryGet(out NetworkObject p_cardNetworkObject))
             {
+                GameManager.Instance.SetPlayerAnimatingServerRpc(true);
                 if (!p_isItem)
-                    p_cardNetworkObject.GetComponent<CardBehavior>().AnimateToPlace(CardsManager.Instance.GetCardTargetByIndex(p_targetIndex, p_playerType), CardAnimType.PLAY);
+                    p_cardNetworkObject.GetComponent<CardBehavior>().AnimateToPlace(
+                                                                        CardsManager.Instance.GetCardTargetByIndex(p_targetIndex, p_playerType),
+                                                                        CardAnimType.PLAY,
+                                                                        (go) =>
+                                                                                {
+                                                                                    GameManager.Instance.SetPlayerAnimatingServerRpc(false);
+                                                                                });
                 else
-                    p_cardNetworkObject.GetComponent<CardBehavior>().AnimateToPlace(CardsManager.Instance.ItemTarget, CardAnimType.PLAY);
+                    p_cardNetworkObject.GetComponent<CardBehavior>().AnimateToPlace(CardsManager.Instance.ItemTarget, CardAnimType.PLAY,
+                        (go) =>
+                    {
+                        GameManager.Instance.SetPlayerAnimatingServerRpc(false);
+                    });
             }
+        }
+    }
+
+    public void OnAnyAnimationPlayingChanged(bool p_lastValue, bool p_newValue)
+    {
+        if (!p_newValue) PlayActionQueue();
+    }
+
+    public void AddFunctionToQueue(Action p_action)
+    {
+        m_actionsQueue.Enqueue(p_action);
+
+        if (!GameManager.Instance.IsAnyAnimationPlaying.Value) PlayActionQueue();
+        else print("não pode tocar imediatamente");
+    }
+
+    void PlayActionQueue()
+    {
+        while (m_actionsQueue.Count > 0)
+        {
+            m_actionsQueue.Dequeue().Invoke();
         }
     }
 }

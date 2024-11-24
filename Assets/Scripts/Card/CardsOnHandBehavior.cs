@@ -145,6 +145,7 @@ public class CardsOnHandBehavior : MonoBehaviour
             if (m_cardsBehavior[i].item == null) m_cardsBehavior[i].ResetTransform();
         }
 
+        GameManager.Instance.SetPlayerAnimatingServerRpc(true);
         StartCoroutine(AnimCardsDeal());
     }
 
@@ -171,6 +172,7 @@ public class CardsOnHandBehavior : MonoBehaviour
             if (i + 1 < l_tempCardsIDOnHand.Count) yield return new WaitForSeconds(.5f);
         }
 
+        GameManager.Instance.SetPlayerAnimatingServerRpc(false);
         RoundManager.Instance.OnEndedDealingCardsServerRpc(m_player.PlayerIndex);
     }
 
@@ -266,7 +268,7 @@ public class CardsOnHandBehavior : MonoBehaviour
 
             bool l_playCard = false;
 
-            if (p_canPlay)
+            if (p_canPlay && !GameManager.Instance.IsAnyAnimationPlaying.Value)
             {
                 for (int i = 0; i < m_resultList.Count; i++)
                 {
@@ -352,6 +354,7 @@ public class CardsOnHandBehavior : MonoBehaviour
 
     private void PlayCard(CardBehavior cardBehavior, Action<GameObject> p_action)
     {
+        GameManager.Instance.SetPlayerAnimatingServerRpc(true);
         cardBehavior.PlayCard(GetNextCardTarget(), p_action);
         m_currentHoldingCard = null;
         m_cardsBehavior.Remove(cardBehavior);
@@ -360,6 +363,7 @@ public class CardsOnHandBehavior : MonoBehaviour
 
     private void UseItem(CardBehavior p_cardBehavior, Action<GameObject> p_action)
     {
+        GameManager.Instance.SetPlayerAnimatingServerRpc(true);
         p_cardBehavior.PlayCard(CardsManager.Instance.ItemTarget, p_action);
         m_currentHoldingCard = null;
         m_cardsBehavior.Remove(p_cardBehavior);

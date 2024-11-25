@@ -341,29 +341,42 @@ public class PlayerController : NetworkBehaviour
         m_handBehavior.AddItemOnHand(l_item);
     }
 
-
+    CardBehavior l_tempCard;
     [ClientRpc]
     void AnimCardClientRpc(int p_playerType, int p_targetIndex, bool p_isItem, NetworkObjectReference p_cardNetworkObjectReference)
     {
+        //Debug.Log("animcardclientrpc " + (Player)PlayerIndex +
+        //        " IsClient: " + IsClient + " IsHost " + IsHost + " IsServer " + IsServer + " IsOwner " + IsOwner);
+
+        if (p_cardNetworkObjectReference.TryGet(out NetworkObject p_cardNetworkObject))
+            l_tempCard = p_cardNetworkObject.GetComponent<CardBehavior>();
+
         if (IsOwner && p_playerType != PlayerIndex)
         {
-            if (p_cardNetworkObjectReference.TryGet(out NetworkObject p_cardNetworkObject))
+            if (l_tempCard != null)
             {
                 GameManager.Instance.SetPlayerAnimatingServerRpc(true);
                 if (!p_isItem)
-                    p_cardNetworkObject.GetComponent<CardBehavior>().AnimateToPlace(
-                                                                        CardsManager.Instance.GetCardTargetByIndex(p_targetIndex, p_playerType),
-                                                                        CardAnimType.PLAY,
-                                                                        (go) =>
-                                                                                {
-                                                                                    GameManager.Instance.SetPlayerAnimatingServerRpc(false);
-                                                                                });
-                else
-                    p_cardNetworkObject.GetComponent<CardBehavior>().AnimateToPlace(CardsManager.Instance.ItemTarget, CardAnimType.PLAY,
+                    l_tempCard.AnimateToPlace(CardsManager.Instance.GetCardTargetByIndex(p_targetIndex, p_playerType),
+                                              CardAnimType.PLAY,
+                                              (go) =>
+                                                      {
+                                                          GameManager.Instance.SetPlayerAnimatingServerRpc(false);
+                                                      });
+                else l_tempCard.AnimateToPlace(CardsManager.Instance.ItemTarget, CardAnimType.PLAY,
                         (go) =>
-                    {
-                        GameManager.Instance.SetPlayerAnimatingServerRpc(false);
-                    });
+                        {
+                            GameManager.Instance.SetPlayerAnimatingServerRpc(false);
+                        });
+            }
+        }
+
+        if (!IsOwner && p_playerType == PlayerIndex)
+        {
+            if (l_tempCard != null)
+            {
+                bool l_removed = m_handBehavior.RemoveCard(l_tempCard);
+                //Debug.Log("Removed: " + l_removed);
             }
         }
     }

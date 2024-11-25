@@ -341,6 +341,11 @@ public class CardsOnHandBehavior : MonoBehaviour
         }
     }
 
+    public bool RemoveCard(CardBehavior p_card)
+    {
+        return m_cardsBehavior.Remove(p_card);
+    }
+
     public void AddTarget(Transform p_target, int p_targetIndex)
     {
         if (m_targets == null || m_targets.Count < 3)

@@ -376,7 +376,11 @@ public class PlayerController : NetworkBehaviour
             if (l_tempCard != null)
             {
                 bool l_removed = m_handBehavior.RemoveCard(l_tempCard);
-                //Debug.Log("Removed: " + l_removed);
+
+                if (l_removed)
+                {
+                    m_handBehavior.ReorderCards();
+                }
             }
         }
     }

@@ -182,6 +182,18 @@ public class CardsOnHandBehavior : MonoBehaviour
         p_actionOnEnd?.Invoke();
     }
 
+    [NaughtyAttributes.Button]
+    public void ReorderCards(CardBehavior p_ignoreCard = null)
+    {
+        SetCardsIdlePosition(false);
+
+        for (int i = 0; i < m_cardsBehavior.Count; i++)
+        {
+            if (m_cardsBehavior[i] == p_ignoreCard) continue;
+            m_cardsBehavior[i].AnimToIdlePos();
+        }
+    }
+
     public bool CheckHoverObject(GameObject p_gameObject)
     {
         if (m_currentHoldingCard != null) return false;
@@ -301,12 +313,7 @@ public class CardsOnHandBehavior : MonoBehaviour
             }
             else
             {
-                SetCardsIdlePosition(false);
-                for (int i = 0; i < m_cardsBehavior.Count; i++)
-                {
-                    if (m_cardsBehavior[i] == m_currentHoldingCard) continue;
-                    m_cardsBehavior[i].AnimToIdlePos();
-                }
+                ReorderCards(m_currentHoldingCard);
             }
 
             m_throwCardTargetImage.gameObject.SetActive(false);

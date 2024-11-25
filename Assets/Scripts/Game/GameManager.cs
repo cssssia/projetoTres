@@ -470,7 +470,6 @@ public class GameManager : NetworkBehaviour
     [ServerRpc(RequireOwnership = false)]
     public void SetPlayerAnimatingServerRpc(bool p_set, ServerRpcParams p_serverRpcParams = default)
     {
-        Debug.Log($"player {p_serverRpcParams.Receive.SenderClientId} set anim: " + p_set);
         m_playerAnimatingDictionary[p_serverRpcParams.Receive.SenderClientId] = p_set;
         TestCallActionsOnWait();
     }

@@ -104,7 +104,6 @@ public class CardsManager : NetworkBehaviour
             int l_rand = UnityEngine.Random.Range(0, DeckOnGameList.Count);
             SetPlayerUsableDeckClientRpc(DeckOnGameList[l_rand], (Player)(i % 2));
             bool l_lastCartd = (Player)(i % 2) == Player.HOST ? i == 4 : i == 5;
-            Debug.Log($"is {i} last card? " + l_lastCartd);
             DealOneCardClientRpc(DeckOnGameList[l_rand], l_lastCartd);
         }
     }

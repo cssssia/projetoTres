@@ -277,6 +277,7 @@ public class PlayerController : NetworkBehaviour
         {
             Debug.Log("[GAME] Use Item " + p_gameObject.name);
             RoundManager.Instance.PlayItemCardServerRpc(m_itemOnHand);
+            CardsManager.Instance.ResetItemServerRpc(m_itemOnHand);
             m_itemOnHand = -1;
         });
     }

@@ -18,7 +18,7 @@ public class Item
         isOnGame = false;
     }
 
-    public Item(bool isNUll = true)
+    public Item(bool isNull = true)
     {
         Type = ItemType.NONE;
         cardNetworkObjectReference = new();
@@ -27,4 +27,8 @@ public class Item
         isOnGame = false;
     }
 
+    public void ResetItem()
+    {
+        playerID = Player.DEFAULT;
+    }
 }

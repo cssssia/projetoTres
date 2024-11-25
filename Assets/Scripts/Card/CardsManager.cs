@@ -389,6 +389,21 @@ public class CardsManager : NetworkBehaviour
         //StartCoroutine(WaitItemSpawn(p_itemType, p_onSpawn));
     }
 
+    [ServerRpc(RequireOwnership = false)]
+    public void ResetItemServerRpc(int p_itemID)
+    {
+        ResetItemClientRpc(p_itemID);
+    }
+
+    [ClientRpc]
+    public void ResetItemClientRpc(int p_itemID)
+    {
+        UsableItemsList[p_itemID].ResetItem();
+        UsableItemsList[p_itemID].cardNetworkObjectReference.TryGet(out NetworkObject l_cardNetworkObject);
+        l_cardNetworkObject.transform.SetPositionAndRotation(m_itemsSO.InitialPosition, Quaternion.Euler(m_itemsSO.InitialRotation));
+        l_cardNetworkObject.TrySetParent(m_deckParent, true);
+    }
+
     //IEnumerator WaitItemSpawn(ItemType p_itemType, Action<Item> p_onSpawn)
     //{
     //    bool l_found = false;

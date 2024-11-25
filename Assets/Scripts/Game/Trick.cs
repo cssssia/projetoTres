@@ -33,7 +33,7 @@ public class Trick
         HostTurnsWon = 0;
         ClientTurnsWon = 0;
 
-        CurrentTrick = 0;
+        CurrentTrick = 1;
 
         TurnsWonHistory = new();
         TurnsStartedHistory = new()

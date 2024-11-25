@@ -3,11 +3,12 @@ using UnityEngine;
 
 public class DeckOnTableBehavior : MonoBehaviour
 {
+    [SerializeField] private DeckBehavior m_deck;
     [SerializeField] private DeckBehavior m_currentDeck;
 
     public void OnPlayerSpawned()
     {
-        m_currentDeck = FindObjectOfType<DeckBehavior>();
+        m_deck = FindObjectOfType<DeckBehavior>();
     }
 
     public bool CheckClickObject(GameObject p_gameObject)
@@ -16,7 +17,7 @@ public class DeckOnTableBehavior : MonoBehaviour
 
         if (p_gameObject != null)
         {
-            if (m_currentDeck == p_gameObject)
+            if (m_deck == p_gameObject)
             {
                 m_currentDeck = p_gameObject.GetComponent<DeckBehavior>();
 

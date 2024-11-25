@@ -229,6 +229,7 @@ public class PlayerController : NetworkBehaviour
     {
         m_handBehavior.CheckClickObject(p_gameObject);
         m_betBehavior.CheckClickObject(p_gameObject);
+        m_deckBehavior.CheckClickObject(p_gameObject);
     }
 
     private void CheckHoverOnObject(GameObject p_gameObject)

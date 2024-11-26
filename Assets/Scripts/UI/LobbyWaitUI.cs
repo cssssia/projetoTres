@@ -15,20 +15,20 @@ public class LobbyWait : MonoBehaviour
     {
 
         m_mainMenuButton.onClick.AddListener(() => {
-            GameLobby.Instance.LeaveLobby();
+            LobbyManager.Instance.LeaveLobby();
             NetworkManager.Singleton.Shutdown();
             SceneLoader.Load(SceneLoader.Scene.SCN_Menu);
         });
 
         m_readyButton.onClick.AddListener(() => {
-            WaitLobbyManager.Instance.SetPlayerReady();
+            LobbyWaitManager.Instance.SetPlayerReady();
         });
 
     }
 
     void Start()
     {
-        Lobby l_lobby = GameLobby.Instance.GetLobby();
+        Lobby l_lobby = LobbyManager.Instance.GetLobby();
         m_lobbyNameText.text = "LOBBY NAME: " + l_lobby.Name;
         m_lobbyCodeText.text = "LOBBY CODE: " + l_lobby.LobbyCode;
     }

@@ -10,12 +10,12 @@ public class TestingMultiplayerUI : Singleton<TestingMultiplayerUI>
     {
 
         m_hostButton.onClick.AddListener(() => {
-            GameMultiplayerManager.Instance.StartHost();
+            MultiplayerManager.Instance.StartHost();
             Hide();
         });
 
         m_clientButton.onClick.AddListener(() => {
-            GameMultiplayerManager.Instance.StartClient();
+            MultiplayerManager.Instance.StartClient();
             Hide();
         });
 

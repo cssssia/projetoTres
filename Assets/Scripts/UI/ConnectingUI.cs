@@ -6,23 +6,23 @@ public class ConnectingUI : MonoBehaviour
 
     void Start()
     {
-        GameMultiplayerManager.Instance.OnTryingToJoinGame += GameMultiplayerManager_OnTryingToJoinGame;
-        GameMultiplayerManager.Instance.OnFailToJoinGame += GameMultiplayerManager_OnFailToJoinGame;
+        MultiplayerManager.Instance.OnTryingToJoinGame += MultiplayerManager_OnTryingToJoinGame;
+        MultiplayerManager.Instance.OnFailToJoinGame += MultiplayerManager_OnFailToJoinGame;
         Hide();
     }
 
     void OnDestroy()
     {
-        GameMultiplayerManager.Instance.OnTryingToJoinGame -= GameMultiplayerManager_OnTryingToJoinGame;
-        GameMultiplayerManager.Instance.OnFailToJoinGame -= GameMultiplayerManager_OnFailToJoinGame;
+        MultiplayerManager.Instance.OnTryingToJoinGame -= MultiplayerManager_OnTryingToJoinGame;
+        MultiplayerManager.Instance.OnFailToJoinGame -= MultiplayerManager_OnFailToJoinGame;
     }
 
-    private void GameMultiplayerManager_OnTryingToJoinGame(object p_sender, EventArgs e)
+    private void MultiplayerManager_OnTryingToJoinGame(object p_sender, EventArgs e)
     {
         Show();
     }
 
-    private void GameMultiplayerManager_OnFailToJoinGame(object p_sender, EventArgs e)
+    private void MultiplayerManager_OnFailToJoinGame(object p_sender, EventArgs e)
     {
         Hide();
     }

@@ -9,12 +9,12 @@ public class TestingLobbyUI : MonoBehaviour
     void Awake()
     {
         m_createGameButton.onClick.AddListener(() => {
-            GameMultiplayerManager.Instance.StartHost();
+            MultiplayerManager.Instance.StartHost();
             SceneLoader.LoadNetwork(SceneLoader.Scene.SCN_WaitLobby);
         });
 
         m_joinGameButton.onClick.AddListener(() => {
-            GameMultiplayerManager.Instance.StartClient();
+            MultiplayerManager.Instance.StartClient();
             // dont need to start scene here as it automatically matches server scene
         });
 

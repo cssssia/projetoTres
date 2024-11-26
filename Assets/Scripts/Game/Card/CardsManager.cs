@@ -99,7 +99,7 @@ public class CardsManager : NetworkBehaviour
     {
         Debug.Log("[GAME] Spawn Cards");
 
-        for (int i = 0; i < 3 * GameMultiplayerManager.MAX_PLAYER_AMOUNT; i++)
+        for (int i = 0; i < 3 * MultiplayerManager.MAX_PLAYER_AMOUNT; i++)
         {
             int l_rand = UnityEngine.Random.Range(0, DeckOnGameList.Count);
             SetPlayerUsableDeckClientRpc(DeckOnGameList[l_rand], (Player)(i % 2));

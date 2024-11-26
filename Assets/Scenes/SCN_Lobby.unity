@@ -899,7 +899,7 @@ GameObject:
   - component: {fileID: 287699579}
   - component: {fileID: 287699580}
   m_Layer: 0
-  m_Name: GameLobby
+  m_Name: LobbyManager
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1630,7 +1630,7 @@ GameObject:
   - component: {fileID: 488717446}
   - component: {fileID: 488717445}
   m_Layer: 0
-  m_Name: GameMultiplayerManager
+  m_Name: MultiplayerManager
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

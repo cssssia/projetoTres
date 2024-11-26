@@ -3,11 +3,11 @@ using System.Collections.Generic;
 using Unity.Netcode;
 using UnityEngine;
 
-public class GameMultiplayerManager : NetworkBehaviour
+public class MultiplayerManager : NetworkBehaviour
 {
 
 	//aa
-	public static GameMultiplayerManager Instance { get; private set; }
+	public static MultiplayerManager Instance { get; private set; }
 
 	public const int MAX_PLAYER_AMOUNT = 2;
 	private const string PLAYER_PREFS_PLAYER_NAME_MULTIPLAYER = "PlayerNameMultiplayer";

@@ -14,10 +14,10 @@ using UnityEngine;
 
 // TODO handle empty lobby name
 
-public class GameLobby : MonoBehaviour
+public class LobbyManager : MonoBehaviour
 {
     //aa
-    public static GameLobby Instance { get; private set; }
+    public static LobbyManager Instance { get; private set; }
     private const string KEY_RELAY_JOIN_CODE = "RelayJoinCode";
 
     public event EventHandler OnCreateLobbyStarted;
@@ -120,7 +120,7 @@ public class GameLobby : MonoBehaviour
     private async Task<Allocation> AllocateRelay()
     {
         try {
-            Allocation l_allocation = await RelayService.Instance.CreateAllocationAsync(GameMultiplayerManager.MAX_PLAYER_AMOUNT - 1);
+            Allocation l_allocation = await RelayService.Instance.CreateAllocationAsync(MultiplayerManager.MAX_PLAYER_AMOUNT - 1);
             return l_allocation;
         } catch (RelayServiceException e) {
             Debug.Log("[ERROR] AllocateRelay: " + e);
@@ -155,7 +155,7 @@ public class GameLobby : MonoBehaviour
         OnCreateLobbyStarted?.Invoke(this, EventArgs.Empty);
         try {
 
-            m_joinedLobby = await LobbyService.Instance.CreateLobbyAsync(p_lobbyName, GameMultiplayerManager.MAX_PLAYER_AMOUNT, new CreateLobbyOptions {
+            m_joinedLobby = await LobbyService.Instance.CreateLobbyAsync(p_lobbyName, MultiplayerManager.MAX_PLAYER_AMOUNT, new CreateLobbyOptions {
                 IsPrivate = p_isPrivate,
             });
 
@@ -171,7 +171,7 @@ public class GameLobby : MonoBehaviour
 
             NetworkManager.Singleton.GetComponent<UnityTransport>().SetRelayServerData(new RelayServerData(l_allocation, "dtls"));
 
-            GameMultiplayerManager.Instance.StartHost();
+            MultiplayerManager.Instance.StartHost();
             SceneLoader.LoadNetwork(SceneLoader.Scene.SCN_WaitLobby);
 
         } catch (LobbyServiceException e) {
@@ -193,7 +193,7 @@ public class GameLobby : MonoBehaviour
 
             NetworkManager.Singleton.GetComponent<UnityTransport>().SetRelayServerData(new RelayServerData(l_joinAllocation, "dtls"));
 
-            GameMultiplayerManager.Instance.StartClient();
+            MultiplayerManager.Instance.StartClient();
 
         } catch (LobbyServiceException e) {
             Debug.Log("[ERROR] QuickJoin: " + e);
@@ -214,7 +214,7 @@ public class GameLobby : MonoBehaviour
 
             NetworkManager.Singleton.GetComponent<UnityTransport>().SetRelayServerData(new RelayServerData(l_joinAllocation, "dtls"));
 
-            GameMultiplayerManager.Instance.StartClient();
+            MultiplayerManager.Instance.StartClient();
 
         } catch (LobbyServiceException e) {
             Debug.Log("[ERROR] CodeJoin: " + e);
@@ -235,7 +235,7 @@ public class GameLobby : MonoBehaviour
 
             NetworkManager.Singleton.GetComponent<UnityTransport>().SetRelayServerData(new RelayServerData(l_joinAllocation, "dtls"));
 
-            GameMultiplayerManager.Instance.StartClient();
+            MultiplayerManager.Instance.StartClient();
 
         } catch (LobbyServiceException e) {
             Debug.Log("[ERROR] IdJoin: " + e);

@@ -54,7 +54,7 @@ public class PlayerController : NetworkBehaviour
 
     public int PlayerIndex
     {
-        get { return GameMultiplayerManager.Instance.GetPlayerDataIndexFromClientId(OwnerClientId); }
+        get { return MultiplayerManager.Instance.GetPlayerDataIndexFromClientId(OwnerClientId); }
     }
 
     public bool CanPlay { get; private set; }

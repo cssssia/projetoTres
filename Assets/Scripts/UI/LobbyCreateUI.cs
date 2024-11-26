@@ -22,11 +22,11 @@ public class LobbyCreateUI : MonoBehaviour
         });
 
         m_createPublicButton.onClick.AddListener(() => {
-            GameLobby.Instance.CreateLobby(m_lobbyNameInputField.text, false);
+            LobbyManager.Instance.CreateLobby(m_lobbyNameInputField.text, false);
         });
 
         m_createPrivateButton.onClick.AddListener(() => {
-            GameLobby.Instance.CreateLobby(m_lobbyNameInputField.text, true);
+            LobbyManager.Instance.CreateLobby(m_lobbyNameInputField.text, true);
         });
 
     }

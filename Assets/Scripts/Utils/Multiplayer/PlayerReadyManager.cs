@@ -11,33 +11,33 @@ public class PlayerReadyManager : MonoBehaviour
 
     void Start()
     {
-        GameMultiplayerManager.Instance.OnPlayerDataNetworkListChanged += GameMultiplayerManager_OnPlayerDataNetworkListChanged;
-        WaitLobbyManager.Instance.OnReadyChanged += WaitLobbyManager_OnReadyChanged;
+        MultiplayerManager.Instance.OnPlayerDataNetworkListChanged += MultiplayerManager_OnPlayerDataNetworkListChanged;
+        LobbyWaitManager.Instance.OnReadyChanged += LobbyWaitManager_OnReadyChanged;
         UpdatePlayer();
     }
 
     void OnDestroy()
     {
-        GameMultiplayerManager.Instance.OnPlayerDataNetworkListChanged -= GameMultiplayerManager_OnPlayerDataNetworkListChanged;
+        MultiplayerManager.Instance.OnPlayerDataNetworkListChanged -= MultiplayerManager_OnPlayerDataNetworkListChanged;
     }
 
-    private void GameMultiplayerManager_OnPlayerDataNetworkListChanged(object p_sender, EventArgs e)
+    private void MultiplayerManager_OnPlayerDataNetworkListChanged(object p_sender, EventArgs e)
     {
         UpdatePlayer();
     }
 
-    private void WaitLobbyManager_OnReadyChanged(object p_sender, EventArgs e)
+    private void LobbyWaitManager_OnReadyChanged(object p_sender, EventArgs e)
     {
         UpdatePlayer();
     }
 
     private void UpdatePlayer()
     {
-        if (GameMultiplayerManager.Instance.IsPlayerIndexConnected(m_playerIndex))
+        if (MultiplayerManager.Instance.IsPlayerIndexConnected(m_playerIndex))
         {
             Show();
-            PlayerData l_playerData = GameMultiplayerManager.Instance.GetPlayerDataFromPlayerIndex(m_playerIndex);
-            m_readyGameObject.SetActive(WaitLobbyManager.Instance.IsPlayerReady(l_playerData.clientId));
+            PlayerData l_playerData = MultiplayerManager.Instance.GetPlayerDataFromPlayerIndex(m_playerIndex);
+            m_readyGameObject.SetActive(LobbyWaitManager.Instance.IsPlayerReady(l_playerData.clientId));
 
             m_playerNameText.text = l_playerData.playerName.ToString();
         }

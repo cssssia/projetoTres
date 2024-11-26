@@ -3,10 +3,10 @@ using System.Collections.Generic;
 using Unity.Netcode;
 using UnityEngine;
 
-public class WaitLobbyManager : NetworkBehaviour
+public class LobbyWaitManager : NetworkBehaviour
 {
 	//aa
-    public static WaitLobbyManager Instance { get; private set; }
+    public static LobbyWaitManager Instance { get; private set; }
 
 	public event EventHandler OnReadyChanged;
 
@@ -43,7 +43,7 @@ public class WaitLobbyManager : NetworkBehaviour
 		if (l_allClientsReady)
 		{
 			SceneLoader.LoadNetwork(SceneLoader.Scene.SCN_Game);
-			GameLobby.Instance.DeleteLobby();
+			LobbyManager.Instance.DeleteLobby();
 		}
 	}
 

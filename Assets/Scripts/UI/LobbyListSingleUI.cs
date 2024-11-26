@@ -11,7 +11,7 @@ public class LobbyListSingleUI : MonoBehaviour
     void Awake()
     {
         GetComponent<Button>().onClick.AddListener(() => {
-            GameLobby.Instance.IdJoin(m_lobby.Id);
+            LobbyManager.Instance.IdJoin(m_lobby.Id);
         });
     }
 

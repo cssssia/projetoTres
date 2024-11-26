@@ -35,11 +35,11 @@ public class NetworkBehaviorTests : NetworkBehaviour
     [ServerRpc]
     public void TestServerRpc()
     {
-        Debug.Log("[TEST] TestServerRpc " + GameMultiplayerManager.Instance.GetPlayerDataIndexFromClientId(OwnerClientId));
+        Debug.Log("[TEST] TestServerRpc " + MultiplayerManager.Instance.GetPlayerDataIndexFromClientId(OwnerClientId));
 
         if (IsOwner)
         {
-            Debug.Log("[TEST] TestServerRpc & IsOwner " + GameMultiplayerManager.Instance.GetPlayerDataIndexFromClientId(OwnerClientId));
+            Debug.Log("[TEST] TestServerRpc & IsOwner " + MultiplayerManager.Instance.GetPlayerDataIndexFromClientId(OwnerClientId));
         }
 
     }
@@ -47,11 +47,11 @@ public class NetworkBehaviorTests : NetworkBehaviour
     [ServerRpc(RequireOwnership = false)]
     private void TestRequireOwnershipServerRpc()
     {
-        Debug.Log("[TEST] TestRequireOwnershipServerRpc " + GameMultiplayerManager.Instance.GetPlayerDataIndexFromClientId(OwnerClientId));
+        Debug.Log("[TEST] TestRequireOwnershipServerRpc " + MultiplayerManager.Instance.GetPlayerDataIndexFromClientId(OwnerClientId));
 
         if (IsOwner)
         {
-            Debug.Log("[TEST] TestRequireOwnershipServerRpc & IsOwner " + GameMultiplayerManager.Instance.GetPlayerDataIndexFromClientId(OwnerClientId));
+            Debug.Log("[TEST] TestRequireOwnershipServerRpc & IsOwner " + MultiplayerManager.Instance.GetPlayerDataIndexFromClientId(OwnerClientId));
         }
 
     }
@@ -59,11 +59,11 @@ public class NetworkBehaviorTests : NetworkBehaviour
     [ClientRpc]
     private void TestClientRpc()
     {
-        Debug.Log("[TEST] TestClientRpc " + GameMultiplayerManager.Instance.GetPlayerDataIndexFromClientId(OwnerClientId));
+        Debug.Log("[TEST] TestClientRpc " + MultiplayerManager.Instance.GetPlayerDataIndexFromClientId(OwnerClientId));
 
         if (IsOwner)
         {
-            Debug.Log("[TEST] TestClientRpc & IsOwner " + GameMultiplayerManager.Instance.GetPlayerDataIndexFromClientId(OwnerClientId));
+            Debug.Log("[TEST] TestClientRpc & IsOwner " + MultiplayerManager.Instance.GetPlayerDataIndexFromClientId(OwnerClientId));
         }
 
     }

@@ -23,7 +23,7 @@ public class LobbyUI : MonoBehaviour
     {
 
         m_mainMenuButton.onClick.AddListener(() => {
-            GameLobby.Instance.LeaveLobby();
+            LobbyManager.Instance.LeaveLobby();
             NetworkManager.Singleton.Shutdown();
             SceneLoader.Load(SceneLoader.Scene.SCN_Menu);
         });
@@ -33,11 +33,11 @@ public class LobbyUI : MonoBehaviour
         });
 
         m_quickJoinButton.onClick.AddListener(() => {
-            GameLobby.Instance.QuickJoin();
+            LobbyManager.Instance.QuickJoin();
         });
 
         m_codeJoinButton.onClick.AddListener(() => {
-            GameLobby.Instance.CodeJoin(m_lobbyCodeInputField.text);
+            LobbyManager.Instance.CodeJoin(m_lobbyCodeInputField.text);
         });
 
         m_lobbyTemplate.gameObject.SetActive(false);
@@ -46,22 +46,22 @@ public class LobbyUI : MonoBehaviour
 
     void Start()
     {
-        m_playerNameInputField.text = GameMultiplayerManager.Instance.GetPlayerName();
+        m_playerNameInputField.text = MultiplayerManager.Instance.GetPlayerName();
         m_playerNameInputField.onValueChanged.AddListener((string p_newText) => {
-            GameMultiplayerManager.Instance.SetPlayerName(p_newText);
+            MultiplayerManager.Instance.SetPlayerName(p_newText);
         });
 
-        GameLobby.Instance.OnLobbyListChanged += GammeLobby_OnLobbyListChanged;
+        LobbyManager.Instance.OnLobbyListChanged += GammeLobby_OnLobbyListChanged;
 
         UpdateLobbyList(new List<Lobby>());
     }
 
     void OnDestroy()
     {
-        GameLobby.Instance.OnLobbyListChanged -= GammeLobby_OnLobbyListChanged;
+        LobbyManager.Instance.OnLobbyListChanged -= GammeLobby_OnLobbyListChanged;
     }
 
-    private void GammeLobby_OnLobbyListChanged(object p_sender, GameLobby.OnLobbyListChangedEventArgs e)
+    private void GammeLobby_OnLobbyListChanged(object p_sender, LobbyManager.OnLobbyListChangedEventArgs e)
     {
         UpdateLobbyList(e.lobbyList);
     }

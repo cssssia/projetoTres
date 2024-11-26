@@ -173,7 +173,7 @@ public class GameManager : NetworkBehaviour
         {
             Transform l_playerTransform = Instantiate(m_playerPrefab);
             l_playerTransform.GetComponent<NetworkObject>().SpawnAsPlayerObject(clientId, true);
-            //GameMultiplayerManager.Instance.AddPlayerControllerToList(l_playerTransform.GetComponent<PlayerController>());
+            //MultiplayerManager.Instance.AddPlayerControllerToList(l_playerTransform.GetComponent<PlayerController>());
         }
     }
 

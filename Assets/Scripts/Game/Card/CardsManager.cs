@@ -41,7 +41,7 @@ public class CardsManager : NetworkBehaviour
 
     public override void OnNetworkSpawn()
     {
-        base.OnNetworkSpawn();
+        Debug.Log($"{(Player)OwnerClientId} at OnNetworkSpawnCardsManager - IsClient: {IsClient}, IsHost: {IsHost}, IsServer: {IsServer}, IsOwner: {IsOwner}");
 
         DeckOnGameList = new List<int>();
 
@@ -69,12 +69,6 @@ public class CardsManager : NetworkBehaviour
         ItemTarget = new(m_itemTargetTranform.position, m_itemTargetTranform.rotation.eulerAngles, m_itemTargetTranform.localScale);
     }
 
-    void Update()
-    {
-        if (!IsServer)
-            return;
-    }
-
     void SelectUsableCardsInSO()
     {
         for (int i = 0; i < m_cardsSO.deck.Count; i++)
@@ -95,7 +89,7 @@ public class CardsManager : NetworkBehaviour
     }
 
     [ServerRpc]
-    public void SpawnNewPlayCardsServerRpc()
+    public void DealPlayCardsServerRpc()
     {
         Debug.Log("[GAME] Spawn Cards");
 
@@ -107,6 +101,7 @@ public class CardsManager : NetworkBehaviour
             DealOneCardClientRpc(DeckOnGameList[l_rand], l_lastCartd);
         }
     }
+
     [ClientRpc]
     void DealOneCardClientRpc(int p_cardIndex, bool p_isLastCard)
     {
@@ -114,6 +109,7 @@ public class CardsManager : NetworkBehaviour
         CardsOnGameList.Add(p_cardIndex);
         OnAddCardToMyHand?.Invoke((p_cardIndex, p_isLastCard), EventArgs.Empty);
     }
+
     [ServerRpc]
     void SpawnCardServerRpc(int p_indexSO)
     {
@@ -121,17 +117,17 @@ public class CardsManager : NetworkBehaviour
         NetworkObject l_cardNetworkObject = l_newCard.GetComponent<NetworkObject>();
         l_cardNetworkObject.Spawn(true);
 
-        RenameCardServerRpc(l_cardNetworkObject, p_indexSO);
+        BuildCardServerRpc(l_cardNetworkObject, p_indexSO);
     }
 
     [ServerRpc]
-    void RenameCardServerRpc(NetworkObjectReference p_cardNetworkObjectReference, int p_cardIndexSO) //for a pattern, maybe ? (the tutorial guy does it)
+    void BuildCardServerRpc(NetworkObjectReference p_cardNetworkObjectReference, int p_cardIndexSO) //for a pattern, maybe ? (the tutorial guy does it)
     {
-        RenameCardClientRpc(p_cardNetworkObjectReference, p_cardIndexSO);
+        BuildCardClientRpc(p_cardNetworkObjectReference, p_cardIndexSO);
     }
 
     [ClientRpc]
-    void RenameCardClientRpc(NetworkObjectReference p_cardNetworkObjectReference, int p_cardIndexSO)
+    void BuildCardClientRpc(NetworkObjectReference p_cardNetworkObjectReference, int p_cardIndexSO)
     {
         p_cardNetworkObjectReference.TryGet(out NetworkObject l_cardNetworkObject);
         l_cardNetworkObject.name = m_cardsSO.deck[p_cardIndexSO].name;
@@ -174,17 +170,17 @@ public class CardsManager : NetworkBehaviour
         NetworkObject l_cardNetworkObject = l_newCard.GetComponent<NetworkObject>();
         l_cardNetworkObject.Spawn(true);
 
-        RenameItemCardServerRpc(l_cardNetworkObject, p_itemType);
+        BuildItemCardServerRpc(l_cardNetworkObject, p_itemType);
     }
 
     [ServerRpc]
-    void RenameItemCardServerRpc(NetworkObjectReference p_cardNetworkObjectReference, ItemType p_itemType) //for a pattern, maybe ? (the tutorial guy does it)
+    void BuildItemCardServerRpc(NetworkObjectReference p_cardNetworkObjectReference, ItemType p_itemType) //for a pattern, maybe ? (the tutorial guy does it)
     {
-        RenameItemCardClientRpc(p_cardNetworkObjectReference, p_itemType);
+        BuildItemCardClientRpc(p_cardNetworkObjectReference, p_itemType);
     }
 
     [ClientRpc]
-    void RenameItemCardClientRpc(NetworkObjectReference p_cardNetworkObjectReference, ItemType p_itemType)
+    void BuildItemCardClientRpc(NetworkObjectReference p_cardNetworkObjectReference, ItemType p_itemType)
     {
         p_cardNetworkObjectReference.TryGet(out NetworkObject l_cardNetworkObject);
         l_cardNetworkObject.name = m_itemsSO.GetItemConfig(p_itemType).objectName;
@@ -200,6 +196,8 @@ public class CardsManager : NetworkBehaviour
 
     private void OnItemUsed(object p_itemIndex, EventArgs p_args)
     {
+        Debug.Log($"{(Player)OwnerClientId} at OnItemUsed - IsClient: {IsClient}, IsHost: {IsHost}, IsServer: {IsServer}, IsOwner: {IsOwner}");
+
         int l_itemID = (int)p_itemIndex;
         PlayersHaveItem[(int)UsableItemsList[l_itemID].playerID] = false;
     }
@@ -359,9 +357,9 @@ public class CardsManager : NetworkBehaviour
         return null;
     }
 
-    public Card GetCardByIndex(int index)
+    public Card GetCardByIndex(int p_index)
     {
-        return UsableDeckList[index];
+        return UsableDeckList[p_index];
     }
 
     public Item GetItemByIndex(int p_index)

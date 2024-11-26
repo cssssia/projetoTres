@@ -251,7 +251,7 @@ public class GameManager : NetworkBehaviour
             case GameState.WaitingToStart:
                 break;
             case GameState.DealingCards:
-                CardsManager.Instance.SpawnNewPlayCardsServerRpc();
+                CardsManager.Instance.DealPlayCardsServerRpc();
                 m_wonTrickPlayer = Player.DEFAULT;
 
                 if (debug_itemEveryRound && !CardsManager.Instance.BothPlayersHaveItem)

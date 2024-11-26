@@ -62,37 +62,30 @@ public class PlayerController : NetworkBehaviour
 
     public override void OnNetworkSpawn() //research more the difference of this and awake
     {
-        if (IsOwner)
-        {
-            LocalInstance = this;
-            m_betBehavior.OnPlayerSpawned(PlayerIndex);
-            m_deckBehavior.OnPlayerSpawned();
-            m_actionsQueue = new();
-            GameManager.Instance.IsAnyAnimationPlaying.OnValueChanged += OnAnyAnimationPlayingChanged;
-        }
-        m_handBehavior.OnPlayerSpawned(this);
-
-        transform.SetPositionAndRotation(m_spawnData.spawnPosition[PlayerIndex], Quaternion.Euler(m_spawnData.spawnRotation[PlayerIndex]));
-        if (IsOwner) CameraController.Instance.SetCamera(PlayerIndex);
-
-        CardsManager.Instance.OnAddCardToMyHand += CardsManager_OnAddCardToMyHand;
-        CardsManager.Instance.OnRemoveCardFromMyHand += CardsManager_OnRemoveCardFromMyHand;
-        CardsManager.Instance.OnAddItemCardToMyHand += CardsManager_OnAddItemCardToMyHand;
-
-        RoundManager.Instance.OnRoundWon += TurnManager_OnRoundWon;
-
+        Debug.Log($"{(Player)PlayerIndex} at OnNetworkSpawn PLAYER - IsClient: {IsClient}, IsHost: {IsHost}, IsServer: {IsServer}, IsOwner: {IsOwner}");
 
         if (IsServer)
         {
             NetworkManager.Singleton.OnClientDisconnectCallback += NetworkManager_OnClientDisconnectCallback;
-            RoundManager.Instance.OnStartPlayingCard += TurnManager_OnStartPlayingCard;
+            RoundManager.Instance.OnStartPlayingCard += TurnManager_OnStartPlayingCard; // TO-DO move this up and we will not need to use client rpc
         }
 
         if (IsOwner)
         {
+            LocalInstance = this;
+
             GameInput.Instance.OnMoveMouse += GameInput_OnMoveMouse;
             GameInput.Instance.OnInteractAction += GameInput_OnInteractAction;
             GameInput.Instance.OnStopInteractAction += GameInput_OnClickUpMouse;
+
+            GameManager.Instance.IsAnyAnimationPlaying.OnValueChanged += OnAnyAnimationPlayingChanged;
+
+            CameraController.Instance.SetCamera(PlayerIndex);
+
+            m_betBehavior.OnPlayerSpawned(PlayerIndex);
+            m_deckBehavior.OnPlayerSpawned();
+
+            m_actionsQueue = new();
 
             m_cardTargetTransform = FindObjectsByType<CardTarget>(FindObjectsSortMode.None);
             for (int i = 0; i < m_cardTargetTransform.Length; i++)
@@ -100,13 +93,24 @@ public class PlayerController : NetworkBehaviour
                 if (m_cardTargetTransform[i].clientID == PlayerIndex)
                     m_handBehavior.AddTarget(m_cardTargetTransform[i].transform, m_cardTargetTransform[i].targetIndex);
             }
+
+            GameManager.Instance.OnGameStateChanged += OnGameStateChanged;
+            GameManager.Instance.OnBetStateChanged += OnBetStateChanged;
         }
+
+        m_handBehavior.OnPlayerSpawned(this);
+
+        transform.SetPositionAndRotation(m_spawnData.spawnPosition[PlayerIndex], Quaternion.Euler(m_spawnData.spawnRotation[PlayerIndex]));
+
+        CardsManager.Instance.OnAddCardToMyHand += CardsManager_OnAddCardToMyHand;
+        CardsManager.Instance.OnRemoveCardFromMyHand += CardsManager_OnRemoveCardFromMyHand;
+        CardsManager.Instance.OnAddItemCardToMyHand += CardsManager_OnAddItemCardToMyHand;
+
+        RoundManager.Instance.OnRoundWon += TurnManager_OnRoundWon;
 
         if (IsHostPlayer) name = "Player_0";
         else if (IsClient) name = "Player_1";
 
-        GameManager.Instance.OnGameStateChanged += OnGameStateChanged;
-        GameManager.Instance.OnBetStateChanged += OnBetStateChanged;
     }
 
     private void NetworkManager_OnClientDisconnectCallback(ulong p_clientId)
@@ -128,11 +132,11 @@ public class PlayerController : NetworkBehaviour
         int p_cardIndex = (((int, bool))p_cardSended).Item1;
         bool p_lastCard = (((int, bool))p_cardSended).Item2;
 
-        if (CardsManager.Instance.GetCardByIndex((int)p_cardIndex).cardPlayer == (Player)PlayerIndex)
+        if (CardsManager.Instance.GetCardByIndex(p_cardIndex).cardPlayer == (Player)PlayerIndex)
         {
-            m_myHand.Add((int)p_cardIndex);
-            m_handBehavior.AddCardOnHand((int)p_cardIndex, p_lastCard);
-            CardsManager.Instance.GetCardByIndex((int)p_cardIndex).cardNetworkObjectReference.TryGet(out NetworkObject l_cardNetworkObject);
+            m_myHand.Add(p_cardIndex);
+            m_handBehavior.AddCardOnHand(p_cardIndex, p_lastCard);
+            CardsManager.Instance.GetCardByIndex(p_cardIndex).cardNetworkObjectReference.TryGet(out NetworkObject l_cardNetworkObject);
             l_cardNetworkObject.TrySetParent(transform, true);
         }
     }
@@ -141,7 +145,15 @@ public class PlayerController : NetworkBehaviour
         ItemType p_itemType = (((ItemType, int))p_itemTypeAndPlayer).Item1;
         int p_playerId = (((ItemType, int))p_itemTypeAndPlayer).Item2;
 
-        if (IsOwner && p_playerId == PlayerIndex) SetItemCardParentServerRpc(p_itemType);
+        if (p_playerId == PlayerIndex)
+        {
+            Item l_item = CardsManager.Instance.GetItemNetworkObject(p_itemType, (Player)PlayerIndex);
+            l_item.cardNetworkObjectReference.TryGet(out NetworkObject l_cardNetworkObject);
+            l_cardNetworkObject.TrySetParent(transform, true);
+            m_itemOnHand = l_item.itemID;
+
+            m_handBehavior.AddItemOnHand(l_item);
+        }
     }
 
     private void CardsManager_OnRemoveCardFromMyHand(object p_cardIndex, EventArgs e)
@@ -149,11 +161,12 @@ public class PlayerController : NetworkBehaviour
         int l_cardID = (int)p_cardIndex;
         m_myHand.Remove(l_cardID);
         m_handBehavior.RemoveCardFromHand(l_cardID);
-        //CardsManager.Instance.ResetCard(l_cardID);
     }
 
     private void TurnManager_OnStartPlayingCard(object p_customSender, EventArgs e)
     {
+        Debug.Log($"{(Player)PlayerIndex} at TurnManager_OnStartPlayingCard - IsClient: {IsClient}, IsHost: {IsHost}, IsServer: {IsServer}, IsOwner: {IsOwner}");
+
         CustomSender l_customSender = (((CustomSender, bool))p_customSender).Item1;
         bool l_isItem = (((CustomSender, bool))p_customSender).Item2;
         AnimCardClientRpc(l_customSender.playerType, l_customSender.targetIndex, l_isItem, l_customSender.cardNO);
@@ -323,23 +336,6 @@ public class PlayerController : NetworkBehaviour
 
         if (canBet) Debug.Log("pode apostar");
         else Debug.Log("não pode apostar");
-    }
-
-    [ServerRpc]
-    public void SetItemCardParentServerRpc(ItemType p_itemType)
-    {
-        SetItemCardParentClientRpc(p_itemType);
-    }
-
-    [ClientRpc]
-    public void SetItemCardParentClientRpc(ItemType p_itemType)
-    {
-        Item l_item = CardsManager.Instance.GetItemNetworkObject(p_itemType, (Player)PlayerIndex);
-        l_item.cardNetworkObjectReference.TryGet(out NetworkObject l_cardNetworkObject);
-        l_cardNetworkObject.TrySetParent(transform, true);
-        m_itemOnHand = l_item.itemID;
-
-        m_handBehavior.AddItemOnHand(l_item);
     }
 
     CardBehavior l_tempCard;

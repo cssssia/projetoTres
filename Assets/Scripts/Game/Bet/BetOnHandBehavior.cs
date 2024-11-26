@@ -141,7 +141,6 @@ public class BetOnHandBehavior : MonoBehaviour
 
     private void Bet(bool p_isIncrease, BetBehavior p_myBet, Action<GameObject, bool> p_action)
     {
-        Debug.Log("[GAME] BetOnHandBehavior");
         p_myBet.Bet(p_isIncrease, p_action);
         m_currentBet.EndDrag();
         m_currentBet = null;

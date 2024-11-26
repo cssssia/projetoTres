@@ -274,7 +274,6 @@ public class CardsManager : NetworkBehaviour
         {
             if (CardsOnGameList[i] == p_cardIndex)
             {
-                Debug.Log("remove card id: " + p_cardIndex);
                 OnRemoveCardFromMyHand?.Invoke(p_cardIndex, EventArgs.Empty);
                 CardsOnGameList.RemoveAt(i);
 

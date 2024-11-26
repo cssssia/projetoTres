@@ -104,7 +104,6 @@ public class RoundManager : NetworkBehaviour
     [ServerRpc (RequireOwnership = false)]
     public void BetServerRpc(bool p_increaseBet)
     {
-        Debug.Log("[GAME] BetServerRpc");
         CurrentTrick.TrickBetMultiplier = BetAsked.Value;
         if (!BetHasStarted.Value) BetHasStarted.Value = true;
         if (p_increaseBet)
@@ -125,7 +124,7 @@ public class RoundManager : NetworkBehaviour
     [ServerRpc (RequireOwnership = false)]
     public void GiveUpServerRpc(Player p_playerLost)
     {
-        Debug.Log("[GAME] GiveUpServerRpc " + p_playerLost);
+        Debug.Log("[GAME] " + p_playerLost + " Gave Up");
 
         AdjustVictoryServerRpc(p_playerLost == Player.HOST ? Player.CLIENT : Player.HOST);
     }

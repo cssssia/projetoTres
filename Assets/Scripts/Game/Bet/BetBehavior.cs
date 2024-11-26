@@ -139,7 +139,6 @@ public class BetBehavior : MonoBehaviour
 
     public void Bet(bool p_isIncrease, Action<GameObject, bool> p_onFinishAnim)
     {
-        Debug.Log("[GAME] BetBehavior");
         p_onFinishAnim?.Invoke(gameObject, p_isIncrease);
     }
 }

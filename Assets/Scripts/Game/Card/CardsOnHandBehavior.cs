@@ -322,7 +322,6 @@ public class CardsOnHandBehavior : MonoBehaviour
 
     public void ResetCardsOnHandBehavior()
     {
-        //Debug.Log("ResetCardsOnHandBehavior");
         m_currentHoldingCard = null;
         for (int i = m_cardsBehavior.Count - 1; i >= 0; i--)
         {
@@ -330,7 +329,6 @@ public class CardsOnHandBehavior : MonoBehaviour
 
             m_cardsBehavior.RemoveAt(i);
         }
-        //Debug.Log(m_cardsBehavior.Count);
         m_currentTargetIndex = 0;
     }
 

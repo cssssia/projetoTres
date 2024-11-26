@@ -161,6 +161,8 @@ public class PlayerController : NetworkBehaviour
 
     private void TurnManager_OnRoundWon(object p_playerWonId, EventArgs e)
     {
+       Debug.Log($"{(Player)PlayerIndex} at TurnManager_OnRoundWon - IsClient: {IsClient}, IsHost: {IsHost}, IsServer: {IsServer}, IsOwner: {IsOwner}");
+
         if (IsServer)
             Debug.Log($"[GAME] {(Player)p_playerWonId} Won!");
 
@@ -174,9 +176,6 @@ public class PlayerController : NetworkBehaviour
                 CardsManager.Instance.RemoveCardsFromGame();
             }
         }
-
-        Debug.Log("TurnManager_OnRoundWon " + (Player)PlayerIndex +
-        " IsClient: " + IsClient + " IsHost " + IsHost + " IsServer " + IsServer + " IsOwner " + IsOwner);
 
         m_myHand.Clear();
         m_handBehavior.ResetCardsOnHandBehavior();
@@ -347,9 +346,6 @@ public class PlayerController : NetworkBehaviour
     [ClientRpc]
     void AnimCardClientRpc(int p_playerType, int p_targetIndex, bool p_isItem, NetworkObjectReference p_cardNetworkObjectReference)
     {
-        //Debug.Log("animcardclientrpc " + (Player)PlayerIndex +
-        //        " IsClient: " + IsClient + " IsHost " + IsHost + " IsServer " + IsServer + " IsOwner " + IsOwner);
-
         if (p_cardNetworkObjectReference.TryGet(out NetworkObject p_cardNetworkObject))
             l_tempCard = p_cardNetworkObject.GetComponent<CardBehavior>();
 

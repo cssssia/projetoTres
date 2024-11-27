@@ -32,6 +32,8 @@ public class CardBehavior : MonoBehaviour
     public CardAnimType CurrentState { get { return m_currentState; } }
 
     [Header("Card Transform")]
+    public const float CARD_SCALE = 0.65f;
+    public const float CARD_DRAG_SCALE = CARD_SCALE - 0.2f;
     [SerializeField] private CardTransform m_idleCardTranform;
     [SerializeField] private CardTransform m_highlightCardTranform;
     [SerializeField] private CardTransform m_individualHighlightCardTranform;
@@ -52,6 +54,16 @@ public class CardBehavior : MonoBehaviour
     private Vector3 m_startRotation;
 
     public Action OnDestroyAction;
+
+    /// <summary>
+    /// Awake is called when the script instance is being loaded.
+    /// </summary>
+    void Awake()
+    {
+        m_highlightCardTranform.Scale.x = CARD_SCALE;
+        m_highlightCardTranform.Scale.y = CARD_SCALE;
+        m_highlightCardTranform.Scale.z = CARD_SCALE;
+    }
 
     private IEnumerator Start()
     {
@@ -210,7 +222,7 @@ public class CardBehavior : MonoBehaviour
     private Vector3 l_startMousePos;
     public void StartDrag(Vector3 p_mousePos)
     {
-        transform.localScale = Vector3.one * 0.075f;
+        transform.localScale = Vector3.one * CARD_DRAG_SCALE;
 
         l_startMousePos = p_mousePos - Camera.main.WorldToScreenPoint(transform.position);
     }

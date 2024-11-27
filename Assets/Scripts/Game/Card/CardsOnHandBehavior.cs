@@ -389,7 +389,7 @@ public class CardsOnHandBehavior : MonoBehaviour
             {
                 Vector3 l_tempRot = m_targets[i].eulerAngles;
                 //l_tempRot.x -= 180f;
-                m_targetsTransform[i] = new(m_targets[i].position, (l_tempRot), Vector3.one * 0.1f);
+                m_targetsTransform[i] = new(m_targets[i].position, (l_tempRot), Vector3.one * CardBehavior.CARD_SCALE);
             }
         }
         return m_targetsTransform[m_currentTargetIndex];

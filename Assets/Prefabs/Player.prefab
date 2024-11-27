@@ -54,6 +54,7 @@ MonoBehaviour:
   m_betBehavior: {fileID: 4519521580299488874}
   m_deckBehavior: {fileID: 5862204906535283086}
   m_myHand: 
+  m_itemOnHand: 0
   currentGameState: 0
   currentBetState: 0
   useHover: 1
@@ -73,7 +74,7 @@ MonoBehaviour:
   m_cardsBehavior: []
   m_throwCardTargetImage: {fileID: 0}
   m_throwCardThrowTargetTag: {fileID: 0}
-  m_idleScale: {x: 0.1, y: 0.1, z: 0.1}
+  m_idleScale: {x: 0.65, y: 0.65, z: 0.65}
   m_handWidthPerCard: 0.5
   m_cardsQuantity: 3
   m_targets:
@@ -118,6 +119,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1af936c32c07d5f489f57589cf4f99e1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  m_deck: {fileID: 0}
   m_currentDeck: {fileID: 0}
 --- !u!114 &-7920416680504153039
 MonoBehaviour:

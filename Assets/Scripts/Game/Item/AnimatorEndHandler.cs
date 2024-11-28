@@ -2,10 +2,11 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class AnimatorEndHandler : MonoBehaviour
+public class ItemAnimatorEndHandler : MonoBehaviour
 {
-    public void EndedAnim(int p_itemID)
+    public System.Action OnEndedAnim;
+    public void EndedAnim()
     {
-        Debug.Log("Ended anim " + (ItemType)p_itemID);
+        OnEndedAnim?.Invoke();
     }
 }

@@ -24,19 +24,23 @@ public class CardTransform
     }
 }
 
-public enum CardAnimType { PLAY, IDLE, HIGHLIGHT, DRAG, DEAL }
+public enum CardAnimType { PLAY, IDLE, HIGHLIGHT, DRAG, DEAL, CUT }
 
 public class CardBehavior : MonoBehaviour
 {
     private CardAnimType m_currentState = CardAnimType.IDLE;
     public CardAnimType CurrentState { get { return m_currentState; } }
 
+
     [Header("Card Transform")]
     public const float CARD_SCALE = 0.65f;
     public const float CARD_DRAG_SCALE = CARD_SCALE - 0.2f;
     [SerializeField] private CardTransform m_idleCardTranform;
+    [Space]
     [SerializeField] private CardTransform m_highlightCardTranform;
     [SerializeField] private CardTransform m_individualHighlightCardTranform;
+    [Space]
+    [SerializeField] private CardTransform m_individualCutCardTransform;
 
     [Header("Card AnimConfig")]
     [SerializeField] private CardAnimConfig m_playCardAnim;
@@ -53,6 +57,12 @@ public class CardBehavior : MonoBehaviour
     private Vector3 m_startPosition;
     private Vector3 m_startRotation;
 
+    [Header("Card Destroy Anim")]
+    private Material m_material;
+    [SerializeField] private AnimationCurve m_destroyAnimCurve;
+    [SerializeField] private float m_destroyAnimTime;
+    [SerializeField] private float m_targetCustomHide;
+
     public Action OnDestroyAction;
 
     /// <summary>
@@ -63,6 +73,9 @@ public class CardBehavior : MonoBehaviour
         m_highlightCardTranform.Scale.x = CARD_SCALE;
         m_highlightCardTranform.Scale.y = CARD_SCALE;
         m_highlightCardTranform.Scale.z = CARD_SCALE;
+        m_individualCutCardTransform.Scale.x = CARD_SCALE;
+        m_individualCutCardTransform.Scale.y = CARD_SCALE;
+        m_individualCutCardTransform.Scale.z = CARD_SCALE;
     }
 
     private IEnumerator Start()
@@ -104,6 +117,7 @@ public class CardBehavior : MonoBehaviour
     {
         transform.position = m_startPosition;
         transform.rotation = Quaternion.Euler(m_startRotation);
+        SetShaderHide(0f);
     }
 
     CardAnimConfig l_tempCardAnim;
@@ -123,6 +137,9 @@ public class CardBehavior : MonoBehaviour
                 break;
             case CardAnimType.DEAL:
                 l_tempCardAnim = m_dealCardAnim;
+                break;
+            case CardAnimType.CUT:
+                l_tempCardAnim = m_hoverCardAnim;
                 break;
         }
 
@@ -151,6 +168,13 @@ public class CardBehavior : MonoBehaviour
     {
         Rotation = transform.rotation.eulerAngles;
         LocalRotation = transform.localRotation.eulerAngles;
+    }
+
+    public Coroutine AnimToCutPosition(int p_idOnHand, System.Action<GameObject> p_action = null)
+    {
+        m_individualCutCardTransform.Position.z += 0.1f * p_idOnHand;
+        m_individualCutCardTransform.Rotation = m_idleCardTranform.Rotation;
+        return AnimateToPlace(m_individualCutCardTransform, CardAnimType.CUT, p_action);
     }
 
     public Coroutine AnimToIdlePos(CardAnimType p_animType = CardAnimType.IDLE, Action<GameObject> p_action = null)
@@ -247,5 +271,32 @@ public class CardBehavior : MonoBehaviour
     public void PlayCard(CardTransform p_targetTransform, Action<GameObject> p_onFinishAnim)
     {
         AnimateToPlace(p_targetTransform, CardAnimType.PLAY, p_onFinishAnim);
+    }
+
+    [NaughtyAttributes.Button]
+    public void AnimCardDestroy()
+    {
+        if (m_material == null) m_material = GetComponent<MeshRenderer>().material;
+
+        StartCoroutine(IAnimCardDestroy(true));
+    }
+
+    IEnumerator IAnimCardDestroy(bool p_resetAfter = false)
+    {
+        float l_time = 0f;
+        while (l_time <= m_destroyAnimTime)
+        {
+            SetShaderHide(Mathf.Lerp(0, m_targetCustomHide, m_destroyAnimCurve.Evaluate(l_time / m_destroyAnimTime)));
+            yield return null;
+            l_time += Time.deltaTime;
+        }
+
+        SetShaderHide(m_targetCustomHide);
+    }
+
+    public void SetShaderHide(float p_value)
+    {
+        m_material.SetFloat("_Custom_hide", p_value);
+        print("custom hide> " + p_value);
     }
 }

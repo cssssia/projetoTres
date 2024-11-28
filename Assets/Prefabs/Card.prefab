@@ -163,6 +163,10 @@ MonoBehaviour:
     Position: {x: 0, y: 0, z: 0}
     Rotation: {x: 0, y: 0, z: 0}
     Scale: {x: 0, y: 0, z: 0}
+  m_individualCutCardTransform:
+    Position: {x: -1.25, y: 0.95, z: 1}
+    Rotation: {x: 0, y: 0, z: 0}
+    Scale: {x: 0, y: 0, z: 0}
   m_playCardAnim: {fileID: 11400000, guid: b46c9a421976e4c4ebba812cf2bc3405, type: 2}
   m_idleCardAnim: {fileID: 11400000, guid: de68a7a4436d6ad4bb6d8323e5e8e750, type: 2}
   m_hoverCardAnim: {fileID: 11400000, guid: 5a1ff09991fa28b40ada698f2bfe8856, type: 2}
@@ -181,6 +185,32 @@ MonoBehaviour:
     playerID: 0
     itemID: 0
     isOnGame: 0
+  m_destroyAnimCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 2
+      outSlope: 2
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 1
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  m_destroyAnimTime: 1
+  m_targetCustomHide: 5.5
   Rotation: {x: 0, y: 0, z: 0}
   LocalRotation: {x: 0, y: 0, z: 0}
   playerPosition: {x: 0, y: 3.15, z: -7.2}

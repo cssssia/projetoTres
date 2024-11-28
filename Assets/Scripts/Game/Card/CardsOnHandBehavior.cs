@@ -402,4 +402,31 @@ public class CardsOnHandBehavior : MonoBehaviour
             m_cardsBehavior[i].OnDestroyAction -= RemoveNullCardsFromList;
         }
     }
+
+    [NaughtyAttributes.Button]
+    public void DEBUG_AnimCardCut()
+    {
+        AnimCardCut(null);
+    }
+
+    public void AnimCardCut(Action<GameObject> p_actionOnEndAnim)
+    {
+        for (int i = 0; i < m_cardsBehavior.Count; i++)
+            if (m_cardsBehavior[i].item.Type is ItemType.NONE) m_cardsBehavior[i].AnimToCutPosition(i, p_actionOnEndAnim);
+    }
+
+    public void AnimCardDestroy()
+    {
+        for (int i = 0; i < m_cardsBehavior.Count; i++)
+            if (m_cardsBehavior[i].item.Type is ItemType.NONE) m_cardsBehavior[i].AnimCardDestroy();
+
+    }
+
+    [NaughtyAttributes.Button]
+    public void DEBUG_ResetDestroy()
+    {
+        for (int i = 0; i < m_cardsBehavior.Count; i++)
+            if (m_cardsBehavior[i].item.Type is ItemType.NONE) m_cardsBehavior[i].SetShaderHide(0f);
+
+    }
 }

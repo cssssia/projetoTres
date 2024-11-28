@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using Unity.Netcode;
 using UnityEngine;
 using NaughtyAttributes;
+using System.Collections;
 
 // C:\Users\Usuario\AppData\LocalLow\DefaultCompany\projetoTres > Player.log
 
@@ -23,7 +24,9 @@ public class PlayerController : NetworkBehaviour
     [SerializeField] private GameManager.BetState currentBetState;
 
     [Space]
+    [SerializeField] private HandController m_handController;
     private Queue<Action> m_actionsQueue;
+
 
     void Start()
     {
@@ -174,7 +177,7 @@ public class PlayerController : NetworkBehaviour
 
     private void TurnManager_OnRoundWon(object p_playerWonId, EventArgs e)
     {
-       Debug.Log($"{(Player)PlayerIndex} at TurnManager_OnRoundWon - IsClient: {IsClient}, IsHost: {IsHost}, IsServer: {IsServer}, IsOwner: {IsOwner}");
+        Debug.Log($"{(Player)PlayerIndex} at TurnManager_OnRoundWon - IsClient: {IsClient}, IsHost: {IsHost}, IsServer: {IsServer}, IsOwner: {IsOwner}");
 
         if (IsServer)
             Debug.Log($"[GAME] {(Player)p_playerWonId} Won!");
@@ -284,14 +287,47 @@ public class PlayerController : NetworkBehaviour
 
     private void UseItemCard(GameObject p_gameObject)
     {
-        GameManager.Instance.SetPlayerAnimatingServerRpc(false);
-        AddFunctionToQueue(() =>
+        StartCoroutine(IUseItemCard(m_itemOnHand, () =>
         {
-            Debug.Log("[GAME] Use Item " + p_gameObject.name);
-            RoundManager.Instance.PlayItemCardServerRpc(m_itemOnHand);
-            CardsManager.Instance.ResetItemServerRpc(m_itemOnHand);
-            m_itemOnHand = -1;
-        });
+            GameManager.Instance.SetPlayerAnimatingServerRpc(false);
+            AddFunctionToQueue(() =>
+            {
+                Debug.Log("[GAME] Use Item " + p_gameObject.name);
+                RoundManager.Instance.PlayItemCardServerRpc(m_itemOnHand);
+                CardsManager.Instance.ResetItemServerRpc(m_itemOnHand);
+                m_itemOnHand = -1;
+            });
+        }));
+    }
+
+    IEnumerator IUseItemCard(int p_itemIndex, Action p_action)
+    {
+        ItemType l_type = CardsManager.Instance.GetItemByIndex(p_itemIndex).Type;
+        bool l_waiting = true;
+        switch (l_type)
+        {
+            case ItemType.NONE:
+                break;
+            case ItemType.SCISSORS:
+                m_handBehavior.AnimCardCut((go) => { l_waiting = false; });
+                m_handController.OnCutCards += CutCards;
+                break;
+        }
+        while (l_waiting) yield return null;
+        
+        l_waiting = true;
+
+        m_handController.HandItem(l_type, () => { l_waiting = false; });
+
+        while (l_waiting) yield return null;
+
+        p_action.Invoke();
+    }
+
+    private void CutCards()
+    {
+        m_handController.OnCutCards -= CutCards;
+        m_handBehavior.AnimCardDestroy();
     }
 
     private void IncreaseBet(GameObject gameObject, bool increase)

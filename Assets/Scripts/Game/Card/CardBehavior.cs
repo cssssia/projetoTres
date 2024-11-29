@@ -107,7 +107,7 @@ public class CardBehavior : MonoBehaviour
         m_idleCardTranform = new(p_cardTransform);
 
         m_individualHighlightCardTranform = new();
-        m_highlightCardTranform.Position.z *= l_invertZ ? -1 : 1;
+        //m_highlightCardTranform.Position.z *= l_invertZ ? -1 : 1;
         m_individualHighlightCardTranform.Position = m_idleCardTranform.Position + m_highlightCardTranform.Position;
         m_individualHighlightCardTranform.Rotation = m_idleCardTranform.Rotation + m_highlightCardTranform.Rotation;
         m_individualHighlightCardTranform.Scale = m_highlightCardTranform.Scale;

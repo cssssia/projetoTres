@@ -45,13 +45,13 @@ MonoBehaviour:
     value: 0
     material: {fileID: 2100000, guid: 53369849c58a5504bbf4b00a6fdd864d, type: 2}
   - name: CJ
-    value: 8
+    value: 10
     material: {fileID: 2100000, guid: aeb190ec4ba0d2749891c45dee12efc8, type: 2}
   - name: CQ
-    value: 11
+    value: 14
     material: {fileID: 2100000, guid: 0d32e2e419a71264997c009bee30322c, type: 2}
   - name: CK
-    value: 15
+    value: 18
     material: {fileID: 2100000, guid: e17c5755b549a8942ad46ef0fa06d383, type: 2}
   - name: DA
     value: 1
@@ -84,13 +84,13 @@ MonoBehaviour:
     value: 0
     material: {fileID: 2100000, guid: 69cda85e793213844be6ae30014f6115, type: 2}
   - name: DJ
-    value: 8
+    value: 9
     material: {fileID: 2100000, guid: 8ade74cbae1e9e14cb987beb0e721f95, type: 2}
   - name: DQ
-    value: 10
+    value: 13
     material: {fileID: 2100000, guid: cb48e24cabcf5f54f9811a35a9c58218, type: 2}
   - name: DK
-    value: 14
+    value: 17
     material: {fileID: 2100000, guid: 12c971074d420ed4c9e828c99e5ccf9f, type: 2}
   - name: HA
     value: 1
@@ -126,10 +126,10 @@ MonoBehaviour:
     value: 8
     material: {fileID: 2100000, guid: 8e71d2d708e5a8441945fd3912c54e15, type: 2}
   - name: HQ
-    value: 9
+    value: 12
     material: {fileID: 2100000, guid: 02c8cfcc87bf8f74c909b483f0a5b516, type: 2}
   - name: HK
-    value: 13
+    value: 16
     material: {fileID: 2100000, guid: 313abe38080511f4fa8717bd5826994c, type: 2}
   - name: SA
     value: 1
@@ -162,13 +162,13 @@ MonoBehaviour:
     value: 0
     material: {fileID: 2100000, guid: 4ab20250de733e842b9f85ebd2bdc1f7, type: 2}
   - name: SJ
-    value: 8
+    value: 11
     material: {fileID: 2100000, guid: c2924cd427e59a24cbc55c466b748d4a, type: 2}
   - name: SQ
-    value: 12
+    value: 15
     material: {fileID: 2100000, guid: a67e6306ed587fc49b5150b452c0a052, type: 2}
   - name: SK
-    value: 16
+    value: 19
     material: {fileID: 2100000, guid: e576b90513e0ccb44afd0ed9829fb17b, type: 2}
   InitialPosition: {x: -4.78, y: 0, z: 0}
   InitialRotation: {x: 180, y: 0, z: 0}

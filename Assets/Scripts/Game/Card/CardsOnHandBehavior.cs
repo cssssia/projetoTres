@@ -406,10 +406,10 @@ public class CardsOnHandBehavior : MonoBehaviour
     [NaughtyAttributes.Button]
     public void DEBUG_AnimCardCut()
     {
-        AnimCardCut(null);
+        AnimCardCutPosition(null);
     }
 
-    public void AnimCardCut(Action<GameObject> p_actionOnEndAnim)
+    public void AnimCardCutPosition(Action<GameObject> p_actionOnEndAnim)
     {
         for (int i = 0; i < m_cardsBehavior.Count; i++)
             if (m_cardsBehavior[i].item.Type is ItemType.NONE) m_cardsBehavior[i].AnimToCutPosition(i, p_actionOnEndAnim);

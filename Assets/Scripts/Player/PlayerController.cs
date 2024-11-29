@@ -138,9 +138,9 @@ public class PlayerController : NetworkBehaviour
         if (CardsManager.Instance.GetCardByIndex(p_cardIndex).cardPlayer == (Player)PlayerIndex)
         {
             m_myHand.Add(p_cardIndex);
-            m_handBehavior.AddCardOnHand(p_cardIndex, p_lastCard);
             CardsManager.Instance.GetCardByIndex(p_cardIndex).cardNetworkObjectReference.TryGet(out NetworkObject l_cardNetworkObject);
             l_cardNetworkObject.TrySetParent(transform, true);
+            m_handBehavior.AddCardOnHand(p_cardIndex, p_lastCard);
         }
     }
     private void CardsManager_OnAddItemCardToMyHand(object p_itemTypeAndPlayer, EventArgs e)

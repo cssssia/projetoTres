@@ -8,6 +8,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: -5695983786731616087, guid: 2f21bec7f30c7d744a280a41c7e1980a, type: 3}
+      propertyPath: m_Mesh
+      value: 
+      objectReference: {fileID: -7414023034635206165, guid: b1441410f3335d649999194d9a2e5cb7, type: 3}
     - target: {fileID: 937226932739149441, guid: 2f21bec7f30c7d744a280a41c7e1980a, type: 3}
       propertyPath: GlobalObjectIdHash
       value: 951099334
@@ -16,13 +20,41 @@ PrefabInstance:
       propertyPath: m_Mesh
       value: 
       objectReference: {fileID: -4393675991995823134, guid: 0464afc39207ab540b94807b2273e3e5, type: 3}
+    - target: {fileID: 1959226694205372338, guid: 2f21bec7f30c7d744a280a41c7e1980a, type: 3}
+      propertyPath: m_Size.x
+      value: 1.2705126
+      objectReference: {fileID: 0}
+    - target: {fileID: 1959226694205372338, guid: 2f21bec7f30c7d744a280a41c7e1980a, type: 3}
+      propertyPath: m_Size.y
+      value: 0.05
+      objectReference: {fileID: 0}
+    - target: {fileID: 1959226694205372338, guid: 2f21bec7f30c7d744a280a41c7e1980a, type: 3}
+      propertyPath: m_Size.z
+      value: 1.2941425
+      objectReference: {fileID: 0}
+    - target: {fileID: 1959226694205372338, guid: 2f21bec7f30c7d744a280a41c7e1980a, type: 3}
+      propertyPath: m_Center.x
+      value: 0.000000059604645
+      objectReference: {fileID: 0}
+    - target: {fileID: 1959226694205372338, guid: 2f21bec7f30c7d744a280a41c7e1980a, type: 3}
+      propertyPath: m_Center.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1959226694205372338, guid: 2f21bec7f30c7d744a280a41c7e1980a, type: 3}
+      propertyPath: m_Center.z
+      value: -0.00000005960466
+      objectReference: {fileID: 0}
+    - target: {fileID: 4962583754584604216, guid: 2f21bec7f30c7d744a280a41c7e1980a, type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 038ca70e162b15446bbe4868567ae5fe, type: 2}
     - target: {fileID: 6693041384023231204, guid: 2f21bec7f30c7d744a280a41c7e1980a, type: 3}
       propertyPath: m_Name
       value: Item_Card
       objectReference: {fileID: 0}
     - target: {fileID: 7690226722388015351, guid: 2f21bec7f30c7d744a280a41c7e1980a, type: 3}
       propertyPath: m_LocalScale.z
-      value: 0.07
+      value: 0.65
       objectReference: {fileID: 0}
     - target: {fileID: 7690226722388015351, guid: 2f21bec7f30c7d744a280a41c7e1980a, type: 3}
       propertyPath: m_LocalPosition.x

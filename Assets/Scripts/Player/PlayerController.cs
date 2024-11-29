@@ -24,7 +24,7 @@ public class PlayerController : NetworkBehaviour
     [SerializeField] private GameManager.BetState currentBetState;
 
     [Space]
-    [SerializeField] private HandController m_handController;
+    [SerializeField] private HandItemAnimController m_handController;
     private Queue<Action> m_actionsQueue;
 
 
@@ -309,12 +309,12 @@ public class PlayerController : NetworkBehaviour
             case ItemType.NONE:
                 break;
             case ItemType.SCISSORS:
-                m_handBehavior.AnimCardCut((go) => { l_waiting = false; });
+                m_handBehavior.AnimCardCutPosition((go) => { l_waiting = false; });
                 m_handController.OnCutCards += CutCards;
                 break;
         }
         while (l_waiting) yield return null;
-        
+
         l_waiting = true;
 
         m_handController.HandItem(l_type, () => { l_waiting = false; });
@@ -435,4 +435,29 @@ public class PlayerController : NetworkBehaviour
             m_actionsQueue.Dequeue().Invoke();
         }
     }
+
+#if UNITY_EDITOR
+
+
+    [Button]
+    public void SetAsHost()
+    {
+        SetPos(0);
+    }
+
+    [Button]
+    public void SetAsClient()
+    {
+        SetPos(1);
+    }
+
+    void SetPos(int p_playerID)
+    {
+        transform.SetPositionAndRotation(m_spawnData.spawnPosition[p_playerID], Quaternion.Euler(m_spawnData.spawnRotation[p_playerID]));
+    }
+
+#endif
+
+
+
 }

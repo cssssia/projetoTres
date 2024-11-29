@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_animData:
   - State: 0
-    LocalPosition: {x: 0, y: 3.15, z: -7.2}
+    LocalPosition: {x: 0, y: 4.9, z: -7.65}
     PositionCurve:
       serializedVersion: 2
       m_Curve:
@@ -39,7 +39,7 @@ MonoBehaviour:
       m_PreInfinity: 2
       m_PostInfinity: 2
       m_RotationOrder: 4
-    LocalRotation: {x: 7.5, y: 0, z: 0}
+    LocalRotation: {x: 25, y: 0, z: 0}
     RotationCurve:
       serializedVersion: 2
       m_Curve:
@@ -65,7 +65,7 @@ MonoBehaviour:
       m_PostInfinity: 2
       m_RotationOrder: 4
   - State: 1
-    LocalPosition: {x: 0, y: 3.25, z: -3.5}
+    LocalPosition: {x: 0, y: 4.18, z: -2.64}
     PositionCurve:
       serializedVersion: 2
       m_Curve:
@@ -90,7 +90,7 @@ MonoBehaviour:
       m_PreInfinity: 2
       m_PostInfinity: 2
       m_RotationOrder: 4
-    LocalRotation: {x: 45, y: -0, z: -0}
+    LocalRotation: {x: 55, y: 0, z: 0}
     RotationCurve:
       serializedVersion: 2
       m_Curve:

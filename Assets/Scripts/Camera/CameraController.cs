@@ -96,26 +96,23 @@ public class CameraController : Singleton<CameraController>
     }
 
 #if UNITY_EDITOR
+    [NaughtyAttributes.Button]
     public void SaveCurrentAnimData()
     {
         m_animConfigs[0].SetAnimData(m_currentState, m_camera.transform.localPosition, m_camera.transform.localEulerAngles);
         EditorUtility.SetDirty(m_animConfigs[0]);
     }
-#endif
-}
 
-#if UNITY_EDITOR
-[CustomEditor(typeof(CameraController))]
-public class CameraControllerEditor : Editor
-{
-    public override void OnInspectorGUI()
+
+    [NaughtyAttributes.Button]
+    public void SetAsHost()
     {
-        base.OnInspectorGUI();
-
-        if (GUILayout.Button("Save"))
-        {
-            (target as CameraController).SaveCurrentAnimData();
-        }
+        SetCamera(0);
     }
-}
+    [NaughtyAttributes.Button]
+    public void SetAsClient()
+    {
+        SetCamera(1);
+    }
 #endif
+}

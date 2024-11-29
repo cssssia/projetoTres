@@ -17,6 +17,6 @@ MonoBehaviour:
   InitialRotation: {x: 180, y: 0, z: 0}
   items:
   - item: 1
-    material: {fileID: 2100000, guid: c8d5c5cb6214ea945b360242352fcab9, type: 2}
+    material: {fileID: 2100000, guid: 038ca70e162b15446bbe4868567ae5fe, type: 2}
     objectName: Item_Scissors
   initialItems: 0100000001000000010000000100000001000000010000000100000001000000

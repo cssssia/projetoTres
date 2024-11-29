@@ -47,13 +47,75 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   handAnimator: {fileID: 6902916014059901907}
+  handAnimatorEndHandler: {fileID: 0}
   objectsOnHand:
   - Type: 1
     ObjectTranform: {fileID: 1962572084559172514}
+    itemAnimator: {fileID: 8502313463452837138}
+    endHandler: {fileID: 0}
     InitialPosition: {x: 0, y: 0, z: 0}
     InitialRotation: {x: 0, y: 0, z: 0}
-    itemAnimator: {fileID: 8502313463452837138}
     animData:
+    - wait: 0
+      targetPosition: {x: 0.64, y: -0.34, z: 9.13}
+      targetRotation: {x: 40, y: 314.99997, z: 90}
+      time: 0
+      curve:
+        serializedVersion: 2
+        m_Curve:
+        - serializedVersion: 3
+          time: 0
+          value: 0
+          inSlope: 0
+          outSlope: 0
+          tangentMode: 0
+          weightedMode: 0
+          inWeight: 0
+          outWeight: 0
+        - serializedVersion: 3
+          time: 1
+          value: 1
+          inSlope: 0
+          outSlope: 0
+          tangentMode: 0
+          weightedMode: 0
+          inWeight: 0
+          outWeight: 0
+        m_PreInfinity: 2
+        m_PostInfinity: 2
+        m_RotationOrder: 0
+      eventToInvokeOnStart: 
+      eventToInvokeOnEnd: 
+    - wait: 0
+      targetPosition: {x: 0.5, y: 2.39, z: 9.33}
+      targetRotation: {x: 40, y: 314.99997, z: 90}
+      time: 0.6
+      curve:
+        serializedVersion: 2
+        m_Curve:
+        - serializedVersion: 3
+          time: 0
+          value: 0
+          inSlope: 0
+          outSlope: 0
+          tangentMode: 0
+          weightedMode: 0
+          inWeight: 0
+          outWeight: 0
+        - serializedVersion: 3
+          time: 1
+          value: 1
+          inSlope: 0
+          outSlope: 0
+          tangentMode: 0
+          weightedMode: 0
+          inWeight: 0
+          outWeight: 0
+        m_PreInfinity: 2
+        m_PostInfinity: 2
+        m_RotationOrder: 0
+      eventToInvokeOnStart: 
+      eventToInvokeOnEnd: 
     - wait: 0
       targetPosition: {x: 9.089, y: 1.25, z: 13.47}
       targetRotation: {x: 80, y: 275, z: 40}
@@ -144,7 +206,6 @@ MonoBehaviour:
         m_RotationOrder: 0
       eventToInvokeOnStart: 
       eventToInvokeOnEnd: 
-  m_anim: {fileID: 7400000, guid: 2f794bca085ba0f4ca66bf1f17acf8a2, type: 2}
 --- !u!1001 &2069067117927478345
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -155,31 +216,31 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: -8679921383154817045, guid: 3d411ce422499134ab9f15d7979e88b7, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 0
+      value: 0.5
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 3d411ce422499134ab9f15d7979e88b7, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0
+      value: -0.05
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 3d411ce422499134ab9f15d7979e88b7, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 0
+      value: 9.33
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 3d411ce422499134ab9f15d7979e88b7, type: 3}
       propertyPath: m_LocalRotation.w
-      value: 1
+      value: -0.52133363
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 3d411ce422499134ab9f15d7979e88b7, type: 3}
       propertyPath: m_LocalRotation.x
-      value: 0
+      value: 0.03084381
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 3d411ce422499134ab9f15d7979e88b7, type: 3}
       propertyPath: m_LocalRotation.y
-      value: 0
+      value: 0.4777146
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 3d411ce422499134ab9f15d7979e88b7, type: 3}
       propertyPath: m_LocalRotation.z
-      value: 0
+      value: -0.7064337
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 3d411ce422499134ab9f15d7979e88b7, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x

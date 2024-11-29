@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class HandController : MonoBehaviour
+public class HandItemAnimController : MonoBehaviour
 {
     [System.Serializable]
     public class ObjectOnHandAnim
@@ -11,7 +11,7 @@ public class HandController : MonoBehaviour
         [Space]
         public Transform ObjectTranform;
         public Animator itemAnimator;
-        public ItemAnimatorEndHandler endHandler;
+        public AnimatorEndHandler endHandler;
         [Space]
         public Vector3 InitialPosition;
         public Vector3 InitialRotation;
@@ -31,6 +31,7 @@ public class HandController : MonoBehaviour
     }
 
     public Animator handAnimator;
+    public AnimatorEndHandler handAnimatorEndHandler;
     public ObjectOnHandAnim[] objectsOnHand;
 
     public System.Action OnCutCards;
@@ -42,6 +43,7 @@ public class HandController : MonoBehaviour
     public void HandItem(ItemType p_item, System.Action p_onEnd)
     {
         handAnimator.SetTrigger("UseItem");
+
         for (int i = 0; i < objectsOnHand.Length; i++)
         {
             if (objectsOnHand[i].Type == p_item)
@@ -51,6 +53,8 @@ public class HandController : MonoBehaviour
             }
         }
     }
+
+
 
     Vector3 l_initPosition, l_initialRotation;
     IEnumerator ExecuteAnimQueue(ObjectOnHandAnim p_object, System.Action p_onEnd)
@@ -72,7 +76,7 @@ public class HandController : MonoBehaviour
             l_initPosition = p_object.ObjectTranform.localPosition;
             l_initialRotation = p_object.ObjectTranform.localRotation.eulerAngles;
 
-            while (l_time <= l_maxTime)
+            while (l_time <= l_maxTime && l_maxTime > 0)
             {
                 p_object.ObjectTranform.localPosition = Vector3.Lerp(l_initPosition,
                                                                     p_object.animData[i].targetPosition,

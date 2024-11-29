@@ -139,7 +139,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bfa4eae0e0dce8e44bb1cc963f85a917, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_invertZPlayer: 1
+  m_invertZPlayer: 0
   m_cardsBehavior: []
   m_throwCardTargetImage: {fileID: 0}
   m_throwCardThrowTargetTag: {fileID: 0}

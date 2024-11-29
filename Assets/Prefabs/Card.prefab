@@ -156,7 +156,7 @@ MonoBehaviour:
     Rotation: {x: 0, y: 0, z: 0}
     Scale: {x: 0, y: 0, z: 0}
   m_highlightCardTranform:
-    Position: {x: 0, y: 0.15, z: 0.1}
+    Position: {x: 0, y: 0.15, z: -0.1}
     Rotation: {x: 0, y: 0, z: 0}
     Scale: {x: 0.625, y: 0.625, z: 0.625}
   m_individualHighlightCardTranform:

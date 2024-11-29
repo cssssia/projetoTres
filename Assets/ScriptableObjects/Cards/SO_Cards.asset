@@ -170,5 +170,5 @@ MonoBehaviour:
   - name: SK
     value: 16
     material: {fileID: 2100000, guid: e576b90513e0ccb44afd0ed9829fb17b, type: 2}
-  InitialPosition: {x: 3.5, y: 0.6, z: -0.25}
+  InitialPosition: {x: -4.78, y: 0, z: 0}
   InitialRotation: {x: 180, y: 0, z: 0}

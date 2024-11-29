@@ -16,6 +16,13 @@ public class HandItemAnimController : MonoBehaviour
         public Vector3 InitialPosition;
         public Vector3 InitialRotation;
         public List<AnimData> animData;
+
+        public int index;
+        [NaughtyAttributes.Button]
+        public void GetPosition()
+        {
+            animData[index].targetPosition = ObjectTranform.localPosition;
+        }
     }
 
     [System.Serializable]
@@ -40,9 +47,22 @@ public class HandItemAnimController : MonoBehaviour
     [NaughtyAttributes.Button]
     public void UseScissors() => HandItem(ItemType.SCISSORS, null);
 
+    [NaughtyAttributes.Button]
+    public void GetPosition()
+    {
+        objectsOnHand[0].GetPosition();
+    }
+
     public void HandItem(ItemType p_item, System.Action p_onEnd)
     {
-        handAnimator.SetTrigger("UseItem");
+        switch (p_item)
+        {
+            case ItemType.SCISSORS:
+                handAnimator.SetTrigger("UseItemScissors");
+                break;
+
+        }
+        //handAnimator.SetTrigger("UseItem");
 
         for (int i = 0; i < objectsOnHand.Length; i++)
         {

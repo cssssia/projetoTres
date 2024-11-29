@@ -53,11 +53,11 @@ MonoBehaviour:
     ObjectTranform: {fileID: 1962572084559172514}
     itemAnimator: {fileID: 8502313463452837138}
     endHandler: {fileID: 0}
-    InitialPosition: {x: 0, y: 0, z: 0}
-    InitialRotation: {x: 0, y: 0, z: 0}
+    InitialPosition: {x: 8.489725, y: -0.55096245, z: -0.68979454}
+    InitialRotation: {x: 10.181992, y: 172.32545, z: 95.02329}
     animData:
     - wait: 0
-      targetPosition: {x: 0.64, y: -0.34, z: 9.13}
+      targetPosition: {x: 1.22, y: -0.19, z: 3.02}
       targetRotation: {x: 40, y: 314.99997, z: 90}
       time: 0
       curve:
@@ -86,10 +86,10 @@ MonoBehaviour:
         m_RotationOrder: 0
       eventToInvokeOnStart: 
       eventToInvokeOnEnd: 
-    - wait: 0
-      targetPosition: {x: 0.5, y: 2.39, z: 9.33}
+    - wait: 2
+      targetPosition: {x: 1.1000003, y: 2.2900002, z: 2.809999}
       targetRotation: {x: 40, y: 314.99997, z: 90}
-      time: 0.6
+      time: 1.6
       curve:
         serializedVersion: 2
         m_Curve:
@@ -177,7 +177,7 @@ MonoBehaviour:
       eventToInvokeOnStart: Cut
       eventToInvokeOnEnd: 
     - wait: 1
-      targetPosition: {x: 1.62, y: 1.25, z: 8.19}
+      targetPosition: {x: 0.71, y: 1.25, z: 7.55}
       targetRotation: {x: 40, y: 314.99997, z: 90}
       time: 1
       curve:
@@ -206,6 +206,7 @@ MonoBehaviour:
         m_RotationOrder: 0
       eventToInvokeOnStart: 
       eventToInvokeOnEnd: 
+    index: 0
 --- !u!1001 &2069067117927478345
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -216,15 +217,15 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: -8679921383154817045, guid: 3d411ce422499134ab9f15d7979e88b7, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 0.5
+      value: 1.5
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 3d411ce422499134ab9f15d7979e88b7, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -0.05
+      value: 0.11
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 3d411ce422499134ab9f15d7979e88b7, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 9.33
+      value: 3.13
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 3d411ce422499134ab9f15d7979e88b7, type: 3}
       propertyPath: m_LocalRotation.w

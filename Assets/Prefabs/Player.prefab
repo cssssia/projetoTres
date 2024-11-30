@@ -84,7 +84,7 @@ MonoBehaviour:
   m_itemOnHand: 0
   currentGameState: 0
   currentBetState: 0
-  m_handController: {fileID: 5824590277179721779}
+  m_tableHandController: {fileID: 0}
   useHover: 1
 --- !u!114 &5396420236894118007
 MonoBehaviour:
@@ -521,17 +521,6 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 6231110347382652551, guid: 7d0ca77eec0a46b4380e316b9503c7d0, type: 3}
   m_PrefabInstance: {fileID: 8440812423825623857}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &5824590277179721779 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 2735606726205719298, guid: 7d0ca77eec0a46b4380e316b9503c7d0, type: 3}
-  m_PrefabInstance: {fileID: 8440812423825623857}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a30353034427a644b9acca6aa275f95d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &6289009774791424106 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 2478324756927116123, guid: 7d0ca77eec0a46b4380e316b9503c7d0, type: 3}

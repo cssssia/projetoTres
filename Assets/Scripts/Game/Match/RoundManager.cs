@@ -27,7 +27,8 @@ public class RoundManager : NetworkBehaviour
 	public event EventHandler OnCardPlayed;
 	public event EventHandler OnItemUsed;
     public event EventHandler OnStartPlayingCard;
-	public event EventHandler OnBet;
+    public event EventHandler OnAnimItemUsed;
+    public event EventHandler OnBet;
     public event EventHandler OnEndedDealing;
     public event EventHandler OnEndedDealingItem;
 
@@ -153,9 +154,15 @@ public class RoundManager : NetworkBehaviour
     }
 
     [ServerRpc (RequireOwnership = false)]
-    public void OnStartAnimServerRpc(int p_playerIndex,bool p_isItem, int p_targetIndex, int p_cardIndex, NetworkObjectReference p_cardNetworkObjectReference)
+    public void OnStartPlayingCardAnimServerRpc(int p_playerIndex,bool p_isItem, int p_targetIndex, int p_cardIndex, NetworkObjectReference p_cardNetworkObjectReference)
     {
         OnStartPlayingCard?.Invoke((new CustomSender(p_playerIndex, p_targetIndex, p_cardNetworkObjectReference, p_cardIndex), p_isItem), EventArgs.Empty);
+    }
+
+    [ServerRpc(RequireOwnership =false)]
+    public void OnUseItemServerRpc(int p_player, int p_itemID)
+    {
+        OnAnimItemUsed?.Invoke((p_player, p_itemID), EventArgs.Empty);
     }
 
     [ServerRpc(RequireOwnership = false)]

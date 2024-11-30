@@ -172,6 +172,7 @@ public class CardBehavior : MonoBehaviour
 
     public Coroutine AnimToCutPosition(int p_idOnHand, System.Action<GameObject> p_action = null)
     {
+        Debug.Log("call anim cut");
         m_individualCutCardTransform.Position.z += 0.1f * p_idOnHand;
         m_individualCutCardTransform.Rotation = m_idleCardTranform.Rotation;
         return AnimateToPlace(m_individualCutCardTransform, CardAnimType.CUT, p_action);
@@ -297,6 +298,5 @@ public class CardBehavior : MonoBehaviour
     public void SetShaderHide(float p_value)
     {
         m_material.SetFloat("_Custom_hide", p_value);
-        print("custom hide> " + p_value);
     }
 }

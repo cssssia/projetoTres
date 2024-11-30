@@ -24,14 +24,18 @@ public class PlayerController : NetworkBehaviour
     [SerializeField] private GameManager.BetState currentBetState;
 
     [Space]
-    [SerializeField] private HandItemAnimController m_handController;
+    [SerializeField] private HandItemAnimController m_tableHandController;
     private Queue<Action> m_actionsQueue;
 
 
     void Start()
     {
+        m_tableHandController = GetComponentInChildren<HandItemAnimController>();
+        m_tableHandController.OnCutCards += CutCards;
+
         if (!IsOwner)
             return;
+
     }
 
     //[Header("Debug buttons")]
@@ -71,6 +75,7 @@ public class PlayerController : NetworkBehaviour
         {
             NetworkManager.Singleton.OnClientDisconnectCallback += NetworkManager_OnClientDisconnectCallback;
             RoundManager.Instance.OnStartPlayingCard += TurnManager_OnStartPlayingCard; // TO-DO move this up and we will not need to use client rpc
+            RoundManager.Instance.OnAnimItemUsed += AnimNotOwnerItemUsed;
         }
 
         if (IsOwner)
@@ -250,7 +255,7 @@ public class PlayerController : NetworkBehaviour
 
     private void StartAnim(GameObject gameObject, bool p_isItem, int p_cardIndex)
     {
-        RoundManager.Instance.OnStartAnimServerRpc(PlayerIndex, p_isItem, m_handBehavior.CurrentTargetIndex,
+        RoundManager.Instance.OnStartPlayingCardAnimServerRpc(PlayerIndex, p_isItem, m_handBehavior.CurrentTargetIndex,
                                                     p_cardIndex, gameObject.GetComponent<NetworkObject>());
     }
 
@@ -295,9 +300,11 @@ public class PlayerController : NetworkBehaviour
         }));
     }
 
-    IEnumerator IUseItemCard(int p_itemIndex, Action p_action)
+    IEnumerator IUseItemCard(int p_itemIndex, Action p_action, bool p_callOtherAnimation = true)
     {
         ItemType l_type = CardsManager.Instance.GetItemByIndex(p_itemIndex).Type;
+
+        if (p_callOtherAnimation) RoundManager.Instance.OnUseItemServerRpc(PlayerIndex, p_itemIndex);
         bool l_waiting = true;
         switch (l_type)
         {
@@ -305,24 +312,41 @@ public class PlayerController : NetworkBehaviour
                 break;
             case ItemType.SCISSORS:
                 m_handBehavior.AnimCardCutPosition((go) => { l_waiting = false; });
-                m_handController.OnCutCards += CutCards;
                 break;
         }
         while (l_waiting) yield return null;
 
         l_waiting = true;
 
-        m_handController.HandItem(l_type, () => { l_waiting = false; });
+        m_tableHandController.HandItem(l_type, () => { l_waiting = false; });
 
         while (l_waiting) yield return null;
 
-        p_action.Invoke();
+        p_action?.Invoke();
     }
 
     private void CutCards()
     {
-        m_handController.OnCutCards -= CutCards;
         m_handBehavior.AnimCardDestroy();
+    }
+
+    private void AnimNotOwnerItemUsed(object p_itemUsedData, EventArgs e)
+    {
+        int l_playerId = (((int, int))p_itemUsedData).Item1;
+        int l_itemID = (((int, int))p_itemUsedData).Item2;
+
+        AnimNotOwnerItemUsedClientRpc(l_playerId, l_itemID);
+    }
+
+
+    [ClientRpc]
+    private void AnimNotOwnerItemUsedClientRpc(int p_playerIndex, int p_itemIndex)
+    {
+        if (!IsOwner && p_playerIndex == PlayerIndex)
+        {
+            //GameManager.Instance.set
+            StartCoroutine(IUseItemCard(p_itemIndex, null, false));
+        }
     }
 
     private void IncreaseBet(GameObject gameObject, bool increase)

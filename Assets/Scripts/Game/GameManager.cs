@@ -19,7 +19,6 @@ public class GameManager : NetworkBehaviour
     public enum GameState
     {
         WaitingToStart,
-        //CountdownToStart, //check if we will use something like this
         DealingCards,
         DealingItems,
         HostTurn,
@@ -161,7 +160,11 @@ public class GameManager : NetworkBehaviour
             }
             if (RoundManager.Instance.CurrentTrick.TrickBetMultiplier == 1)
             {
-                m_betState.Value = (BetState)m_gameState.Value;
+                if (IsHostTurn())
+                    m_betState.Value = BetState.HostTurn;
+                else if (IsClientTurn())
+                    m_betState.Value = BetState.ClientTurn;
+
                 Debug.Log("[GAME] Bet: " + m_betState.Value + " Game: " + m_gameState.Value);
             }
         }

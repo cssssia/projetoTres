@@ -168,8 +168,6 @@ public class PlayerController : NetworkBehaviour
 
     private void TurnManager_OnStartPlayingCard(object p_customSender, EventArgs e)
     {
-        Debug.Log($"{(Player)PlayerIndex} at TurnManager_OnStartPlayingCard - IsClient: {IsClient}, IsHost: {IsHost}, IsServer: {IsServer}, IsOwner: {IsOwner}");
-
         CustomSender l_customSender = (((CustomSender, bool))p_customSender).Item1;
         bool l_isItem = (((CustomSender, bool))p_customSender).Item2;
         AnimCardClientRpc(l_customSender.playerType, l_customSender.targetIndex, l_isItem, l_customSender.cardNO);
@@ -177,8 +175,6 @@ public class PlayerController : NetworkBehaviour
 
     private void TurnManager_OnRoundWon(object p_playerWonId, EventArgs e)
     {
-        Debug.Log($"{(Player)PlayerIndex} at TurnManager_OnRoundWon - IsClient: {IsClient}, IsHost: {IsHost}, IsServer: {IsServer}, IsOwner: {IsOwner}");
-
         if (IsServer)
             Debug.Log($"[GAME] {(Player)p_playerWonId} Won!");
 
@@ -283,8 +279,6 @@ public class PlayerController : NetworkBehaviour
         });
     }
 
-    //private void ThrowCardOnQueue()
-
     private void UseItemCard(GameObject p_gameObject)
     {
         StartCoroutine(IUseItemCard(m_itemOnHand, () =>
@@ -292,10 +286,11 @@ public class PlayerController : NetworkBehaviour
             GameManager.Instance.SetPlayerAnimatingServerRpc(false);
             AddFunctionToQueue(() =>
             {
-                Debug.Log("[GAME] Use Item " + p_gameObject.name);
-                RoundManager.Instance.PlayItemCardServerRpc(m_itemOnHand);
-                CardsManager.Instance.ResetItemServerRpc(m_itemOnHand);
+                Debug.Log("[GAME] Will Use Item " + p_gameObject.name);
+                int l_atualItemOnHand = m_itemOnHand;
                 m_itemOnHand = -1;
+                RoundManager.Instance.PlayItemCardServerRpc(l_atualItemOnHand);
+                CardsManager.Instance.ResetItemServerRpc(l_atualItemOnHand);
             });
         }));
     }

@@ -42,7 +42,7 @@ public class RoundManager : NetworkBehaviour
         RoundHasStarted.Value = false;
         BetHasStarted.Value = false;
         StopIncreaseBet.Value = false;
-        BetAsked.Value = 2;
+        BetAsked.Value = 1;
     }
 
     [ServerRpc (RequireOwnership = false)]
@@ -148,7 +148,7 @@ public class RoundManager : NetworkBehaviour
         {
             BetHasStarted.Value = false;
             StopIncreaseBet.Value = false;
-            BetAsked.Value = 2;
+            BetAsked.Value = 1;
         }
     }
 

@@ -90,6 +90,7 @@ public class CardsOnHandBehavior : MonoBehaviour
 
     private void RemoveNullCardsFromList()
     {
+        Debug.Log("null ref in " + (Player)m_player.PlayerIndex);
         StartCoroutine(IRemoveNullItensFromList());
     }
 
@@ -397,6 +398,8 @@ public class CardsOnHandBehavior : MonoBehaviour
     void OnDestroy()
     {
         Debug.Log("OnDestroy");
+        Debug.Log((Player)m_player.PlayerIndex);
+        Debug.Log(m_cardsBehavior.Count);
         for (int i = 0; i < m_cardsBehavior.Count; i++)
         {
             m_cardsBehavior[i].OnDestroyAction -= RemoveNullCardsFromList;

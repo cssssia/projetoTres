@@ -18,7 +18,7 @@ public class Trick
     [HideInInspector] public int TurnsDraw;
 
     [HideInInspector] public int CurrentTrick;
-    [HideInInspector] public List<Player> TurnsWonHistory;
+    public List<Player> TurnsWonHistory;
     [HideInInspector] public List<Player> TurnsStartedHistory;
     [HideInInspector] public int TrickBetMultiplier;
 
@@ -33,7 +33,9 @@ public class Trick
         HostTurnsWon = 0;
         ClientTurnsWon = 0;
 
-        CurrentTrick = 1;
+        CurrentTrick = 0;
+
+        TrickBetMultiplier = 1;
 
         TurnsWonHistory = new();
         TurnsStartedHistory = new()

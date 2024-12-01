@@ -63,7 +63,7 @@ public class CardsOnHandBehavior : MonoBehaviour
         else m_cardsBehavior.Insert(0, l_card);
 
         l_card.SetCardData(CardsManager.Instance.GetCardByIndex(p_cardIndex));
-        l_card.OnDestroyAction += RemoveNullCardsFromList;
+        // l_card.OnDestroyAction += RemoveNullCardsFromList;
 
         if (p_lastCard)
         {
@@ -79,7 +79,7 @@ public class CardsOnHandBehavior : MonoBehaviour
         if (l_itemCardNetworkObject.TryGetComponent(out l_card))
         {
             l_card.SetCardData(p_item);
-            l_card.OnDestroyAction += RemoveNullCardsFromList;
+            // l_card.OnDestroyAction += RemoveNullCardsFromList;
 
             m_cardsBehavior.Add(l_card);
         }
@@ -88,26 +88,25 @@ public class CardsOnHandBehavior : MonoBehaviour
         StartCoroutine(AnimSingleCardDeal(l_card, () => { RoundManager.Instance.OnEndedDealingItemServerRpc(m_player.PlayerIndex); }));
     }
 
-    private void RemoveNullCardsFromList()
-    {
-        Debug.Log("null ref in " + (Player)m_player.PlayerIndex);
-        StartCoroutine(IRemoveNullItensFromList());
-    }
+    // private void RemoveNullCardsFromList()
+    // {
+    //     if (m_player != null) StartCoroutine(IRemoveNullItensFromList());
+    // }
 
-    IEnumerator IRemoveNullItensFromList()
-    {
-        yield return null;
-        yield return null;
-        yield return null;
-        for (int i = m_cardsBehavior.Count - 1; i >= 0; i--)
-        {
-            if (m_cardsBehavior[i] == null)
-            {
-                m_cardsBehavior.RemoveAt(i);
+    // IEnumerator IRemoveNullItensFromList()
+    // {
+    //     yield return null;
+    //     yield return null;
+    //     yield return null;
+    //     for (int i = m_cardsBehavior.Count - 1; i >= 0; i--)
+    //     {
+    //         if (m_cardsBehavior[i] == null)
+    //         {
+    //             m_cardsBehavior.RemoveAt(i);
 
-            }
-        }
-    }
+    //         }
+    //     }
+    // }
 
     [NaughtyAttributes.Button]
     public void DEBUG_SetCardsPOs()
@@ -341,6 +340,7 @@ public class CardsOnHandBehavior : MonoBehaviour
 
             if (m_cardsBehavior[i].card.cardIndexSO == CardsManager.Instance.GetCardByIndex(p_cardID).cardIndexSO)
             {
+                // m_cardsBehavior[i].OnDestroyAction -= RemoveNullCardsFromList;
                 m_cardsBehavior.RemoveAt(i);
                 break;
             }
@@ -395,16 +395,17 @@ public class CardsOnHandBehavior : MonoBehaviour
         }
         return m_targetsTransform[m_currentTargetIndex];
     }
-    void OnDestroy()
-    {
-        Debug.Log("OnDestroy");
-        Debug.Log((Player)m_player.PlayerIndex);
-        Debug.Log(m_cardsBehavior.Count);
-        for (int i = 0; i < m_cardsBehavior.Count; i++)
-        {
-            m_cardsBehavior[i].OnDestroyAction -= RemoveNullCardsFromList;
-        }
-    }
+
+    // void OnDestroy()
+    // {
+    //     Debug.Log("OnDestroy");
+    //     Debug.Log((Player)m_player.PlayerIndex);
+    //     Debug.Log(m_cardsBehavior.Count);
+    //     for (int i = 0; i < m_cardsBehavior.Count; i++)
+    //     {
+    //         m_cardsBehavior[i].OnDestroyAction -= RemoveNullCardsFromList;
+    //     }
+    // }
 
     [NaughtyAttributes.Button]
     public void DEBUG_AnimCardCut()

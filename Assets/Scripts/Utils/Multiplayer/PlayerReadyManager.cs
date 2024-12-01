@@ -7,7 +7,7 @@ public class PlayerReadyManager : MonoBehaviour
     //aa
     [SerializeField] private int m_playerIndex;
     [SerializeField] private GameObject m_readyGameObject;
-    [SerializeField] private TextMeshPro m_playerNameText;
+    [SerializeField] private TextMeshProUGUI m_playerNameText;
 
     void Start()
     {

@@ -23,20 +23,24 @@ public class LobbyUI : MonoBehaviour
     {
 
         m_mainMenuButton.onClick.AddListener(() => {
+            AudioManager.Instance.PlayOneShot(FMODEvents.Instance.buttonPressed, transform.position);
             LobbyManager.Instance.LeaveLobby();
             NetworkManager.Singleton.Shutdown();
             SceneLoader.Load(SceneLoader.Scene.SCN_Menu);
         });
 
         m_createLobbyButton.onClick.AddListener(() => {
+            AudioManager.Instance.PlayOneShot(FMODEvents.Instance.buttonPressed, transform.position);
             m_lobbyCreateUI.Show();
         });
 
         m_quickJoinButton.onClick.AddListener(() => {
+            AudioManager.Instance.PlayOneShot(FMODEvents.Instance.buttonPressed, transform.position);
             LobbyManager.Instance.QuickJoin();
         });
 
         m_codeJoinButton.onClick.AddListener(() => {
+            AudioManager.Instance.PlayOneShot(FMODEvents.Instance.buttonPressed, transform.position);
             LobbyManager.Instance.CodeJoin(m_lobbyCodeInputField.text);
         });
 

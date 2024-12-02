@@ -275,15 +275,16 @@ public class CardsManager : NetworkBehaviour
         PlayersHaveItem[p_playerIndex] = p_hasItem;
     }
 
+    Card l_card;
     [ClientRpc]
-    private void InformPlayerClientRpc(int p_playerdId)
+    private void InformPlayerClientRpc(int p_playerId)
     {
-        if (p_playerdId == PlayerController.LocalInstance.PlayerIndex)
+        if (p_playerId == PlayerController.LocalInstance.PlayerIndex)
         {
             for (int i = 0; i < CardsOnGameList.Count; i++)
             {
                 l_card = GetCardByIndex(CardsOnGameList[i]);
-                if (l_card.cardPlayer != p_playerId && !l_card.playedCard)
+                if (l_card.cardPlayer != (Player)p_playerId && !l_card.playedCard)
                 {
                     Debug.Log("adversary suit: " + l_card.cardSuit);
                 }

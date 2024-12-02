@@ -1,0 +1,9 @@
+Key,English,Portuguese
+REASON_GAME_STARTED,this game has already started,essa partida já começou
+REASON_GAME_FULL,this game is alrady full,esse lobby já está cheio
+MESSAGE_FAILED_CONNECT,failed to connect,falha em conectar
+MESSAGE_FAILED_CREATE_LOBBY,failed to create lobby,falha em criar o lobby
+MESSAGE_FAILED_JOIN_LOBBY,failed to join lobby,falha em entrar no lobby
+MESSAGE_FAILED_QUICK_LOBBY,could not find a lobby to quick join,não foi possível encontrar um lobby para entrar
+MESSAGE_CREATING,creating lobby...,criando lobby...
+MESSAGE_JOINING,joining lobby,entrando no lobby...

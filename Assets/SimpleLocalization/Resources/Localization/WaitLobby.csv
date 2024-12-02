@@ -1,0 +1,6 @@
+Key,English,Portuguese
+WaitLobby.LobbyName,lobby name: {0},nome do lobby: {0}
+WaitLobby.LobbyCode,lobby code: {0},código do lobby: {0}
+WaitLobby.MainMenu,main menu,menu principal
+WaitLobby.Ready,ready,pronto
+WaitLobby.HostDisconnected,host disconnected,host desconectou

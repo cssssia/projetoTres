@@ -1,0 +1,37 @@
+Key,English,Portuguese
+Game.WaitingForPlayer,waiting for other player...,esperando outro jogador...
+Game.MantusRules,mantus rules,regras do mantus
+Game.TitleBasicRules,basic rules,regras básicas
+Game.TitleSpecialCards,special cards,cartas especiais
+Game.TitleTiebraker,tiebraker,desempate
+Game.TitleInGameActions,in game actions,ações no jogo
+Game.TitleSpecialItems,special items,itens especiais
+Game.InfoBasicRules,"- cards 1 to 7 win against any lower-valued card;
+- in this scenario, ties occur when cards have the same value, regardless of suit.","- cartas de 1 a 7 vencem contra qualquer carta de menor valor;
+- nesse cenário, empates acontecem quando cartas possuem o mesmo valor, independente de naipe."
+Game.InfoSpecialCards,"- J, Q, K are ranked in ascending order and are stronger than numbered cards;
+- in this scenario, suit hierarchy is:
+        - centipede, rat, cat, owl (lower to bigger).","- J, Q, K estão categorizadas em ordem acendente e são mais fortes que cartas numeradas;
+- nesse cenário, a hierarquia de naipes é:
+        - centopéia, rato, gato, coruja (do menor para o maior)."
+Game.InfoTiebraker,"- tie in round 1: the next round will be decisive;
+- tie in rounds 1 and 2: the next round will be decisive;
+- tie in round 2 or 3: the player who won round 1 wins the trick;
+- tie in all rounds: the player who started the trick will win the trick.","- empate na rodada 1: a próxima rodada será decisiva;
+- empate nas rodadas 1 e 2: a próxima rodada será decisiva;
+- empate na rodada 2 ou 3: o jogador que ganhou a rodada 1 vencerá a vaza;
+- empate em todas as rodadas: o jogador que iniciou a vaza, vencerá a vaza."
+Game.InfoInGameActions,"- raise bet: click on the bet button on the table;
+- after a player try to bet, the other player will need to accept or increase, interacting with the bet button;
+- forfeit: click the deck on the table.","- apostar: clique no botão de aposta na mesa;
+- depois que um jogador tentar apostar, o outro precisará aceitar ou aumentar, interagindo com o botão de aposta;
+- desistir: clique no baralho em cima da mesa."
+Game.InfoSpecialItems,"- scissors: discard the card(s) you have on hand and draw new ones;
+- stake: see the suits in the adversaries hand.","- tesoura: descarte a(s) carta(s) que você tem na mão e obtenha novas;
+- estaca: veja os naipes na mão do adversário."
+Game.SomeoneDisconnected,someone disconnected,alguém desconectou
+Game.MainMenu,main menu,main menu
+Game.WaitingUnpause,waiting for all players to unpause,esperando todos os jogadores despausarem
+Game.Paused,paused,pausado
+Game.Resume,resume,retomar
+Game.Options,options,opções

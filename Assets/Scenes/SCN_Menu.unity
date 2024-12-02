@@ -2266,16 +2266,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dafdf366f4b380b44933d296e337de15, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_menuGameObject: {fileID: 232393863}
   m_playButton: {fileID: 1223522}
   m_optionsButton: {fileID: 49088554}
   m_quitButton: {fileID: 1375253809}
-  m_optionsGameObject: {fileID: 580421030}
-  m_masterSlider: {fileID: 596580915}
-  m_musicSlider: {fileID: 1552001195}
-  m_sfxSlider: {fileID: 1511528958}
-  m_lenguageDropdown: {fileID: 1930523906}
-  m_backButton: {fileID: 526609395}
+  m_optionsUI: {fileID: 580421030}
 --- !u!1 &580421030
 GameObject:
   m_ObjectHideFlags: 0
@@ -2285,6 +2279,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 580421031}
+  - component: {fileID: 580421032}
   m_Layer: 5
   m_Name: INFO_OptionsScreen
   m_TagString: Untagged
@@ -2321,6 +2316,24 @@ RectTransform:
   m_AnchoredPosition: {x: 260, y: -16.5}
   m_SizeDelta: {x: 400, y: 267}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &580421032
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 580421030}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 81efec4e0d5a6924086c0dfdfb162ccb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_menuGameObject: {fileID: 232393863}
+  m_masterSlider: {fileID: 596580915}
+  m_musicSlider: {fileID: 1552001195}
+  m_sfxSlider: {fileID: 1511528958}
+  m_lenguageDropdown: {fileID: 1930523906}
+  m_backButton: {fileID: 526609395}
 --- !u!1 &587814758
 GameObject:
   m_ObjectHideFlags: 0
@@ -4688,16 +4701,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dafdf366f4b380b44933d296e337de15, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_menuGameObject: {fileID: 0}
   m_playButton: {fileID: 469239560}
   m_optionsButton: {fileID: 602994895}
   m_quitButton: {fileID: 963080055}
-  m_optionsGameObject: {fileID: 0}
-  m_masterSlider: {fileID: 0}
-  m_musicSlider: {fileID: 0}
-  m_sfxSlider: {fileID: 0}
-  m_lenguageDropdown: {fileID: 0}
-  m_backButton: {fileID: 0}
+  m_optionsUI: {fileID: 0}
 --- !u!1 &1511528956
 GameObject:
   m_ObjectHideFlags: 0

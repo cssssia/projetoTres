@@ -12,8 +12,8 @@ public class RoundManager : NetworkBehaviour
     public NetworkVariable<bool> RoundHasStarted;
 
     public List<VictoryHistory> RoundWonHistory;
-    public int VictoriesHost;
-    public int VictoriesClient;
+    public NetworkVariable<int> PointsHost;
+    public NetworkVariable<int> PointsClient;
 
     public Trick CurrentTrick;
 
@@ -44,6 +44,8 @@ public class RoundManager : NetworkBehaviour
         BetHasStarted.Value = false;
         StopIncreaseBet.Value = false;
         BetAsked.Value = 1;
+        PointsHost.Value = 0;
+        PointsClient.Value = 0;
     }
 
     [ServerRpc (RequireOwnership = false)]
@@ -137,20 +139,23 @@ public class RoundManager : NetworkBehaviour
 
         RoundWonHistory.Add(l_victoryHistory);
 
+        if (p_wonRound == Player.HOST) PointsHost.Value += CurrentTrick.TrickBetMultiplier;
+        else if (p_wonRound == Player.CLIENT) PointsClient.Value += CurrentTrick.TrickBetMultiplier;
+
         YouWonClientRpc(p_wonRound);
     }
 
     [ClientRpc]
     public void YouWonClientRpc(Player p_wonRound)
     {
-        OnRoundWon?.Invoke(p_wonRound, EventArgs.Empty);
-
         if (IsServer)
         {
             BetHasStarted.Value = false;
             StopIncreaseBet.Value = false;
             BetAsked.Value = 1;
         }
+
+        OnRoundWon?.Invoke(p_wonRound, EventArgs.Empty);
     }
 
     [ServerRpc (RequireOwnership = false)]

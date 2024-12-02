@@ -47,6 +47,8 @@ public class BetOnHandBehavior : MonoBehaviour
                 }
                 betTag.gameObject.SetActive(false);
             }
+            else
+                betTag.gameObject.SetActive(false);
         }
     }
 

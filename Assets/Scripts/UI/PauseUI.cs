@@ -10,6 +10,7 @@ public class PauseUI : MonoBehaviour
     [SerializeField] private Button m_resumeButton;
     [SerializeField] private Button m_mainMenuButton;
     [SerializeField] private Button m_optionsButton;
+    [SerializeField] private GameObject m_optionsUI;
 
     private void Awake() {
         m_resumeButton.onClick.AddListener(() => {
@@ -21,7 +22,7 @@ public class PauseUI : MonoBehaviour
         });
         m_optionsButton.onClick.AddListener(() => {
             Hide();
-            //OptionsUI.Instance.Show(Show);
+            m_optionsUI.SetActive(true);
         });
     }
 

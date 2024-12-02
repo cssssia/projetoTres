@@ -19,7 +19,7 @@ public class GameInput : Singleton<GameInput>
         if (Input.GetMouseButtonUp(0))
             StopInteract();
 
-        if (Input.GetKeyDown(KeyCode.Escape))
+        if (!MatchManager.Instance.MatchHasEnded.Value && Input.GetKeyDown(KeyCode.Escape))
             Pause();
 
         if (Input.mousePosition != m_lastMousePosition)

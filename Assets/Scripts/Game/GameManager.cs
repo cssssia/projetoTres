@@ -125,8 +125,10 @@ public class GameManager : NetworkBehaviour
 
     private void MatchHasStarted_OnValueChanged(bool previousValue, bool newValue)
     {
-        if (!newValue)
+        if (!MatchManager.Instance.MatchHasEnded.Value && !newValue)
             SetGameState(GameState.DealingCards);
+        else if (MatchManager.Instance.MatchHasEnded.Value && !newValue)
+            SetGameState(GameState.GameOver);
     }
 
     private void TurnManager_OnCardPlayed(object p_cardIndex, EventArgs e)

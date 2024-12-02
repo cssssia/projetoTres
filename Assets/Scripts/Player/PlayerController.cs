@@ -234,7 +234,7 @@ public class PlayerController : NetworkBehaviour
 
     private void GameInput_OnClickUpMouse(object p_sender, System.EventArgs e)
     {
-        m_handBehavior.CheckClickUp(CanPlay,
+        m_handBehavior.CheckClickUp(CanPlay && !RoundManager.Instance.BetHasStarted.Value,
                                     (go, isItem, id) => StartAnim(go, isItem, id),
                                     (go) => ThrowCard(go), (go) => UseItemCard(go));
         if (CanPlay || RoundManager.Instance.BetHasStarted.Value) m_betBehavior.CheckClickUp(canBet, (go, increase) => IncreaseBet(go, increase));
@@ -373,9 +373,8 @@ public class PlayerController : NetworkBehaviour
         if (!IsOwner) return;
 
         currentGameState = ((GameManager)p_sender).gameState.Value;
-        CanPlay = ((currentGameState == GameManager.GameState.HostTurn && IsHostPlayer)
-                                            || (currentGameState == GameManager.GameState.ClientTurn && IsClientPlayer))
-                                            && !RoundManager.Instance.BetHasStarted.Value;
+        CanPlay = (currentGameState == GameManager.GameState.HostTurn && IsHostPlayer)
+                                            || (currentGameState == GameManager.GameState.ClientTurn && IsClientPlayer);
 
         if (CanPlay) Debug.Log("pode jogar");
         else Debug.Log("não pode jogar");

@@ -212,6 +212,9 @@ public class CardsManager : NetworkBehaviour
             case ItemType.SCISSORS:
                 UseScissorServerRpc(UsableItemsList[p_itemIndex].playerID);
                 break;
+            case ItemType.STAKE:
+                UseStakeServerRpc(UsableItemsList[p_itemIndex].playerID);
+                break;
         }
 
     }
@@ -259,10 +262,33 @@ public class CardsManager : NetworkBehaviour
         SetHasItemClientRpc((int)p_playerId, false);
     }
 
+    [ServerRpc(RequireOwnership = false)]
+    public void UseStakeServerRpc(Player p_playerId)
+    {
+        InformPlayerClientRpc((int)p_playerId);
+        SetHasItemClientRpc((int)p_playerId, false);
+    }
+
     [ClientRpc]
     private void SetHasItemClientRpc(int p_playerIndex, bool p_hasItem)
     {
         PlayersHaveItem[p_playerIndex] = p_hasItem;
+    }
+
+    [ClientRpc]
+    private void InformPlayerClientRpc(int p_playerdId)
+    {
+        if (p_playerdId == PlayerController.LocalInstance.PlayerIndex)
+        {
+            for (int i = 0; i < CardsOnGameList.Count; i++)
+            {
+                l_card = GetCardByIndex(CardsOnGameList[i]);
+                if (l_card.cardPlayer != p_playerId && !l_card.playedCard)
+                {
+                    Debug.Log("adversary suit: " + l_card.cardSuit);
+                }
+            }
+        }
     }
 
     [ClientRpc]

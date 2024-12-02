@@ -10,7 +10,7 @@ public class LobbyWaitManager : NetworkBehaviour
 
 	public event EventHandler OnReadyChanged;
 
-    private Dictionary<ulong, bool> m_playerReadyDictionary;
+    [SerializeField] private Dictionary<ulong, bool> m_playerReadyDictionary;
 
     void Awake()
     {
@@ -42,6 +42,7 @@ public class LobbyWaitManager : NetworkBehaviour
 
 		if (l_allClientsReady)
 		{
+			Debug.Log("[GAME] all clients are ready");
 			SceneLoader.LoadNetwork(SceneLoader.Scene.SCN_Game);
 			LobbyManager.Instance.DeleteLobby();
 		}

@@ -1,4 +1,5 @@
 using Unity.Netcode;
+using UnityEngine;
 using UnityEngine.SceneManagement;
 
 public static class SceneLoader
@@ -19,6 +20,7 @@ public static class SceneLoader
 
 	public static void LoadNetwork(Scene p_targetScene)
 	{
+		Debug.Log("[GAME] LoadNetworkScene");
 		NetworkManager.Singleton.SceneManager.LoadScene(p_targetScene.ToString(), LoadSceneMode.Single);
 	}
 

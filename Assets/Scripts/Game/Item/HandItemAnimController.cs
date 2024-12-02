@@ -15,13 +15,19 @@ public class HandItemAnimController : MonoBehaviour
         [Space]
         public Vector3 InitialPosition;
         public Vector3 InitialRotation;
-        public List<AnimData> animData;
+        public List<AnimData> animDataHost;
+        public List<AnimData> animDataClient;
 
         public int index;
         [NaughtyAttributes.Button]
-        public void GetPosition()
+        public void GetPositionHost()
         {
-            animData[index].targetPosition = ObjectTranform.localPosition;
+            animDataHost[index].targetPosition = ObjectTranform.localPosition;
+        }
+        [NaughtyAttributes.Button]
+        public void GetPositionClient()
+        {
+            animDataClient[index].targetPosition = ObjectTranform.localPosition;
         }
     }
 
@@ -29,13 +35,19 @@ public class HandItemAnimController : MonoBehaviour
     public class AnimData
     {
         public float wait;
+        public bool followObject;
+        [NaughtyAttributes.AllowNesting, NaughtyAttributes.EnableIf("followObject")]
+        public Transform objectToFollow;
+        [NaughtyAttributes.AllowNesting, NaughtyAttributes.DisableIf("followObject")]
         public Vector3 targetPosition;
+        //[NaughtyAttributes.AllowNesting, NaughtyAttributes.DisableIf("followObject")]
         public Vector3 targetRotation;
         public float time;
         public AnimationCurve curve;
         public string eventToInvokeOnStart;
         public string eventToInvokeOnEnd;
     }
+    public Player PlayerType;
 
     public Animator handAnimator;
     public AnimatorEndHandler handAnimatorEndHandler;
@@ -45,15 +57,25 @@ public class HandItemAnimController : MonoBehaviour
     public System.Action OnEndedScissorAnim;
 
     [NaughtyAttributes.Button]
-    public void UseScissors() => HandItem(ItemType.SCISSORS, null);
+    public void UseScissors() => HandItem((int)PlayerType, ItemType.SCISSORS, null);
 
     [NaughtyAttributes.Button]
-    public void GetPosition()
+    public void GetPositionClient()
     {
-        objectsOnHand[0].GetPosition();
+        objectsOnHand[0].GetPositionClient();
+    }
+    [NaughtyAttributes.Button]
+    public void GetPositionHost()
+    {
+        objectsOnHand[0].GetPositionHost();
     }
 
-    public void HandItem(ItemType p_item, System.Action p_onEnd)
+    private void Start()
+    {
+        handAnimator.SetTrigger("idle");
+    }
+
+    public void HandItem(int p_playerID, ItemType p_item, System.Action p_onEnd)
     {
         switch (p_item)
         {
@@ -68,49 +90,77 @@ public class HandItemAnimController : MonoBehaviour
         {
             if (objectsOnHand[i].Type == p_item)
             {
-                StartCoroutine(ExecuteAnimQueue(objectsOnHand[i], p_onEnd));
+                StartCoroutine(ExecuteAnimQueue(objectsOnHand[i], p_playerID, p_onEnd));
                 break;
             }
         }
     }
 
 
-
+    List<AnimData> l_currentAnimData;
     Vector3 l_initPosition, l_initialRotation;
-    IEnumerator ExecuteAnimQueue(ObjectOnHandAnim p_object, System.Action p_onEnd)
+    IEnumerator ExecuteAnimQueue(ObjectOnHandAnim p_object, int p_playerID, System.Action p_onEnd)
     {
         p_object.InitialPosition = p_object.ObjectTranform.position;
         p_object.InitialRotation = p_object.ObjectTranform.eulerAngles;
 
         if (p_object.Type is ItemType.SCISSORS) p_object.endHandler.OnEndedAnim += OnEndScissorCutAnim;
 
-        for (int i = 0; i < p_object.animData.Count; i++)
+        l_currentAnimData = p_playerID == 0 ? p_object.animDataHost : p_object.animDataClient;
+        for (int i = 0; i < l_currentAnimData.Count; i++)
         {
-            if (p_object.animData[i].wait > 0) yield return new WaitForSeconds(p_object.animData[i].wait);
+            if (l_currentAnimData[i].wait > 0) yield return new WaitForSeconds(l_currentAnimData[i].wait);
 
-            if (p_object.animData[i].eventToInvokeOnStart != string.Empty)
-                p_object.itemAnimator.SetTrigger(p_object.animData[i].eventToInvokeOnStart);
+            if (l_currentAnimData[i].eventToInvokeOnStart != string.Empty)
+                p_object.itemAnimator.SetTrigger(l_currentAnimData[i].eventToInvokeOnStart);
 
             float l_time = 0f;
-            float l_maxTime = p_object.animData[i].time;
-            l_initPosition = p_object.ObjectTranform.localPosition;
+            float l_maxTime = l_currentAnimData[i].time;
+
+            bool l_followObject = l_currentAnimData[i].followObject;
+
+            if (!l_followObject) l_initPosition = p_object.ObjectTranform.localPosition;
+            else l_initPosition = l_currentAnimData[i].objectToFollow.position;
+
             l_initialRotation = p_object.ObjectTranform.localRotation.eulerAngles;
 
             while (l_time <= l_maxTime && l_maxTime > 0)
             {
-                p_object.ObjectTranform.localPosition = Vector3.Lerp(l_initPosition,
-                                                                    p_object.animData[i].targetPosition,
-                                                                    p_object.animData[i].curve.Evaluate(l_time / l_maxTime));
-                p_object.ObjectTranform.localEulerAngles = Vector3.Lerp(l_initialRotation,
-                                                                    p_object.animData[i].targetRotation,
-                                                                    p_object.animData[i].curve.Evaluate(l_time / l_maxTime));
+                if (!l_followObject)
+                {
+
+                    p_object.ObjectTranform.localPosition = Vector3.Lerp(l_initPosition,
+                                                                            l_currentAnimData[i].targetPosition,
+                                                                            l_currentAnimData[i].curve.Evaluate(l_time / l_maxTime));
+
+                    //p_object.ObjectTranform.localEulerAngles = Vector3.Lerp(l_initialRotation,
+                    //                                                    l_currentAnimData[i].targetRotation,
+                    //                                                    l_currentAnimData[i].curve.Evaluate(l_time / l_maxTime));
+                }
+                else
+                {
+                    p_object.ObjectTranform.position = l_currentAnimData[i].objectToFollow.position;
+
+                }
+
+
+                    p_object.ObjectTranform.localRotation =Quaternion.Euler(Vector3.Lerp(l_initialRotation,
+                                                                        l_currentAnimData[i].targetRotation,
+                                                                        l_currentAnimData[i].curve.Evaluate(l_time / l_maxTime)));
+
                 yield return null;
                 l_time += Time.deltaTime;
             }
-            p_object.ObjectTranform.localPosition = Vector3.Lerp(l_initPosition, p_object.animData[i].targetPosition, 1f);
 
-            if (p_object.animData[i].eventToInvokeOnEnd != string.Empty)
-                p_object.itemAnimator.SetTrigger(p_object.animData[i].eventToInvokeOnEnd);
+            if (!l_followObject)
+                p_object.ObjectTranform.localPosition = Vector3.Lerp(l_initPosition, l_currentAnimData[i].targetPosition, 1f);
+            else p_object.ObjectTranform.position = l_currentAnimData[i].objectToFollow.position;
+            p_object.ObjectTranform.localRotation = Quaternion.Euler(Vector3.Lerp(l_initialRotation,
+                                                                       l_currentAnimData[i].targetRotation,
+                                                                       l_currentAnimData[i].curve.Evaluate(1f)));
+
+            if (l_currentAnimData[i].eventToInvokeOnEnd != string.Empty)
+                p_object.itemAnimator.SetTrigger(l_currentAnimData[i].eventToInvokeOnEnd);
         }
 
         ResetObject(p_object);

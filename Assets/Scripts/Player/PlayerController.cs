@@ -116,6 +116,8 @@ public class PlayerController : NetworkBehaviour
 
         RoundManager.Instance.OnRoundWon += TurnManager_OnRoundWon;
 
+        FindHandAnimController();
+
         if (IsHostPlayer) name = "Player_0";
         else if (IsClient) name = "Player_1";
 
@@ -133,6 +135,22 @@ public class PlayerController : NetworkBehaviour
                 CardsManager.Instance.ResetCardServerRpc(m_myHand[i]);
             }
         }
+    }
+
+    void FindHandAnimController()
+    {
+        var l_handAnimControllers = FindObjectsByType<HandItemAnimController>(default);
+
+        for (int i = 0; i < l_handAnimControllers.Length; i++)
+        {
+            if (l_handAnimControllers[i].PlayerType == (Player)PlayerIndex)
+            {
+                m_tableHandController = l_handAnimControllers[i];
+                break;
+            }
+        }
+
+        m_tableHandController.OnCutCards += CutCards;
     }
 
     private void CardsManager_OnAddCardToMyHand(object p_cardSended, EventArgs e)
@@ -318,7 +336,7 @@ public class PlayerController : NetworkBehaviour
 
         l_waiting = true;
 
-        m_tableHandController.HandItem(l_type, () => { l_waiting = false; });
+        m_tableHandController.HandItem(PlayerIndex, l_type, () => { l_waiting = false; });
 
         while (l_waiting) yield return null;
 

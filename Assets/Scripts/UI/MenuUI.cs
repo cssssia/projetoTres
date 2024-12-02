@@ -14,16 +14,16 @@ public class MenuUI : MonoBehaviour
         Time.timeScale = 1f;
 
         m_playButton.onClick.AddListener(() => {
-            AudioManager.Instance.PlayOneShot(FMODEvents.Instance.buttonPressed, transform.position);
+            // AudioManager.Instance.PlayOneShot(FMODEvents.Instance.buttonPressed, transform.position);
             SceneLoader.Load(SceneLoader.Scene.SCN_Lobby);
         });
         m_optionsButton.onClick.AddListener(() => {
-            AudioManager.Instance.PlayOneShot(FMODEvents.Instance.buttonPressed, transform.position);
+            // AudioManager.Instance.PlayOneShot(FMODEvents.Instance.buttonPressed, transform.position);
             Hide();
             m_optionsUI.SetActive(true);
         });
         m_quitButton.onClick.AddListener(() => {
-            AudioManager.Instance.PlayOneShot(FMODEvents.Instance.buttonPressed, transform.position);
+            // AudioManager.Instance.PlayOneShot(FMODEvents.Instance.buttonPressed, transform.position);
             Application.Quit();
         });
     }

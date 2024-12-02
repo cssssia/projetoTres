@@ -30,12 +30,8 @@ public class PlayerController : NetworkBehaviour
 
     void Start()
     {
-        m_tableHandController = GetComponentInChildren<HandItemAnimController>();
-        m_tableHandController.OnCutCards += CutCards;
-
         if (!IsOwner)
             return;
-
     }
 
     //[Header("Debug buttons")]

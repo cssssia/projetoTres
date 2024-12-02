@@ -109,7 +109,7 @@ MonoBehaviour:
       followObject: 0
       objectToFollow: {fileID: 0}
       targetPosition: {x: 1.22, y: -0.19, z: 3.02}
-      targetRotation: {x: 278.1834, y: 144.82997, z: 194.59062}
+      targetRotation: {x: 272.54413, y: 262.32056, z: 100.48057}
       time: 0
       curve:
         serializedVersion: 2
@@ -141,7 +141,7 @@ MonoBehaviour:
       followObject: 1
       objectToFollow: {fileID: 7604717804777448230}
       targetPosition: {x: 1.1000003, y: 2.2900002, z: 2.809999}
-      targetRotation: {x: 278.1834, y: 144.82997, z: 194.59062}
+      targetRotation: {x: 272.54413, y: 262.32056, z: 100.48057}
       time: 1.6
       curve:
         serializedVersion: 2

@@ -263,7 +263,7 @@ MonoBehaviour:
         m_PreInfinity: 2
         m_PostInfinity: 2
         m_RotationOrder: 0
-      eventToInvokeOnStart: 0
+      eventToInvokeOnStart: 
       eventToInvokeOnEnd: 
     - wait: 0
       followObject: 0
@@ -884,6 +884,7 @@ MonoBehaviour:
       eventToInvokeOnStart: 
       eventToInvokeOnEnd: 
     index: 0
+  hatchController: {fileID: 0}
 --- !u!1001 &6652402721412731550
 PrefabInstance:
   m_ObjectHideFlags: 0

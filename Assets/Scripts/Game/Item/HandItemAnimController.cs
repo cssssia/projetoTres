@@ -53,6 +53,8 @@ public class HandItemAnimController : MonoBehaviour
     public AnimatorEndHandler handAnimatorEndHandler;
     public ObjectOnHandAnim[] objectsOnHand;
 
+    public HatchController hatchController;
+
     public System.Action OnCutCards;
     public System.Action OnEndedScissorAnim;
     public System.Action OnImpaleCards;
@@ -74,7 +76,8 @@ public class HandItemAnimController : MonoBehaviour
 
     private void Start()
     {
-        handAnimator.SetTrigger("idle");
+        handAnimator.SetTrigger("Idle");
+        hatchController = FindObjectOfType<HatchController>();
     }
 
     public void HandItem(int p_playerID, ItemType p_item, System.Action p_onEnd)
@@ -111,6 +114,8 @@ public class HandItemAnimController : MonoBehaviour
 
         if (p_object.Type is ItemType.SCISSORS) p_object.endHandler.OnEndedAnim += OnEndScissorCutAnim;
         if (p_object.Type is ItemType.STAKE) p_object.endHandler.OnEndedAnim += OnEndStakeImpaleAnim;
+
+        yield return hatchController.OpenHatch();
 
         l_currentAnimData = p_playerID == 0 ? p_object.animDataHost : p_object.animDataClient;
         for (int i = 0; i < l_currentAnimData.Count; i++)
@@ -168,6 +173,8 @@ public class HandItemAnimController : MonoBehaviour
             if (l_currentAnimData[i].eventToInvokeOnEnd != string.Empty)
                 p_object.itemAnimator.SetTrigger(l_currentAnimData[i].eventToInvokeOnEnd);
         }
+
+        yield return hatchController.CloseHatch();
 
         ResetObject(p_object);
 

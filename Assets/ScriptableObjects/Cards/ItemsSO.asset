@@ -19,4 +19,7 @@ MonoBehaviour:
   - item: 1
     material: {fileID: 2100000, guid: 038ca70e162b15446bbe4868567ae5fe, type: 2}
     objectName: Item_Scissors
-  initialItems: 0100000001000000010000000100000001000000010000000100000001000000
+  - item: 2
+    material: {fileID: 2100000, guid: 4dfadbe2cf640e74c9d92831a4b77347, type: 2}
+    objectName: Item_Stake
+  initialItems: 0200000002000000020000000200000002000000020000000200000002000000

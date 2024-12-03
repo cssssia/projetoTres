@@ -327,6 +327,9 @@ public class PlayerController : NetworkBehaviour
             case ItemType.SCISSORS:
                 m_handBehavior.AnimCardCutPosition((go) => { l_waiting = false; });
                 break;
+            case ItemType.STAKE:
+                l_waiting = false;
+                break;
         }
         while (l_waiting) yield return null;
 

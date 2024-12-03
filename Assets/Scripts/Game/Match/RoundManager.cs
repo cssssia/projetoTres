@@ -99,6 +99,7 @@ public class RoundManager : NetworkBehaviour
     [ServerRpc(RequireOwnership = false)]
     public void PlayItemCardServerRpc(int p_itemIndex)
     {
+        Debug.Log("PlayItemCardServerRpc");
         //CurrentTrick.CardPlayed(CardsManager.Instance.GetCardByIndex(p_cardIndex), p_playerType, out bool p_goToNextTrick);
         CardsManager.Instance.UseItemServerRpc(p_itemIndex);
         OnItemUsed?.Invoke(p_itemIndex, EventArgs.Empty);
@@ -167,6 +168,7 @@ public class RoundManager : NetworkBehaviour
     [ServerRpc(RequireOwnership =false)]
     public void OnUseItemServerRpc(int p_player, int p_itemID)
     {
+        Debug.Log("OnUseItemServerRpc");
         OnAnimItemUsed?.Invoke((p_player, p_itemID), EventArgs.Empty);
     }
 

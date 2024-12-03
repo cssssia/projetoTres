@@ -149,7 +149,7 @@ public class CardsManager : NetworkBehaviour
     [ClientRpc]
     public void DealItemsToPlayersClientRpc()
     {
-        ItemType l_randomItem = ItemType.SCISSORS;//randomize it
+        ItemType l_randomItem = ItemType.STAKE;//randomize it
 
         if (!PlayersHaveItem[0])
         {
@@ -205,11 +205,13 @@ public class CardsManager : NetworkBehaviour
     [ServerRpc(RequireOwnership = false)]
     public void UseItemServerRpc(int p_itemIndex)
     {
+        Debug.Log("UseItemServerRpc");
         switch (UsableItemsList[p_itemIndex].Type)
         {
             case ItemType.NONE:
                 break;
             case ItemType.SCISSORS:
+                Debug.Log("SCISSORS");
                 UseScissorServerRpc(UsableItemsList[p_itemIndex].playerID);
                 break;
             case ItemType.STAKE:
@@ -265,6 +267,7 @@ public class CardsManager : NetworkBehaviour
     [ServerRpc(RequireOwnership = false)]
     public void UseStakeServerRpc(Player p_playerId)
     {
+        Debug.Log("UseStakeServerRpc");
         InformPlayerClientRpc((int)p_playerId);
         SetHasItemClientRpc((int)p_playerId, false);
     }
@@ -279,6 +282,7 @@ public class CardsManager : NetworkBehaviour
     [ClientRpc]
     private void InformPlayerClientRpc(int p_playerId)
     {
+        Debug.Log("InformPlayerClientRpc" + PlayerController.LocalInstance.PlayerIndex + " " + p_playerId);
         if (p_playerId == PlayerController.LocalInstance.PlayerIndex)
         {
             for (int i = 0; i < CardsOnGameList.Count; i++)

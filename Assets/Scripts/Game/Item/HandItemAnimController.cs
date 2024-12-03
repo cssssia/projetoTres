@@ -55,6 +55,8 @@ public class HandItemAnimController : MonoBehaviour
 
     public System.Action OnCutCards;
     public System.Action OnEndedScissorAnim;
+    public System.Action OnImpaleCards;
+    public System.Action OnEndedStakeAnim;
 
     [NaughtyAttributes.Button]
     public void UseScissors() => HandItem((int)PlayerType, ItemType.SCISSORS, null);
@@ -82,6 +84,9 @@ public class HandItemAnimController : MonoBehaviour
             case ItemType.SCISSORS:
                 handAnimator.SetTrigger("UseItemScissors");
                 break;
+            case ItemType.STAKE:
+                Debug.Log("UseItemStake");
+                break;
 
         }
         //handAnimator.SetTrigger("UseItem");
@@ -105,6 +110,7 @@ public class HandItemAnimController : MonoBehaviour
         p_object.InitialRotation = p_object.ObjectTranform.eulerAngles;
 
         if (p_object.Type is ItemType.SCISSORS) p_object.endHandler.OnEndedAnim += OnEndScissorCutAnim;
+        if (p_object.Type is ItemType.STAKE) p_object.endHandler.OnEndedAnim += OnEndStakeImpaleAnim;
 
         l_currentAnimData = p_playerID == 0 ? p_object.animDataHost : p_object.animDataClient;
         for (int i = 0; i < l_currentAnimData.Count; i++)
@@ -166,6 +172,7 @@ public class HandItemAnimController : MonoBehaviour
         ResetObject(p_object);
 
         if (p_object.Type is ItemType.SCISSORS) OnEndedScissorAnim?.Invoke();
+        if (p_object.Type is ItemType.STAKE) OnEndedStakeAnim?.Invoke();
 
         p_onEnd?.Invoke();
     }
@@ -174,6 +181,12 @@ public class HandItemAnimController : MonoBehaviour
     {
         Debug.Log("cut");
         OnCutCards?.Invoke();
+    }
+
+    void OnEndStakeImpaleAnim()
+    {
+        Debug.Log("impale");
+        OnImpaleCards?.Invoke();
     }
 
     void ResetObject(ObjectOnHandAnim p_object)

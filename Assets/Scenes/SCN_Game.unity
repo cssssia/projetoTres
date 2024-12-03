@@ -2180,7 +2180,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 486e00e14c91fc740bfb9ee7c26249eb, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0.24599999
+      value: 0.08
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 486e00e14c91fc740bfb9ee7c26249eb, type: 3}
       propertyPath: m_LocalPosition.z
@@ -2218,6 +2218,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: FBX_ButtonEye
       objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 486e00e14c91fc740bfb9ee7c26249eb, type: 3}
+      propertyPath: m_TagString
+      value: Bet
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -2253,8 +2257,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   playerId: 1
   m_idleBetTranform:
-    Position: {x: 0, y: 0, z: 0}
-    Rotation: {x: 0, y: 0, z: 0}
+    Position: {x: 0, y: 0.246, z: 0}
+    Rotation: {x: 270, y: 0, z: 180}
     Scale: {x: 0, y: 0, z: 0}
   m_highlightBetTranform:
     Position: {x: 0, y: 0, z: 0}
@@ -2682,8 +2686,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 458482228}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -4.78, y: 0, z: 0}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: -5.5, y: -0.049999997, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -3576,7 +3580,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 486e00e14c91fc740bfb9ee7c26249eb, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0.246
+      value: 0.08
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 486e00e14c91fc740bfb9ee7c26249eb, type: 3}
       propertyPath: m_LocalPosition.z
@@ -3614,6 +3618,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: FBX_ButtonEye (1)
       objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 486e00e14c91fc740bfb9ee7c26249eb, type: 3}
+      propertyPath: m_TagString
+      value: Bet
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -3649,8 +3657,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   playerId: 0
   m_idleBetTranform:
-    Position: {x: 0, y: 0, z: 0}
-    Rotation: {x: 0, y: 0, z: 0}
+    Position: {x: 0, y: 0.246, z: 0}
+    Rotation: {x: 270, y: 0, z: 180}
     Scale: {x: 0, y: 0, z: 0}
   m_highlightBetTranform:
     Position: {x: 0, y: 0, z: 0}
@@ -9520,6 +9528,22 @@ PrefabInstance:
       propertyPath: m_Enabled
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 1390279666328511222, guid: 6d8677774a421e74d857dcdb926c0e21, type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1946756342515406824, guid: 6d8677774a421e74d857dcdb926c0e21, type: 3}
+      propertyPath: playerId
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3842980846492080301, guid: 6d8677774a421e74d857dcdb926c0e21, type: 3}
+      propertyPath: playerId
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4868345525235427117, guid: 6d8677774a421e74d857dcdb926c0e21, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0.088
+      objectReference: {fileID: 0}
     - target: {fileID: 7131637054266727686, guid: 6d8677774a421e74d857dcdb926c0e21, type: 3}
       propertyPath: m_Name
       value: BetTargetsClient
@@ -12816,6 +12840,14 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1009839714}
     m_Modifications:
+    - target: {fileID: 1390279666328511222, guid: 6d8677774a421e74d857dcdb926c0e21, type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4868345525235427117, guid: 6d8677774a421e74d857dcdb926c0e21, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0.088
+      objectReference: {fileID: 0}
     - target: {fileID: 7131637054266727686, guid: 6d8677774a421e74d857dcdb926c0e21, type: 3}
       propertyPath: m_Name
       value: BetTargetsHost

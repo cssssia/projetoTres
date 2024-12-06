@@ -41,6 +41,9 @@ public class HandItemAnimController : MonoBehaviour
         [NaughtyAttributes.AllowNesting, NaughtyAttributes.DisableIf("followObject")]
         public Vector3 targetPosition;
         //[NaughtyAttributes.AllowNesting, NaughtyAttributes.DisableIf("followObject")]
+        [NaughtyAttributes.AllowNesting, NaughtyAttributes.HideIf("followObject")] public float yPump;
+        [NaughtyAttributes.AllowNesting, NaughtyAttributes.HideIf("followObject")] public AnimationCurve yPumpCurve;
+
         public Vector3 targetRotation;
         public float time;
         public AnimationCurve curve;
@@ -62,6 +65,9 @@ public class HandItemAnimController : MonoBehaviour
 
     [NaughtyAttributes.Button]
     public void UseScissors() => HandItem((int)PlayerType, ItemType.SCISSORS, null);
+
+    [NaughtyAttributes.Button]
+    public void UseStake() => HandItem((int)PlayerType, ItemType.STAKE, null);
 
     [NaughtyAttributes.Button]
     public void GetPositionClient()
@@ -88,9 +94,8 @@ public class HandItemAnimController : MonoBehaviour
                 handAnimator.SetTrigger("UseItemScissors");
                 break;
             case ItemType.STAKE:
-                Debug.Log("UseItemStake");
+                handAnimator.SetTrigger("UseItemStake");
                 break;
-
         }
         //handAnimator.SetTrigger("UseItem");
 
@@ -106,14 +111,14 @@ public class HandItemAnimController : MonoBehaviour
 
 
     List<AnimData> l_currentAnimData;
-    Vector3 l_initPosition, l_initialRotation;
+    Vector3 l_initPosition, l_initialRotation, l_tempPosition;
     IEnumerator ExecuteAnimQueue(ObjectOnHandAnim p_object, int p_playerID, System.Action p_onEnd)
     {
         p_object.InitialPosition = p_object.ObjectTranform.position;
         p_object.InitialRotation = p_object.ObjectTranform.eulerAngles;
 
         if (p_object.Type is ItemType.SCISSORS) p_object.endHandler.OnEndedAnim += OnEndScissorCutAnim;
-        if (p_object.Type is ItemType.STAKE) p_object.endHandler.OnEndedAnim += OnEndStakeImpaleAnim;
+        //if (p_object.Type is ItemType.STAKE) p_object.endHandler.OnEndedAnim += OnEndStakeImpaleAnim;
 
         yield return hatchController.OpenHatch();
 
@@ -139,11 +144,11 @@ public class HandItemAnimController : MonoBehaviour
             {
                 if (!l_followObject)
                 {
-
-                    p_object.ObjectTranform.localPosition = Vector3.Lerp(l_initPosition,
-                                                                            l_currentAnimData[i].targetPosition,
+                    l_tempPosition = Vector3.Lerp(l_initPosition, l_currentAnimData[i].targetPosition,
                                                                             l_currentAnimData[i].curve.Evaluate(l_time / l_maxTime));
+                    l_tempPosition.y += l_currentAnimData[i].yPump * l_currentAnimData[i].yPumpCurve.Evaluate(l_time/l_maxTime);
 
+                    p_object.ObjectTranform.localPosition = l_tempPosition;
                     //p_object.ObjectTranform.localEulerAngles = Vector3.Lerp(l_initialRotation,
                     //                                                    l_currentAnimData[i].targetRotation,
                     //                                                    l_currentAnimData[i].curve.Evaluate(l_time / l_maxTime));
@@ -155,9 +160,9 @@ public class HandItemAnimController : MonoBehaviour
                 }
 
 
-                    p_object.ObjectTranform.localRotation =Quaternion.Euler(Vector3.Lerp(l_initialRotation,
-                                                                        l_currentAnimData[i].targetRotation,
-                                                                        l_currentAnimData[i].curve.Evaluate(l_time / l_maxTime)));
+                p_object.ObjectTranform.localRotation = Quaternion.Euler(Vector3.Lerp(l_initialRotation,
+                                                                    l_currentAnimData[i].targetRotation,
+                                                                    l_currentAnimData[i].curve.Evaluate(l_time / l_maxTime)));
 
                 yield return null;
                 l_time += Time.deltaTime;

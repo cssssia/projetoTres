@@ -1,5 +1,36 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!1 &590190448968465806
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 7791807805578516072}
+  m_Layer: 0
+  m_Name: FollowRefStake
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &7791807805578516072
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 590190448968465806}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0.5911174, y: 0.78506744, z: -0.06370846, w: 0.17375438}
+  m_LocalPosition: {x: 0.651, y: 1.116, z: 0.304}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 8794182775049675089}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1167673314122365117
 GameObject:
   m_ObjectHideFlags: 0
@@ -64,6 +95,7 @@ Transform:
   m_Children:
   - {fileID: 7623414407659638582}
   - {fileID: 6618229292509214069}
+  - {fileID: 2152985750009414240}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &8726774500879697442
@@ -109,6 +141,13 @@ MonoBehaviour:
       followObject: 0
       objectToFollow: {fileID: 0}
       targetPosition: {x: 1.22, y: -0.19, z: 3.02}
+      yPump: 0
+      yPumpCurve:
+        serializedVersion: 2
+        m_Curve: []
+        m_PreInfinity: 2
+        m_PostInfinity: 2
+        m_RotationOrder: 4
       targetRotation: {x: 272.54413, y: 262.32056, z: 100.48057}
       time: 0
       curve:
@@ -141,6 +180,13 @@ MonoBehaviour:
       followObject: 1
       objectToFollow: {fileID: 7604717804777448230}
       targetPosition: {x: 1.1000003, y: 2.2900002, z: 2.809999}
+      yPump: 0
+      yPumpCurve:
+        serializedVersion: 2
+        m_Curve: []
+        m_PreInfinity: 2
+        m_PostInfinity: 2
+        m_RotationOrder: 4
       targetRotation: {x: 272.54413, y: 262.32056, z: 100.48057}
       time: 1.6
       curve:
@@ -173,6 +219,13 @@ MonoBehaviour:
       followObject: 0
       objectToFollow: {fileID: 0}
       targetPosition: {x: -8.28, y: 4.331, z: 6.34}
+      yPump: 0
+      yPumpCurve:
+        serializedVersion: 2
+        m_Curve: []
+        m_PreInfinity: 2
+        m_PostInfinity: 2
+        m_RotationOrder: 4
       targetRotation: {x: 299.59195, y: 229.65381, z: 108.77387}
       time: 0.92
       curve:
@@ -205,6 +258,13 @@ MonoBehaviour:
       followObject: 0
       objectToFollow: {fileID: 0}
       targetPosition: {x: -6.56, y: 4.331, z: 3.902}
+      yPump: 0
+      yPumpCurve:
+        serializedVersion: 2
+        m_Curve: []
+        m_PreInfinity: 2
+        m_PostInfinity: 2
+        m_RotationOrder: 4
       targetRotation: {x: 299.59195, y: 229.65381, z: 108.77387}
       time: 0.92
       curve:
@@ -237,6 +297,13 @@ MonoBehaviour:
       followObject: 0
       objectToFollow: {fileID: 0}
       targetPosition: {x: -6.56, y: 4.331, z: 3.902}
+      yPump: 0
+      yPumpCurve:
+        serializedVersion: 2
+        m_Curve: []
+        m_PreInfinity: 2
+        m_PostInfinity: 2
+        m_RotationOrder: 4
       targetRotation: {x: 336.1386, y: 227.65398, z: 100.00702}
       time: 0.3
       curve:
@@ -269,6 +336,13 @@ MonoBehaviour:
       followObject: 0
       objectToFollow: {fileID: 0}
       targetPosition: {x: -2.82, y: 4.331, z: -1.41}
+      yPump: 0
+      yPumpCurve:
+        serializedVersion: 2
+        m_Curve: []
+        m_PreInfinity: 2
+        m_PostInfinity: 2
+        m_RotationOrder: 4
       targetRotation: {x: 338.00864, y: 228.85164, z: 107.920044}
       time: 0.7
       curve:
@@ -302,6 +376,13 @@ MonoBehaviour:
       followObject: 0
       objectToFollow: {fileID: 0}
       targetPosition: {x: 1.22, y: -0.19, z: 3.02}
+      yPump: 0
+      yPumpCurve:
+        serializedVersion: 2
+        m_Curve: []
+        m_PreInfinity: 2
+        m_PostInfinity: 2
+        m_RotationOrder: 4
       targetRotation: {x: 282.52386, y: 247.09903, z: 128.85852}
       time: 0
       curve:
@@ -334,6 +415,13 @@ MonoBehaviour:
       followObject: 1
       objectToFollow: {fileID: 7604717804777448230}
       targetPosition: {x: 1.1000003, y: 2.2900002, z: 2.809999}
+      yPump: 0
+      yPumpCurve:
+        serializedVersion: 2
+        m_Curve: []
+        m_PreInfinity: 2
+        m_PostInfinity: 2
+        m_RotationOrder: 4
       targetRotation: {x: 282.52386, y: 247.09903, z: 128.85852}
       time: 1.6
       curve:
@@ -366,6 +454,13 @@ MonoBehaviour:
       followObject: 0
       objectToFollow: {fileID: 0}
       targetPosition: {x: -3.37, y: 3.76, z: 0.16}
+      yPump: 0
+      yPumpCurve:
+        serializedVersion: 2
+        m_Curve: []
+        m_PreInfinity: 2
+        m_PostInfinity: 2
+        m_RotationOrder: 4
       targetRotation: {x: 276.64328, y: 237.27185, z: 176.57552}
       time: 0.92
       curve:
@@ -398,6 +493,13 @@ MonoBehaviour:
       followObject: 0
       objectToFollow: {fileID: 0}
       targetPosition: {x: -5.41, y: 3.76, z: -2.39}
+      yPump: 0
+      yPumpCurve:
+        serializedVersion: 2
+        m_Curve: []
+        m_PreInfinity: 2
+        m_PostInfinity: 2
+        m_RotationOrder: 4
       targetRotation: {x: 276.64328, y: 237.27185, z: 176.57552}
       time: 0.92
       curve:
@@ -430,6 +532,13 @@ MonoBehaviour:
       followObject: 0
       objectToFollow: {fileID: 0}
       targetPosition: {x: -5.41, y: 3.76, z: -2.39}
+      yPump: 0
+      yPumpCurve:
+        serializedVersion: 2
+        m_Curve: []
+        m_PreInfinity: 2
+        m_PostInfinity: 2
+        m_RotationOrder: 4
       targetRotation: {x: 336.70355, y: 301.77353, z: 108.05857}
       time: 0.3
       curve:
@@ -462,6 +571,13 @@ MonoBehaviour:
       followObject: 0
       objectToFollow: {fileID: 0}
       targetPosition: {x: -9.81, y: 3.76, z: -7.9}
+      yPump: 0
+      yPumpCurve:
+        serializedVersion: 2
+        m_Curve: []
+        m_PreInfinity: 2
+        m_PostInfinity: 2
+        m_RotationOrder: 4
       targetRotation: {x: 336.70355, y: 301.77353, z: 108.05857}
       time: 0.7
       curve:
@@ -492,9 +608,9 @@ MonoBehaviour:
       eventToInvokeOnEnd: 
     index: 0
   - Type: 2
-    ObjectTranform: {fileID: 7623414407659638582}
-    itemAnimator: {fileID: 507203506809747846}
-    endHandler: {fileID: 5699983812158838740}
+    ObjectTranform: {fileID: 2152985750009414240}
+    itemAnimator: {fileID: 0}
+    endHandler: {fileID: 0}
     InitialPosition: {x: 0, y: 0, z: 0}
     InitialRotation: {x: 0, y: 0, z: 0}
     animDataHost:
@@ -502,7 +618,14 @@ MonoBehaviour:
       followObject: 0
       objectToFollow: {fileID: 0}
       targetPosition: {x: 1.22, y: -0.19, z: 3.02}
-      targetRotation: {x: 272.54413, y: 262.32056, z: 100.48057}
+      yPump: 0
+      yPumpCurve:
+        serializedVersion: 2
+        m_Curve: []
+        m_PreInfinity: 2
+        m_PostInfinity: 2
+        m_RotationOrder: 4
+      targetRotation: {x: 0, y: 0, z: 0}
       time: 0
       curve:
         serializedVersion: 2
@@ -530,11 +653,18 @@ MonoBehaviour:
         m_RotationOrder: 0
       eventToInvokeOnStart: 
       eventToInvokeOnEnd: 
-    - wait: 2
+    - wait: 2.5
       followObject: 1
-      objectToFollow: {fileID: 7604717804777448230}
+      objectToFollow: {fileID: 7791807805578516072}
       targetPosition: {x: 1.1000003, y: 2.2900002, z: 2.809999}
-      targetRotation: {x: 272.54413, y: 262.32056, z: 100.48057}
+      yPump: 0
+      yPumpCurve:
+        serializedVersion: 2
+        m_Curve: []
+        m_PreInfinity: 2
+        m_PostInfinity: 2
+        m_RotationOrder: 4
+      targetRotation: {x: 0, y: 0, z: 0}
       time: 1.6
       curve:
         serializedVersion: 2
@@ -565,125 +695,36 @@ MonoBehaviour:
     - wait: 0
       followObject: 0
       objectToFollow: {fileID: 0}
-      targetPosition: {x: -8.28, y: 4.331, z: 6.34}
-      targetRotation: {x: 299.59195, y: 229.65381, z: 108.77387}
-      time: 0.92
-      curve:
+      targetPosition: {x: -4.14, y: 2.68, z: 4.28}
+      yPump: 0
+      yPumpCurve:
         serializedVersion: 2
-        m_Curve:
-        - serializedVersion: 3
-          time: 0
-          value: 0
-          inSlope: 2
-          outSlope: 2
-          tangentMode: 0
-          weightedMode: 0
-          inWeight: 0
-          outWeight: 0
-        - serializedVersion: 3
-          time: 1
-          value: 1
-          inSlope: 0
-          outSlope: 0
-          tangentMode: 0
-          weightedMode: 0
-          inWeight: 0
-          outWeight: 0
+        m_Curve: []
         m_PreInfinity: 2
         m_PostInfinity: 2
-        m_RotationOrder: 0
-      eventToInvokeOnStart: 
-      eventToInvokeOnEnd: 
-    - wait: 0.3
-      followObject: 0
-      objectToFollow: {fileID: 0}
-      targetPosition: {x: -6.56, y: 4.331, z: 3.902}
-      targetRotation: {x: 299.59195, y: 229.65381, z: 108.77387}
-      time: 0.92
+        m_RotationOrder: 4
+      targetRotation: {x: 0, y: 0, z: 0}
+      time: 0.9
       curve:
         serializedVersion: 2
         m_Curve:
         - serializedVersion: 3
           time: 0
           value: 0
-          inSlope: 0
-          outSlope: 0
+          inSlope: 11.181614
+          outSlope: 11.181614
           tangentMode: 0
           weightedMode: 0
           inWeight: 0
-          outWeight: 0
+          outWeight: 0.019073442
         - serializedVersion: 3
           time: 1
           value: 1
-          inSlope: 2
-          outSlope: 2
+          inSlope: -3.8328516
+          outSlope: -3.8328516
           tangentMode: 0
           weightedMode: 0
-          inWeight: 0
-          outWeight: 0
-        m_PreInfinity: 2
-        m_PostInfinity: 2
-        m_RotationOrder: 0
-      eventToInvokeOnStart: Cut
-      eventToInvokeOnEnd: 
-    - wait: 1
-      followObject: 0
-      objectToFollow: {fileID: 0}
-      targetPosition: {x: -6.56, y: 4.331, z: 3.902}
-      targetRotation: {x: 336.1386, y: 227.65398, z: 100.00702}
-      time: 0.3
-      curve:
-        serializedVersion: 2
-        m_Curve:
-        - serializedVersion: 3
-          time: 0
-          value: 0
-          inSlope: 0
-          outSlope: 0
-          tangentMode: 0
-          weightedMode: 0
-          inWeight: 0
-          outWeight: 0
-        - serializedVersion: 3
-          time: 1
-          value: 1
-          inSlope: 2
-          outSlope: 2
-          tangentMode: 0
-          weightedMode: 0
-          inWeight: 0
-          outWeight: 0
-        m_PreInfinity: 2
-        m_PostInfinity: 2
-        m_RotationOrder: 0
-      eventToInvokeOnStart: 0
-      eventToInvokeOnEnd: 
-    - wait: 0
-      followObject: 0
-      objectToFollow: {fileID: 0}
-      targetPosition: {x: -2.82, y: 4.331, z: -1.41}
-      targetRotation: {x: 338.00864, y: 228.85164, z: 107.920044}
-      time: 0.7
-      curve:
-        serializedVersion: 2
-        m_Curve:
-        - serializedVersion: 3
-          time: 0
-          value: 0
-          inSlope: 0
-          outSlope: 0
-          tangentMode: 0
-          weightedMode: 0
-          inWeight: 0
-          outWeight: 0
-        - serializedVersion: 3
-          time: 1
-          value: 1
-          inSlope: 2
-          outSlope: 2
-          tangentMode: 0
-          weightedMode: 0
-          inWeight: 0
+          inWeight: 0.025697827
           outWeight: 0
         m_PreInfinity: 2
         m_PostInfinity: 2
@@ -695,6 +736,13 @@ MonoBehaviour:
       followObject: 0
       objectToFollow: {fileID: 0}
       targetPosition: {x: 1.22, y: -0.19, z: 3.02}
+      yPump: 0
+      yPumpCurve:
+        serializedVersion: 2
+        m_Curve: []
+        m_PreInfinity: 2
+        m_PostInfinity: 2
+        m_RotationOrder: 4
       targetRotation: {x: 282.52386, y: 247.09903, z: 128.85852}
       time: 0
       curve:
@@ -727,6 +775,13 @@ MonoBehaviour:
       followObject: 1
       objectToFollow: {fileID: 7604717804777448230}
       targetPosition: {x: 1.1000003, y: 2.2900002, z: 2.809999}
+      yPump: 0
+      yPumpCurve:
+        serializedVersion: 2
+        m_Curve: []
+        m_PreInfinity: 2
+        m_PostInfinity: 2
+        m_RotationOrder: 4
       targetRotation: {x: 282.52386, y: 247.09903, z: 128.85852}
       time: 1.6
       curve:
@@ -759,6 +814,13 @@ MonoBehaviour:
       followObject: 0
       objectToFollow: {fileID: 0}
       targetPosition: {x: -3.37, y: 3.76, z: 0.16}
+      yPump: 0
+      yPumpCurve:
+        serializedVersion: 2
+        m_Curve: []
+        m_PreInfinity: 2
+        m_PostInfinity: 2
+        m_RotationOrder: 4
       targetRotation: {x: 276.64328, y: 237.27185, z: 176.57552}
       time: 0.92
       curve:
@@ -791,6 +853,13 @@ MonoBehaviour:
       followObject: 0
       objectToFollow: {fileID: 0}
       targetPosition: {x: -5.41, y: 3.76, z: -2.39}
+      yPump: 0
+      yPumpCurve:
+        serializedVersion: 2
+        m_Curve: []
+        m_PreInfinity: 2
+        m_PostInfinity: 2
+        m_RotationOrder: 4
       targetRotation: {x: 276.64328, y: 237.27185, z: 176.57552}
       time: 0.92
       curve:
@@ -823,6 +892,13 @@ MonoBehaviour:
       followObject: 0
       objectToFollow: {fileID: 0}
       targetPosition: {x: -5.41, y: 3.76, z: -2.39}
+      yPump: 0
+      yPumpCurve:
+        serializedVersion: 2
+        m_Curve: []
+        m_PreInfinity: 2
+        m_PostInfinity: 2
+        m_RotationOrder: 4
       targetRotation: {x: 336.70355, y: 301.77353, z: 108.05857}
       time: 0.3
       curve:
@@ -855,6 +931,13 @@ MonoBehaviour:
       followObject: 0
       objectToFollow: {fileID: 0}
       targetPosition: {x: -9.81, y: 3.76, z: -7.9}
+      yPump: 0
+      yPumpCurve:
+        serializedVersion: 2
+        m_Curve: []
+        m_PreInfinity: 2
+        m_PostInfinity: 2
+        m_RotationOrder: 4
       targetRotation: {x: 336.70355, y: 301.77353, z: 108.05857}
       time: 0.7
       curve:
@@ -885,6 +968,38 @@ MonoBehaviour:
       eventToInvokeOnEnd: 
     index: 0
   hatchController: {fileID: 0}
+--- !u!1 &8302664592096643788
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2152985750009414240}
+  m_Layer: 0
+  m_Name: StakeParent
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &2152985750009414240
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8302664592096643788}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 7956063664611748657}
+  m_Father: {fileID: 2634291536805388819}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &6652402721412731550
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1127,6 +1242,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 9180025642812136865, guid: 2e3ce31936b8c9546a9c1a6068b542a7, type: 3}
       insertIndex: -1
       addedObject: {fileID: 7604717804777448230}
+    - targetCorrespondingSourceObject: {fileID: 2763279036134470607, guid: 2e3ce31936b8c9546a9c1a6068b542a7, type: 3}
+      insertIndex: 3
+      addedObject: {fileID: 7791807805578516072}
     m_AddedComponents:
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 2e3ce31936b8c9546a9c1a6068b542a7, type: 3}
       insertIndex: -1
@@ -1182,6 +1300,73 @@ MonoBehaviour:
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 2e3ce31936b8c9546a9c1a6068b542a7, type: 3}
   m_PrefabInstance: {fileID: 6652402721412731550}
+  m_PrefabAsset: {fileID: 0}
+--- !u!4 &8794182775049675089 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 2763279036134470607, guid: 2e3ce31936b8c9546a9c1a6068b542a7, type: 3}
+  m_PrefabInstance: {fileID: 6652402721412731550}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1001 &7629982611572395226
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 2152985750009414240}
+    m_Modifications:
+    - target: {fileID: -8679921383154817045, guid: 0ad838804ba02f34ca4ad0272267f512, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 0ad838804ba02f34ca4ad0272267f512, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 1.84
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 0ad838804ba02f34ca4ad0272267f512, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 0ad838804ba02f34ca4ad0272267f512, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 0ad838804ba02f34ca4ad0272267f512, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 0ad838804ba02f34ca4ad0272267f512, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 0ad838804ba02f34ca4ad0272267f512, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 0ad838804ba02f34ca4ad0272267f512, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 0ad838804ba02f34ca4ad0272267f512, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 0ad838804ba02f34ca4ad0272267f512, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 0ad838804ba02f34ca4ad0272267f512, type: 3}
+      propertyPath: m_Name
+      value: FBX_Stake
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 0ad838804ba02f34ca4ad0272267f512, type: 3}
+--- !u!4 &7956063664611748657 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 0ad838804ba02f34ca4ad0272267f512, type: 3}
+  m_PrefabInstance: {fileID: 7629982611572395226}
   m_PrefabAsset: {fileID: 0}
 --- !u!1001 &7944761501709543645
 PrefabInstance:

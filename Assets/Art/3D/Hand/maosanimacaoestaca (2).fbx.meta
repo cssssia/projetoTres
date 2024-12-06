@@ -1,24 +1,9 @@
 fileFormatVersion: 2
-guid: 2e3ce31936b8c9546a9c1a6068b542a7
+guid: 79f1150f9825a4e4db9f210b9e30faf7
 ModelImporter:
   serializedVersion: 22200
   internalIDToNameTable: []
-  externalObjects:
-  - first:
-      type: UnityEngine:Material
-      assembly: UnityEngine.CoreModule
-      name: ferro.010
-    second: {fileID: 2100000, guid: 694a709a5202eac469f29540e9fd2e27, type: 2}
-  - first:
-      type: UnityEngine:Texture2D
-      assembly: UnityEngine.CoreModule
-      name: textura ferro  dddddd
-    second: {fileID: 2800000, guid: 5a2b335ba2138cd4eaf746a66143d7e0, type: 3}
-  - first:
-      type: UnityEngine:Texture2D
-      assembly: UnityEngine.CoreModule
-      name: textura ferro 2 normal
-    second: {fileID: 2800000, guid: 96f2a570ed2720a45b3c40d6677b2e41, type: 3}
+  externalObjects: {}
   materials:
     materialImportMode: 2
     materialName: 0
@@ -48,9 +33,38 @@ ModelImporter:
     extraUserProperties: []
     clipAnimations:
     - serializedVersion: 16
-      name: ANM_Idle
-      takeName: "rig_mao|C\xEDrculo.066Action"
-      internalID: 7576632352821026950
+      name: rig_mao.003|Cubo.009Action
+      takeName: rig_mao.003|Cubo.009Action
+      internalID: 865022938771869150
+      firstFrame: 0
+      lastFrame: 67
+      wrapMode: 0
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      hasAdditiveReferencePose: 0
+      loopTime: 0
+      loopBlend: 0
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events: []
+      transformMask: []
+      maskType: 3
+      maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
+    - serializedVersion: 16
+      name: "rig_mao.003|C\xEDrculo.066Action"
+      takeName: "rig_mao.003|C\xEDrculo.066Action"
+      internalID: -278675362808440460
       firstFrame: 0
       lastFrame: 0
       wrapMode: 0
@@ -77,11 +91,11 @@ ModelImporter:
       maskSource: {instanceID: 0}
       additiveReferencePoseFrame: 0
     - serializedVersion: 16
-      name: ANM_DeliverScissors
-      takeName: rig_mao|rig_maoAction
-      internalID: 8088360650643866206
+      name: rig_mao.003|rig_maoAction
+      takeName: rig_mao.003|rig_maoAction
+      internalID: -5045485967157976368
       firstFrame: 0
-      lastFrame: 175
+      lastFrame: 254
       wrapMode: 0
       orientationOffsetY: 0
       level: 0
@@ -100,31 +114,75 @@ ModelImporter:
       mirror: 0
       bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
       curves: []
-      events:
-      - time: 0.42374584
-        functionName: DeliverItem
-        data: 
-        objectReferenceParameter: {instanceID: 0}
-        floatParameter: 0
-        intParameter: 0
-        messageOptions: 0
-      - time: 1
-        functionName: EndedAnim
-        data: 
-        objectReferenceParameter: {instanceID: 0}
-        floatParameter: 0
-        intParameter: 0
-        messageOptions: 0
+      events: []
       transformMask: []
       maskType: 3
       maskSource: {instanceID: 0}
       additiveReferencePoseFrame: 0
     - serializedVersion: 16
-      name: rig_mao|rig_maoAction
-      takeName: rig_mao|rig_maoAction
-      internalID: 7524535509699540004
-      firstFrame: 175
+      name: rig_mao.003|rig_maoAction.001
+      takeName: rig_mao.003|rig_maoAction.001
+      internalID: -5095730054511130884
+      firstFrame: 0
       lastFrame: 254
+      wrapMode: 0
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      hasAdditiveReferencePose: 0
+      loopTime: 0
+      loopBlend: 0
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events: []
+      transformMask: []
+      maskType: 3
+      maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
+    - serializedVersion: 16
+      name: ANM_Stake_AgoraVai2
+      takeName: rig_mao.003|rig_maoAction.002
+      internalID: -367216966142858504
+      firstFrame: 0
+      lastFrame: 125
+      wrapMode: 0
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      hasAdditiveReferencePose: 0
+      loopTime: 0
+      loopBlend: 0
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events: []
+      transformMask: []
+      maskType: 3
+      maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
+    - serializedVersion: 16
+      name: "rig_mao.003|Tor\xF3ide.006Action"
+      takeName: "rig_mao.003|Tor\xF3ide.006Action"
+      internalID: -1078108416824729954
+      firstFrame: 0
+      lastFrame: 0
       wrapMode: 0
       orientationOffsetY: 0
       level: 0

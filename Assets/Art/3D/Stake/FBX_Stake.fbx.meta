@@ -1,24 +1,9 @@
 fileFormatVersion: 2
-guid: 2e3ce31936b8c9546a9c1a6068b542a7
+guid: 0ad838804ba02f34ca4ad0272267f512
 ModelImporter:
   serializedVersion: 22200
   internalIDToNameTable: []
-  externalObjects:
-  - first:
-      type: UnityEngine:Material
-      assembly: UnityEngine.CoreModule
-      name: ferro.010
-    second: {fileID: 2100000, guid: 694a709a5202eac469f29540e9fd2e27, type: 2}
-  - first:
-      type: UnityEngine:Texture2D
-      assembly: UnityEngine.CoreModule
-      name: textura ferro  dddddd
-    second: {fileID: 2800000, guid: 5a2b335ba2138cd4eaf746a66143d7e0, type: 3}
-  - first:
-      type: UnityEngine:Texture2D
-      assembly: UnityEngine.CoreModule
-      name: textura ferro 2 normal
-    second: {fileID: 2800000, guid: 96f2a570ed2720a45b3c40d6677b2e41, type: 3}
+  externalObjects: {}
   materials:
     materialImportMode: 2
     materialName: 0
@@ -48,9 +33,9 @@ ModelImporter:
     extraUserProperties: []
     clipAnimations:
     - serializedVersion: 16
-      name: ANM_Idle
-      takeName: "rig_mao|C\xEDrculo.066Action"
-      internalID: 7576632352821026950
+      name: "StickLP|Tor\xF3ide.006Action (1)"
+      takeName: "StickLP|Tor\xF3ide.006Action"
+      internalID: -4899667230966258001
       firstFrame: 0
       lastFrame: 0
       wrapMode: 0
@@ -77,11 +62,11 @@ ModelImporter:
       maskSource: {instanceID: 0}
       additiveReferencePoseFrame: 0
     - serializedVersion: 16
-      name: ANM_DeliverScissors
-      takeName: rig_mao|rig_maoAction
-      internalID: 8088360650643866206
+      name: "StickLP|C\xEDrculo.066Action"
+      takeName: "StickLP|C\xEDrculo.066Action"
+      internalID: -3563515570356079337
       firstFrame: 0
-      lastFrame: 175
+      lastFrame: 0
       wrapMode: 0
       orientationOffsetY: 0
       level: 0
@@ -100,31 +85,17 @@ ModelImporter:
       mirror: 0
       bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
       curves: []
-      events:
-      - time: 0.42374584
-        functionName: DeliverItem
-        data: 
-        objectReferenceParameter: {instanceID: 0}
-        floatParameter: 0
-        intParameter: 0
-        messageOptions: 0
-      - time: 1
-        functionName: EndedAnim
-        data: 
-        objectReferenceParameter: {instanceID: 0}
-        floatParameter: 0
-        intParameter: 0
-        messageOptions: 0
+      events: []
       transformMask: []
       maskType: 3
       maskSource: {instanceID: 0}
       additiveReferencePoseFrame: 0
     - serializedVersion: 16
-      name: rig_mao|rig_maoAction
-      takeName: rig_mao|rig_maoAction
-      internalID: 7524535509699540004
-      firstFrame: 175
-      lastFrame: 254
+      name: "StickLP|Tor\xF3ide.006Action"
+      takeName: "StickLP|Tor\xF3ide.006Action"
+      internalID: -8464712482269556119
+      firstFrame: 0
+      lastFrame: 0
       wrapMode: 0
       orientationOffsetY: 0
       level: 0

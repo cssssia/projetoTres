@@ -296,6 +296,19 @@ public class CardsManager : NetworkBehaviour
         }
     }
 
+    public void GetOtherPlayerSuits(int p_playerRequired, ref List<Suit> p_suits)
+    {
+        p_suits.Clear();
+        for (int i = 0; i < CardsOnGameList.Count; i++)
+        {
+            l_card = GetCardByIndex(CardsOnGameList[i]);
+            if (l_card.cardPlayer != (Player)p_playerRequired && !l_card.playedCard)
+            {
+                if (!p_suits.Contains(l_card.cardSuit)) p_suits.Add(l_card.cardSuit);
+            }
+        }
+    }
+
     [ClientRpc]
     private void RemoveCardClientRpc(int p_cardIndex)
     {

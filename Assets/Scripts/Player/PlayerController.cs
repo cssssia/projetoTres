@@ -314,6 +314,7 @@ public class PlayerController : NetworkBehaviour
         }));
     }
 
+    List<Suit> l_enemySuits = new();
     IEnumerator IUseItemCard(int p_itemIndex, Action p_action, bool p_callOtherAnimation = true)
     {
         ItemType l_type = CardsManager.Instance.GetItemByIndex(p_itemIndex).Type;
@@ -328,6 +329,9 @@ public class PlayerController : NetworkBehaviour
                 m_handBehavior.AnimCardCutPosition((go) => { l_waiting = false; });
                 break;
             case ItemType.STAKE:
+                if (l_enemySuits == null) l_enemySuits = new();
+                CardsManager.Instance.GetOtherPlayerSuits(PlayerIndex, ref l_enemySuits);
+                m_tableHandController.SetSuitsToHighlight(l_enemySuits);
                 l_waiting = false;
                 break;
         }

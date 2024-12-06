@@ -59,6 +59,8 @@ public class HandItemAnimController : MonoBehaviour
 
     public HatchController hatchController;
 
+    public StakeAnimator stakeAnimator;
+
     public System.Action OnCutCards;
     public System.Action OnEndedScissorAnim;
     public System.Action OnImpaleCards;
@@ -208,9 +210,16 @@ public class HandItemAnimController : MonoBehaviour
         OnCutCards?.Invoke();
     }
 
+    List<Suit> m_suitsToHighlight;
+    public void SetSuitsToHighlight(List<Suit> p_suits)
+    {
+        m_suitsToHighlight = p_suits;
+    }
+
     void OnImpactStake()
     {
         Debug.Log("blira");
+        stakeAnimator.HighlightSymbols(m_suitsToHighlight);
     }
 
     void OnEndStakeImpaleAnim()

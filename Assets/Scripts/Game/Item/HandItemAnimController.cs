@@ -38,6 +38,7 @@ public class HandItemAnimController : MonoBehaviour
         public bool followObject;
         [NaughtyAttributes.AllowNesting, NaughtyAttributes.EnableIf("followObject")]
         public Transform objectToFollow;
+        [NaughtyAttributes.AllowNesting, NaughtyAttributes.ShowIf("followObject")] public AnimationCurve followCurve;
         [NaughtyAttributes.AllowNesting, NaughtyAttributes.DisableIf("followObject")]
         public Vector3 targetPosition;
         //[NaughtyAttributes.AllowNesting, NaughtyAttributes.DisableIf("followObject")]
@@ -94,7 +95,8 @@ public class HandItemAnimController : MonoBehaviour
                 handAnimator.SetTrigger("UseItemScissors");
                 break;
             case ItemType.STAKE:
-                handAnimator.SetTrigger("UseItemStake");
+                if (p_playerID == 0) handAnimator.SetTrigger("HostUseItemStake");
+                else handAnimator.SetTrigger("ClientUseItemStake");
                 break;
         }
         //handAnimator.SetTrigger("UseItem");
@@ -136,17 +138,22 @@ public class HandItemAnimController : MonoBehaviour
             bool l_followObject = l_currentAnimData[i].followObject;
 
             if (!l_followObject) l_initPosition = p_object.ObjectTranform.localPosition;
-            else l_initPosition = l_currentAnimData[i].objectToFollow.position;
+            else
+            {
+                if (l_currentAnimData[i].followCurve.length == 0) l_initPosition = l_currentAnimData[i].objectToFollow.position;
+                else l_initPosition = p_object.ObjectTranform.position;
+            }
 
             l_initialRotation = p_object.ObjectTranform.localRotation.eulerAngles;
 
             while (l_time <= l_maxTime && l_maxTime > 0)
             {
+                float t = l_time / l_maxTime;
                 if (!l_followObject)
                 {
                     l_tempPosition = Vector3.Lerp(l_initPosition, l_currentAnimData[i].targetPosition,
-                                                                            l_currentAnimData[i].curve.Evaluate(l_time / l_maxTime));
-                    l_tempPosition.y += l_currentAnimData[i].yPump * l_currentAnimData[i].yPumpCurve.Evaluate(l_time/l_maxTime);
+                                                                            l_currentAnimData[i].curve.Evaluate(t));
+                    l_tempPosition.y += l_currentAnimData[i].yPump * l_currentAnimData[i].yPumpCurve.Evaluate(t);
 
                     p_object.ObjectTranform.localPosition = l_tempPosition;
                     //p_object.ObjectTranform.localEulerAngles = Vector3.Lerp(l_initialRotation,
@@ -155,7 +162,10 @@ public class HandItemAnimController : MonoBehaviour
                 }
                 else
                 {
-                    p_object.ObjectTranform.position = l_currentAnimData[i].objectToFollow.position;
+                    if (l_currentAnimData[i].followCurve.length == 0)
+                        p_object.ObjectTranform.position = l_currentAnimData[i].objectToFollow.position;
+                    else p_object.ObjectTranform.position = Vector3.Lerp(l_initPosition, l_currentAnimData[i].objectToFollow.position,
+                                                                                            l_currentAnimData[i].followCurve.Evaluate(t));
 
                 }
 

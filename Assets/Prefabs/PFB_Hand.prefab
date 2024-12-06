@@ -140,6 +140,12 @@ MonoBehaviour:
     - wait: 0
       followObject: 0
       objectToFollow: {fileID: 0}
+      followCurve:
+        serializedVersion: 2
+        m_Curve: []
+        m_PreInfinity: 2
+        m_PostInfinity: 2
+        m_RotationOrder: 4
       targetPosition: {x: 1.22, y: -0.19, z: 3.02}
       yPump: 0
       yPumpCurve:
@@ -179,6 +185,12 @@ MonoBehaviour:
     - wait: 2
       followObject: 1
       objectToFollow: {fileID: 7604717804777448230}
+      followCurve:
+        serializedVersion: 2
+        m_Curve: []
+        m_PreInfinity: 2
+        m_PostInfinity: 2
+        m_RotationOrder: 4
       targetPosition: {x: 1.1000003, y: 2.2900002, z: 2.809999}
       yPump: 0
       yPumpCurve:
@@ -218,6 +230,12 @@ MonoBehaviour:
     - wait: 0
       followObject: 0
       objectToFollow: {fileID: 0}
+      followCurve:
+        serializedVersion: 2
+        m_Curve: []
+        m_PreInfinity: 2
+        m_PostInfinity: 2
+        m_RotationOrder: 4
       targetPosition: {x: -8.28, y: 4.331, z: 6.34}
       yPump: 0
       yPumpCurve:
@@ -257,6 +275,12 @@ MonoBehaviour:
     - wait: 0.3
       followObject: 0
       objectToFollow: {fileID: 0}
+      followCurve:
+        serializedVersion: 2
+        m_Curve: []
+        m_PreInfinity: 2
+        m_PostInfinity: 2
+        m_RotationOrder: 4
       targetPosition: {x: -6.56, y: 4.331, z: 3.902}
       yPump: 0
       yPumpCurve:
@@ -296,6 +320,12 @@ MonoBehaviour:
     - wait: 1
       followObject: 0
       objectToFollow: {fileID: 0}
+      followCurve:
+        serializedVersion: 2
+        m_Curve: []
+        m_PreInfinity: 2
+        m_PostInfinity: 2
+        m_RotationOrder: 4
       targetPosition: {x: -6.56, y: 4.331, z: 3.902}
       yPump: 0
       yPumpCurve:
@@ -335,6 +365,12 @@ MonoBehaviour:
     - wait: 0
       followObject: 0
       objectToFollow: {fileID: 0}
+      followCurve:
+        serializedVersion: 2
+        m_Curve: []
+        m_PreInfinity: 2
+        m_PostInfinity: 2
+        m_RotationOrder: 4
       targetPosition: {x: -2.82, y: 4.331, z: -1.41}
       yPump: 0
       yPumpCurve:
@@ -375,6 +411,12 @@ MonoBehaviour:
     - wait: 0
       followObject: 0
       objectToFollow: {fileID: 0}
+      followCurve:
+        serializedVersion: 2
+        m_Curve: []
+        m_PreInfinity: 2
+        m_PostInfinity: 2
+        m_RotationOrder: 4
       targetPosition: {x: 1.22, y: -0.19, z: 3.02}
       yPump: 0
       yPumpCurve:
@@ -414,6 +456,12 @@ MonoBehaviour:
     - wait: 2
       followObject: 1
       objectToFollow: {fileID: 7604717804777448230}
+      followCurve:
+        serializedVersion: 2
+        m_Curve: []
+        m_PreInfinity: 2
+        m_PostInfinity: 2
+        m_RotationOrder: 4
       targetPosition: {x: 1.1000003, y: 2.2900002, z: 2.809999}
       yPump: 0
       yPumpCurve:
@@ -453,6 +501,12 @@ MonoBehaviour:
     - wait: 0
       followObject: 0
       objectToFollow: {fileID: 0}
+      followCurve:
+        serializedVersion: 2
+        m_Curve: []
+        m_PreInfinity: 2
+        m_PostInfinity: 2
+        m_RotationOrder: 4
       targetPosition: {x: -3.37, y: 3.76, z: 0.16}
       yPump: 0
       yPumpCurve:
@@ -492,6 +546,12 @@ MonoBehaviour:
     - wait: 0.3
       followObject: 0
       objectToFollow: {fileID: 0}
+      followCurve:
+        serializedVersion: 2
+        m_Curve: []
+        m_PreInfinity: 2
+        m_PostInfinity: 2
+        m_RotationOrder: 4
       targetPosition: {x: -5.41, y: 3.76, z: -2.39}
       yPump: 0
       yPumpCurve:
@@ -531,6 +591,12 @@ MonoBehaviour:
     - wait: 1
       followObject: 0
       objectToFollow: {fileID: 0}
+      followCurve:
+        serializedVersion: 2
+        m_Curve: []
+        m_PreInfinity: 2
+        m_PostInfinity: 2
+        m_RotationOrder: 4
       targetPosition: {x: -5.41, y: 3.76, z: -2.39}
       yPump: 0
       yPumpCurve:
@@ -570,6 +636,12 @@ MonoBehaviour:
     - wait: 0
       followObject: 0
       objectToFollow: {fileID: 0}
+      followCurve:
+        serializedVersion: 2
+        m_Curve: []
+        m_PreInfinity: 2
+        m_PostInfinity: 2
+        m_RotationOrder: 4
       targetPosition: {x: -9.81, y: 3.76, z: -7.9}
       yPump: 0
       yPumpCurve:
@@ -617,7 +689,13 @@ MonoBehaviour:
     - wait: 0
       followObject: 0
       objectToFollow: {fileID: 0}
-      targetPosition: {x: 1.22, y: -0.19, z: 3.02}
+      followCurve:
+        serializedVersion: 2
+        m_Curve: []
+        m_PreInfinity: 2
+        m_PostInfinity: 2
+        m_RotationOrder: 4
+      targetPosition: {x: 1.3699999, y: -1.72, z: 0.16000003}
       yPump: 0
       yPumpCurve:
         serializedVersion: 2
@@ -653,9 +731,42 @@ MonoBehaviour:
         m_RotationOrder: 0
       eventToInvokeOnStart: 
       eventToInvokeOnEnd: 
-    - wait: 2.5
+    - wait: 1.75
       followObject: 1
       objectToFollow: {fileID: 7791807805578516072}
+      followCurve:
+        serializedVersion: 2
+        m_Curve:
+        - serializedVersion: 3
+          time: 0
+          value: 0
+          inSlope: 4.031553
+          outSlope: 4.031553
+          tangentMode: 34
+          weightedMode: 0
+          inWeight: 0
+          outWeight: 0.33333334
+        - serializedVersion: 3
+          time: 0.24511108
+          value: 0.98817825
+          inSlope: 5
+          outSlope: -0.0055371644
+          tangentMode: 1
+          weightedMode: 0
+          inWeight: 0.33333334
+          outWeight: 0.07115316
+        - serializedVersion: 3
+          time: 1
+          value: 1
+          inSlope: 0.015660247
+          outSlope: 0.015660247
+          tangentMode: 34
+          weightedMode: 0
+          inWeight: 0.33333334
+          outWeight: 0
+        m_PreInfinity: 2
+        m_PostInfinity: 2
+        m_RotationOrder: 4
       targetPosition: {x: 1.1000003, y: 2.2900002, z: 2.809999}
       yPump: 0
       yPumpCurve:
@@ -665,7 +776,7 @@ MonoBehaviour:
         m_PostInfinity: 2
         m_RotationOrder: 4
       targetRotation: {x: 0, y: 0, z: 0}
-      time: 1.6
+      time: 2.35
       curve:
         serializedVersion: 2
         m_Curve:
@@ -695,36 +806,213 @@ MonoBehaviour:
     - wait: 0
       followObject: 0
       objectToFollow: {fileID: 0}
-      targetPosition: {x: -4.14, y: 2.68, z: 4.28}
-      yPump: 0
-      yPumpCurve:
+      followCurve:
         serializedVersion: 2
         m_Curve: []
         m_PreInfinity: 2
         m_PostInfinity: 2
         m_RotationOrder: 4
+      targetPosition: {x: -4.14, y: 3.5, z: 4.28}
+      yPump: 0
+      yPumpCurve:
+        serializedVersion: 2
+        m_Curve:
+        - serializedVersion: 3
+          time: 0
+          value: 0
+          inSlope: 10
+          outSlope: 10
+          tangentMode: 34
+          weightedMode: 0
+          inWeight: 0
+          outWeight: 0.33333334
+        - serializedVersion: 3
+          time: 0.1
+          value: 1
+          inSlope: 5
+          outSlope: 0.16262348
+          tangentMode: 1
+          weightedMode: 0
+          inWeight: 0.33333334
+          outWeight: 0.09085556
+        - serializedVersion: 3
+          time: 0.9
+          value: 1
+          inSlope: 0.041487765
+          outSlope: -4.999999
+          tangentMode: 1
+          weightedMode: 0
+          inWeight: 0.0712324
+          outWeight: 0.33333334
+        - serializedVersion: 3
+          time: 1
+          value: 0
+          inSlope: -9.999998
+          outSlope: -9.999998
+          tangentMode: 34
+          weightedMode: 0
+          inWeight: 0.33333334
+          outWeight: 0
+        m_PreInfinity: 2
+        m_PostInfinity: 2
+        m_RotationOrder: 4
       targetRotation: {x: 0, y: 0, z: 0}
-      time: 0.9
+      time: 1.5
       curve:
         serializedVersion: 2
         m_Curve:
         - serializedVersion: 3
           time: 0
           value: 0
-          inSlope: 11.181614
-          outSlope: 11.181614
+          inSlope: 0
+          outSlope: 0
           tangentMode: 0
           weightedMode: 0
           inWeight: 0
-          outWeight: 0.019073442
+          outWeight: 0
         - serializedVersion: 3
           time: 1
           value: 1
-          inSlope: -3.8328516
-          outSlope: -3.8328516
+          inSlope: 0
+          outSlope: 0
           tangentMode: 0
           weightedMode: 0
-          inWeight: 0.025697827
+          inWeight: 0
+          outWeight: 0
+        m_PreInfinity: 2
+        m_PostInfinity: 2
+        m_RotationOrder: 0
+      eventToInvokeOnStart: 
+      eventToInvokeOnEnd: 
+    - wait: 0
+      followObject: 0
+      objectToFollow: {fileID: 0}
+      followCurve:
+        serializedVersion: 2
+        m_Curve: []
+        m_PreInfinity: 2
+        m_PostInfinity: 2
+        m_RotationOrder: 4
+      targetPosition: {x: -4.14, y: 2.68, z: 4.28}
+      yPump: 3
+      yPumpCurve:
+        serializedVersion: 2
+        m_Curve:
+        - serializedVersion: 3
+          time: 0
+          value: 0
+          inSlope: 1.2689327
+          outSlope: 1.2689327
+          tangentMode: 34
+          weightedMode: 0
+          inWeight: 0
+          outWeight: 0.33333334
+        - serializedVersion: 3
+          time: 0.7880639
+          value: 1
+          inSlope: 0.2151805
+          outSlope: 0.2151805
+          tangentMode: 0
+          weightedMode: 0
+          inWeight: 0.027882123
+          outWeight: 0.33333334
+        - serializedVersion: 3
+          time: 1
+          value: 0
+          inSlope: -14.307134
+          outSlope: -14.307134
+          tangentMode: 0
+          weightedMode: 0
+          inWeight: 0.029629344
+          outWeight: 0
+        m_PreInfinity: 2
+        m_PostInfinity: 2
+        m_RotationOrder: 4
+      targetRotation: {x: 0, y: 0, z: 0}
+      time: 1.5
+      curve:
+        serializedVersion: 2
+        m_Curve:
+        - serializedVersion: 3
+          time: 0
+          value: 0
+          inSlope: 1
+          outSlope: 1
+          tangentMode: 34
+          weightedMode: 0
+          inWeight: 0
+          outWeight: 0
+        - serializedVersion: 3
+          time: 1
+          value: 1
+          inSlope: 1
+          outSlope: 1
+          tangentMode: 34
+          weightedMode: 0
+          inWeight: 0
+          outWeight: 0
+        m_PreInfinity: 2
+        m_PostInfinity: 2
+        m_RotationOrder: 0
+      eventToInvokeOnStart: 
+      eventToInvokeOnEnd: 
+    - wait: 2
+      followObject: 0
+      objectToFollow: {fileID: 0}
+      followCurve:
+        serializedVersion: 2
+        m_Curve: []
+        m_PreInfinity: 2
+        m_PostInfinity: 2
+        m_RotationOrder: 4
+      targetPosition: {x: 0, y: 0, z: 0}
+      yPump: 0
+      yPumpCurve:
+        serializedVersion: 2
+        m_Curve:
+        - serializedVersion: 3
+          time: 0
+          value: 1
+          inSlope: 0
+          outSlope: 0
+          tangentMode: 34
+          weightedMode: 0
+          inWeight: 0
+          outWeight: 0
+        - serializedVersion: 3
+          time: 1
+          value: 1
+          inSlope: 0
+          outSlope: 0
+          tangentMode: 34
+          weightedMode: 0
+          inWeight: 0
+          outWeight: 0
+        m_PreInfinity: 2
+        m_PostInfinity: 2
+        m_RotationOrder: 4
+      targetRotation: {x: 0, y: 0, z: 0}
+      time: 0
+      curve:
+        serializedVersion: 2
+        m_Curve:
+        - serializedVersion: 3
+          time: 0
+          value: 1
+          inSlope: 0
+          outSlope: 0
+          tangentMode: 34
+          weightedMode: 0
+          inWeight: 0
+          outWeight: 0
+        - serializedVersion: 3
+          time: 1
+          value: 1
+          inSlope: 0
+          outSlope: 0
+          tangentMode: 34
+          weightedMode: 0
+          inWeight: 0
           outWeight: 0
         m_PreInfinity: 2
         m_PostInfinity: 2
@@ -735,7 +1023,13 @@ MonoBehaviour:
     - wait: 0
       followObject: 0
       objectToFollow: {fileID: 0}
-      targetPosition: {x: 1.22, y: -0.19, z: 3.02}
+      followCurve:
+        serializedVersion: 2
+        m_Curve: []
+        m_PreInfinity: 2
+        m_PostInfinity: 2
+        m_RotationOrder: 4
+      targetPosition: {x: 1.3699999, y: -1.72, z: 0.16000003}
       yPump: 0
       yPumpCurve:
         serializedVersion: 2
@@ -743,7 +1037,7 @@ MonoBehaviour:
         m_PreInfinity: 2
         m_PostInfinity: 2
         m_RotationOrder: 4
-      targetRotation: {x: 282.52386, y: 247.09903, z: 128.85852}
+      targetRotation: {x: 0, y: 0, z: 0}
       time: 0
       curve:
         serializedVersion: 2
@@ -771,9 +1065,42 @@ MonoBehaviour:
         m_RotationOrder: 0
       eventToInvokeOnStart: 
       eventToInvokeOnEnd: 
-    - wait: 2
+    - wait: 1.75
       followObject: 1
-      objectToFollow: {fileID: 7604717804777448230}
+      objectToFollow: {fileID: 7791807805578516072}
+      followCurve:
+        serializedVersion: 2
+        m_Curve:
+        - serializedVersion: 3
+          time: 0
+          value: 0
+          inSlope: 4.031553
+          outSlope: 4.031553
+          tangentMode: 34
+          weightedMode: 0
+          inWeight: 0
+          outWeight: 0.33333334
+        - serializedVersion: 3
+          time: 0.24511108
+          value: 0.98817825
+          inSlope: 5
+          outSlope: -0.0055371644
+          tangentMode: 1
+          weightedMode: 0
+          inWeight: 0.33333334
+          outWeight: 0.07115316
+        - serializedVersion: 3
+          time: 1
+          value: 1
+          inSlope: 0.015660247
+          outSlope: 0.015660247
+          tangentMode: 34
+          weightedMode: 0
+          inWeight: 0.33333334
+          outWeight: 0
+        m_PreInfinity: 2
+        m_PostInfinity: 2
+        m_RotationOrder: 4
       targetPosition: {x: 1.1000003, y: 2.2900002, z: 2.809999}
       yPump: 0
       yPumpCurve:
@@ -782,8 +1109,8 @@ MonoBehaviour:
         m_PreInfinity: 2
         m_PostInfinity: 2
         m_RotationOrder: 4
-      targetRotation: {x: 282.52386, y: 247.09903, z: 128.85852}
-      time: 1.6
+      targetRotation: {x: 0, y: 0, z: 0}
+      time: 2.35
       curve:
         serializedVersion: 2
         m_Curve:
@@ -813,24 +1140,66 @@ MonoBehaviour:
     - wait: 0
       followObject: 0
       objectToFollow: {fileID: 0}
-      targetPosition: {x: -3.37, y: 3.76, z: 0.16}
-      yPump: 0
-      yPumpCurve:
+      followCurve:
         serializedVersion: 2
         m_Curve: []
         m_PreInfinity: 2
         m_PostInfinity: 2
         m_RotationOrder: 4
-      targetRotation: {x: 276.64328, y: 237.27185, z: 176.57552}
-      time: 0.92
+      targetPosition: {x: -5.29, y: 3.5, z: -3.75}
+      yPump: 0
+      yPumpCurve:
+        serializedVersion: 2
+        m_Curve:
+        - serializedVersion: 3
+          time: 0
+          value: 0
+          inSlope: 10
+          outSlope: 10
+          tangentMode: 34
+          weightedMode: 0
+          inWeight: 0
+          outWeight: 0.33333334
+        - serializedVersion: 3
+          time: 0.1
+          value: 1
+          inSlope: 5
+          outSlope: 0.16262348
+          tangentMode: 1
+          weightedMode: 0
+          inWeight: 0.33333334
+          outWeight: 0.09085556
+        - serializedVersion: 3
+          time: 0.9
+          value: 1
+          inSlope: 0.041487765
+          outSlope: -4.999999
+          tangentMode: 1
+          weightedMode: 0
+          inWeight: 0.0712324
+          outWeight: 0.33333334
+        - serializedVersion: 3
+          time: 1
+          value: 0
+          inSlope: -9.999998
+          outSlope: -9.999998
+          tangentMode: 34
+          weightedMode: 0
+          inWeight: 0.33333334
+          outWeight: 0
+        m_PreInfinity: 2
+        m_PostInfinity: 2
+        m_RotationOrder: 4
+      targetRotation: {x: 0, y: 0, z: 0}
+      time: 1.5
       curve:
         serializedVersion: 2
         m_Curve:
         - serializedVersion: 3
           time: 0
           value: 0
-          inSlope: 2
-          outSlope: 2
+          inSlope: 0
+          outSlope: 0
           tangentMode: 0
           weightedMode: 0
           inWeight: 0
@@ -849,115 +1218,133 @@ MonoBehaviour:
         m_RotationOrder: 0
       eventToInvokeOnStart: 
       eventToInvokeOnEnd: 
-    - wait: 0.3
-      followObject: 0
-      objectToFollow: {fileID: 0}
-      targetPosition: {x: -5.41, y: 3.76, z: -2.39}
-      yPump: 0
-      yPumpCurve:
-        serializedVersion: 2
-        m_Curve: []
-        m_PreInfinity: 2
-        m_PostInfinity: 2
-        m_RotationOrder: 4
-      targetRotation: {x: 276.64328, y: 237.27185, z: 176.57552}
-      time: 0.92
-      curve:
-        serializedVersion: 2
-        m_Curve:
-        - serializedVersion: 3
-          time: 0
-          value: 0
-          inSlope: 0
-          outSlope: 0
-          tangentMode: 0
-          weightedMode: 0
-          inWeight: 0
-          outWeight: 0
-        - serializedVersion: 3
-          time: 1
-          value: 1
-          inSlope: 2
-          outSlope: 2
-          tangentMode: 0
-          weightedMode: 0
-          inWeight: 0
-          outWeight: 0
-        m_PreInfinity: 2
-        m_PostInfinity: 2
-        m_RotationOrder: 0
-      eventToInvokeOnStart: Cut
-      eventToInvokeOnEnd: 
-    - wait: 1
-      followObject: 0
-      objectToFollow: {fileID: 0}
-      targetPosition: {x: -5.41, y: 3.76, z: -2.39}
-      yPump: 0
-      yPumpCurve:
-        serializedVersion: 2
-        m_Curve: []
-        m_PreInfinity: 2
-        m_PostInfinity: 2
-        m_RotationOrder: 4
-      targetRotation: {x: 336.70355, y: 301.77353, z: 108.05857}
-      time: 0.3
-      curve:
-        serializedVersion: 2
-        m_Curve:
-        - serializedVersion: 3
-          time: 0
-          value: 0
-          inSlope: 0
-          outSlope: 0
-          tangentMode: 0
-          weightedMode: 0
-          inWeight: 0
-          outWeight: 0
-        - serializedVersion: 3
-          time: 1
-          value: 1
-          inSlope: 2
-          outSlope: 2
-          tangentMode: 0
-          weightedMode: 0
-          inWeight: 0
-          outWeight: 0
-        m_PreInfinity: 2
-        m_PostInfinity: 2
-        m_RotationOrder: 0
-      eventToInvokeOnStart: 0
-      eventToInvokeOnEnd: 
     - wait: 0
       followObject: 0
       objectToFollow: {fileID: 0}
-      targetPosition: {x: -9.81, y: 3.76, z: -7.9}
-      yPump: 0
-      yPumpCurve:
+      followCurve:
         serializedVersion: 2
         m_Curve: []
         m_PreInfinity: 2
         m_PostInfinity: 2
         m_RotationOrder: 4
-      targetRotation: {x: 336.70355, y: 301.77353, z: 108.05857}
-      time: 0.7
+      targetPosition: {x: -4.2, y: 2.68, z: -4.62}
+      yPump: 3
+      yPumpCurve:
+        serializedVersion: 2
+        m_Curve:
+        - serializedVersion: 3
+          time: 0
+          value: 0
+          inSlope: 1.2689327
+          outSlope: 1.2689327
+          tangentMode: 34
+          weightedMode: 0
+          inWeight: 0
+          outWeight: 0.33333334
+        - serializedVersion: 3
+          time: 0.7880639
+          value: 1
+          inSlope: 0.2151805
+          outSlope: 0.2151805
+          tangentMode: 0
+          weightedMode: 0
+          inWeight: 0.027882123
+          outWeight: 0.33333334
+        - serializedVersion: 3
+          time: 1
+          value: 0
+          inSlope: -14.307134
+          outSlope: -14.307134
+          tangentMode: 0
+          weightedMode: 0
+          inWeight: 0.029629344
+          outWeight: 0
+        m_PreInfinity: 2
+        m_PostInfinity: 2
+        m_RotationOrder: 4
+      targetRotation: {x: 0, y: 0, z: 0}
+      time: 1.5
       curve:
         serializedVersion: 2
         m_Curve:
         - serializedVersion: 3
           time: 0
           value: 0
-          inSlope: 0
-          outSlope: 0
-          tangentMode: 0
+          inSlope: 1
+          outSlope: 1
+          tangentMode: 34
           weightedMode: 0
           inWeight: 0
           outWeight: 0
         - serializedVersion: 3
           time: 1
           value: 1
-          inSlope: 2
-          outSlope: 2
-          tangentMode: 0
+          inSlope: 1
+          outSlope: 1
+          tangentMode: 34
+          weightedMode: 0
+          inWeight: 0
+          outWeight: 0
+        m_PreInfinity: 2
+        m_PostInfinity: 2
+        m_RotationOrder: 0
+      eventToInvokeOnStart: 
+      eventToInvokeOnEnd: 
+    - wait: 2
+      followObject: 0
+      objectToFollow: {fileID: 0}
+      followCurve:
+        serializedVersion: 2
+        m_Curve: []
+        m_PreInfinity: 2
+        m_PostInfinity: 2
+        m_RotationOrder: 4
+      targetPosition: {x: 0, y: 0, z: 0}
+      yPump: 0
+      yPumpCurve:
+        serializedVersion: 2
+        m_Curve:
+        - serializedVersion: 3
+          time: 0
+          value: 1
+          inSlope: 0
+          outSlope: 0
+          tangentMode: 34
+          weightedMode: 0
+          inWeight: 0
+          outWeight: 0
+        - serializedVersion: 3
+          time: 1
+          value: 1
+          inSlope: 0
+          outSlope: 0
+          tangentMode: 34
+          weightedMode: 0
+          inWeight: 0
+          outWeight: 0
+        m_PreInfinity: 2
+        m_PostInfinity: 2
+        m_RotationOrder: 4
+      targetRotation: {x: 0, y: 0, z: 0}
+      time: 0
+      curve:
+        serializedVersion: 2
+        m_Curve:
+        - serializedVersion: 3
+          time: 0
+          value: 1
+          inSlope: 0
+          outSlope: 0
+          tangentMode: 34
+          weightedMode: 0
+          inWeight: 0
+          outWeight: 0
+        - serializedVersion: 3
+          time: 1
+          value: 1
+          inSlope: 0
+          outSlope: 0
+          tangentMode: 34
           weightedMode: 0
           inWeight: 0
           outWeight: 0
@@ -993,7 +1380,7 @@ Transform:
   m_GameObject: {fileID: 8302664592096643788}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0.87, y: -2.53, z: 0.61}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:

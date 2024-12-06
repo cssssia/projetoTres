@@ -186,7 +186,10 @@ public class HandItemAnimController : MonoBehaviour
                                                                        l_currentAnimData[i].curve.Evaluate(1f)));
 
             if (l_currentAnimData[i].eventToInvokeOnEnd != string.Empty)
-                p_object.itemAnimator.SetTrigger(l_currentAnimData[i].eventToInvokeOnEnd);
+            {
+                if (l_currentAnimData[i].eventToInvokeOnEnd == "stakeImpact") OnImpactStake();
+                else p_object.itemAnimator.SetTrigger(l_currentAnimData[i].eventToInvokeOnEnd);
+            }
         }
 
         yield return hatchController.CloseHatch();
@@ -203,6 +206,11 @@ public class HandItemAnimController : MonoBehaviour
     {
         Debug.Log("cut");
         OnCutCards?.Invoke();
+    }
+
+    void OnImpactStake()
+    {
+        Debug.Log("blira");
     }
 
     void OnEndStakeImpaleAnim()

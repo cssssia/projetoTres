@@ -3,7 +3,12 @@ guid: 0ad838804ba02f34ca4ad0272267f512
 ModelImporter:
   serializedVersion: 22200
   internalIDToNameTable: []
-  externalObjects: {}
+  externalObjects:
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: estaca
+    second: {fileID: 2100000, guid: e10ca54c12f2aee4b880f3a70f879cf6, type: 2}
   materials:
     materialImportMode: 2
     materialName: 0

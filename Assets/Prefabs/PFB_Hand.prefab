@@ -812,7 +812,7 @@ MonoBehaviour:
         m_PreInfinity: 2
         m_PostInfinity: 2
         m_RotationOrder: 4
-      targetPosition: {x: -4.14, y: 3.5, z: 4.28}
+      targetPosition: {x: -4.14, y: 3.2, z: 4.28}
       yPump: 0
       yPumpCurve:
         serializedVersion: 2
@@ -893,7 +893,7 @@ MonoBehaviour:
         m_PreInfinity: 2
         m_PostInfinity: 2
         m_RotationOrder: 4
-      targetPosition: {x: -4.14, y: 2.68, z: 4.28}
+      targetPosition: {x: -4.14, y: 2.63, z: 4.28}
       yPump: 3
       yPumpCurve:
         serializedVersion: 2
@@ -928,7 +928,7 @@ MonoBehaviour:
         m_PreInfinity: 2
         m_PostInfinity: 2
         m_RotationOrder: 4
-      targetRotation: {x: 0, y: 0, z: 0}
+      targetRotation: {x: 0, y: -23, z: -10}
       time: 1.5
       curve:
         serializedVersion: 2
@@ -955,7 +955,7 @@ MonoBehaviour:
         m_PostInfinity: 2
         m_RotationOrder: 0
       eventToInvokeOnStart: 
-      eventToInvokeOnEnd: 
+      eventToInvokeOnEnd: stakeImpact
     - wait: 2
       followObject: 0
       objectToFollow: {fileID: 0}
@@ -1146,7 +1146,7 @@ MonoBehaviour:
         m_PreInfinity: 2
         m_PostInfinity: 2
         m_RotationOrder: 4
-      targetPosition: {x: -5.29, y: 3.5, z: -3.75}
+      targetPosition: {x: -5.0436964, y: 4.321012, z: -3.946591}
       yPump: 0
       yPumpCurve:
         serializedVersion: 2
@@ -1227,7 +1227,7 @@ MonoBehaviour:
         m_PreInfinity: 2
         m_PostInfinity: 2
         m_RotationOrder: 4
-      targetPosition: {x: -4.2, y: 2.68, z: -4.62}
+      targetPosition: {x: -5.0436964, y: 2.59, z: -3.946591}
       yPump: 3
       yPumpCurve:
         serializedVersion: 2
@@ -1262,7 +1262,7 @@ MonoBehaviour:
         m_PreInfinity: 2
         m_PostInfinity: 2
         m_RotationOrder: 4
-      targetRotation: {x: 0, y: 0, z: 0}
+      targetRotation: {x: 0, y: 45.27, z: -10}
       time: 1.5
       curve:
         serializedVersion: 2
@@ -1289,7 +1289,7 @@ MonoBehaviour:
         m_PostInfinity: 2
         m_RotationOrder: 0
       eventToInvokeOnStart: 
-      eventToInvokeOnEnd: 
+      eventToInvokeOnEnd: stakeImpact
     - wait: 2
       followObject: 0
       objectToFollow: {fileID: 0}
@@ -1702,12 +1702,24 @@ PrefabInstance:
     m_TransformParent: {fileID: 2152985750009414240}
     m_Modifications:
     - target: {fileID: -8679921383154817045, guid: 0ad838804ba02f34ca4ad0272267f512, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 1.25
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 0ad838804ba02f34ca4ad0272267f512, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 1.25
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 0ad838804ba02f34ca4ad0272267f512, type: 3}
+      propertyPath: m_LocalScale.z
+      value: 1.25
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 0ad838804ba02f34ca4ad0272267f512, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 0ad838804ba02f34ca4ad0272267f512, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 1.84
+      value: 2.65
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 0ad838804ba02f34ca4ad0272267f512, type: 3}
       propertyPath: m_LocalPosition.z

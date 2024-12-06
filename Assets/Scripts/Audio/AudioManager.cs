@@ -27,9 +27,9 @@ public class AudioManager : MonoBehaviour
     private void Awake()
     {
         if (Instance == null) Instance = this;
-        else Destroy(gameObject);
+        else Destroy(this);
 
-        DontDestroyOnLoad(gameObject);
+        DontDestroyOnLoad(this);
 
         m_eventInstancesList = new List<EventInstance>();
         m_eventEmittersList = new List<StudioEventEmitter>();

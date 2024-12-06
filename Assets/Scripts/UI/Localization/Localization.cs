@@ -3,8 +3,13 @@ using UnityEngine;
 
 public class Localization : MonoBehaviour
 {
+    public static Localization Instance { get; private set; }
+
     void Awake()
     {
+        if (Instance == null) Instance = this;
+        else Destroy(this);
+
         LocalizationManager.Read();
 
         LocalizationManager.Language = Application.systemLanguage switch

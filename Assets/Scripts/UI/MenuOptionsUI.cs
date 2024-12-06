@@ -1,3 +1,5 @@
+using System.Collections.Generic;
+using Assets.SimpleLocalization.Scripts;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -10,6 +12,7 @@ public class MenuOptionsUI : MonoBehaviour
     [SerializeField] private Slider m_sfxSlider;
     [SerializeField] private TMP_Dropdown m_lenguageDropdown;
     [SerializeField] private Button m_backButton;
+    [SerializeField] private List<string> m_availableLenguages = new List<string>();
 
     void Awake()
     {
@@ -28,9 +31,13 @@ public class MenuOptionsUI : MonoBehaviour
             // AudioManager.Instance.sfxVolume = p_value;
         });
         m_lenguageDropdown.onValueChanged.AddListener((p_value) => {
-            Debug.Log(p_value);
+            Localization.Instance.SetLocalization(m_availableLenguages[p_value]);
         });
+    }
 
+    void Start()
+    {
+        m_lenguageDropdown.value = IdentifyLenguage();
         Hide();
     }
 
@@ -42,6 +49,19 @@ public class MenuOptionsUI : MonoBehaviour
 	private void Hide()
     {
         gameObject.SetActive(false);
+    }
+
+    int IdentifyLenguage()
+    {
+        string l_atualLanguage = LocalizationManager.Language;
+        for (int i = 0; i < m_availableLenguages.Count; i++)
+        {
+            if (m_availableLenguages[i].Equals(l_atualLanguage))
+            {
+                return i;
+            }
+        }
+        return 0;
     }
 
 }

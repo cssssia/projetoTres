@@ -62,6 +62,174 @@ Transform:
   m_Children: []
   m_Father: {fileID: 2536676302831652671}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &2150936010392661864
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 684598659892934780}
+  - component: {fileID: 8137549465566098629}
+  m_Layer: 0
+  m_Name: Centipede_Stamp
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &684598659892934780
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2150936010392661864}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: 0.63652986, z: -0, w: 0.7712521}
+  m_LocalPosition: {x: -0.294, y: 0.005, z: 0.052}
+  m_LocalScale: {x: 0.07369722, y: 0.068890184, z: 0.054668017}
+  m_ConstrainProportionsScale: 1
+  m_Children: []
+  m_Father: {fileID: 2152985750009414240}
+  m_LocalEulerAnglesHint: {x: 0, y: 79.067, z: 0}
+--- !u!212 &8137549465566098629
+SpriteRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2150936010392661864}
+  m_Enabled: 1
+  m_CastShadows: 0
+  m_ReceiveShadows: 0
+  m_DynamicOccludee: 1
+  m_StaticShadowCaster: 0
+  m_MotionVectors: 1
+  m_LightProbeUsage: 1
+  m_ReflectionProbeUsage: 1
+  m_RayTracingMode: 0
+  m_RayTraceProcedural: 0
+  m_RenderingLayerMask: 1
+  m_RendererPriority: 0
+  m_Materials:
+  - {fileID: 2100000, guid: 0e51ba6bc49b470419d01b4d43455ce8, type: 2}
+  m_StaticBatchInfo:
+    firstSubMesh: 0
+    subMeshCount: 0
+  m_StaticBatchRoot: {fileID: 0}
+  m_ProbeAnchor: {fileID: 0}
+  m_LightProbeVolumeOverride: {fileID: 0}
+  m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
+  m_PreserveUVs: 0
+  m_IgnoreNormalsForChartDetection: 0
+  m_ImportantGI: 0
+  m_StitchLightmapSeams: 1
+  m_SelectedEditorRenderState: 0
+  m_MinimumChartSize: 4
+  m_AutoUVMaxDistance: 0.5
+  m_AutoUVMaxAngle: 89
+  m_LightmapParameters: {fileID: 0}
+  m_SortingLayerID: 0
+  m_SortingLayer: 0
+  m_SortingOrder: 0
+  m_Sprite: {fileID: 21300000, guid: d53066a29ff28004abd6885b10bcddcf, type: 3}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_FlipX: 0
+  m_FlipY: 0
+  m_DrawMode: 0
+  m_Size: {x: 1, y: 1}
+  m_AdaptiveModeThreshold: 0.5
+  m_SpriteTileMode: 0
+  m_WasSpriteAssigned: 1
+  m_MaskInteraction: 0
+  m_SpriteSortPoint: 0
+--- !u!1 &3070251540156288233
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2246901205064765257}
+  - component: {fileID: 4208799442023809195}
+  m_Layer: 0
+  m_Name: Cat_Stamp
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &2246901205064765257
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3070251540156288233}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: 0.63652986, z: -0, w: 0.7712521}
+  m_LocalPosition: {x: -0.285, y: 1.69, z: 0.049}
+  m_LocalScale: {x: 0.02670617, y: 0.031528734, z: 0.02773186}
+  m_ConstrainProportionsScale: 1
+  m_Children: []
+  m_Father: {fileID: 2152985750009414240}
+  m_LocalEulerAnglesHint: {x: 0, y: 79.067, z: 0}
+--- !u!212 &4208799442023809195
+SpriteRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3070251540156288233}
+  m_Enabled: 1
+  m_CastShadows: 0
+  m_ReceiveShadows: 0
+  m_DynamicOccludee: 1
+  m_StaticShadowCaster: 0
+  m_MotionVectors: 1
+  m_LightProbeUsage: 1
+  m_ReflectionProbeUsage: 1
+  m_RayTracingMode: 0
+  m_RayTraceProcedural: 0
+  m_RenderingLayerMask: 1
+  m_RendererPriority: 0
+  m_Materials:
+  - {fileID: 2100000, guid: d1b681da954878a4b8a61c1471842e00, type: 2}
+  m_StaticBatchInfo:
+    firstSubMesh: 0
+    subMeshCount: 0
+  m_StaticBatchRoot: {fileID: 0}
+  m_ProbeAnchor: {fileID: 0}
+  m_LightProbeVolumeOverride: {fileID: 0}
+  m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
+  m_PreserveUVs: 0
+  m_IgnoreNormalsForChartDetection: 0
+  m_ImportantGI: 0
+  m_StitchLightmapSeams: 1
+  m_SelectedEditorRenderState: 0
+  m_MinimumChartSize: 4
+  m_AutoUVMaxDistance: 0.5
+  m_AutoUVMaxAngle: 89
+  m_LightmapParameters: {fileID: 0}
+  m_SortingLayerID: 0
+  m_SortingLayer: 0
+  m_SortingOrder: 0
+  m_Sprite: {fileID: 21300000, guid: 367aaa0fa5891fc4995055679bbaad62, type: 3}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_FlipX: 0
+  m_FlipY: 0
+  m_DrawMode: 0
+  m_Size: {x: 1, y: 1}
+  m_AdaptiveModeThreshold: 0.5
+  m_SpriteTileMode: 0
+  m_WasSpriteAssigned: 1
+  m_MaskInteraction: 0
+  m_SpriteSortPoint: 0
 --- !u!1 &3293084080472488540
 GameObject:
   m_ObjectHideFlags: 0
@@ -956,7 +1124,7 @@ MonoBehaviour:
         m_RotationOrder: 0
       eventToInvokeOnStart: 
       eventToInvokeOnEnd: stakeImpact
-    - wait: 2
+    - wait: 4
       followObject: 0
       objectToFollow: {fileID: 0}
       followCurve:
@@ -1290,7 +1458,7 @@ MonoBehaviour:
         m_RotationOrder: 0
       eventToInvokeOnStart: 
       eventToInvokeOnEnd: stakeImpact
-    - wait: 2
+    - wait: 4
       followObject: 0
       objectToFollow: {fileID: 0}
       followCurve:
@@ -1355,7 +1523,7 @@ MonoBehaviour:
       eventToInvokeOnEnd: 
     index: 0
   hatchController: {fileID: 0}
-  stakeAnimator: {fileID: 0}
+  stakeAnimator: {fileID: 2722050659559165121}
 --- !u!1 &8098423207345626411
 GameObject:
   m_ObjectHideFlags: 0
@@ -1367,12 +1535,12 @@ GameObject:
   - component: {fileID: 6423918576663816776}
   - component: {fileID: 1665075865671772832}
   m_Layer: 0
-  m_Name: Square
+  m_Name: Owl_Stamp
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &6423918576663816776
 Transform:
   m_ObjectHideFlags: 0
@@ -1381,13 +1549,13 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8098423207345626411}
   serializedVersion: 2
-  m_LocalRotation: {x: -0, y: 0.6774694, z: -0, w: 0.735551}
-  m_LocalPosition: {x: -0.28900003, y: 2.151, z: 0.028999984}
-  m_LocalScale: {x: 0.03165015, y: 0.03165015, z: 0.03165015}
+  m_LocalRotation: {x: -0, y: 0.63652986, z: -0, w: 0.7712521}
+  m_LocalPosition: {x: -0.282, y: 2.1479, z: 0.034}
+  m_LocalScale: {x: 0.036280684, y: 0.036519095, z: 0.03165015}
   m_ConstrainProportionsScale: 1
   m_Children: []
   m_Father: {fileID: 2152985750009414240}
-  m_LocalEulerAnglesHint: {x: 0, y: 85.292, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 79.067, z: 0}
 --- !u!212 &1665075865671772832
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -1449,6 +1617,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2152985750009414240}
+  - component: {fileID: 2722050659559165121}
   m_Layer: 0
   m_Name: StakeParent
   m_TagString: Untagged
@@ -1471,8 +1640,673 @@ Transform:
   m_Children:
   - {fileID: 7956063664611748657}
   - {fileID: 6423918576663816776}
+  - {fileID: 2246901205064765257}
+  - {fileID: 278487543823572602}
+  - {fileID: 684598659892934780}
   m_Father: {fileID: 2634291536805388819}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &2722050659559165121
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8302664592096643788}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f2b8df11ee386994ca48269cbff650b9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  symbols:
+  - suit: 3
+    material: {fileID: 2100000, guid: 3445d4cfa8ded9c42857d56a3a0656f6, type: 2}
+    animData:
+    - setColor: 1
+      initialColor: {r: 1, g: 0, b: 0, a: 0}
+      finalColor: {r: 3.2111168, g: 0.16661458, b: 0.16661458, a: 1}
+      setEmission: 1
+      initialEmission: {r: 0.0007314641, g: 0.000037953334, b: 0.000037953334, a: 1}
+      finalEmission: {r: 3.2111168, g: 0.16661458, b: 0.16661458, a: 1}
+      animCurve:
+        serializedVersion: 2
+        m_Curve:
+        - serializedVersion: 3
+          time: 0
+          value: 0
+          inSlope: 2
+          outSlope: 2
+          tangentMode: 0
+          weightedMode: 0
+          inWeight: 0
+          outWeight: 0
+        - serializedVersion: 3
+          time: 1
+          value: 1
+          inSlope: 0
+          outSlope: 0
+          tangentMode: 0
+          weightedMode: 0
+          inWeight: 0
+          outWeight: 0
+        m_PreInfinity: 2
+        m_PostInfinity: 2
+        m_RotationOrder: 0
+      animTime: 0.5
+    - setColor: 1
+      initialColor: {r: 0, g: 0, b: 0, a: 0}
+      finalColor: {r: 3.2111168, g: 0.16661458, b: 0.16661458, a: 1}
+      setEmission: 1
+      initialEmission: {r: 0, g: 0, b: 0, a: 0}
+      finalEmission: {r: 3.2111168, g: 0.16661458, b: 0.16661458, a: 1}
+      animCurve:
+        serializedVersion: 2
+        m_Curve:
+        - serializedVersion: 3
+          time: 0
+          value: 1
+          inSlope: -4.64975
+          outSlope: -4.64975
+          tangentMode: 0
+          weightedMode: 0
+          inWeight: 0
+          outWeight: 0.064974315
+        - serializedVersion: 3
+          time: 0.17151001
+          value: 0.507594
+          inSlope: -0.055736974
+          outSlope: -0.055736974
+          tangentMode: 0
+          weightedMode: 0
+          inWeight: 0.33333334
+          outWeight: 0.6157671
+        - serializedVersion: 3
+          time: 0.38668317
+          value: 1.2001996
+          inSlope: 0.117847495
+          outSlope: 0.117847495
+          tangentMode: 0
+          weightedMode: 0
+          inWeight: 0.33333334
+          outWeight: 0.33333334
+        - serializedVersion: 3
+          time: 0.503764
+          value: 0.8593559
+          inSlope: -4.260879
+          outSlope: -4.260879
+          tangentMode: 0
+          weightedMode: 0
+          inWeight: 0.14751498
+          outWeight: 0.11480168
+        - serializedVersion: 3
+          time: 0.66353405
+          value: 0.6494866
+          inSlope: -0.02711535
+          outSlope: -0.02711535
+          tangentMode: 0
+          weightedMode: 0
+          inWeight: 0.33333334
+          outWeight: 0.35054284
+        - serializedVersion: 3
+          time: 1
+          value: 1
+          inSlope: -3.4184997
+          outSlope: -3.4184997
+          tangentMode: 0
+          weightedMode: 0
+          inWeight: 0.086155064
+          outWeight: 0
+        m_PreInfinity: 2
+        m_PostInfinity: 2
+        m_RotationOrder: 0
+      animTime: 2
+    - setColor: 1
+      initialColor: {r: 1, g: 0.051886804, b: 0.051886804, a: 1}
+      finalColor: {r: 1, g: 0, b: 0, a: 0}
+      setEmission: 1
+      initialEmission: {r: 3.2111168, g: 0.16661458, b: 0.16661458, a: 1}
+      finalEmission: {r: 0, g: 0, b: 0, a: 0}
+      animCurve:
+        serializedVersion: 2
+        m_Curve:
+        - serializedVersion: 3
+          time: 0
+          value: 0
+          inSlope: 2
+          outSlope: 2
+          tangentMode: 0
+          weightedMode: 0
+          inWeight: 0
+          outWeight: 0
+        - serializedVersion: 3
+          time: 1
+          value: 1
+          inSlope: 0
+          outSlope: 0
+          tangentMode: 0
+          weightedMode: 0
+          inWeight: 0
+          outWeight: 0
+        m_PreInfinity: 2
+        m_PostInfinity: 2
+        m_RotationOrder: 0
+      animTime: 0.5
+  - suit: 2
+    material: {fileID: 2100000, guid: d1b681da954878a4b8a61c1471842e00, type: 2}
+    animData:
+    - setColor: 1
+      initialColor: {r: 1, g: 0, b: 0, a: 0}
+      finalColor: {r: 3.2111168, g: 0.16661458, b: 0.16661458, a: 1}
+      setEmission: 1
+      initialEmission: {r: 0.0007314641, g: 0.000037953334, b: 0.000037953334, a: 1}
+      finalEmission: {r: 3.2111168, g: 0.16661458, b: 0.16661458, a: 1}
+      animCurve:
+        serializedVersion: 2
+        m_Curve:
+        - serializedVersion: 3
+          time: 0
+          value: 0
+          inSlope: 2
+          outSlope: 2
+          tangentMode: 0
+          weightedMode: 0
+          inWeight: 0
+          outWeight: 0
+        - serializedVersion: 3
+          time: 1
+          value: 1
+          inSlope: 0
+          outSlope: 0
+          tangentMode: 0
+          weightedMode: 0
+          inWeight: 0
+          outWeight: 0
+        m_PreInfinity: 2
+        m_PostInfinity: 2
+        m_RotationOrder: 0
+      animTime: 0.5
+    - setColor: 1
+      initialColor: {r: 0, g: 0, b: 0, a: 0}
+      finalColor: {r: 3.2111168, g: 0.16661458, b: 0.16661458, a: 1}
+      setEmission: 1
+      initialEmission: {r: 0, g: 0, b: 0, a: 0}
+      finalEmission: {r: 3.2111168, g: 0.16661458, b: 0.16661458, a: 1}
+      animCurve:
+        serializedVersion: 2
+        m_Curve:
+        - serializedVersion: 3
+          time: 0
+          value: 1
+          inSlope: -4.64975
+          outSlope: -4.64975
+          tangentMode: 0
+          weightedMode: 0
+          inWeight: 0
+          outWeight: 0.064974315
+        - serializedVersion: 3
+          time: 0.17151001
+          value: 0.507594
+          inSlope: -0.055736974
+          outSlope: -0.055736974
+          tangentMode: 0
+          weightedMode: 0
+          inWeight: 0.33333334
+          outWeight: 0.6157671
+        - serializedVersion: 3
+          time: 0.38668317
+          value: 1.2001996
+          inSlope: 0.117847495
+          outSlope: 0.117847495
+          tangentMode: 0
+          weightedMode: 0
+          inWeight: 0.33333334
+          outWeight: 0.33333334
+        - serializedVersion: 3
+          time: 0.503764
+          value: 0.8593559
+          inSlope: -4.260879
+          outSlope: -4.260879
+          tangentMode: 0
+          weightedMode: 0
+          inWeight: 0.14751498
+          outWeight: 0.11480168
+        - serializedVersion: 3
+          time: 0.66353405
+          value: 0.6494866
+          inSlope: -0.02711535
+          outSlope: -0.02711535
+          tangentMode: 0
+          weightedMode: 0
+          inWeight: 0.33333334
+          outWeight: 0.35054284
+        - serializedVersion: 3
+          time: 1
+          value: 1
+          inSlope: -3.4184997
+          outSlope: -3.4184997
+          tangentMode: 0
+          weightedMode: 0
+          inWeight: 0.086155064
+          outWeight: 0
+        m_PreInfinity: 2
+        m_PostInfinity: 2
+        m_RotationOrder: 0
+      animTime: 2
+    - setColor: 1
+      initialColor: {r: 1, g: 0.051886804, b: 0.051886804, a: 1}
+      finalColor: {r: 1, g: 0, b: 0, a: 0}
+      setEmission: 1
+      initialEmission: {r: 3.2111168, g: 0.16661458, b: 0.16661458, a: 1}
+      finalEmission: {r: 0, g: 0, b: 0, a: 0}
+      animCurve:
+        serializedVersion: 2
+        m_Curve:
+        - serializedVersion: 3
+          time: 0
+          value: 0
+          inSlope: 2
+          outSlope: 2
+          tangentMode: 0
+          weightedMode: 0
+          inWeight: 0
+          outWeight: 0
+        - serializedVersion: 3
+          time: 1
+          value: 1
+          inSlope: 0
+          outSlope: 0
+          tangentMode: 0
+          weightedMode: 0
+          inWeight: 0
+          outWeight: 0
+        m_PreInfinity: 2
+        m_PostInfinity: 2
+        m_RotationOrder: 0
+      animTime: 0.5
+  - suit: 1
+    material: {fileID: 2100000, guid: 9c8d09a627b20084babfb74cf79559e2, type: 2}
+    animData:
+    - setColor: 1
+      initialColor: {r: 1, g: 0, b: 0, a: 0}
+      finalColor: {r: 3.2111168, g: 0.16661458, b: 0.16661458, a: 1}
+      setEmission: 1
+      initialEmission: {r: 0.0007314641, g: 0.000037953334, b: 0.000037953334, a: 1}
+      finalEmission: {r: 3.2111168, g: 0.16661458, b: 0.16661458, a: 1}
+      animCurve:
+        serializedVersion: 2
+        m_Curve:
+        - serializedVersion: 3
+          time: 0
+          value: 0
+          inSlope: 2
+          outSlope: 2
+          tangentMode: 0
+          weightedMode: 0
+          inWeight: 0
+          outWeight: 0
+        - serializedVersion: 3
+          time: 1
+          value: 1
+          inSlope: 0
+          outSlope: 0
+          tangentMode: 0
+          weightedMode: 0
+          inWeight: 0
+          outWeight: 0
+        m_PreInfinity: 2
+        m_PostInfinity: 2
+        m_RotationOrder: 0
+      animTime: 0.5
+    - setColor: 1
+      initialColor: {r: 0, g: 0, b: 0, a: 0}
+      finalColor: {r: 3.2111168, g: 0.16661458, b: 0.16661458, a: 1}
+      setEmission: 1
+      initialEmission: {r: 0, g: 0, b: 0, a: 0}
+      finalEmission: {r: 3.2111168, g: 0.16661458, b: 0.16661458, a: 1}
+      animCurve:
+        serializedVersion: 2
+        m_Curve:
+        - serializedVersion: 3
+          time: 0
+          value: 1
+          inSlope: -4.64975
+          outSlope: -4.64975
+          tangentMode: 0
+          weightedMode: 0
+          inWeight: 0
+          outWeight: 0.064974315
+        - serializedVersion: 3
+          time: 0.17151001
+          value: 0.507594
+          inSlope: -0.055736974
+          outSlope: -0.055736974
+          tangentMode: 0
+          weightedMode: 0
+          inWeight: 0.33333334
+          outWeight: 0.6157671
+        - serializedVersion: 3
+          time: 0.38668317
+          value: 1.2001996
+          inSlope: 0.117847495
+          outSlope: 0.117847495
+          tangentMode: 0
+          weightedMode: 0
+          inWeight: 0.33333334
+          outWeight: 0.33333334
+        - serializedVersion: 3
+          time: 0.503764
+          value: 0.8593559
+          inSlope: -4.260879
+          outSlope: -4.260879
+          tangentMode: 0
+          weightedMode: 0
+          inWeight: 0.14751498
+          outWeight: 0.11480168
+        - serializedVersion: 3
+          time: 0.66353405
+          value: 0.6494866
+          inSlope: -0.02711535
+          outSlope: -0.02711535
+          tangentMode: 0
+          weightedMode: 0
+          inWeight: 0.33333334
+          outWeight: 0.35054284
+        - serializedVersion: 3
+          time: 1
+          value: 1
+          inSlope: -3.4184997
+          outSlope: -3.4184997
+          tangentMode: 0
+          weightedMode: 0
+          inWeight: 0.086155064
+          outWeight: 0
+        m_PreInfinity: 2
+        m_PostInfinity: 2
+        m_RotationOrder: 0
+      animTime: 2
+    - setColor: 1
+      initialColor: {r: 1, g: 0.051886804, b: 0.051886804, a: 1}
+      finalColor: {r: 1, g: 0, b: 0, a: 0}
+      setEmission: 1
+      initialEmission: {r: 3.2111168, g: 0.16661458, b: 0.16661458, a: 1}
+      finalEmission: {r: 0, g: 0, b: 0, a: 0}
+      animCurve:
+        serializedVersion: 2
+        m_Curve:
+        - serializedVersion: 3
+          time: 0
+          value: 0
+          inSlope: 2
+          outSlope: 2
+          tangentMode: 0
+          weightedMode: 0
+          inWeight: 0
+          outWeight: 0
+        - serializedVersion: 3
+          time: 1
+          value: 1
+          inSlope: 0
+          outSlope: 0
+          tangentMode: 0
+          weightedMode: 0
+          inWeight: 0
+          outWeight: 0
+        m_PreInfinity: 2
+        m_PostInfinity: 2
+        m_RotationOrder: 0
+      animTime: 0.5
+  - suit: 0
+    material: {fileID: 2100000, guid: 0e51ba6bc49b470419d01b4d43455ce8, type: 2}
+    animData:
+    - setColor: 1
+      initialColor: {r: 1, g: 0, b: 0, a: 0}
+      finalColor: {r: 3.2111168, g: 0.16661458, b: 0.16661458, a: 1}
+      setEmission: 1
+      initialEmission: {r: 0.0007314641, g: 0.000037953334, b: 0.000037953334, a: 1}
+      finalEmission: {r: 3.2111168, g: 0.16661458, b: 0.16661458, a: 1}
+      animCurve:
+        serializedVersion: 2
+        m_Curve:
+        - serializedVersion: 3
+          time: 0
+          value: 0
+          inSlope: 2
+          outSlope: 2
+          tangentMode: 0
+          weightedMode: 0
+          inWeight: 0
+          outWeight: 0
+        - serializedVersion: 3
+          time: 1
+          value: 1
+          inSlope: 0
+          outSlope: 0
+          tangentMode: 0
+          weightedMode: 0
+          inWeight: 0
+          outWeight: 0
+        m_PreInfinity: 2
+        m_PostInfinity: 2
+        m_RotationOrder: 0
+      animTime: 0.5
+    - setColor: 1
+      initialColor: {r: 0, g: 0, b: 0, a: 0}
+      finalColor: {r: 3.2111168, g: 0.16661458, b: 0.16661458, a: 1}
+      setEmission: 1
+      initialEmission: {r: 0, g: 0, b: 0, a: 0}
+      finalEmission: {r: 3.2111168, g: 0.16661458, b: 0.16661458, a: 1}
+      animCurve:
+        serializedVersion: 2
+        m_Curve:
+        - serializedVersion: 3
+          time: 0
+          value: 1
+          inSlope: -4.64975
+          outSlope: -4.64975
+          tangentMode: 0
+          weightedMode: 0
+          inWeight: 0
+          outWeight: 0.064974315
+        - serializedVersion: 3
+          time: 0.17151001
+          value: 0.507594
+          inSlope: -0.055736974
+          outSlope: -0.055736974
+          tangentMode: 0
+          weightedMode: 0
+          inWeight: 0.33333334
+          outWeight: 0.6157671
+        - serializedVersion: 3
+          time: 0.38668317
+          value: 1.2001996
+          inSlope: 0.117847495
+          outSlope: 0.117847495
+          tangentMode: 0
+          weightedMode: 0
+          inWeight: 0.33333334
+          outWeight: 0.33333334
+        - serializedVersion: 3
+          time: 0.503764
+          value: 0.8593559
+          inSlope: -4.260879
+          outSlope: -4.260879
+          tangentMode: 0
+          weightedMode: 0
+          inWeight: 0.14751498
+          outWeight: 0.11480168
+        - serializedVersion: 3
+          time: 0.66353405
+          value: 0.6494866
+          inSlope: -0.02711535
+          outSlope: -0.02711535
+          tangentMode: 0
+          weightedMode: 0
+          inWeight: 0.33333334
+          outWeight: 0.35054284
+        - serializedVersion: 3
+          time: 1
+          value: 1
+          inSlope: -3.4184997
+          outSlope: -3.4184997
+          tangentMode: 0
+          weightedMode: 0
+          inWeight: 0.086155064
+          outWeight: 0
+        m_PreInfinity: 2
+        m_PostInfinity: 2
+        m_RotationOrder: 0
+      animTime: 2
+    - setColor: 1
+      initialColor: {r: 1, g: 0.051886804, b: 0.051886804, a: 1}
+      finalColor: {r: 1, g: 0, b: 0, a: 0}
+      setEmission: 1
+      initialEmission: {r: 3.2111168, g: 0.16661458, b: 0.16661458, a: 1}
+      finalEmission: {r: 0, g: 0, b: 0, a: 0}
+      animCurve:
+        serializedVersion: 2
+        m_Curve:
+        - serializedVersion: 3
+          time: 0
+          value: 0
+          inSlope: 2
+          outSlope: 2
+          tangentMode: 0
+          weightedMode: 0
+          inWeight: 0
+          outWeight: 0
+        - serializedVersion: 3
+          time: 1
+          value: 1
+          inSlope: 0
+          outSlope: 0
+          tangentMode: 0
+          weightedMode: 0
+          inWeight: 0
+          outWeight: 0
+        m_PreInfinity: 2
+        m_PostInfinity: 2
+        m_RotationOrder: 0
+      animTime: 0.5
+  m_minMaxCustomHide: {x: -3.2, y: 1}
+  impactCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 2
+      outSlope: 2
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 0.75
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 1
+      value: -0
+      inSlope: -2.1946936
+      outSlope: -2.1946936
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.08832824
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  impactTime: 1.5
+  stakeMaterial: {fileID: 2100000, guid: e10ca54c12f2aee4b880f3a70f879cf6, type: 2}
+  DebugSuits: 
+--- !u!1 &8336611994124464968
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 278487543823572602}
+  - component: {fileID: 7851171000396521032}
+  m_Layer: 0
+  m_Name: Rat_Stamp
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &278487543823572602
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8336611994124464968}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: 0.63652986, z: -0, w: 0.7712521}
+  m_LocalPosition: {x: -0.283, y: 0.535, z: 0}
+  m_LocalScale: {x: 0.054757174, y: 0.068890184, z: 0.054668017}
+  m_ConstrainProportionsScale: 1
+  m_Children: []
+  m_Father: {fileID: 2152985750009414240}
+  m_LocalEulerAnglesHint: {x: 0, y: 79.067, z: 0}
+--- !u!212 &7851171000396521032
+SpriteRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8336611994124464968}
+  m_Enabled: 1
+  m_CastShadows: 0
+  m_ReceiveShadows: 0
+  m_DynamicOccludee: 1
+  m_StaticShadowCaster: 0
+  m_MotionVectors: 1
+  m_LightProbeUsage: 1
+  m_ReflectionProbeUsage: 1
+  m_RayTracingMode: 0
+  m_RayTraceProcedural: 0
+  m_RenderingLayerMask: 1
+  m_RendererPriority: 0
+  m_Materials:
+  - {fileID: 2100000, guid: 9c8d09a627b20084babfb74cf79559e2, type: 2}
+  m_StaticBatchInfo:
+    firstSubMesh: 0
+    subMeshCount: 0
+  m_StaticBatchRoot: {fileID: 0}
+  m_ProbeAnchor: {fileID: 0}
+  m_LightProbeVolumeOverride: {fileID: 0}
+  m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
+  m_PreserveUVs: 0
+  m_IgnoreNormalsForChartDetection: 0
+  m_ImportantGI: 0
+  m_StitchLightmapSeams: 1
+  m_SelectedEditorRenderState: 0
+  m_MinimumChartSize: 4
+  m_AutoUVMaxDistance: 0.5
+  m_AutoUVMaxAngle: 89
+  m_LightmapParameters: {fileID: 0}
+  m_SortingLayerID: 0
+  m_SortingLayer: 0
+  m_SortingOrder: 0
+  m_Sprite: {fileID: 21300000, guid: ced62a6d9bef9264e9a162d7b6a33fe5, type: 3}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_FlipX: 0
+  m_FlipY: 0
+  m_DrawMode: 0
+  m_Size: {x: 1, y: 1}
+  m_AdaptiveModeThreshold: 0.5
+  m_SpriteTileMode: 0
+  m_WasSpriteAssigned: 1
+  m_MaskInteraction: 0
+  m_SpriteSortPoint: 0
 --- !u!1001 &6652402721412731550
 PrefabInstance:
   m_ObjectHideFlags: 0

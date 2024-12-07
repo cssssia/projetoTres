@@ -45,6 +45,7 @@ public class HandItemAnimController : MonoBehaviour
         [NaughtyAttributes.AllowNesting, NaughtyAttributes.HideIf("followObject")] public float yPump;
         [NaughtyAttributes.AllowNesting, NaughtyAttributes.HideIf("followObject")] public AnimationCurve yPumpCurve;
 
+        [Space] public bool quaternionLerp;
         public Vector3 targetRotation;
         public float time;
         public AnimationCurve curve;
@@ -116,6 +117,7 @@ public class HandItemAnimController : MonoBehaviour
 
     List<AnimData> l_currentAnimData;
     Vector3 l_initPosition, l_initialRotation, l_tempPosition;
+    Quaternion l_initQuaternion, l_finalQuaternion;
     IEnumerator ExecuteAnimQueue(ObjectOnHandAnim p_object, int p_playerID, System.Action p_onEnd)
     {
         p_object.InitialPosition = p_object.ObjectTranform.position;
@@ -146,7 +148,9 @@ public class HandItemAnimController : MonoBehaviour
                 else l_initPosition = p_object.ObjectTranform.position;
             }
 
+            l_initQuaternion = p_object.ObjectTranform.localRotation;
             l_initialRotation = p_object.ObjectTranform.localRotation.eulerAngles;
+            l_finalQuaternion = Quaternion.Euler(l_currentAnimData[i].targetRotation);
 
             while (l_time <= l_maxTime && l_maxTime > 0)
             {
@@ -171,10 +175,12 @@ public class HandItemAnimController : MonoBehaviour
 
                 }
 
-
-                p_object.ObjectTranform.localRotation = Quaternion.Euler(Vector3.Lerp(l_initialRotation,
-                                                                    l_currentAnimData[i].targetRotation,
-                                                                    l_currentAnimData[i].curve.Evaluate(l_time / l_maxTime)));
+                if (l_currentAnimData[i].quaternionLerp)
+                    p_object.ObjectTranform.localRotation = Quaternion.Lerp(l_initQuaternion, l_finalQuaternion,
+                                                                            l_currentAnimData[i].curve.Evaluate(l_time / l_maxTime));
+                else p_object.ObjectTranform.localRotation = Quaternion.Euler(Vector3.Lerp(l_initialRotation,
+                                                                                    l_currentAnimData[i].targetRotation,
+                                                                                    l_currentAnimData[i].curve.Evaluate(l_time / l_maxTime)));
 
                 yield return null;
                 l_time += Time.deltaTime;

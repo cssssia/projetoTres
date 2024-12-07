@@ -34,17 +34,17 @@ public class StakeAnimator : MonoBehaviour
     public float impactTime;
     public Material stakeMaterial;
 
-    public void HighlightSymbols(List<Suit> p_suits)
+    public void HighlightSymbols(List<Suit> p_suits, bool p_debug = false)
     {
-        StartCoroutine(AnimImpact(p_suits));
+        StartCoroutine(AnimImpact(p_suits, p_debug));
     }
 
-    IEnumerator AnimImpact(List<Suit> p_suits)
+    IEnumerator AnimImpact(List<Suit> p_suits, bool p_debug)
     {
         float l_impactTime = 0f;
         while (l_impactTime < impactTime)
         {
-            stakeMaterial.SetFloat("_Custom_hide", Mathf.LerpUnclamped(m_minMaxCustomHide.y, m_minMaxCustomHide.x, l_impactTime / impactTime));
+            stakeMaterial.SetFloat("_CrackThickness", Mathf.LerpUnclamped(m_minMaxCustomHide.y, m_minMaxCustomHide.x, l_impactTime / impactTime));
 
             yield return null;
             l_impactTime += Time.deltaTime;
@@ -53,7 +53,7 @@ public class StakeAnimator : MonoBehaviour
         int l_animCount = 0;
         for (int i = 0; i < symbols.Length; i++)
         {
-            if (p_suits.Contains(symbols[i].suit))
+            if (true || p_suits.Contains(symbols[i].suit))
             {
                 if (l_animCount == 0) yield return StartCoroutine(HiglightAnim(symbols[i]));
                 else StartCoroutine(HiglightAnim(symbols[i]));
@@ -96,6 +96,6 @@ public class StakeAnimator : MonoBehaviour
     [NaughtyAttributes.Button]
     public void Debug_Highlight()
     {
-        HighlightSymbols(DebugSuits);
+        HighlightSymbols(DebugSuits, true);
     }
 }

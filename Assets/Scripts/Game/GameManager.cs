@@ -133,7 +133,7 @@ public class GameManager : NetworkBehaviour
 
     private void TurnManager_OnCardPlayed(object p_cardIndex, EventArgs e)
     {
-        Player l_playerType = CardsManager.Instance.GetCardByIndex((int)p_cardIndex).cardPlayer;
+        Player l_playerType = CardsManager.Instance.GetCardByIndex((int)p_cardIndex).playerId;
 
         if (RoundManager.Instance.RoundHasStarted.Value)
         {
@@ -256,7 +256,7 @@ public class GameManager : NetworkBehaviour
             case GameState.WaitingToStart:
                 break;
             case GameState.DealingCards:
-                CardsManager.Instance.DealPlayCardsServerRpc();
+                CardsManager.Instance.DealCardsServerRpc();
                 m_wonTrickPlayer = Player.DEFAULT;
 
                 if (debug_itemEveryRound && !CardsManager.Instance.BothPlayersHaveItem)
@@ -274,7 +274,7 @@ public class GameManager : NetworkBehaviour
                 else SetNextGameStateToPlayers();
                 break;
             case GameState.DealingItems:
-                CardsManager.Instance.DealItemsToPlayersServerRpc();
+                CardsManager.Instance.DealItemsServerRpc();
                 SetNextGameStateToPlayers();
                 break;
             case GameState.HostTurn:

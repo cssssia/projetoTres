@@ -50,9 +50,7 @@ public class CardsOnHandBehavior : MonoBehaviour
     CardBehavior l_card;
     public void AddCardOnHand(int p_cardIndex, bool p_lastCard)
     {
-        CardsManager.Instance.GetCardByIndex(p_cardIndex).cardNetworkObjectReference.TryGet(out NetworkObject l_cardNetworkObject);
-
-        l_cardNetworkObject.TryGetComponent(out l_card);
+        CardsManager.Instance.GetCardByIndex(p_cardIndex).gameObject.TryGetComponent(out l_card);
 
         if (m_cardsBehavior == null) m_cardsBehavior = new();
 
@@ -63,7 +61,6 @@ public class CardsOnHandBehavior : MonoBehaviour
         else m_cardsBehavior.Insert(0, l_card);
 
         l_card.SetCardData(CardsManager.Instance.GetCardByIndex(p_cardIndex));
-        // l_card.OnDestroyAction += RemoveNullCardsFromList;
 
         if (p_lastCard)
         {
@@ -72,14 +69,12 @@ public class CardsOnHandBehavior : MonoBehaviour
         }
     }
 
-    public void AddItemOnHand(Item p_item)
+    public void AddItemOnHand(int p_itemIndex)
     {
-        p_item.cardNetworkObjectReference.TryGet(out NetworkObject l_itemCardNetworkObject);
-
-        if (l_itemCardNetworkObject.TryGetComponent(out l_card))
+        Debug.Log("AddItemOnHand");
+        if (CardsManager.Instance.GetItemByIndex(p_itemIndex).gameObject.TryGetComponent(out l_card))
         {
-            l_card.SetCardData(p_item);
-            // l_card.OnDestroyAction += RemoveNullCardsFromList;
+            l_card.SetCardData(CardsManager.Instance.GetItemByIndex(p_itemIndex));
 
             m_cardsBehavior.Add(l_card);
         }
@@ -87,26 +82,6 @@ public class CardsOnHandBehavior : MonoBehaviour
         SetCardsIdlePosition(false);
         StartCoroutine(AnimSingleCardDeal(l_card, () => { RoundManager.Instance.OnEndedDealingItemServerRpc(m_player.PlayerIndex); }));
     }
-
-    // private void RemoveNullCardsFromList()
-    // {
-    //     if (m_player != null) StartCoroutine(IRemoveNullItensFromList());
-    // }
-
-    // IEnumerator IRemoveNullItensFromList()
-    // {
-    //     yield return null;
-    //     yield return null;
-    //     yield return null;
-    //     for (int i = m_cardsBehavior.Count - 1; i >= 0; i--)
-    //     {
-    //         if (m_cardsBehavior[i] == null)
-    //         {
-    //             m_cardsBehavior.RemoveAt(i);
-
-    //         }
-    //     }
-    // }
 
     [NaughtyAttributes.Button]
     public void DEBUG_SetCardsPOs()
@@ -161,8 +136,16 @@ public class CardsOnHandBehavior : MonoBehaviour
         l_tempCardsIDOnHand.Clear();
         for (int i = 0; i < m_cardsBehavior.Count; i++)
         {
-            if (m_cardsBehavior[i].item == null || m_cardsBehavior[i].item.Type is ItemType.NONE) l_tempCardsIDOnHand.Add(i);
-            else yield return m_cardsBehavior[i].AnimToIdlePos();
+            if (m_cardsBehavior[i].item == null || m_cardsBehavior[i].item.type is ItemType.NONE)
+            {
+                Debug.Log("null item none");
+                l_tempCardsIDOnHand.Add(i);
+            }
+            else
+            {
+                Debug.Log("else");
+                yield return m_cardsBehavior[i].AnimToIdlePos();
+            }
         }
 
         for (int i = 0; i < l_tempCardsIDOnHand.Count; i++)
@@ -178,6 +161,7 @@ public class CardsOnHandBehavior : MonoBehaviour
 
     IEnumerator AnimSingleCardDeal(CardBehavior p_card, Action p_actionOnEnd = null)
     {
+        Debug.Log("AnimSingleCardDeal");
         yield return p_card.AnimToIdlePos(CardAnimType.DEAL);
         p_actionOnEnd?.Invoke();
     }
@@ -266,7 +250,7 @@ public class CardsOnHandBehavior : MonoBehaviour
     }
 
     List<RaycastResult> m_resultList;
-    public void CheckClickUp(bool p_canPlay, Action<GameObject, bool, int> p_actionOnStartAnimation, Action<GameObject> p_actionOnEndAnimation,
+    public void CheckClickUp(bool p_canPlay, Action<int, bool> p_actionOnStartAnimation, Action<GameObject> p_actionOnEndAnimation,
                             Action<GameObject> p_actionOnEndItemAnim)
     {
         if (m_currentHoldingCard != null)
@@ -286,16 +270,16 @@ public class CardsOnHandBehavior : MonoBehaviour
                 {
                     if (m_resultList[i].gameObject == m_throwCardTargetImage.gameObject)
                     {
-                        if (m_currentHoldingCard.item == null || m_currentHoldingCard.item.Type == ItemType.NONE)
+                        if (m_currentHoldingCard.item == null || m_currentHoldingCard.item.type == ItemType.NONE)
                         {
-                            p_actionOnStartAnimation.Invoke(m_currentHoldingCard.gameObject, false, m_currentHoldingCard.card.cardIndexSO);
+                            p_actionOnStartAnimation.Invoke(m_currentHoldingCard.card.id, false);
                             PlayCard(m_currentHoldingCard, p_actionOnEndAnimation);
                             l_playCard = true;
                             m_throwCardTargetImage.gameObject.SetActive(false);
                         }
                         else
                         {
-                            p_actionOnStartAnimation.Invoke(m_currentHoldingCard.gameObject, true, m_currentHoldingCard.item.itemID);
+                            p_actionOnStartAnimation.Invoke(m_currentHoldingCard.item.id, true);
                             UseItem(m_currentHoldingCard, p_actionOnEndItemAnim);
                             l_playCard = true;
                             m_throwCardTargetImage.gameObject.SetActive(false);
@@ -338,7 +322,7 @@ public class CardsOnHandBehavior : MonoBehaviour
         {
             if (m_cardsBehavior[i].card == null) continue;
 
-            if (m_cardsBehavior[i].card.cardIndexSO == CardsManager.Instance.GetCardByIndex(p_cardID).cardIndexSO)
+            if (m_cardsBehavior[i].card == CardsManager.Instance.GetCardByIndex(p_cardID))
             {
                 // m_cardsBehavior[i].OnDestroyAction -= RemoveNullCardsFromList;
                 m_cardsBehavior.RemoveAt(i);
@@ -416,13 +400,13 @@ public class CardsOnHandBehavior : MonoBehaviour
     public void AnimCardCutPosition(Action<GameObject> p_actionOnEndAnim)
     {
         for (int i = 0; i < m_cardsBehavior.Count; i++)
-            if (m_cardsBehavior[i].item.Type is ItemType.NONE) m_cardsBehavior[i].AnimToCutPosition(i, p_actionOnEndAnim);
+            if (m_cardsBehavior[i].item.type is ItemType.NONE) m_cardsBehavior[i].AnimToCutPosition(i, p_actionOnEndAnim);
     }
 
     public void AnimCardDestroy()
     {
         for (int i = 0; i < m_cardsBehavior.Count; i++)
-            if (m_cardsBehavior[i].item.Type is ItemType.NONE) m_cardsBehavior[i].AnimCardDestroy();
+            if (m_cardsBehavior[i].item.type is ItemType.NONE) m_cardsBehavior[i].AnimCardDestroy();
 
     }
 
@@ -430,7 +414,7 @@ public class CardsOnHandBehavior : MonoBehaviour
     public void DEBUG_ResetDestroy()
     {
         for (int i = 0; i < m_cardsBehavior.Count; i++)
-            if (m_cardsBehavior[i].item.Type is ItemType.NONE) m_cardsBehavior[i].SetShaderHide(0f);
+            if (m_cardsBehavior[i].item.type is ItemType.NONE) m_cardsBehavior[i].SetShaderHide(0f);
 
     }
 }

@@ -691,7 +691,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!114 &71882712
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4681,28 +4681,34 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d7df2b94823a3c5498291cbd4ed00a9f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  <music>k__BackingField:
+  <Ambience>k__BackingField:
     Guid:
-      Data1: -1181399278
-      Data2: 1276568170
-      Data3: -1670273604
-      Data4: 462010733
-    Path: event:/Music/MainTheme
-  <ambience>k__BackingField:
+      Data1: 214872819
+      Data2: 1200009187
+      Data3: 215318440
+      Data4: -941899362
+    Path: "event:/Ambienta\xE7\xE3o Quarto/Ambience"
+  <PlayCard>k__BackingField:
     Guid:
-      Data1: -574293329
-      Data2: 1250656577
-      Data3: -1303306856
-      Data4: 1781133152
-    Path: event:/Ambience/CityAmbience
-  <buttonPressed>k__BackingField:
+      Data1: 1465209751
+      Data2: 1297372649
+      Data3: -1613170511
+      Data4: 1111045668
+    Path: event:/game/Actions/CARDS/Jogar carta/place card
+  <HoverCard>k__BackingField:
     Guid:
-      Data1: -1186300906
-      Data2: 1234032328
-      Data3: -194651258
-      Data4: 1538395110
-    Path: event:/UI/UIClick
-  test: test
+      Data1: 1972428642
+      Data2: 1192578882
+      Data3: 1124416959
+      Data4: 1582422468
+    Path: event:/game/Actions/CARDS/Selecionar carta/hover
+  <TurnCard>k__BackingField:
+    Guid:
+      Data1: -860401462
+      Data2: 1327094446
+      Data3: -644126020
+      Data4: -1430869273
+    Path: event:/game/Actions/FOLD/fold
 --- !u!1 &1815207241
 GameObject:
   m_ObjectHideFlags: 0

@@ -1,18 +1,21 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using FMODUnity;
 
 public class FMODEvents : Singleton<FMODEvents>
 {
-    [field: Header("Music")]
-    [field: SerializeField] public EventReference music { get; private set; }
+    // [field: Header("Music")]
+    // [field: SerializeField] public EventReference Music { get; private set; }
 
     [field: Header("Ambience")]
-    [field: SerializeField] public EventReference ambience { get; private set; }
+    [field: SerializeField] public EventReference Ambience { get; private set; }
 
-    [field: Header("Button Pressed SFX")]
-    [field: SerializeField] public EventReference buttonPressed { get; private set; }
+    [field: Header("Play Card SFX")]
+    [field: SerializeField] public EventReference PlayCard { get; private set; }
 
-    public string test = "test";
+    [field: Header("Hover Card SFX")]
+    [field: SerializeField] public EventReference HoverCard { get; private set; }
+
+    [field: Header("Turn Card SFX")]
+    [field: SerializeField] public EventReference TurnCard { get; private set; }
+
 }

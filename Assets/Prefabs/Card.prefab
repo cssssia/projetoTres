@@ -44,7 +44,6 @@ GameObject:
   - component: {fileID: 4962583754584604216}
   - component: {fileID: 1959226694205372338}
   - component: {fileID: 3163843079088258309}
-  - component: {fileID: 937226932739149441}
   m_Layer: 0
   m_Name: Card
   m_TagString: Card
@@ -174,15 +173,14 @@ MonoBehaviour:
   m_dragOffset: {x: 0, y: 0, z: 0}
   m_dragAnchor: {fileID: 4337514763748464840}
   card:
-    cardName: 
     cardValue: 0
-    cardSuit: 0
-    cardIndexSO: 0
-    cardPlayer: 0
+    cardSuit: 4
+    cardPlayer: 3
+    cardGameObject: {fileID: 0}
     playedCard: 0
   item:
     Type: 0
-    playerID: 0
+    playerID: 3
     itemID: 0
     isOnGame: 0
   m_destroyAnimCurve:
@@ -214,19 +212,3 @@ MonoBehaviour:
   Rotation: {x: 0, y: 0, z: 0}
   LocalRotation: {x: 0, y: 0, z: 0}
   playerPosition: {x: 0, y: 3.15, z: -7.2}
---- !u!114 &937226932739149441
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6693041384023231204}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  GlobalObjectIdHash: 951099334
-  AlwaysReplicateAsRoot: 0
-  DontDestroyWithOwner: 0
-  AutoObjectParentSync: 1

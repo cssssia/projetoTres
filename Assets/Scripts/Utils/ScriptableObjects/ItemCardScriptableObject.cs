@@ -2,8 +2,6 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public enum ItemType { NONE, SCISSORS, STAKE }
-
 [CreateAssetMenu(fileName = "Data", menuName = "ScriptableObjects/ItemsScriptableObject", order = 1)]
 
 public class ItemCardScriptableObject : ScriptableObject, ICardScriptableObject

@@ -1,5 +1,4 @@
-using System;
-using TMPro;
+using System.Collections.Generic;
 using Unity.Netcode;
 using UnityEngine;
 
@@ -10,8 +9,9 @@ public class MatchManager : NetworkBehaviour
 
     public NetworkVariable<bool> MatchHasEnded;
     public NetworkVariable<Player> WonMatch;
-    [SerializeField] private TextMeshPro m_pointsHost;
-    [SerializeField] private TextMeshPro m_pointsClient;
+
+    [SerializeField] private List<GameObject> m_pointsHost;
+    [SerializeField] private List<GameObject> m_pointsClient;
 
     void Awake()
     {
@@ -28,14 +28,18 @@ public class MatchManager : NetworkBehaviour
         if (IsOwner)
         {
             Debug.Log("IsOwner");
-            RoundManager.Instance.PointsHost.OnValueChanged += PointsHost_OnValueChanged;
-            RoundManager.Instance.PointsClient.OnValueChanged += PointsClient_OnValueChanged;
         }
+        RoundManager.Instance.PointsHost.OnValueChanged += PointsHost_OnValueChanged;
+        RoundManager.Instance.PointsClient.OnValueChanged += PointsClient_OnValueChanged;
     }
 
     private void PointsHost_OnValueChanged(int p_previousValue, int p_newValue)
     {
-        m_pointsHost.text = p_newValue.ToString();
+        // Debug.Log("b");
+        // for (int i = p_previousValue; i < p_newValue; i++)
+        // {
+        //     m_pointsHost[i].SetActive(true);
+        // }
 
         if (p_newValue >= matchEndValue)
             EndMatchServerRpc(Player.HOST);
@@ -43,7 +47,12 @@ public class MatchManager : NetworkBehaviour
 
     private void PointsClient_OnValueChanged(int p_previousValue, int p_newValue)
     {
-        m_pointsClient.text = p_newValue.ToString();
+
+        // Debug.Log("a");
+        // for (int i = p_previousValue; i < p_newValue; i++)
+        // {
+        //     m_pointsClient[i].SetActive(true);
+        // }
 
         if (p_newValue >= matchEndValue)
             EndMatchServerRpc(Player.CLIENT);

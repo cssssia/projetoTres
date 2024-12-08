@@ -58,9 +58,10 @@ Material:
     m_Ints: []
     m_Floats:
     - _Alpha: 0
+    - _AlphaClipThreshold: 1
     - _AlphaMultiplier: -0.55
     - _CrackPower: 28.83
-    - _CrackThickness: -3.4
+    - _CrackThickness: -3.1994343
     - _Custom_hide: -3
     - _Glow_thikines: 0
     - _Noise_scale: 138.62

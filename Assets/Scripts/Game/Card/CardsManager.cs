@@ -14,18 +14,19 @@ public class CardsManager : NetworkBehaviour
 
     [Header("Cards Lists")]
     public List<int> CardsOnGameList;
-    public List<int> DeckOnGameList;
     public List<Card> UsableDeckList;
     public List<Item> UsableItemsList;
 
     [Header("Cards")]
-    [SerializeField] private NetworkObject m_deckParent;
+    [SerializeField] private GameObject m_deckParent;
+    [SerializeField] private GameObject m_itemDeckParent;
     [SerializeField] private CardsScriptableObject m_cardsSO;
     [SerializeField] private ItemCardScriptableObject m_itemsSO;
 
     [Header("Items")]
     public List<bool> PlayersHaveItem = new List<bool> { false, false };
     public bool BothPlayersHaveItem => PlayersHaveItem[0] && PlayersHaveItem[1];
+    public ItemType spawnThisItem = ItemType.NONE;
 
     [Header("Targets")]
     [SerializeField] private List<CardTarget> m_targetsTranform;
@@ -43,13 +44,6 @@ public class CardsManager : NetworkBehaviour
     {
         Debug.Log($"{(Player)OwnerClientId} at OnNetworkSpawnCardsManager - IsClient: {IsClient}, IsHost: {IsHost}, IsServer: {IsServer}, IsOwner: {IsOwner}");
 
-        DeckOnGameList = new List<int>();
-
-        if (IsServer)
-        {
-            SelectUsableCardsInSO();
-            SpawnItems();
-        }
         SetCardTargets();
         SetItemTargets();
 
@@ -69,328 +63,6 @@ public class CardsManager : NetworkBehaviour
         ItemTarget = new(m_itemTargetTranform.position, m_itemTargetTranform.rotation.eulerAngles, m_itemTargetTranform.localScale);
     }
 
-    void SelectUsableCardsInSO()
-    {
-        for (int i = 0; i < m_cardsSO.deck.Count; i++)
-        {
-            if (m_cardsSO.deck[i].value == 0)
-                continue;
-
-            SpawnCardServerRpc(i);
-        }
-    }
-
-    void SpawnItems()
-    {
-        for (int i = 0; i < m_itemsSO.initialItems.Length; i++)
-        {
-            SpawnItemCardServerRpc(m_itemsSO.initialItems[i]);
-        }
-    }
-
-    [ServerRpc]
-    public void DealPlayCardsServerRpc()
-    {
-        Debug.Log("[GAME] Spawn Cards");
-
-        for (int i = 0; i < 3 * MultiplayerManager.MAX_PLAYER_AMOUNT; i++)
-        {
-            int l_rand = UnityEngine.Random.Range(0, DeckOnGameList.Count);
-            SetPlayerUsableDeckClientRpc(DeckOnGameList[l_rand], (Player)(i % 2));
-            bool l_lastCartd = (Player)(i % 2) == Player.HOST ? i == 4 : i == 5;
-            DealOneCardClientRpc(DeckOnGameList[l_rand], l_lastCartd);
-        }
-    }
-
-    [ClientRpc]
-    void DealOneCardClientRpc(int p_cardIndex, bool p_isLastCard)
-    {
-        DeckOnGameList.Remove(p_cardIndex);
-        CardsOnGameList.Add(p_cardIndex);
-        OnAddCardToMyHand?.Invoke((p_cardIndex, p_isLastCard), EventArgs.Empty);
-    }
-
-    [ServerRpc]
-    void SpawnCardServerRpc(int p_indexSO)
-    {
-        GameObject l_newCard = Instantiate(m_cardsSO.Prefab, m_cardsSO.InitialPosition, Quaternion.Euler(m_cardsSO.InitialRotation));
-        NetworkObject l_cardNetworkObject = l_newCard.GetComponent<NetworkObject>();
-        l_cardNetworkObject.Spawn(true);
-
-        BuildCardServerRpc(l_cardNetworkObject, p_indexSO);
-    }
-
-    [ServerRpc]
-    void BuildCardServerRpc(NetworkObjectReference p_cardNetworkObjectReference, int p_cardIndexSO) //for a pattern, maybe ? (the tutorial guy does it)
-    {
-        BuildCardClientRpc(p_cardNetworkObjectReference, p_cardIndexSO);
-    }
-
-    [ClientRpc]
-    void BuildCardClientRpc(NetworkObjectReference p_cardNetworkObjectReference, int p_cardIndexSO)
-    {
-        p_cardNetworkObjectReference.TryGet(out NetworkObject l_cardNetworkObject);
-        l_cardNetworkObject.name = m_cardsSO.deck[p_cardIndexSO].name;
-        l_cardNetworkObject.GetComponent<MeshRenderer>().material = m_cardsSO.deck[p_cardIndexSO].material;
-        l_cardNetworkObject.TrySetParent(m_deckParent, true);
-
-        Card l_usableCard = new(m_cardsSO.deck[p_cardIndexSO].name, m_cardsSO.deck[p_cardIndexSO].value, p_cardIndexSO, p_cardNetworkObjectReference);
-
-        UsableDeckList.Add(l_usableCard);
-        DeckOnGameList.Add(UsableDeckList.Count - 1);
-    }
-
-    [ServerRpc]
-    public void DealItemsToPlayersServerRpc()
-    {
-        DealItemsToPlayersClientRpc();
-    }
-
-    [ClientRpc]
-    public void DealItemsToPlayersClientRpc()
-    {
-        ItemType l_randomItem = ItemType.STAKE;//randomize it
-
-        if (!PlayersHaveItem[0])
-        {
-            PlayersHaveItem[0] = true;
-            OnAddItemCardToMyHand.Invoke((l_randomItem, 0), EventArgs.Empty);
-        }
-        if (!PlayersHaveItem[1])
-        {
-            PlayersHaveItem[1] = true;
-            OnAddItemCardToMyHand.Invoke((l_randomItem, 1), EventArgs.Empty);
-        }
-    }
-
-    [ServerRpc]
-    void SpawnItemCardServerRpc(ItemType p_itemType)
-    {
-        GameObject l_newCard = Instantiate(m_itemsSO.Prefab, m_itemsSO.InitialPosition, Quaternion.Euler(m_itemsSO.InitialRotation));
-        NetworkObject l_cardNetworkObject = l_newCard.GetComponent<NetworkObject>();
-        l_cardNetworkObject.Spawn(true);
-
-        BuildItemCardServerRpc(l_cardNetworkObject, p_itemType);
-    }
-
-    [ServerRpc]
-    void BuildItemCardServerRpc(NetworkObjectReference p_cardNetworkObjectReference, ItemType p_itemType) //for a pattern, maybe ? (the tutorial guy does it)
-    {
-        BuildItemCardClientRpc(p_cardNetworkObjectReference, p_itemType);
-    }
-
-    [ClientRpc]
-    void BuildItemCardClientRpc(NetworkObjectReference p_cardNetworkObjectReference, ItemType p_itemType)
-    {
-        p_cardNetworkObjectReference.TryGet(out NetworkObject l_cardNetworkObject);
-        l_cardNetworkObject.name = m_itemsSO.GetItemConfig(p_itemType).objectName;
-        l_cardNetworkObject.GetComponent<MeshRenderer>().material = m_itemsSO.GetItemConfig(p_itemType).material;
-        l_cardNetworkObject.TrySetParent(m_deckParent, true);
-
-        Item l_usableCard = new(p_itemType, p_cardNetworkObjectReference, Player.DEFAULT, UsableItemsList != null && UsableItemsList.Count > 0
-                                                                            ? UsableItemsList.Count : 0);
-
-        if (UsableItemsList == null) UsableItemsList = new();
-        UsableItemsList.Add(l_usableCard);
-    }
-
-    private void OnItemUsed(object p_itemIndex, EventArgs p_args)
-    {
-        Debug.Log($"{(Player)OwnerClientId} at OnItemUsed - IsClient: {IsClient}, IsHost: {IsHost}, IsServer: {IsServer}, IsOwner: {IsOwner}");
-
-        int l_itemID = (int)p_itemIndex;
-        PlayersHaveItem[(int)UsableItemsList[l_itemID].playerID] = false;
-    }
-
-    [ServerRpc(RequireOwnership = false)]
-    public void UseItemServerRpc(int p_itemIndex)
-    {
-        Debug.Log("UseItemServerRpc");
-        switch (UsableItemsList[p_itemIndex].Type)
-        {
-            case ItemType.NONE:
-                break;
-            case ItemType.SCISSORS:
-                Debug.Log("SCISSORS");
-                UseScissorServerRpc(UsableItemsList[p_itemIndex].playerID);
-                break;
-            case ItemType.STAKE:
-                UseStakeServerRpc(UsableItemsList[p_itemIndex].playerID);
-                break;
-        }
-
-    }
-
-    public List<int> l_cardsToRemove = new List<int>();
-    [ServerRpc(RequireOwnership = false)]
-    public void UseScissorServerRpc(Player p_playerId)
-    {
-        Card l_card;
-
-        if (l_cardsToRemove == null) l_cardsToRemove = new();
-        else l_cardsToRemove.Clear();
-
-        for (int i = 0; i < CardsOnGameList.Count; i++)
-        {
-            l_card = GetCardByIndex(CardsOnGameList[i]);
-            if (l_card.cardPlayer == p_playerId && !l_card.playedCard) l_cardsToRemove.Add(CardsOnGameList[i]);
-        }
-
-        int l_quantityOfCardsRemoved = l_cardsToRemove.Count;
-
-        for (int i = CardsOnGameList.Count - 1; i >= 0; i--)
-        {
-            for (int j = 0; j < l_cardsToRemove.Count; j++)
-            {
-                if (CardsOnGameList[i] == l_cardsToRemove[j])
-                {
-                    int l_cardID = CardsOnGameList[i];
-                    RemoveCardClientRpc(l_cardID);
-                    SoftResetCardServerRpc(l_cardID);
-
-                    break;
-                }
-            }
-        }
-
-        for (int i = 0; i < l_quantityOfCardsRemoved; i++)
-        {
-            int l_rand = UnityEngine.Random.Range(0, DeckOnGameList.Count);
-
-            SetPlayerUsableDeckClientRpc(DeckOnGameList[l_rand], p_playerId);
-            DealOneCardClientRpc(DeckOnGameList[l_rand], i + 1 == l_quantityOfCardsRemoved);
-        }
-
-        SetHasItemClientRpc((int)p_playerId, false);
-    }
-
-    [ServerRpc(RequireOwnership = false)]
-    public void UseStakeServerRpc(Player p_playerId)
-    {
-        Debug.Log("UseStakeServerRpc");
-        InformPlayerClientRpc((int)p_playerId);
-        SetHasItemClientRpc((int)p_playerId, false);
-    }
-
-    [ClientRpc]
-    private void SetHasItemClientRpc(int p_playerIndex, bool p_hasItem)
-    {
-        PlayersHaveItem[p_playerIndex] = p_hasItem;
-    }
-
-    Card l_card;
-    [ClientRpc]
-    private void InformPlayerClientRpc(int p_playerId)
-    {
-        Debug.Log("InformPlayerClientRpc" + PlayerController.LocalInstance.PlayerIndex + " " + p_playerId);
-        if (p_playerId == PlayerController.LocalInstance.PlayerIndex)
-        {
-            for (int i = 0; i < CardsOnGameList.Count; i++)
-            {
-                l_card = GetCardByIndex(CardsOnGameList[i]);
-                if (l_card.cardPlayer != (Player)p_playerId && !l_card.playedCard)
-                {
-                    Debug.Log("adversary suit: " + l_card.cardSuit);
-                }
-            }
-        }
-    }
-
-    public void GetOtherPlayerSuits(int p_playerRequired, ref List<Suit> p_suits)
-    {
-        p_suits.Clear();
-        for (int i = 0; i < CardsOnGameList.Count; i++)
-        {
-            l_card = GetCardByIndex(CardsOnGameList[i]);
-            if (l_card.cardPlayer != (Player)p_playerRequired && !l_card.playedCard)
-            {
-                if (!p_suits.Contains(l_card.cardSuit)) p_suits.Add(l_card.cardSuit);
-            }
-        }
-    }
-
-    [ClientRpc]
-    private void RemoveCardClientRpc(int p_cardIndex)
-    {
-        for (int i = 0; i < CardsOnGameList.Count; i++)
-        {
-            if (CardsOnGameList[i] == p_cardIndex)
-            {
-                OnRemoveCardFromMyHand?.Invoke(p_cardIndex, EventArgs.Empty);
-                CardsOnGameList.RemoveAt(i);
-
-                break;
-            }
-        }
-    }
-
-    [ClientRpc]
-    public void SetPlayerUsableDeckClientRpc(int p_cardIndex, Player p_player)
-    {
-        GetCardByIndex(p_cardIndex).cardPlayer = p_player;
-    }
-
-    [ClientRpc]
-    public void SetPlayedCardUsableDeckClientRpc(int p_cardIndex, bool p_playedCard)
-    {
-        GetCardByIndex(p_cardIndex).playedCard = p_playedCard;
-    }
-
-    [ClientRpc]
-    public void SetDeckAsCardParentClientRpc(int p_cardIndex)
-    {
-        GetCardByIndex(p_cardIndex).cardNetworkObjectReference.TryGet(out NetworkObject l_cardNetworkObject);
-        l_cardNetworkObject.transform.SetPositionAndRotation(m_cardsSO.InitialPosition, Quaternion.Euler(m_cardsSO.InitialRotation));
-        l_cardNetworkObject.TrySetParent(m_deckParent, true);
-    }
-
-    public void RemoveCardsFromGame()
-    {
-        for (int i = CardsOnGameList.Count - 1; i >= 0; i--)
-        {
-            ResetCardServerRpc(CardsOnGameList[i]);
-        }
-    }
-
-    [ClientRpc]
-    public void AddCardToDeckClientRpc(int p_cardIndex)
-    {
-        CardsOnGameList.Remove(p_cardIndex);
-        DeckOnGameList.Add(p_cardIndex);
-    }
-
-    [ServerRpc]
-    public void ResetCardServerRpc(int p_cardIndex)
-    {
-        SetPlayerUsableDeckClientRpc(p_cardIndex, Player.DEFAULT);
-        SetPlayedCardUsableDeckClientRpc(p_cardIndex, false);
-        SetDeckAsCardParentClientRpc(p_cardIndex);
-
-        AddCardToDeckClientRpc(p_cardIndex);
-
-        if (m_softResetedCards.Count > 0)
-        {
-            for (int i = 0; i < m_softResetedCards.Count; i++)
-            {
-                AddCardToDeckClientRpc(m_softResetedCards[i]);
-            }
-
-            m_softResetedCards.Clear();
-        }
-
-    }
-
-    List<int> m_softResetedCards = new List<int>();
-    [ServerRpc]
-    public void SoftResetCardServerRpc(int p_cardIndex)
-    {
-        SetPlayerUsableDeckClientRpc(p_cardIndex, Player.DEFAULT);
-        SetPlayedCardUsableDeckClientRpc(p_cardIndex, false);
-        SetDeckAsCardParentClientRpc(p_cardIndex);
-
-        m_softResetedCards.Add(p_cardIndex);
-    }
-
     public CardTransform GetCardTargetByIndex(int p_index, int p_playerType)
     {
         for (int i = 0; i < m_targets.Count; i++)
@@ -399,6 +71,117 @@ public class CardsManager : NetworkBehaviour
         }
 
         return null;
+    }
+
+    [ServerRpc]
+    public void DealCardsServerRpc()
+    {
+        Debug.Log("[GAME] Deal Cards");
+
+        for (int i = 0; i < 3 * MultiplayerManager.MAX_PLAYER_AMOUNT; i++)
+        {
+            int l_rand;
+
+            do
+            {
+               l_rand = UnityEngine.Random.Range(0, UsableDeckList.Count);
+            }
+            while (GetCardByIndex(l_rand).playerId != Player.DEFAULT);
+
+            bool l_lastCartd = (Player)(i % 2) == Player.HOST ? i == 4 : i == 5;
+            DealCardsClientRpc(l_rand, (Player)(i % 2), l_lastCartd);
+        }
+    }
+
+    [ServerRpc]
+    public void DealItemsServerRpc()
+    {
+        for (int i = 0; i < MultiplayerManager.MAX_PLAYER_AMOUNT; i++)
+        {
+            int l_randomItem;
+
+            if (spawnThisItem == ItemType.SCISSORS)
+            {
+                do
+                {
+                    l_randomItem = UnityEngine.Random.Range(0, UsableItemsList.Count);
+                }
+                while (GetItemByIndex(l_randomItem).playerId != Player.DEFAULT || GetItemByIndex(l_randomItem).type != ItemType.SCISSORS);
+            }
+            else if (spawnThisItem == ItemType.STAKE)
+            {
+                do
+                {
+                    l_randomItem = UnityEngine.Random.Range(0, UsableItemsList.Count);
+                }
+                while (GetItemByIndex(l_randomItem).playerId != Player.DEFAULT || GetItemByIndex(l_randomItem).type != ItemType.STAKE);
+            }
+            else
+            {
+                do
+                {
+                    l_randomItem = UnityEngine.Random.Range(0, UsableItemsList.Count);
+                }
+                while (GetItemByIndex(l_randomItem).playerId != Player.DEFAULT);
+            }
+
+            DealItemsClientRpc(l_randomItem, i);
+        }
+    }
+
+    [ClientRpc]
+    public void DealCardsClientRpc(int p_cardIndex, Player p_playerId, bool p_isLastCard = false)
+    {
+        GetCardByIndex(p_cardIndex).playerId = p_playerId;
+
+        if (p_playerId != Player.DEFAULT)
+        {
+            CardsOnGameList.Add(p_cardIndex);
+            SetCardOnGame(p_cardIndex, true);
+            OnAddCardToMyHand?.Invoke((p_cardIndex, p_isLastCard), EventArgs.Empty);
+        }
+        else
+        {
+            CardsOnGameList.Remove(p_cardIndex);
+            SetCardOnGame(p_cardIndex, false);
+            SetDeckAsCardParent(p_cardIndex);
+            OnRemoveCardFromMyHand?.Invoke(p_cardIndex, EventArgs.Empty);
+        }
+    }
+
+    [ClientRpc]
+    public void DealItemsClientRpc(int p_itemIndex, int p_playerIndex)
+    {
+        if (!PlayersHaveItem[p_playerIndex])
+        {
+            PlayersHaveItem[p_playerIndex] = true;
+            GetItemByIndex(p_itemIndex).playerId = (Player)p_playerIndex;
+            OnAddItemCardToMyHand.Invoke((p_itemIndex, p_playerIndex), EventArgs.Empty);
+        }
+    }
+
+    [ClientRpc]
+    public void SetCardOnGameClientRpc(int p_cardIndex, bool p_playedCard)
+    {
+        SetCardOnGame(p_cardIndex, p_playedCard);
+    }
+
+    void SetCardOnGame(int p_cardIndex, bool p_playedCard)
+    {
+        GetCardByIndex(p_cardIndex).isOnGame = p_playedCard;
+    }
+
+    void SetDeckAsCardParent(int p_cardIndex)
+    {
+        GameObject l_cardGameObject = GetCardByIndex(p_cardIndex).gameObject;
+        l_cardGameObject.transform.SetPositionAndRotation(m_cardsSO.InitialPosition, Quaternion.Euler(m_cardsSO.InitialRotation));
+        l_cardGameObject.transform.SetParent(m_deckParent.transform, true);
+    }
+
+    [ClientRpc]
+    private void SetHasItemClientRpc(int p_playerIndex, bool p_hasItem)
+    {
+        PlayersHaveItem[p_playerIndex] = p_hasItem;
     }
 
     public Card GetCardByIndex(int p_index)
@@ -411,23 +194,18 @@ public class CardsManager : NetworkBehaviour
         return UsableItemsList[p_index];
     }
 
-    public Item GetItemNetworkObject(ItemType p_itemType, Player p_playerdId)
+    public void RemoveCardsFromGame()
     {
-        //bool l_found = false;
-
-        for (int i = 0; i < UsableItemsList.Count; i++)
+        for (int i = CardsOnGameList.Count - 1; i >= 0; i--)
         {
-            if (UsableItemsList[i].Type == p_itemType && /*!UsableItemsList[i].isOnGame*/UsableItemsList[i].playerID == Player.DEFAULT)
-            {
-                UsableItemsList[i].playerID = p_playerdId;
-                return UsableItemsList[i];
-                //break;
-            }
+            ResetCardServerRpc(CardsOnGameList[i]);
         }
+    }
 
-        return null;
-        //if (!l_found) SpawnItemCardServerRpc(p_itemType);
-        //StartCoroutine(WaitItemSpawn(p_itemType, p_onSpawn));
+    [ServerRpc]
+    public void ResetCardServerRpc(int p_cardIndex)
+    {
+        DealCardsClientRpc(p_cardIndex, Player.DEFAULT);
     }
 
     [ServerRpc(RequireOwnership = false)]
@@ -440,28 +218,124 @@ public class CardsManager : NetworkBehaviour
     public void ResetItemClientRpc(int p_itemID)
     {
         UsableItemsList[p_itemID].ResetItem();
-        UsableItemsList[p_itemID].cardNetworkObjectReference.TryGet(out NetworkObject l_cardNetworkObject);
-        l_cardNetworkObject.transform.SetPositionAndRotation(m_itemsSO.InitialPosition, Quaternion.Euler(m_itemsSO.InitialRotation));
-        l_cardNetworkObject.TrySetParent(m_deckParent, true);
+        UsableItemsList[p_itemID].gameObject.transform.SetPositionAndRotation(m_itemsSO.InitialPosition, Quaternion.Euler(m_itemsSO.InitialRotation));
+        UsableItemsList[p_itemID].gameObject.transform.SetParent(m_itemDeckParent.transform, true);
     }
 
-    //IEnumerator WaitItemSpawn(ItemType p_itemType, Action<Item> p_onSpawn)
-    //{
-    //    bool l_found = false;
-    //    while (!l_found)
-    //    {
-    //        for (int i = 0; i < UsableItemsList.Count; i++)
-    //        {
-    //            if (UsableItemsList[i].Type == p_itemType && !UsableItemsList[i].isOnGame)
-    //            {
-    //                p_onSpawn?.Invoke(UsableItemsList[i]);
-    //                l_found = true;
-    //                break;
-    //            }
-    //        }
+    /// <summary>
+    /// About Items Use
+    /// </summary>
+    /// 
+    private void OnItemUsed(object p_itemIndex, EventArgs p_args)
+    {
+        Debug.Log($"{(Player)OwnerClientId} at OnItemUsed - IsClient: {IsClient}, IsHost: {IsHost}, IsServer: {IsServer}, IsOwner: {IsOwner}");
 
-    //        if (l_found) break;
-    //        else yield return null;
-    //    }
-    //}
+        int l_itemID = (int)p_itemIndex;
+        PlayersHaveItem[(int)UsableItemsList[l_itemID].playerId] = false;
+    }
+
+    [ServerRpc(RequireOwnership = false)]
+    public void UseItemServerRpc(int p_itemIndex)
+    {
+        Debug.Log("UseItemServerRpc");
+        switch (UsableItemsList[p_itemIndex].type)
+        {
+            case ItemType.NONE:
+                break;
+            case ItemType.SCISSORS:
+                UseScissorServerRpc(UsableItemsList[p_itemIndex].playerId);
+                break;
+            case ItemType.STAKE:
+                UseStakeServerRpc(UsableItemsList[p_itemIndex].playerId);
+                break;
+        }
+
+    }
+
+    List<int> l_cardsToRemove = new List<int>();
+    [ServerRpc(RequireOwnership = false)]
+    public void UseScissorServerRpc(Player p_playerId)
+    {
+        Card l_card;
+
+        if (l_cardsToRemove == null) l_cardsToRemove = new();
+        else l_cardsToRemove.Clear();
+
+        for (int i = 0; i < CardsOnGameList.Count; i++)
+        {
+            l_card = GetCardByIndex(CardsOnGameList[i]);
+            if (l_card.playerId == p_playerId && l_card.isOnGame) l_cardsToRemove.Add(CardsOnGameList[i]);
+        }
+
+        int l_quantityOfCardsRemoved = l_cardsToRemove.Count;
+
+        for (int i = CardsOnGameList.Count - 1; i >= 0; i--)
+        {
+            for (int j = 0; j < l_cardsToRemove.Count; j++)
+            {
+                if (CardsOnGameList[i] == l_cardsToRemove[j])
+                {
+                    int l_cardID = CardsOnGameList[i];
+                    ResetCardServerRpc(l_cardID);
+
+                    break;
+                }
+            }
+        }
+
+        for (int i = 0; i < l_quantityOfCardsRemoved; i++)
+        {
+            int l_rand;
+            do
+            {
+                l_rand = UnityEngine.Random.Range(0, UsableDeckList.Count);
+            }
+            while (l_quantityOfCardsRemoved == 1 ? l_rand == l_cardsToRemove[0]
+                    : l_quantityOfCardsRemoved == 2 ? l_rand == l_cardsToRemove[0] || l_rand == l_cardsToRemove[1]
+                    : l_rand == l_cardsToRemove[0] || l_rand == l_cardsToRemove[1] || l_rand == l_cardsToRemove[2]);
+
+            DealCardsClientRpc(l_rand, p_playerId, i + 1 == l_quantityOfCardsRemoved);
+        }
+
+        SetHasItemClientRpc((int)p_playerId, false);
+    }
+
+    [ServerRpc(RequireOwnership = false)]
+    public void UseStakeServerRpc(Player p_playerId)
+    {
+        Debug.Log("UseStakeServerRpc");
+        InformPlayerClientRpc((int)p_playerId);
+        SetHasItemClientRpc((int)p_playerId, false);
+    }
+    Card l_card;
+    [ClientRpc]
+    private void InformPlayerClientRpc(int p_playerId)
+    {
+        Debug.Log("InformPlayerClientRpc" + PlayerController.LocalInstance.PlayerIndex + " " + p_playerId);
+        if (p_playerId == PlayerController.LocalInstance.PlayerIndex)
+        {
+            for (int i = 0; i < CardsOnGameList.Count; i++)
+            {
+                l_card = GetCardByIndex(CardsOnGameList[i]);
+                if (l_card.playerId != (Player)p_playerId && l_card.isOnGame)
+                {
+                    Debug.Log("adversary suit: " + l_card.suit);
+                }
+            }
+        }
+    }
+
+    public void GetOtherPlayerSuits(int p_playerRequired, ref List<Suit> p_suits)
+    {
+        p_suits.Clear();
+        for (int i = 0; i < CardsOnGameList.Count; i++)
+        {
+            l_card = GetCardByIndex(CardsOnGameList[i]);
+            if (l_card.playerId != (Player)p_playerRequired && l_card.isOnGame)
+            {
+                if (!p_suits.Contains(l_card.suit)) p_suits.Add(l_card.suit);
+            }
+        }
+    }
+
 }

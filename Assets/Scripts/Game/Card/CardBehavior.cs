@@ -153,6 +153,7 @@ public class CardBehavior : MonoBehaviour
     {
         if (m_currentAnim != null) StopCoroutine(m_currentAnim);
 
+        AudioManager.Instance.PlayOneShot(FMODEvents.Instance.HoverCard, transform.position);
         m_currentAnim = StartCoroutine(IAnimateToPlace(m_individualHighlightCardTranform, m_hoverCardAnim, CardAnimType.HIGHLIGHT));
     }
 
@@ -271,6 +272,7 @@ public class CardBehavior : MonoBehaviour
 
     public void PlayCard(CardTransform p_targetTransform, Action<GameObject> p_onFinishAnim)
     {
+        AudioManager.Instance.PlayOneShot(FMODEvents.Instance.PlayCard, transform.position);
         AnimateToPlace(p_targetTransform, CardAnimType.PLAY, p_onFinishAnim);
     }
 

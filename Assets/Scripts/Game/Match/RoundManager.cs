@@ -22,7 +22,6 @@ public class RoundManager : NetworkBehaviour
     public NetworkVariable<int> BetAsked;
 
 	public event EventHandler OnRoundWon;
-    public event EventHandler OnAddItemToPlayer;
     public event EventHandler OnTrickWon;
 	public event EventHandler OnCardPlayed;
 	public event EventHandler OnItemUsed;
@@ -59,8 +58,6 @@ public class RoundManager : NetworkBehaviour
     [ServerRpc (RequireOwnership = false)]
     public void PlayCardServerRpc(int p_cardIndex, Player p_playerType, int p_targetIndex)
     {
-        Debug.Log("[GAME] Play Card " + CardsManager.Instance.GetCardByIndex(p_cardIndex).cardName);
-
         Player l_wonRound = Player.DEFAULT;
 
         CurrentTrick.CardPlayed(CardsManager.Instance.GetCardByIndex(p_cardIndex), p_playerType, out bool p_goToNextTrick);
@@ -90,7 +87,7 @@ public class RoundManager : NetworkBehaviour
 
         }
 
-        CardsManager.Instance.SetPlayedCardUsableDeckClientRpc(p_cardIndex, true);
+        CardsManager.Instance.SetCardOnGameClientRpc(p_cardIndex, false);
         OnCardPlayed?.Invoke(p_cardIndex, EventArgs.Empty);
 
         if (l_wonRound != Player.DEFAULT) AdjustVictoryServerRpc(l_wonRound);
@@ -160,9 +157,9 @@ public class RoundManager : NetworkBehaviour
     }
 
     [ServerRpc (RequireOwnership = false)]
-    public void OnStartPlayingCardAnimServerRpc(int p_playerIndex,bool p_isItem, int p_targetIndex, int p_cardIndex, NetworkObjectReference p_cardNetworkObjectReference)
+    public void OnStartPlayingCardAnimServerRpc(int p_cardId, int p_playerIndex, bool p_isItem, int p_targetIndex)
     {
-        OnStartPlayingCard?.Invoke((new CustomSender(p_playerIndex, p_targetIndex, p_cardNetworkObjectReference, p_cardIndex), p_isItem), EventArgs.Empty);
+        OnStartPlayingCard?.Invoke((new CustomSender(p_cardId, p_playerIndex, p_targetIndex), p_isItem), EventArgs.Empty);
     }
 
     [ServerRpc(RequireOwnership =false)]
@@ -178,12 +175,6 @@ public class RoundManager : NetworkBehaviour
         OnEndedDealing?.Invoke(p_playerID, EventArgs.Empty);
     }
 
-    [ServerRpc(RequireOwnership =false)]
-    public void OnAddItemServerRpc(int p_playerID, NetworkObjectReference p_cardNetworkObjectReference, ItemType p_itemType)
-    {
-        OnAddItemToPlayer.Invoke(new CustomSender(p_playerID, p_cardNetworkObjectReference, p_itemType), EventArgs.Empty);
-    }
-
     [ServerRpc(RequireOwnership = false)]
     public void OnEndedDealingItemServerRpc(int p_playerID)
     {
@@ -196,26 +187,15 @@ public struct CustomSender
 {
     public int playerType;
     public int targetIndex;
-    public NetworkObjectReference cardNO;
-    public int cardIndex;
+    public int cardId;
     public ItemType itemType;
 
-    public CustomSender(int p_playerType, int p_targetIndex, NetworkObjectReference p_cardNO, int p_cardIndex)
+    public CustomSender(int p_cardId, int p_playerType, int p_targetIndex)
     {
         playerType = p_playerType;
         targetIndex = p_targetIndex;
-        cardNO = p_cardNO;
-        cardIndex = p_cardIndex;
+        cardId = p_cardId;
         itemType = ItemType.NONE;
-    }
-
-    public CustomSender(int p_playerType, NetworkObjectReference p_cardNO, ItemType p_itemType)
-    {
-        playerType = p_playerType;
-        cardNO = p_cardNO;
-        itemType = p_itemType;
-        targetIndex = -1;
-        cardIndex = -1;
     }
 }
 

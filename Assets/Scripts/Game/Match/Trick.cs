@@ -63,21 +63,21 @@ public class Trick
 
     public Player GetTurnWinner(int p_round)
     {
-        if (HostCardsPlayed[p_round].cardValue > ClientCardsPlayed[p_round].cardValue) return Player.HOST;
-        else if (HostCardsPlayed[p_round].cardValue < ClientCardsPlayed[p_round].cardValue) return Player.CLIENT;
+        if (HostCardsPlayed[p_round].value > ClientCardsPlayed[p_round].value) return Player.HOST;
+        else if (HostCardsPlayed[p_round].value < ClientCardsPlayed[p_round].value) return Player.CLIENT;
         return Player.DRAW;
     }
 
     public Player GetCurrentTurnWinner()
     {
-        if (HostCardsPlayed[CurrentTrick].cardValue > ClientCardsPlayed[CurrentTrick].cardValue)
+        if (HostCardsPlayed[CurrentTrick].value > ClientCardsPlayed[CurrentTrick].value)
         {
             CurrentTrick++;
             HostTurnsWon++;
             if (WhoWonFirstTrick == Player.DEFAULT) WhoWonFirstTrick = Player.HOST;
             return Player.HOST;
         }
-        else if (HostCardsPlayed[CurrentTrick].cardValue < ClientCardsPlayed[CurrentTrick].cardValue)
+        else if (HostCardsPlayed[CurrentTrick].value < ClientCardsPlayed[CurrentTrick].value)
         {
             CurrentTrick++;
             ClientTurnsWon++;

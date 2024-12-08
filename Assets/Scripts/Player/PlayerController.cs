@@ -154,42 +154,39 @@ public class PlayerController : NetworkBehaviour
         int p_cardIndex = (((int, bool))p_cardSended).Item1;
         bool p_lastCard = (((int, bool))p_cardSended).Item2;
 
-        if (CardsManager.Instance.GetCardByIndex(p_cardIndex).cardPlayer == (Player)PlayerIndex)
+        if (CardsManager.Instance.GetCardByIndex(p_cardIndex).playerId == (Player)PlayerIndex)
         {
             m_myHand.Add(p_cardIndex);
-            CardsManager.Instance.GetCardByIndex(p_cardIndex).cardNetworkObjectReference.TryGet(out NetworkObject l_cardNetworkObject);
-            l_cardNetworkObject.TrySetParent(transform, true);
+            CardsManager.Instance.GetCardByIndex(p_cardIndex).gameObject.transform.SetParent(transform, true);
             m_handBehavior.AddCardOnHand(p_cardIndex, p_lastCard);
         }
     }
     private void CardsManager_OnAddItemCardToMyHand(object p_itemTypeAndPlayer, EventArgs e)
     {
-        ItemType p_itemType = (((ItemType, int))p_itemTypeAndPlayer).Item1;
-        int p_playerId = (((ItemType, int))p_itemTypeAndPlayer).Item2;
+        int p_itemIndex = (((int, int))p_itemTypeAndPlayer).Item1;
+        int p_playerId = (((int, int))p_itemTypeAndPlayer).Item2;
 
         if (p_playerId == PlayerIndex)
         {
-            Item l_item = CardsManager.Instance.GetItemNetworkObject(p_itemType, (Player)PlayerIndex);
-            l_item.cardNetworkObjectReference.TryGet(out NetworkObject l_cardNetworkObject);
-            l_cardNetworkObject.TrySetParent(transform, true);
-            m_itemOnHand = l_item.itemID;
+            CardsManager.Instance.GetItemByIndex(p_itemIndex).gameObject.transform.SetParent(transform, true);
+            m_itemOnHand = p_itemIndex;
 
-            m_handBehavior.AddItemOnHand(l_item);
+            m_handBehavior.AddItemOnHand(p_itemIndex);
         }
     }
 
     private void CardsManager_OnRemoveCardFromMyHand(object p_cardIndex, EventArgs e)
     {
-        int l_cardID = (int)p_cardIndex;
-        m_myHand.Remove(l_cardID);
-        m_handBehavior.RemoveCardFromHand(l_cardID);
+        int l_cardIndex = (int)p_cardIndex;
+        m_myHand.Remove(l_cardIndex);
+        m_handBehavior.RemoveCardFromHand(l_cardIndex);
     }
 
     private void TurnManager_OnStartPlayingCard(object p_customSender, EventArgs e)
     {
         CustomSender l_customSender = (((CustomSender, bool))p_customSender).Item1;
         bool l_isItem = (((CustomSender, bool))p_customSender).Item2;
-        AnimCardClientRpc(l_customSender.playerType, l_customSender.targetIndex, l_isItem, l_customSender.cardNO);
+        AnimCardClientRpc(l_customSender.cardId, l_customSender.playerType, l_customSender.targetIndex, l_isItem);
     }
 
     private void TurnManager_OnRoundWon(object p_playerWonId, EventArgs e)
@@ -249,7 +246,7 @@ public class PlayerController : NetworkBehaviour
     private void GameInput_OnClickUpMouse(object p_sender, System.EventArgs e)
     {
         m_handBehavior.CheckClickUp(CanPlay && !RoundManager.Instance.BetHasStarted.Value,
-                                    (go, isItem, id) => StartAnim(go, isItem, id),
+                                    (id, isItem) => StartAnim(id, isItem),
                                     (go) => ThrowCard(go), (go) => UseItemCard(go));
         if (CanPlay || RoundManager.Instance.BetHasStarted.Value) m_betBehavior.CheckClickUp(canBet, (go, increase) => IncreaseBet(go, increase));
         if (RoundManager.Instance.BetHasStarted.Value && canBet) m_deckBehavior.CheckClickUp((go) => GiveUp(go));
@@ -267,10 +264,9 @@ public class PlayerController : NetworkBehaviour
         m_handBehavior.CheckHoverObject(p_gameObject);
     }
 
-    private void StartAnim(GameObject gameObject, bool p_isItem, int p_cardIndex)
+    private void StartAnim(int p_cardId, bool p_isItem)
     {
-        RoundManager.Instance.OnStartPlayingCardAnimServerRpc(PlayerIndex, p_isItem, m_handBehavior.CurrentTargetIndex,
-                                                    p_cardIndex, gameObject.GetComponent<NetworkObject>());
+        RoundManager.Instance.OnStartPlayingCardAnimServerRpc(p_cardId, PlayerIndex, p_isItem, m_handBehavior.CurrentTargetIndex);
     }
 
     private void ThrowCard(GameObject p_gameObject)
@@ -284,7 +280,7 @@ public class PlayerController : NetworkBehaviour
             {
                 for (int i = 0; i < m_myHand.Count; i++)
                 {
-                    if (CardsManager.Instance.GetCardByIndex(m_myHand[i]).cardName == p_gameObject.name)
+                    if (CardsManager.Instance.GetCardByIndex(m_myHand[i]).gameObject == p_gameObject)
                     {
                         if (!RoundManager.Instance.RoundHasStarted.Value)
                             RoundManager.Instance.StartRoundServerRpc(IsHost ? Player.HOST : Player.CLIENT);
@@ -317,7 +313,7 @@ public class PlayerController : NetworkBehaviour
     List<Suit> l_enemySuits = new();
     IEnumerator IUseItemCard(int p_itemIndex, Action p_action, bool p_callOtherAnimation = true)
     {
-        ItemType l_type = CardsManager.Instance.GetItemByIndex(p_itemIndex).Type;
+        ItemType l_type = CardsManager.Instance.GetItemByIndex(p_itemIndex).type;
 
         if (p_callOtherAnimation) RoundManager.Instance.OnUseItemServerRpc(PlayerIndex, p_itemIndex);
         bool l_waiting = true;
@@ -415,10 +411,16 @@ public class PlayerController : NetworkBehaviour
 
     CardBehavior l_tempCard;
     [ClientRpc]
-    void AnimCardClientRpc(int p_playerType, int p_targetIndex, bool p_isItem, NetworkObjectReference p_cardNetworkObjectReference)
+    void AnimCardClientRpc(int p_cardId, int p_playerType, int p_targetIndex, bool p_isItem)
     {
-        if (p_cardNetworkObjectReference.TryGet(out NetworkObject p_cardNetworkObject))
-            l_tempCard = p_cardNetworkObject.GetComponent<CardBehavior>();
+        if (!p_isItem)
+        {
+            l_tempCard = CardsManager.Instance.GetCardByIndex(p_cardId).gameObject.GetComponent<CardBehavior>();
+        }
+        else
+        {
+            l_tempCard = CardsManager.Instance.GetItemByIndex(p_cardId).gameObject.GetComponent<CardBehavior>();
+        }
 
         if (IsOwner && p_playerType != PlayerIndex)
         {

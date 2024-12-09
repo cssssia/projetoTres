@@ -2161,14 +2161,6 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 2722050659559165121, guid: 433873683cf64fa48a1b1ccd395d9166, type: 3}
-      propertyPath: DebugSuits.Array.size
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 2722050659559165121, guid: 433873683cf64fa48a1b1ccd395d9166, type: 3}
-      propertyPath: DebugSuits.Array.data[0]
-      value: 3
-      objectReference: {fileID: 0}
     - target: {fileID: 3293084080472488540, guid: 433873683cf64fa48a1b1ccd395d9166, type: 3}
       propertyPath: m_Name
       value: PFB_Hand_Host
@@ -2212,126 +2204,6 @@ PrefabInstance:
     - target: {fileID: 6104640626946382712, guid: 433873683cf64fa48a1b1ccd395d9166, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: -116.714
-      objectReference: {fileID: 0}
-    - target: {fileID: 6269406746317676438, guid: 433873683cf64fa48a1b1ccd395d9166, type: 3}
-      propertyPath: objectsOnHand.Array.data[1].animDataHost.Array.data[5].time
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6269406746317676438, guid: 433873683cf64fa48a1b1ccd395d9166, type: 3}
-      propertyPath: objectsOnHand.Array.data[1].animDataHost.Array.data[5].wait
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 6269406746317676438, guid: 433873683cf64fa48a1b1ccd395d9166, type: 3}
-      propertyPath: objectsOnHand.Array.data[1].animDataHost.Array.data[5].targetPosition.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6269406746317676438, guid: 433873683cf64fa48a1b1ccd395d9166, type: 3}
-      propertyPath: objectsOnHand.Array.data[1].animDataHost.Array.data[5].targetPosition.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6269406746317676438, guid: 433873683cf64fa48a1b1ccd395d9166, type: 3}
-      propertyPath: objectsOnHand.Array.data[1].animDataHost.Array.data[5].targetPosition.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6269406746317676438, guid: 433873683cf64fa48a1b1ccd395d9166, type: 3}
-      propertyPath: objectsOnHand.Array.data[1].animDataHost.Array.data[5].targetRotation.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6269406746317676438, guid: 433873683cf64fa48a1b1ccd395d9166, type: 3}
-      propertyPath: objectsOnHand.Array.data[1].animDataHost.Array.data[5].targetRotation.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6269406746317676438, guid: 433873683cf64fa48a1b1ccd395d9166, type: 3}
-      propertyPath: objectsOnHand.Array.data[1].animDataHost.Array.data[5].targetRotation.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6269406746317676438, guid: 433873683cf64fa48a1b1ccd395d9166, type: 3}
-      propertyPath: objectsOnHand.Array.data[1].animDataHost.Array.data[5].curve.m_PreInfinity
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 6269406746317676438, guid: 433873683cf64fa48a1b1ccd395d9166, type: 3}
-      propertyPath: objectsOnHand.Array.data[1].animDataHost.Array.data[5].curve.m_PostInfinity
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 6269406746317676438, guid: 433873683cf64fa48a1b1ccd395d9166, type: 3}
-      propertyPath: objectsOnHand.Array.data[1].animDataHost.Array.data[5].curve.m_Curve.Array.size
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 6269406746317676438, guid: 433873683cf64fa48a1b1ccd395d9166, type: 3}
-      propertyPath: objectsOnHand.Array.data[1].animDataHost.Array.data[5].yPumpCurve.m_PreInfinity
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 6269406746317676438, guid: 433873683cf64fa48a1b1ccd395d9166, type: 3}
-      propertyPath: objectsOnHand.Array.data[1].animDataHost.Array.data[5].followCurve.m_PreInfinity
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 6269406746317676438, guid: 433873683cf64fa48a1b1ccd395d9166, type: 3}
-      propertyPath: objectsOnHand.Array.data[1].animDataHost.Array.data[5].yPumpCurve.m_PostInfinity
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 6269406746317676438, guid: 433873683cf64fa48a1b1ccd395d9166, type: 3}
-      propertyPath: objectsOnHand.Array.data[1].animDataHost.Array.data[5].followCurve.m_PostInfinity
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 6269406746317676438, guid: 433873683cf64fa48a1b1ccd395d9166, type: 3}
-      propertyPath: objectsOnHand.Array.data[1].animDataHost.Array.data[5].yPumpCurve.m_RotationOrder
-      value: 4
-      objectReference: {fileID: 0}
-    - target: {fileID: 6269406746317676438, guid: 433873683cf64fa48a1b1ccd395d9166, type: 3}
-      propertyPath: objectsOnHand.Array.data[1].animDataHost.Array.data[5].followCurve.m_RotationOrder
-      value: 4
-      objectReference: {fileID: 0}
-    - target: {fileID: 6269406746317676438, guid: 433873683cf64fa48a1b1ccd395d9166, type: 3}
-      propertyPath: objectsOnHand.Array.data[1].animDataHost.Array.data[5].yPumpCurve.m_Curve.Array.size
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 6269406746317676438, guid: 433873683cf64fa48a1b1ccd395d9166, type: 3}
-      propertyPath: objectsOnHand.Array.data[1].animDataHost.Array.data[5].curve.m_Curve.Array.data[1].time
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 6269406746317676438, guid: 433873683cf64fa48a1b1ccd395d9166, type: 3}
-      propertyPath: objectsOnHand.Array.data[1].animDataHost.Array.data[5].curve.m_Curve.Array.data[0].value
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 6269406746317676438, guid: 433873683cf64fa48a1b1ccd395d9166, type: 3}
-      propertyPath: objectsOnHand.Array.data[1].animDataHost.Array.data[5].curve.m_Curve.Array.data[1].value
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 6269406746317676438, guid: 433873683cf64fa48a1b1ccd395d9166, type: 3}
-      propertyPath: objectsOnHand.Array.data[1].animDataHost.Array.data[5].curve.m_Curve.Array.data[1].inSlope
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6269406746317676438, guid: 433873683cf64fa48a1b1ccd395d9166, type: 3}
-      propertyPath: objectsOnHand.Array.data[1].animDataHost.Array.data[5].curve.m_Curve.Array.data[1].outSlope
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6269406746317676438, guid: 433873683cf64fa48a1b1ccd395d9166, type: 3}
-      propertyPath: objectsOnHand.Array.data[1].animDataHost.Array.data[5].yPumpCurve.m_Curve.Array.data[1].time
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 6269406746317676438, guid: 433873683cf64fa48a1b1ccd395d9166, type: 3}
-      propertyPath: objectsOnHand.Array.data[1].animDataHost.Array.data[5].yPumpCurve.m_Curve.Array.data[0].value
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 6269406746317676438, guid: 433873683cf64fa48a1b1ccd395d9166, type: 3}
-      propertyPath: objectsOnHand.Array.data[1].animDataHost.Array.data[5].yPumpCurve.m_Curve.Array.data[1].value
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 6269406746317676438, guid: 433873683cf64fa48a1b1ccd395d9166, type: 3}
-      propertyPath: objectsOnHand.Array.data[1].animDataHost.Array.data[5].curve.m_Curve.Array.data[0].tangentMode
-      value: 34
-      objectReference: {fileID: 0}
-    - target: {fileID: 6269406746317676438, guid: 433873683cf64fa48a1b1ccd395d9166, type: 3}
-      propertyPath: objectsOnHand.Array.data[1].animDataHost.Array.data[5].curve.m_Curve.Array.data[1].tangentMode
-      value: 34
-      objectReference: {fileID: 0}
-    - target: {fileID: 6269406746317676438, guid: 433873683cf64fa48a1b1ccd395d9166, type: 3}
-      propertyPath: objectsOnHand.Array.data[1].animDataHost.Array.data[5].yPumpCurve.m_Curve.Array.data[0].tangentMode
-      value: 34
-      objectReference: {fileID: 0}
-    - target: {fileID: 6269406746317676438, guid: 433873683cf64fa48a1b1ccd395d9166, type: 3}
-      propertyPath: objectsOnHand.Array.data[1].animDataHost.Array.data[5].yPumpCurve.m_Curve.Array.data[1].tangentMode
-      value: 34
       objectReference: {fileID: 0}
     - target: {fileID: 6423918576663816776, guid: 433873683cf64fa48a1b1ccd395d9166, type: 3}
       propertyPath: m_LocalScale.x
@@ -3935,7 +3807,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 224130951485110974, guid: 9ed2a051c32b4fe47a5e4fb95c20b03f, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 0
+      value: -0.000030517578
       objectReference: {fileID: 0}
     - target: {fileID: 224166536479716514, guid: 9ed2a051c32b4fe47a5e4fb95c20b03f, type: 3}
       propertyPath: m_AnchorMax.y

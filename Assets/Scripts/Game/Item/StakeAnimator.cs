@@ -34,12 +34,16 @@ public class StakeAnimator : MonoBehaviour
     public float impactTime;
     public Material stakeMaterial;
 
-    public void HighlightSymbols(List<Suit> p_suits, bool p_debug = false)
+    [Header("Dissolution Anim")]
+    [SerializeField] private float m_dissolutionAnimTime;
+    [SerializeField] private AnimationCurve m_dissolutionCurve;
+
+    public void HighlightSymbols(List<Suit> p_suits)
     {
-        StartCoroutine(AnimImpact(p_suits, p_debug));
+        StartCoroutine(AnimImpact(p_suits));
     }
 
-    IEnumerator AnimImpact(List<Suit> p_suits, bool p_debug)
+    IEnumerator AnimImpact(List<Suit> p_suits)
     {
         float l_impactTime = 0f;
         while (l_impactTime < impactTime)
@@ -53,14 +57,33 @@ public class StakeAnimator : MonoBehaviour
         int l_animCount = 0;
         for (int i = 0; i < symbols.Length; i++)
         {
-            if (true || p_suits.Contains(symbols[i].suit))
+            if (p_suits == null || p_suits.Contains(symbols[i].suit))
             {
-                if (l_animCount == 0) yield return StartCoroutine(HiglightAnim(symbols[i]));
+                if ((p_suits == null && l_animCount == 3) || (p_suits != null && l_animCount == p_suits.Count - 1)) yield return StartCoroutine(HiglightAnim(symbols[i]));
                 else StartCoroutine(HiglightAnim(symbols[i]));
 
                 l_animCount++;
             }
         }
+
+        stakeMaterial.SetFloat("_AlphaClipThreshold", 0f);
+        stakeMaterial.SetFloat("_DissolutionOn", 1f);
+
+        float l_dissolutionTime = 0f;
+        while (l_dissolutionTime < m_dissolutionAnimTime)
+        {
+            stakeMaterial.SetFloat("_AlphaClipThreshold",
+                                    Mathf.Clamp(m_dissolutionCurve.Evaluate(l_dissolutionTime / m_dissolutionAnimTime), 0f, 1f));
+
+            yield return null;
+            l_dissolutionTime += Time.deltaTime;
+        }
+
+        stakeMaterial.SetFloat("_AlphaClipThreshold", 1f);
+
+        yield return null;
+
+
     }
 
     IEnumerator HiglightAnim(SuitSymbol p_symbol)
@@ -96,6 +119,6 @@ public class StakeAnimator : MonoBehaviour
     [NaughtyAttributes.Button]
     public void Debug_Highlight()
     {
-        HighlightSymbols(DebugSuits, true);
+        HighlightSymbols(DebugSuits);
     }
 }

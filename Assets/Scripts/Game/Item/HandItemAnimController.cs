@@ -58,9 +58,13 @@ public class HandItemAnimController : MonoBehaviour
     public AnimatorEndHandler handAnimatorEndHandler;
     public ObjectOnHandAnim[] objectsOnHand;
 
+    [Space]
     public HatchController hatchController;
 
+    [Space]
     public StakeAnimator stakeAnimator;
+    public Material stakeMaterial;
+    [Space]
 
     public System.Action OnCutCards;
     public System.Action OnEndedScissorAnim;
@@ -124,7 +128,11 @@ public class HandItemAnimController : MonoBehaviour
         p_object.InitialRotation = p_object.ObjectTranform.eulerAngles;
 
         if (p_object.Type is ItemType.SCISSORS) p_object.endHandler.OnEndedAnim += OnEndScissorCutAnim;
-        //if (p_object.Type is ItemType.STAKE) p_object.endHandler.OnEndedAnim += OnEndStakeImpaleAnim;
+        if (p_object.Type is ItemType.STAKE)
+        {
+            stakeMaterial.SetFloat("_AlphaClipThreshold",0f);
+            stakeMaterial.SetFloat("_DissolutionOn", 0f);
+        }
 
         yield return hatchController.OpenHatch();
 
@@ -224,7 +232,6 @@ public class HandItemAnimController : MonoBehaviour
 
     void OnImpactStake()
     {
-        Debug.Log("blira");
         stakeAnimator.HighlightSymbols(m_suitsToHighlight);
     }
 

@@ -322,6 +322,7 @@ MonoBehaviour:
         m_PreInfinity: 2
         m_PostInfinity: 2
         m_RotationOrder: 4
+      quaternionLerp: 0
       targetRotation: {x: 272.54413, y: 262.32056, z: 100.48057}
       time: 0
       curve:
@@ -367,6 +368,7 @@ MonoBehaviour:
         m_PreInfinity: 2
         m_PostInfinity: 2
         m_RotationOrder: 4
+      quaternionLerp: 0
       targetRotation: {x: 272.54413, y: 262.32056, z: 100.48057}
       time: 1.6
       curve:
@@ -412,6 +414,7 @@ MonoBehaviour:
         m_PreInfinity: 2
         m_PostInfinity: 2
         m_RotationOrder: 4
+      quaternionLerp: 0
       targetRotation: {x: 299.59195, y: 229.65381, z: 108.77387}
       time: 0.92
       curve:
@@ -457,6 +460,7 @@ MonoBehaviour:
         m_PreInfinity: 2
         m_PostInfinity: 2
         m_RotationOrder: 4
+      quaternionLerp: 0
       targetRotation: {x: 299.59195, y: 229.65381, z: 108.77387}
       time: 0.92
       curve:
@@ -502,6 +506,7 @@ MonoBehaviour:
         m_PreInfinity: 2
         m_PostInfinity: 2
         m_RotationOrder: 4
+      quaternionLerp: 0
       targetRotation: {x: 336.1386, y: 227.65398, z: 100.00702}
       time: 0.3
       curve:
@@ -547,6 +552,7 @@ MonoBehaviour:
         m_PreInfinity: 2
         m_PostInfinity: 2
         m_RotationOrder: 4
+      quaternionLerp: 0
       targetRotation: {x: 338.00864, y: 228.85164, z: 107.920044}
       time: 0.7
       curve:
@@ -593,6 +599,7 @@ MonoBehaviour:
         m_PreInfinity: 2
         m_PostInfinity: 2
         m_RotationOrder: 4
+      quaternionLerp: 0
       targetRotation: {x: 282.52386, y: 247.09903, z: 128.85852}
       time: 0
       curve:
@@ -638,6 +645,7 @@ MonoBehaviour:
         m_PreInfinity: 2
         m_PostInfinity: 2
         m_RotationOrder: 4
+      quaternionLerp: 0
       targetRotation: {x: 282.52386, y: 247.09903, z: 128.85852}
       time: 1.6
       curve:
@@ -683,6 +691,7 @@ MonoBehaviour:
         m_PreInfinity: 2
         m_PostInfinity: 2
         m_RotationOrder: 4
+      quaternionLerp: 0
       targetRotation: {x: 276.64328, y: 237.27185, z: 176.57552}
       time: 0.92
       curve:
@@ -728,6 +737,7 @@ MonoBehaviour:
         m_PreInfinity: 2
         m_PostInfinity: 2
         m_RotationOrder: 4
+      quaternionLerp: 0
       targetRotation: {x: 276.64328, y: 237.27185, z: 176.57552}
       time: 0.92
       curve:
@@ -773,6 +783,7 @@ MonoBehaviour:
         m_PreInfinity: 2
         m_PostInfinity: 2
         m_RotationOrder: 4
+      quaternionLerp: 0
       targetRotation: {x: 336.70355, y: 301.77353, z: 108.05857}
       time: 0.3
       curve:
@@ -818,6 +829,7 @@ MonoBehaviour:
         m_PreInfinity: 2
         m_PostInfinity: 2
         m_RotationOrder: 4
+      quaternionLerp: 0
       targetRotation: {x: 336.70355, y: 301.77353, z: 108.05857}
       time: 0.7
       curve:
@@ -871,6 +883,7 @@ MonoBehaviour:
         m_PreInfinity: 2
         m_PostInfinity: 2
         m_RotationOrder: 4
+      quaternionLerp: 0
       targetRotation: {x: 0, y: 0, z: 0}
       time: 0
       curve:
@@ -943,6 +956,7 @@ MonoBehaviour:
         m_PreInfinity: 2
         m_PostInfinity: 2
         m_RotationOrder: 4
+      quaternionLerp: 0
       targetRotation: {x: 0, y: 0, z: 0}
       time: 2.35
       curve:
@@ -1024,6 +1038,7 @@ MonoBehaviour:
         m_PreInfinity: 2
         m_PostInfinity: 2
         m_RotationOrder: 4
+      quaternionLerp: 0
       targetRotation: {x: 0, y: 0, z: 0}
       time: 1.5
       curve:
@@ -1096,6 +1111,7 @@ MonoBehaviour:
         m_PreInfinity: 2
         m_PostInfinity: 2
         m_RotationOrder: 4
+      quaternionLerp: 0
       targetRotation: {x: 0, y: -23, z: -10}
       time: 1.5
       curve:
@@ -1124,7 +1140,7 @@ MonoBehaviour:
         m_RotationOrder: 0
       eventToInvokeOnStart: 
       eventToInvokeOnEnd: stakeImpact
-    - wait: 4
+    - wait: 7
       followObject: 0
       objectToFollow: {fileID: 0}
       followCurve:
@@ -1133,7 +1149,7 @@ MonoBehaviour:
         m_PreInfinity: 2
         m_PostInfinity: 2
         m_RotationOrder: 4
-      targetPosition: {x: 0, y: 0, z: 0}
+      targetPosition: {x: -4.14, y: 2.8, z: 4.28}
       yPump: 0
       yPumpCurve:
         serializedVersion: 2
@@ -1159,6 +1175,7 @@ MonoBehaviour:
         m_PreInfinity: 2
         m_PostInfinity: 2
         m_RotationOrder: 4
+      quaternionLerp: 1
       targetRotation: {x: 0, y: 0, z: 0}
       time: 0
       curve:
@@ -1205,6 +1222,7 @@ MonoBehaviour:
         m_PreInfinity: 2
         m_PostInfinity: 2
         m_RotationOrder: 4
+      quaternionLerp: 0
       targetRotation: {x: 0, y: 0, z: 0}
       time: 0
       curve:
@@ -1277,6 +1295,7 @@ MonoBehaviour:
         m_PreInfinity: 2
         m_PostInfinity: 2
         m_RotationOrder: 4
+      quaternionLerp: 0
       targetRotation: {x: 0, y: 0, z: 0}
       time: 2.35
       curve:
@@ -1358,6 +1377,7 @@ MonoBehaviour:
         m_PreInfinity: 2
         m_PostInfinity: 2
         m_RotationOrder: 4
+      quaternionLerp: 0
       targetRotation: {x: 0, y: 0, z: 0}
       time: 1.5
       curve:
@@ -1430,6 +1450,7 @@ MonoBehaviour:
         m_PreInfinity: 2
         m_PostInfinity: 2
         m_RotationOrder: 4
+      quaternionLerp: 0
       targetRotation: {x: 0, y: 45.27, z: -10}
       time: 1.5
       curve:
@@ -1458,7 +1479,7 @@ MonoBehaviour:
         m_RotationOrder: 0
       eventToInvokeOnStart: 
       eventToInvokeOnEnd: stakeImpact
-    - wait: 4
+    - wait: 7
       followObject: 0
       objectToFollow: {fileID: 0}
       followCurve:
@@ -1493,6 +1514,7 @@ MonoBehaviour:
         m_PreInfinity: 2
         m_PostInfinity: 2
         m_RotationOrder: 4
+      quaternionLerp: 0
       targetRotation: {x: 0, y: 0, z: 0}
       time: 0
       curve:
@@ -1524,6 +1546,7 @@ MonoBehaviour:
     index: 0
   hatchController: {fileID: 0}
   stakeAnimator: {fileID: 2722050659559165121}
+  stakeMaterial: {fileID: 2100000, guid: e10ca54c12f2aee4b880f3a70f879cf6, type: 2}
 --- !u!1 &8098423207345626411
 GameObject:
   m_ObjectHideFlags: 0
@@ -2054,7 +2077,7 @@ MonoBehaviour:
         m_PostInfinity: 2
         m_RotationOrder: 0
       animTime: 0.5
-  - suit: 0
+  - suit: 4
     material: {fileID: 2100000, guid: 0e51ba6bc49b470419d01b4d43455ce8, type: 2}
     animData:
     - setColor: 1
@@ -2222,7 +2245,32 @@ MonoBehaviour:
     m_RotationOrder: 4
   impactTime: 1.5
   stakeMaterial: {fileID: 2100000, guid: e10ca54c12f2aee4b880f3a70f879cf6, type: 2}
-  DebugSuits: 
+  m_dissolutionAnimTime: 2
+  m_dissolutionCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 2
+      outSlope: 2
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 1
+      value: 1
+      inSlope: 2.012694
+      outSlope: 2.012694
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.055205166
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  DebugSuits: 03000000
 --- !u!1 &8336611994124464968
 GameObject:
   m_ObjectHideFlags: 0

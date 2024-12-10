@@ -9,6 +9,8 @@ using System.Collections;
 
 public class PlayerController : NetworkBehaviour
 {
+    public static Action<PlayerController> OnPlayerSpawned;
+
     public static PlayerController LocalInstance { get; private set; }
 
     [SerializeField] private PlayerSpawnData m_spawnData;
@@ -117,6 +119,7 @@ public class PlayerController : NetworkBehaviour
         if (IsHostPlayer) name = "Player_0";
         else if (IsClient) name = "Player_1";
 
+        OnPlayerSpawned.Invoke(this);
     }
 
     private void NetworkManager_OnClientDisconnectCallback(ulong p_clientId)

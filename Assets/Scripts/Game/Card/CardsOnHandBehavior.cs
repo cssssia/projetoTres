@@ -71,7 +71,6 @@ public class CardsOnHandBehavior : MonoBehaviour
 
     public void AddItemOnHand(int p_itemIndex)
     {
-        Debug.Log("AddItemOnHand");
         if (CardsManager.Instance.GetItemByIndex(p_itemIndex).gameObject.TryGetComponent(out l_card))
         {
             l_card.SetCardData(CardsManager.Instance.GetItemByIndex(p_itemIndex));
@@ -138,7 +137,6 @@ public class CardsOnHandBehavior : MonoBehaviour
         {
             if (m_cardsBehavior[i].item == null || m_cardsBehavior[i].item.type is ItemType.NONE)
             {
-                Debug.Log("null item none");
                 l_tempCardsIDOnHand.Add(i);
             }
             else
@@ -161,7 +159,6 @@ public class CardsOnHandBehavior : MonoBehaviour
 
     IEnumerator AnimSingleCardDeal(CardBehavior p_card, Action p_actionOnEnd = null)
     {
-        Debug.Log("AnimSingleCardDeal");
         yield return p_card.AnimToIdlePos(CardAnimType.DEAL);
         p_actionOnEnd?.Invoke();
     }
@@ -230,6 +227,8 @@ public class CardsOnHandBehavior : MonoBehaviour
 
     public bool CheckClickObject(GameObject p_gameObject)
     {
+        if (!m_player.CanPlay) return false;
+
         bool l_isCard = false;
         if (p_gameObject != null)
         {

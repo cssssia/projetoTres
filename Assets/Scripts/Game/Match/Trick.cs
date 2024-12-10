@@ -20,7 +20,7 @@ public class Trick
     [HideInInspector] public int CurrentTrick;
     public List<Player> TurnsWonHistory;
     [HideInInspector] public List<Player> TurnsStartedHistory;
-    [HideInInspector] public int TrickBetMultiplier;
+     public int TrickBetMultiplier;
 
     public Trick(Player p_whoStartsTrick)
     {

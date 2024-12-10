@@ -4,15 +4,10 @@ using UnityEngine;
 
 public class PlayerEyeBehavior : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
+    public MeshRenderer mesh;
 
-    // Update is called once per frame
-    void Update()
+    public void SetCover(bool p_cover)
     {
-        
+        mesh.enabled = !p_cover;
     }
 }

@@ -261,6 +261,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
+  - {fileID: 848388987454380413}
   - {fileID: 7623414407659638582}
   - {fileID: 6618229292509214069}
   - {fileID: 2152985750009414240}
@@ -2355,6 +2356,101 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!1001 &886272580958240406
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 2634291536805388819}
+    m_Modifications:
+    - target: {fileID: -8679921383154817045, guid: 3a8a78419e59e9d4e8daceccf5844e67, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -7.61249
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 3a8a78419e59e9d4e8daceccf5844e67, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 15.55
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 3a8a78419e59e9d4e8daceccf5844e67, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 26.35668
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 3a8a78419e59e9d4e8daceccf5844e67, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: -0.887695
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 3a8a78419e59e9d4e8daceccf5844e67, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 3a8a78419e59e9d4e8daceccf5844e67, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0.4604319
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 3a8a78419e59e9d4e8daceccf5844e67, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 3a8a78419e59e9d4e8daceccf5844e67, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 3a8a78419e59e9d4e8daceccf5844e67, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 3a8a78419e59e9d4e8daceccf5844e67, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 3a8a78419e59e9d4e8daceccf5844e67, type: 3}
+      propertyPath: m_Name
+      value: maos
+      objectReference: {fileID: 0}
+    - target: {fileID: 5035994603857735037, guid: 3a8a78419e59e9d4e8daceccf5844e67, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -20.9
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 1054339242152911152, guid: 3a8a78419e59e9d4e8daceccf5844e67, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 3380166806540548012}
+  m_SourcePrefab: {fileID: 100100000, guid: 3a8a78419e59e9d4e8daceccf5844e67, type: 3}
+--- !u!1 &210947641325412262 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 1054339242152911152, guid: 3a8a78419e59e9d4e8daceccf5844e67, type: 3}
+  m_PrefabInstance: {fileID: 886272580958240406}
+  m_PrefabAsset: {fileID: 0}
+--- !u!95 &3380166806540548012
+Animator:
+  serializedVersion: 5
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 210947641325412262}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 03f9f8b375d2f584b91bfe6bdf129cab, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
+--- !u!4 &848388987454380413 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 3a8a78419e59e9d4e8daceccf5844e67, type: 3}
+  m_PrefabInstance: {fileID: 886272580958240406}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &6652402721412731550
 PrefabInstance:
   m_ObjectHideFlags: 0

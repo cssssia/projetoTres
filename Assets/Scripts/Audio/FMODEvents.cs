@@ -18,4 +18,10 @@ public class FMODEvents : Singleton<FMODEvents>
     [field: Header("Turn Card SFX")]
     [field: SerializeField] public EventReference TurnCard { get; private set; }
 
+    [field: Header("Button Pressed SFX")]
+    [field: SerializeField] public EventReference ButtonPressed { get; private set; }
+
+    [field: Header("Button Hovered SFX")]
+    [field: SerializeField] public EventReference ButtonHovered { get; private set; }
+
 }

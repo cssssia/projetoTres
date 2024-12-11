@@ -1,5 +1,7 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using Unity.Netcode;
 using UnityEngine;
 
@@ -84,7 +86,7 @@ public class CardsManager : NetworkBehaviour
 
             do
             {
-               l_rand = UnityEngine.Random.Range(0, UsableDeckList.Count);
+                l_rand = UnityEngine.Random.Range(0, UsableDeckList.Count);
             }
             while (GetCardByIndex(l_rand).playerId != Player.DEFAULT);
 
@@ -93,6 +95,7 @@ public class CardsManager : NetworkBehaviour
         }
     }
 
+    List<Item> l_tempItemList;
     [ServerRpc]
     public void DealItemsServerRpc()
     {
@@ -102,27 +105,18 @@ public class CardsManager : NetworkBehaviour
 
             if (spawnThisItem == ItemType.SCISSORS)
             {
-                do
-                {
-                    l_randomItem = UnityEngine.Random.Range(0, UsableItemsList.Count);
-                }
-                while (GetItemByIndex(l_randomItem).playerId != Player.DEFAULT || GetItemByIndex(l_randomItem).type != ItemType.SCISSORS);
+                l_tempItemList = UsableItemsList.Where(item => item.playerId == Player.DEFAULT && item.type is ItemType.SCISSORS).ToList();
+                l_randomItem = l_tempItemList[UnityEngine.Random.Range(0, l_tempItemList.Count)].id;
             }
             else if (spawnThisItem == ItemType.STAKE)
             {
-                do
-                {
-                    l_randomItem = UnityEngine.Random.Range(0, UsableItemsList.Count);
-                }
-                while (GetItemByIndex(l_randomItem).playerId != Player.DEFAULT || GetItemByIndex(l_randomItem).type != ItemType.STAKE);
+                l_tempItemList = UsableItemsList.Where(item => item.playerId == Player.DEFAULT && item.type is ItemType.STAKE).ToList();
+                l_randomItem = l_tempItemList[UnityEngine.Random.Range(0, l_tempItemList.Count)].id;
             }
             else
             {
-                do
-                {
-                    l_randomItem = UnityEngine.Random.Range(0, UsableItemsList.Count);
-                }
-                while (GetItemByIndex(l_randomItem).playerId != Player.DEFAULT);
+                l_tempItemList = UsableItemsList.Where(item => item.playerId == Player.DEFAULT).ToList();
+                l_randomItem = l_tempItemList[UnityEngine.Random.Range(0, l_tempItemList.Count)].id;
             }
 
             DealItemsClientRpc(l_randomItem, i);

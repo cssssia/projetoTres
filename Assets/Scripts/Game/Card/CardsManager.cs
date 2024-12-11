@@ -139,6 +139,7 @@ public class CardsManager : NetworkBehaviour
             CardsOnGameList.Remove(p_cardIndex);
             SetCardOnGame(p_cardIndex, false);
             SetDeckAsCardParent(p_cardIndex);
+            GetCardByIndex(p_cardIndex).GetCardBehavior.ResetToDeck();
             OnRemoveCardFromMyHand?.Invoke(p_cardIndex, EventArgs.Empty);
         }
     }
@@ -152,6 +153,19 @@ public class CardsManager : NetworkBehaviour
             GetItemByIndex(p_itemIndex).playerId = (Player)p_playerIndex;
             OnAddItemCardToMyHand.Invoke((p_itemIndex, p_playerIndex), EventArgs.Empty);
         }
+    }
+
+    [ServerRpc]
+    public void HighlightCardServerRpc(int p_cardIndex)
+    {
+        if (p_cardIndex == -1) return;
+        HighlightCardClientRpc(p_cardIndex);
+    }
+
+    [ClientRpc]
+    void HighlightCardClientRpc(int p_cardIndex)
+    {
+        GetCardByIndex(p_cardIndex).GetCardBehavior.AnimCardWinHighlight();
     }
 
     [ClientRpc]

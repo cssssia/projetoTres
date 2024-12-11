@@ -19,7 +19,7 @@ public class GameInput : Singleton<GameInput>
         if (Input.GetMouseButtonUp(0))
             StopInteract();
 
-        if (!MatchManager.Instance.MatchHasEnded.Value && Input.GetKeyDown(KeyCode.Escape))
+        if (MatchManager.Instance != null && !MatchManager.Instance.MatchHasEnded.Value && Input.GetKeyDown(KeyCode.Escape))
             Pause();
 
         if (Input.mousePosition != m_lastMousePosition)
@@ -55,7 +55,7 @@ public class GameInput : Singleton<GameInput>
 
     private void VerticalAxis(bool p_up)
     {
-        if(p_up) OnButtonVerticalUp?.Invoke(this, EventArgs.Empty);
-        else OnButtonVerticalDown?.Invoke(this,EventArgs.Empty);
+        if (p_up) OnButtonVerticalUp?.Invoke(this, EventArgs.Empty);
+        else OnButtonVerticalDown?.Invoke(this, EventArgs.Empty);
     }
 }

@@ -61,7 +61,12 @@ public class CardBehavior : MonoBehaviour
     private Material m_material;
     [SerializeField] private AnimationCurve m_destroyAnimCurve;
     [SerializeField] private float m_destroyAnimTime;
+    [SerializeField] private float m_initialCustomHide;
     [SerializeField] private float m_targetCustomHide;
+    [Header("Card Win Anim")]
+    [SerializeField] private AnimationCurve m_winAnimCurve;
+    [SerializeField] private float m_winAnimTime;
+    [SerializeField] private AnimationCurve m_winIdleAnimCurve;
 
     public Action OnDestroyAction;
 
@@ -117,7 +122,14 @@ public class CardBehavior : MonoBehaviour
     {
         transform.position = m_startPosition;
         transform.rotation = Quaternion.Euler(m_startRotation);
-        SetShaderHide(0f);
+        SetShaderHide(m_initialCustomHide);
+    }
+
+    public void ResetToDeck()
+    {
+        InterruptIdleAnim();
+        SetWinHighlight(0f);
+        SetShaderHide(m_initialCustomHide);
     }
 
     CardAnimConfig l_tempCardAnim;
@@ -289,7 +301,7 @@ public class CardBehavior : MonoBehaviour
         float l_time = 0f;
         while (l_time <= m_destroyAnimTime)
         {
-            SetShaderHide(Mathf.Lerp(0, m_targetCustomHide, m_destroyAnimCurve.Evaluate(l_time / m_destroyAnimTime)));
+            SetShaderHide(Mathf.Lerp(m_initialCustomHide, m_targetCustomHide, m_destroyAnimCurve.Evaluate(l_time / m_destroyAnimTime)));
             yield return null;
             l_time += Time.deltaTime;
         }
@@ -297,8 +309,57 @@ public class CardBehavior : MonoBehaviour
         SetShaderHide(m_targetCustomHide);
     }
 
+
     public void SetShaderHide(float p_value)
     {
         m_material.SetFloat("_Custom_hide", p_value);
+    }
+
+    bool m_idleWin = false;
+    [NaughtyAttributes.Button]
+    public void AnimCardWinHighlight()
+    {
+        if (m_material == null) m_material = GetComponent<MeshRenderer>().material;
+
+        m_idleWin = true;
+        StartCoroutine(IAnimCardWinHighlight());
+    }
+
+    IEnumerator IAnimCardWinHighlight()
+    {
+        if (m_material == null) m_material = GetComponent<MeshRenderer>().material;
+
+        float l_time = 0f;
+        while (l_time <= m_winAnimTime)
+        {
+            SetWinHighlight(Mathf.Lerp(0, .4f, m_winAnimCurve.Evaluate(l_time / m_winAnimTime)));
+            yield return null;
+            l_time += Time.deltaTime;
+        }
+
+        l_time = 0f;
+        while (m_idleWin)
+        {
+            SetWinHighlight(Mathf.Lerp(0f, .4f, m_winIdleAnimCurve.Evaluate(l_time / m_winAnimTime)));
+
+            yield return null;
+            l_time += Time.deltaTime;
+
+            if (l_time >= m_winAnimTime) l_time = 0f;
+        }
+
+        SetWinHighlight(0f);
+    }
+
+    void InterruptIdleAnim()
+    {
+        m_idleWin = false;
+    }
+
+    public void SetWinHighlight(float p_value)
+    {
+        if (m_material == null) m_material = GetComponent<MeshRenderer>().material;
+
+        m_material.SetFloat("_SuitGlowOn", p_value);
     }
 }

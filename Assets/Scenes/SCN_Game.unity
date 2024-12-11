@@ -1444,13 +1444,13 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 208066123}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.7071068, y: 0, z: 0, w: 0.7071068}
-  m_LocalPosition: {x: -0.27, y: 6.36, z: -0.56}
+  m_LocalRotation: {x: 0.62829554, y: -0.32441452, z: -0.32441452, w: 0.62829554}
+  m_LocalPosition: {x: 6.04, y: 5.51, z: -0.56}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1009839714}
-  m_LocalEulerAnglesHint: {x: 90, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 35.382, y: -90, z: -90}
 --- !u!114 &208066125
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1486,10 +1486,10 @@ Light:
   m_Type: 0
   m_Shape: 0
   m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_Intensity: 102.98
-  m_Range: 10.586236
-  m_SpotAngle: 120.0495
-  m_InnerSpotAngle: 0
+  m_Intensity: 45.07
+  m_Range: 15.5
+  m_SpotAngle: 90.976074
+  m_InnerSpotAngle: 7.9291267
   m_CookieSize: 10
   m_Shadows:
     m_Type: 2
@@ -3807,7 +3807,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 224130951485110974, guid: 9ed2a051c32b4fe47a5e4fb95c20b03f, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -0.000045776367
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 224166536479716514, guid: 9ed2a051c32b4fe47a5e4fb95c20b03f, type: 3}
       propertyPath: m_AnchorMax.y
@@ -5380,6 +5380,8 @@ MonoBehaviour:
   StopIncreaseBet:
     m_InternalValue: 0
   BetAsked:
+    m_InternalValue: 0
+  TrickBetMultiplier:
     m_InternalValue: 0
 --- !u!1 &720691072
 GameObject:
@@ -7040,7 +7042,7 @@ MonoBehaviour:
     m_Bits: 1
   m_VolumeTrigger: {fileID: 0}
   m_VolumeFrameworkUpdateModeOption: 2
-  m_RenderPostProcessing: 0
+  m_RenderPostProcessing: 1
   m_Antialiasing: 0
   m_AntialiasingQuality: 2
   m_StopNaN: 0

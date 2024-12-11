@@ -67,7 +67,14 @@ public class RoundManager : NetworkBehaviour
 
         if (p_goToNextTrick)
         {
-            CurrentTrick.TurnsWonHistory.Add(CurrentTrick.GetCurrentTurnWinner());
+            Player l_winner = CurrentTrick.GetCurrentTurnWinner();
+
+            int l_winCardID = -1;
+            if (l_winner is Player.HOST) l_winCardID = CurrentTrick.HostCardsPlayed[^1].id;
+            else if (l_winner is Player.CLIENT) l_winCardID = CurrentTrick.ClientCardsPlayed[^1].id;
+            CardsManager.Instance.HighlightCardServerRpc(l_winCardID);
+
+            CurrentTrick.TurnsWonHistory.Add(l_winner);
             Debug.Log("[GAME] " + CurrentTrick.TurnsWonHistory[^1] + " Won Turn");
             OnTrickWon?.Invoke(CurrentTrick.TurnsWonHistory[^1], EventArgs.Empty);
         }

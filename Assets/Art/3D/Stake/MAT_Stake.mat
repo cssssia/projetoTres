@@ -61,8 +61,9 @@ Material:
     - _AlphaClipThreshold: 1
     - _AlphaMultiplier: -0.55
     - _CrackPower: 28.83
-    - _CrackThickness: -3.1994343
+    - _CrackThickness: -3.1905255
     - _Custom_hide: -3
+    - _DissolutionOn: 1
     - _Glow_thikines: 0
     - _Noise_scale: 138.62
     - _Noise_streigh: 0.78

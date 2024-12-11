@@ -95,7 +95,7 @@ Material:
     m_Floats:
     - Normal_Blend: 0.5
     - _BumpScale: 1
-    - _Custom_hide: 0
+    - _Custom_hide: -0.5
     - _Cutoff: 0.5
     - _DecalMeshBiasType: 0
     - _DecalMeshDepthBias: 0
@@ -120,13 +120,14 @@ Material:
     - _SmoothnessTextureChannel: 0
     - _SpecularHighlights: 1
     - _SrcBlend: 1
+    - _SuitGlowOn: 0
     - _UVSec: 0
     - _ZWrite: 1
     - _rugosidade: 0
     m_Colors:
     - _Color: {r: 1, g: 1, b: 1, a: 1}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 0}
-    - _Glow_color: {r: 0.65882355, g: 0.12941177, b: 0.03529412, a: 0.5019608}
+    - _Glow_color: {r: 22.627417, g: 0, b: 0, a: 1}
   m_BuildTextureStacks: []
 --- !u!114 &3973023888903991044
 MonoBehaviour:

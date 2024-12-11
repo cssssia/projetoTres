@@ -119,7 +119,7 @@ public class PlayerController : NetworkBehaviour
         if (IsHostPlayer) name = "Player_0";
         else if (IsClient) name = "Player_1";
 
-        OnPlayerSpawned.Invoke(this);
+        OnPlayerSpawned?.Invoke(this);
     }
 
     private void NetworkManager_OnClientDisconnectCallback(ulong p_clientId)

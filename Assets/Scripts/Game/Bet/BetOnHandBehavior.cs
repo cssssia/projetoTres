@@ -57,12 +57,23 @@ public class BetOnHandBehavior : MonoBehaviour
     {
         l_ray = Camera.main.ScreenPointToRay(p_mousePos);
 
-        if (Physics.Raycast(l_ray, out l_mousePosRaycastHit, 100f, m_tableLayer))
+
+        if (m_currentBet != null)
         {
-            if (m_currentBet != null)
+            if (Physics.Raycast(l_ray, out l_mousePosRaycastHit, 100f, m_tableLayer))
             {
                 m_currentBet.DragBet(p_mousePos, l_mousePosRaycastHit);
             }
+        }
+        else
+        {
+            bool l_raycasted = Physics.Raycast(l_ray, out l_mousePosRaycastHit, 100f, m_betLayer);
+            for (int i = 0; i < m_betsBehavior.Count; i++)
+            {
+                if (!l_raycasted) m_betsBehavior[i].HighlightOff();
+                else m_betsBehavior[i].HighlightBetButton();
+            }
+
         }
     }
 

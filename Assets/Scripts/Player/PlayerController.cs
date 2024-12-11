@@ -18,6 +18,7 @@ public class PlayerController : NetworkBehaviour
     [SerializeField] private CardsOnHandBehavior m_handBehavior;
     [SerializeField] private BetOnHandBehavior m_betBehavior;
     [SerializeField] private DeckOnTableBehavior m_deckBehavior;
+    [SerializeField] private PlayerEyesManager m_eyesBehavior;
     [SerializeField] private List<int> m_myHand;
     [SerializeField] private int m_itemOnHand;
 
@@ -104,6 +105,7 @@ public class PlayerController : NetworkBehaviour
             GameManager.Instance.OnBetStateChanged += OnBetStateChanged;
         }
 
+        m_eyesBehavior.OnPlayerSpawned(this);
         m_handBehavior.OnPlayerSpawned(this);
 
         transform.SetPositionAndRotation(m_spawnData.spawnPosition[PlayerIndex], Quaternion.Euler(m_spawnData.spawnRotation[PlayerIndex]));
@@ -118,8 +120,6 @@ public class PlayerController : NetworkBehaviour
 
         if (IsHostPlayer) name = "Player_0";
         else if (IsClient) name = "Player_1";
-
-        OnPlayerSpawned?.Invoke(this);
     }
 
     private void NetworkManager_OnClientDisconnectCallback(ulong p_clientId)
@@ -194,9 +194,6 @@ public class PlayerController : NetworkBehaviour
 
     private void TurnManager_OnRoundWon(object p_playerWonId, EventArgs e)
     {
-        if (IsServer)
-            Debug.Log($"[GAME] {(Player)p_playerWonId} Won!");
-
         if (IsOwner)
         {
             if (PlayerIndex == (int)p_playerWonId)
@@ -204,6 +201,7 @@ public class PlayerController : NetworkBehaviour
 
             if (IsServer)
             {
+                Debug.Log($"[GAME] {p_playerWonId} Won!");
                 CardsManager.Instance.RemoveCardsFromGame();
             }
         }
@@ -376,7 +374,7 @@ public class PlayerController : NetworkBehaviour
             if (!RoundManager.Instance.RoundHasStarted.Value)
                 RoundManager.Instance.StartRoundServerRpc(IsHost ? Player.HOST : Player.CLIENT);
 
-            RoundManager.Instance.BetServerRpc(increase);
+            RoundManager.Instance.BetServerRpc(increase, (Player)PlayerIndex);
         }
     }
 

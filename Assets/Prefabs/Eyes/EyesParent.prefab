@@ -10,8 +10,9 @@ GameObject:
   m_Component:
   - component: {fileID: 3319937191904413995}
   - component: {fileID: 1173315896937386950}
+  - component: {fileID: 8355330659229914125}
   m_Layer: 0
-  m_Name: EyesParent_Host
+  m_Name: EyesParent
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -60,7 +61,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bc3738510dbb635418dd648ee4dd38c7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_player: 0
+  m_playerController: {fileID: 0}
+  m_player: 3
   m_eyesBehavior:
   - {fileID: 1796509230702773077}
   - {fileID: 7216022500561008751}
@@ -78,6 +80,22 @@ MonoBehaviour:
   - {fileID: 8533070291180459412}
   - {fileID: 5494574327851791319}
   - {fileID: 8331427482168784539}
+--- !u!114 &8355330659229914125
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6715067466471532110}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  GlobalObjectIdHash: 951099334
+  AlwaysReplicateAsRoot: 0
+  DontDestroyWithOwner: 0
+  AutoObjectParentSync: 1
 --- !u!1001 &273864620732225988
 PrefabInstance:
   m_ObjectHideFlags: 0

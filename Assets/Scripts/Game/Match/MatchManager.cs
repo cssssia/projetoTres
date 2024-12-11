@@ -25,21 +25,17 @@ public class MatchManager : NetworkBehaviour
     {
         Debug.Log($"{(Player)OwnerClientId} at MatchManager - IsClient: {IsClient}, IsHost: {IsHost}, IsServer: {IsServer}, IsOwner: {IsOwner}");
 
-        if (IsOwner)
-        {
-            Debug.Log("IsOwner");
-        }
         RoundManager.Instance.PointsHost.OnValueChanged += PointsHost_OnValueChanged;
         RoundManager.Instance.PointsClient.OnValueChanged += PointsClient_OnValueChanged;
     }
 
     private void PointsHost_OnValueChanged(int p_previousValue, int p_newValue)
     {
-        // Debug.Log("b");
-        // for (int i = p_previousValue; i < p_newValue; i++)
-        // {
-        //     m_pointsHost[i].SetActive(true);
-        // }
+        Debug.Log("b");
+        for (int i = p_previousValue; i < p_newValue; i++)
+        {
+            m_pointsHost[i].SetActive(true);
+        }
 
         if (p_newValue >= matchEndValue)
             EndMatchServerRpc(Player.HOST);
@@ -48,11 +44,11 @@ public class MatchManager : NetworkBehaviour
     private void PointsClient_OnValueChanged(int p_previousValue, int p_newValue)
     {
 
-        // Debug.Log("a");
-        // for (int i = p_previousValue; i < p_newValue; i++)
-        // {
-        //     m_pointsClient[i].SetActive(true);
-        // }
+        Debug.Log("a");
+        for (int i = p_previousValue; i < p_newValue; i++)
+        {
+            m_pointsClient[i].SetActive(true);
+        }
 
         if (p_newValue >= matchEndValue)
             EndMatchServerRpc(Player.CLIENT);

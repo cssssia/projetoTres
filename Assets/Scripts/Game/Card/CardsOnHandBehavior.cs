@@ -141,7 +141,6 @@ public class CardsOnHandBehavior : MonoBehaviour
             }
             else
             {
-                Debug.Log("else");
                 yield return m_cardsBehavior[i].AnimToIdlePos();
             }
         }

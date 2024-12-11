@@ -220,7 +220,6 @@ public class HandItemAnimController : MonoBehaviour
 
     void OnEndScissorCutAnim()
     {
-        Debug.Log("cut");
         OnCutCards?.Invoke();
     }
 
@@ -237,7 +236,6 @@ public class HandItemAnimController : MonoBehaviour
 
     void OnEndStakeImpaleAnim()
     {
-        Debug.Log("impale");
         OnImpaleCards?.Invoke();
     }
 

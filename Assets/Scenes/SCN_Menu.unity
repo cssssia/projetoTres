@@ -4709,6 +4709,20 @@ MonoBehaviour:
       Data3: -644126020
       Data4: -1430869273
     Path: event:/game/Actions/FOLD/fold
+  <ButtonPressed>k__BackingField:
+    Guid:
+      Data1: -431827403
+      Data2: 1111869064
+      Data3: 1776785313
+      Data4: 1938651276
+    Path: event:/Menu UI/interactions/Click/Click sfx
+  <ButtonHovered>k__BackingField:
+    Guid:
+      Data1: 848400678
+      Data2: 1140571953
+      Data3: -577543766
+      Data4: -347686578
+    Path: event:/Menu UI/interactions/Hover/Hover sfx
 --- !u!1 &1815207241
 GameObject:
   m_ObjectHideFlags: 0

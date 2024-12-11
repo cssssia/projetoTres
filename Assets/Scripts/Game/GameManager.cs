@@ -97,14 +97,15 @@ public class GameManager : NetworkBehaviour
         }
     }
 
-    private void TurnManager_OnBet(object p_isIncrease, EventArgs e)
+    private void TurnManager_OnBet(object sender, EventArgs e)
     {
+        bool l_isIncrease = (((bool, Player))sender).Item1;
         if (RoundManager.Instance.CurrentTrick.TrickBetMultiplier == 4)
         {
             SetBetState(BetState.MaxBet);
         }
 
-        if ((bool)p_isIncrease)
+        if (l_isIncrease)
         {
             if (m_betState.Value == BetState.HostTurn)
             {

@@ -44,10 +44,15 @@ public class RoundManager : NetworkBehaviour
         RoundHasStarted.Value = false;
         BetHasStarted.Value = false;
         StopIncreaseBet.Value = false;
-        BetAsked.Value = 1;
-        TrickBetMultiplier.Value = 1;
         PointsHost.Value = 0;
         PointsClient.Value = 0;
+    }
+
+    public override void OnNetworkSpawn()
+    {
+        RoundWonHistory = new List<VictoryHistory>();
+        BetAsked.Value = 1;
+        TrickBetMultiplier.Value = 1;
     }
 
     [ServerRpc (RequireOwnership = false)]
@@ -106,14 +111,13 @@ public class RoundManager : NetworkBehaviour
     [ServerRpc(RequireOwnership = false)]
     public void PlayItemCardServerRpc(int p_itemIndex)
     {
-        Debug.Log("PlayItemCardServerRpc");
         //CurrentTrick.CardPlayed(CardsManager.Instance.GetCardByIndex(p_cardIndex), p_playerType, out bool p_goToNextTrick);
         CardsManager.Instance.UseItemServerRpc(p_itemIndex);
         OnItemUsed?.Invoke(p_itemIndex, EventArgs.Empty);
     }
 
     [ServerRpc (RequireOwnership = false)]
-    public void BetServerRpc(bool p_increaseBet)
+    public void BetServerRpc(bool p_increaseBet, Player p_whoAsked)
     {
         CurrentTrick.TrickBetMultiplier = BetAsked.Value;
         TrickBetMultiplier.Value = BetAsked.Value;
@@ -130,15 +134,7 @@ public class RoundManager : NetworkBehaviour
             BetHasStarted.Value = false;
         }
 
-        CallOnBetAskedClientRpc(GameManager.Instance.betState.Value == GameManager.BetState.HostTurn ? Player.HOST : Player.CLIENT,
-                                    BetAsked.Value, CurrentTrick.TrickBetMultiplier);
-        OnBet?.Invoke(p_increaseBet, EventArgs.Empty);
-    }
-
-    [ClientRpc]
-    private void CallOnBetAskedClientRpc(Player p_playerAsked, int p_valueAsked, int p_trickBetMultiplier)
-    {
-        OnBetAsked?.Invoke((p_playerAsked,p_valueAsked, p_trickBetMultiplier), null);
+        OnBet?.Invoke((p_increaseBet, p_whoAsked), EventArgs.Empty);
     }
 
 
@@ -171,6 +167,7 @@ public class RoundManager : NetworkBehaviour
             BetHasStarted.Value = false;
             StopIncreaseBet.Value = false;
             BetAsked.Value = 1;
+            TrickBetMultiplier.Value = 1;
         }
 
         OnRoundWon?.Invoke(p_wonRound, EventArgs.Empty);
@@ -185,7 +182,6 @@ public class RoundManager : NetworkBehaviour
     [ServerRpc(RequireOwnership =false)]
     public void OnUseItemServerRpc(int p_player, int p_itemID)
     {
-        Debug.Log("OnUseItemServerRpc");
         OnAnimItemUsed?.Invoke((p_player, p_itemID), EventArgs.Empty);
     }
 

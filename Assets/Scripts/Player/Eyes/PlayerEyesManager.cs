@@ -3,108 +3,121 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using Unity.Netcode;
 using UnityEngine;
 
-public class PlayerEyesManager : MonoBehaviour
+public class PlayerEyesManager : NetworkBehaviour
 {
-    PlayerController m_playerController;
+    [SerializeField] private PlayerController m_playerController;
     [SerializeField] private Player m_player;
     private int m_currentCoveredEyes;
     [SerializeField] private List<PlayerEyeBehavior> m_eyesBehavior;
     //RoundManager RoundManager.Instance;
 
-    private void Start()
+    public override void OnNetworkSpawn()
     {
+        Debug.Log($"PLAYERS ESYES + - IsClient: {IsClient}, IsHost: {IsHost}, IsServer: {IsServer}, IsOwner: {IsOwner}");
         m_currentCoveredEyes = 16;
-        RoundManager.Instance.OnBetAsked += OnBet;
 
-        PlayerController.OnPlayerSpawned += (player) =>
+        if (IsServer)
         {
-            if (player == PlayerController.LocalInstance)
-            {
-                CountEyes(m_player, (m_player, 1, 1));
-            }
-        };
+            RoundManager.Instance.OnBet += OnBet;
+            RoundManager.Instance.OnRoundWon += OnRoundWon;
+            AnimButtonRemovalServerRpc(m_player, m_currentCoveredEyes, Player.DEFAULT);
+        }
+
     }
 
-    private void OnBet(object p_tripa, EventArgs p_args)
+    public void OnPlayerSpawned(PlayerController p_playerController)
     {
-        CountEyes(m_player, ((Player, int, int))p_tripa);
-        //if (m_player is Player.HOST)
-        //{
-        //    if (GameManager.Instance.betState.Value is GameManager.BetState.ClientTurn)
-        //    {
-        //    }
-        //}
-        //else
-        //{
-        //    if (GameManager.Instance.betState.Value is GameManager.BetState.HostTurn)
-        //    {
-        //        CountEyes(Player.CLIENT);
-        //    }
-        //}
+        //m_playerController = p_playerController;
+        m_player = (Player)p_playerController.PlayerIndex;
     }
 
-    void CountEyes(Player p_player, (Player, int, int) p_tripa)
+    private void OnBet(object sender, EventArgs e)
     {
-        Player l_whoAsked = p_tripa.Item1;
-        int l_valueAsked = p_tripa.Item2;
-        int l_trickBetMultiplier = p_tripa.Item3;
+        Debug.Log("on bet");
+        Player l_player = (((bool, Player))sender).Item2;
+        AnimButtonRemovalServerRpc(m_player, m_currentCoveredEyes, l_player);
+    }
+
+    private void OnRoundWon(object sender, EventArgs e)
+    {
+        AnimButtonRemovalServerRpc(m_player, m_currentCoveredEyes, Player.DEFAULT);
+    }
+
+    [ServerRpc (RequireOwnership = false)]
+    void AnimButtonRemovalServerRpc(Player p_player, int p_currentCoveredEyes, Player p_whoAsked)
+    {
+        Debug.Log($"AnimButtonRemovalServerRpc + - IsClient: {IsClient}, IsHost: {IsHost}, IsServer: {IsServer}, IsOwner: {IsOwner}");
+
+        Debug.Log("pts client: " + RoundManager.Instance.PointsClient.Value);
+        Debug.Log("pts host: " + RoundManager.Instance.PointsHost.Value);
 
         int l_nextEyes = 16 - (p_player == Player.HOST ? RoundManager.Instance.PointsClient.Value : RoundManager.Instance.PointsHost.Value);
 
-        l_nextEyes -= l_trickBetMultiplier;
+        l_nextEyes -= RoundManager.Instance.TrickBetMultiplier.Value;
 
-        if (l_whoAsked == p_player)
+        if (p_whoAsked == p_player)
         {
-            l_nextEyes -= (l_valueAsked - l_trickBetMultiplier);
-            print("b " + l_nextEyes);
+            l_nextEyes -= RoundManager.Instance.BetAsked.Value - RoundManager.Instance.TrickBetMultiplier.Value;
+            print("next eyes " + l_nextEyes);
         }
 
-        if (l_nextEyes < m_currentCoveredEyes)
-        {
-            Debug.Log("tira " + (m_currentCoveredEyes - l_nextEyes) + "olhos do " + m_player);
-            StartCoroutine(AnimButtonRemoval(false, m_currentCoveredEyes, l_nextEyes));
-        }
-        else if (l_nextEyes > m_currentCoveredEyes)
-        {
-            Debug.Log("volta " + (m_currentCoveredEyes - l_nextEyes) + "olhos do " + m_player);
-            StartCoroutine(AnimButtonRemoval(true, m_currentCoveredEyes, l_nextEyes));
-        }
-        else print("tudo normar no " + m_player);
-
-        m_currentCoveredEyes = l_nextEyes;
+        AnimButtonRemovalClientRpc(p_player, l_nextEyes, p_currentCoveredEyes);
     }
 
-    IEnumerator AnimButtonRemoval(bool p_cover, int p_initialIndex, int p_finalIndex)
+    [ClientRpc]
+    void AnimButtonRemovalClientRpc(Player p_player, int p_nextEyes, int p_currentCoveredEyes)
     {
-        if ((PlayerController.LocalInstance.IsClientPlayer && m_player is Player.CLIENT)
-            || (PlayerController.LocalInstance.IsHostPlayer && m_player is Player.HOST))
+        if (p_nextEyes < p_currentCoveredEyes)
         {
-            Debug.Log("anim screen");
+            Debug.Log("tira " + (p_currentCoveredEyes - p_nextEyes) + "olhos do " + p_player);
+            AnimButtonRemoval(p_player, false, p_currentCoveredEyes, p_nextEyes);
+        }
+        else if (p_nextEyes > p_currentCoveredEyes)
+        {
+            Debug.Log("volta " + (p_currentCoveredEyes - p_nextEyes) + "olhos do " + p_player);
+            AnimButtonRemoval(p_player, true, p_currentCoveredEyes, p_nextEyes);
+        }
+        else print("tudo normar no " + p_player);
 
-            Debug.Log("anim exposition");
+        m_currentCoveredEyes = p_nextEyes;
+    }
+
+    void AnimButtonRemoval(Player p_player, bool p_cover, int p_initialIndex, int p_finalIndex)
+    {
+        StartCoroutine(IAnimButtonRemoval(p_player, p_cover, p_initialIndex, p_finalIndex));
+    }
+
+    IEnumerator IAnimButtonRemoval(Player p_player, bool p_cover, int p_initialIndex, int p_finalIndex)
+    {
+
+
+        if (IsOwner)
+        {
+            Debug.Log("anim MY screen");
+            Debug.Log("anim MY exposition");
+        }
+
+        Debug.Log("intial index = " + p_initialIndex);
+        Debug.Log("final index = " + p_finalIndex);
+
+        if (p_cover)
+        {
+            for (int i = p_initialIndex; i < p_finalIndex; i++)
+            {
+                m_eyesBehavior[i].SetCover(p_cover);
+            }
         }
         else
         {
-            Debug.Log("intial index = " + p_initialIndex);
-            Debug.Log("final index = " + p_finalIndex);
-
-            if (p_cover)
+            for (int i = p_initialIndex -1; i >= p_finalIndex; i--)
             {
-                for (int i = p_initialIndex; i < p_finalIndex; i++)
-                {
-                    m_eyesBehavior[i].SetCover(p_cover);
-                }
-            }
-            else
-            {
-                for (int i = p_initialIndex -1; i >= p_finalIndex; i--)
-                {
-                    m_eyesBehavior[i].SetCover(p_cover);
-                }
+                m_eyesBehavior[i].SetCover(p_cover);
             }
         }
+
 
         yield return null;
     }

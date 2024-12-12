@@ -14430,6 +14430,10 @@ PrefabInstance:
       propertyPath: playerId
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 3120280903016211220, guid: 6d8677774a421e74d857dcdb926c0e21, type: 3}
+      propertyPath: playerId
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 3842980846492080301, guid: 6d8677774a421e74d857dcdb926c0e21, type: 3}
       propertyPath: playerId
       value: 1
@@ -14490,6 +14494,9 @@ PrefabInstance:
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 3073607082893730500, guid: 6d8677774a421e74d857dcdb926c0e21, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 0}
     - targetCorrespondingSourceObject: {fileID: 6652952979333378578, guid: 6d8677774a421e74d857dcdb926c0e21, type: 3}
       insertIndex: -1
       addedObject: {fileID: 0}
@@ -20854,6 +20861,9 @@ PrefabInstance:
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 3073607082893730500, guid: 6d8677774a421e74d857dcdb926c0e21, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 0}
     - targetCorrespondingSourceObject: {fileID: 6652952979333378578, guid: 6d8677774a421e74d857dcdb926c0e21, type: 3}
       insertIndex: -1
       addedObject: {fileID: 0}

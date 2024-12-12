@@ -9,15 +9,20 @@ public class BetOnHandBehavior : MonoBehaviour
     [SerializeField] private BetBehavior m_currentBet;
     [SerializeField] private RectTransform m_acceptTargetRect;
     [SerializeField] private RectTransform m_increaseTargetRect;
+    [SerializeField] private RectTransform m_initialBetTargetRect;
     [SerializeField] private BetTargetTag m_acceptBetTargetTag;
     [SerializeField] private BetTargetTag m_increaseBetTargetTag;
+    [SerializeField] private BetTargetTag m_initialBetTargetTag;
 
     [Header("Drag")]
     [SerializeField] private LayerMask m_tableLayer;
     [SerializeField] private LayerMask m_betLayer;
 
-    public void OnPlayerSpawned(int p_playerId)
+
+    PlayerController m_player;
+    public void OnPlayerSpawned(PlayerController p_player)
     {
+        m_player = p_player;
         BetBehavior[] l_bets = FindObjectsOfType<BetBehavior>();
         BetTargetTag[] l_betTargetTag = FindObjectsOfType<BetTargetTag>();
 
@@ -25,7 +30,7 @@ public class BetOnHandBehavior : MonoBehaviour
 
         foreach (BetBehavior bet in l_bets)
         {
-            if (bet.playerId == p_playerId)
+            if (bet.playerId == m_player.PlayerIndex)
             {
                 m_betsBehavior.Add(bet);
             }
@@ -33,7 +38,7 @@ public class BetOnHandBehavior : MonoBehaviour
 
         foreach (BetTargetTag betTag in l_betTargetTag)
         {
-            if (betTag.playerId == p_playerId)
+            if (betTag.playerId == m_player.PlayerIndex)
             {
                 if (betTag.IsAccept)
                 {
@@ -45,11 +50,21 @@ public class BetOnHandBehavior : MonoBehaviour
                     m_increaseBetTargetTag = betTag;
                     m_increaseTargetRect = m_increaseBetTargetTag.targetRect;
                 }
+                else if (betTag.IsBet)
+                {
+                    m_initialBetTargetTag = betTag;
+                    m_initialBetTargetRect = m_initialBetTargetTag.targetRect;
+                }
                 betTag.gameObject.SetActive(false);
             }
             else
                 betTag.gameObject.SetActive(false);
         }
+    }
+
+    public void OnOtherPlayerBet()
+    {
+
     }
 
     RaycastHit l_mousePosRaycastHit; Ray l_ray;
@@ -67,14 +82,24 @@ public class BetOnHandBehavior : MonoBehaviour
         }
         else
         {
-            bool l_raycasted = Physics.Raycast(l_ray, out l_mousePosRaycastHit, 100f, m_betLayer);
-            for (int i = 0; i < m_betsBehavior.Count; i++)
+            if (CanBet())
             {
-                if (!l_raycasted) m_betsBehavior[i].HighlightOff();
-                else m_betsBehavior[i].HighlightBetButton();
+                bool l_raycasted = Physics.Raycast(l_ray, out l_mousePosRaycastHit, 100f, m_betLayer);
+                for (int i = 0; i < m_betsBehavior.Count; i++)
+                {
+                    if (!l_raycasted) m_betsBehavior[i].HighlightOff();
+                    else if (m_betsBehavior[i].playerId == m_player.PlayerIndex
+                                && l_mousePosRaycastHit.transform == m_betsBehavior[i].transform) m_betsBehavior[i].HighlightBetButton();
+                }
             }
-
+            else for (int i = 0; i < m_betsBehavior.Count; i++) m_betsBehavior[i].HighlightOff();
         }
+    }
+
+    bool CanBet()
+    {
+        if (!m_player.CanBet || (!RoundManager.Instance.BetHasStarted.Value && !m_player.CanPlay)) return false;
+        else return true;
     }
 
     public bool CheckClickObject(GameObject p_gameObject)
@@ -87,13 +112,31 @@ public class BetOnHandBehavior : MonoBehaviour
             {
                 if (m_betsBehavior[i].gameObject == p_gameObject)
                 {
+                    bool l_stopIncreaseBet = RoundManager.Instance.StopIncreaseBet.Value;
+                    Debug.Log("can play: " + m_player.CanPlay);
+                    Debug.Log("canBet: " + m_player.CanBet);
+                    Debug.Log("betHasStarted: " + RoundManager.Instance.BetHasStarted.Value);
+                    Debug.Log("stopIncreaseBet: " + l_stopIncreaseBet);
+
+                    if (!CanBet())
+                    {
+
+                        continue;
+                    }
                     m_currentBet = m_betsBehavior[i];
 
-                    if (RoundManager.Instance.BetHasStarted.Value)
+                    m_currentBet.StartDrag(Input.mousePosition);
+
+                    if(RoundManager.Instance.BetHasStarted.Value && !l_stopIncreaseBet)
                     {
-                        m_currentBet.StartDrag(Input.mousePosition);
+                        m_increaseTargetRect.gameObject.SetActive(true);
                         m_acceptTargetRect.gameObject.SetActive(true);
-                        if (!RoundManager.Instance.StopIncreaseBet.Value) m_increaseTargetRect.gameObject.SetActive(true);
+                        m_initialBetTargetRect.gameObject.SetActive(false);
+                    }else
+                    {
+                        m_increaseTargetRect.gameObject.SetActive(false);
+                        m_acceptTargetRect.gameObject.SetActive(false);
+                        m_initialBetTargetRect.gameObject.SetActive(true);
                     }
 
                     l_isBet = true;
@@ -115,28 +158,34 @@ public class BetOnHandBehavior : MonoBehaviour
 
             if (p_canBet)
             {
-                if (!RoundManager.Instance.BetHasStarted.Value)
-                {
-                    Debug.Log("[GAME] BetHasStarted");
-                    Bet(true, m_currentBet, p_actionOnEndAnimation);
-                    l_bet = true;
-                }
+                //if (!RoundManager.Instance.BetHasStarted.Value)
+                //{
+                //    Debug.Log("[GAME] BetHasStarted");
+                //    Bet(true, m_currentBet, p_actionOnEndAnimation);
+                //    l_bet = true;
+                //}
 
                 if (Physics.Raycast(l_ray, out l_mousePosRaycastHit, 100f, m_betLayer))
                 {
-                    if (l_mousePosRaycastHit.transform.gameObject == m_acceptTargetRect.gameObject)
+                    if (l_mousePosRaycastHit.transform.gameObject == m_acceptTargetRect.gameObject
+                        || (RoundManager.Instance.BetHasStarted.Value &&
+                            l_mousePosRaycastHit.transform.gameObject == m_initialBetTargetRect.gameObject))
                     {
                         Bet(false, m_currentBet, p_actionOnEndAnimation);
                         l_bet = true;
                         m_acceptTargetRect.gameObject.SetActive(false);
                         m_increaseTargetRect.gameObject.SetActive(false);
+                        m_initialBetTargetRect.gameObject.SetActive(false);
                     }
-                    else if (l_mousePosRaycastHit.transform.gameObject == m_increaseTargetRect.gameObject)
+                    else if (l_mousePosRaycastHit.transform.gameObject == m_increaseTargetRect.gameObject
+                             || (!RoundManager.Instance.BetHasStarted.Value &&
+                                 l_mousePosRaycastHit.transform.gameObject == m_initialBetTargetRect.gameObject))
                     {
                         Bet(true, m_currentBet, p_actionOnEndAnimation);
                         l_bet = true;
                         m_acceptTargetRect.gameObject.SetActive(false);
                         m_increaseTargetRect.gameObject.SetActive(false);
+                        m_initialBetTargetRect.gameObject.SetActive(false);
                     }
                 }
             }
@@ -147,6 +196,7 @@ public class BetOnHandBehavior : MonoBehaviour
                 m_currentBet = null;
                 m_acceptTargetRect.gameObject.SetActive(false);
                 m_increaseTargetRect.gameObject.SetActive(false);
+                m_initialBetTargetRect.gameObject.SetActive(false);
             }
         }
 

@@ -64,7 +64,7 @@ public class PlayerController : NetworkBehaviour
     }
 
     public bool CanPlay { get; private set; }
-    private bool canBet;
+    public bool CanBet { get; private set; }
 
     public override void OnNetworkSpawn() //research more the difference of this and awake
     {
@@ -89,7 +89,7 @@ public class PlayerController : NetworkBehaviour
 
             CameraController.Instance.SetCamera(PlayerIndex);
 
-            m_betBehavior.OnPlayerSpawned(PlayerIndex);
+            m_betBehavior.OnPlayerSpawned(this);
             m_deckBehavior.OnPlayerSpawned();
 
             m_actionsQueue = new();
@@ -249,8 +249,8 @@ public class PlayerController : NetworkBehaviour
         m_handBehavior.CheckClickUp(CanPlay && !RoundManager.Instance.BetHasStarted.Value,
                                     (id, isItem) => StartAnim(id, isItem),
                                     (go) => ThrowCard(go), (go) => UseItemCard(go));
-        if (CanPlay || RoundManager.Instance.BetHasStarted.Value) m_betBehavior.CheckClickUp(canBet, (go, increase) => IncreaseBet(go, increase));
-        if (RoundManager.Instance.BetHasStarted.Value && canBet) m_deckBehavior.CheckClickUp((go) => GiveUp(go));
+        if (CanPlay || RoundManager.Instance.BetHasStarted.Value) m_betBehavior.CheckClickUp(CanBet, (go, increase) => IncreaseBet(go, increase));
+        if (RoundManager.Instance.BetHasStarted.Value && CanBet) m_deckBehavior.CheckClickUp((go) => GiveUp(go));
     }
 
     private void CheckClickOnObjects(GameObject p_gameObject)
@@ -403,10 +403,10 @@ public class PlayerController : NetworkBehaviour
         if (!IsOwner) return;
 
         currentBetState = ((GameManager)p_sender).betState.Value;
-        canBet = (currentBetState == GameManager.BetState.HostTurn && IsHostPlayer)
+        CanBet = (currentBetState == GameManager.BetState.HostTurn && IsHostPlayer)
                                             || (currentBetState == GameManager.BetState.ClientTurn && IsClientPlayer);
 
-        if (canBet) Debug.Log("pode apostar");
+        if (CanBet) Debug.Log("pode apostar");
         else Debug.Log("não pode apostar");
     }
 

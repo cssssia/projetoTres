@@ -36,7 +36,7 @@ public class PlayerEyesManager : NetworkBehaviour
 
     private void OnBet(object sender, EventArgs e)
     {
-        Debug.Log("on bet");
+        //Debug.Log("on bet");
         Player l_player = (((bool, Player))sender).Item2;
         AnimButtonRemovalServerRpc(m_player, m_currentCoveredEyes, l_player);
     }
@@ -49,10 +49,10 @@ public class PlayerEyesManager : NetworkBehaviour
     [ServerRpc (RequireOwnership = false)]
     void AnimButtonRemovalServerRpc(Player p_player, int p_currentCoveredEyes, Player p_whoAsked)
     {
-        Debug.Log($"AnimButtonRemovalServerRpc + - IsClient: {IsClient}, IsHost: {IsHost}, IsServer: {IsServer}, IsOwner: {IsOwner}");
+        //Debug.Log($"AnimButtonRemovalServerRpc + - IsClient: {IsClient}, IsHost: {IsHost}, IsServer: {IsServer}, IsOwner: {IsOwner}");
 
-        Debug.Log("pts client: " + RoundManager.Instance.PointsClient.Value);
-        Debug.Log("pts host: " + RoundManager.Instance.PointsHost.Value);
+        //Debug.Log("pts client: " + RoundManager.Instance.PointsClient.Value);
+        //Debug.Log("pts host: " + RoundManager.Instance.PointsHost.Value);
 
         int l_nextEyes = 16 - (p_player == Player.HOST ? RoundManager.Instance.PointsClient.Value : RoundManager.Instance.PointsHost.Value);
 
@@ -61,7 +61,7 @@ public class PlayerEyesManager : NetworkBehaviour
         if (p_whoAsked == p_player)
         {
             l_nextEyes -= RoundManager.Instance.BetAsked.Value - RoundManager.Instance.TrickBetMultiplier.Value;
-            print("next eyes " + l_nextEyes);
+            //print("next eyes " + l_nextEyes);
         }
 
         AnimButtonRemovalClientRpc(p_player, l_nextEyes, p_currentCoveredEyes);
@@ -72,15 +72,15 @@ public class PlayerEyesManager : NetworkBehaviour
     {
         if (p_nextEyes < p_currentCoveredEyes)
         {
-            Debug.Log("tira " + (p_currentCoveredEyes - p_nextEyes) + "olhos do " + p_player);
+            //Debug.Log("tira " + (p_currentCoveredEyes - p_nextEyes) + "olhos do " + p_player);
             AnimButtonRemoval(p_player, false, p_currentCoveredEyes, p_nextEyes);
         }
         else if (p_nextEyes > p_currentCoveredEyes)
         {
-            Debug.Log("volta " + (p_currentCoveredEyes - p_nextEyes) + "olhos do " + p_player);
+            //Debug.Log("volta " + (p_currentCoveredEyes - p_nextEyes) + "olhos do " + p_player);
             AnimButtonRemoval(p_player, true, p_currentCoveredEyes, p_nextEyes);
         }
-        else print("tudo normar no " + p_player);
+        //else print("tudo normar no " + p_player);
 
         m_currentCoveredEyes = p_nextEyes;
     }
@@ -96,12 +96,12 @@ public class PlayerEyesManager : NetworkBehaviour
 
         if (IsOwner)
         {
-            Debug.Log("anim MY screen");
-            Debug.Log("anim MY exposition");
+            //Debug.Log("anim MY screen");
+            //Debug.Log("anim MY exposition");
         }
 
-        Debug.Log("intial index = " + p_initialIndex);
-        Debug.Log("final index = " + p_finalIndex);
+        //Debug.Log("intial index = " + p_initialIndex);
+        //Debug.Log("final index = " + p_finalIndex);
 
         if (p_cover)
         {

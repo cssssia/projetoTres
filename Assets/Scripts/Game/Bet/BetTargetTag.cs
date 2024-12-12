@@ -1,7 +1,7 @@
 using UnityEngine;
 using UnityEngine.UI;
 
-public enum Type { ACCEPT, INCREASE }
+public enum Type { ACCEPT, INCREASE, BET }
 public class BetTargetTag : MonoBehaviour
 {
     public int playerId;
@@ -17,4 +17,8 @@ public class BetTargetTag : MonoBehaviour
         get { return type == Type.INCREASE; }
     }
 
+    public bool IsBet
+    {
+        get { return type == Type.BET ; }
+    }
 }

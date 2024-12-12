@@ -145,7 +145,6 @@ public class BetBehavior : MonoBehaviour
     public void HighlightBetButton()
     {
         if (m_currentAnim != null) StopCoroutine(m_currentAnim);
-        Debug.Log("ccccc");
 
         //AudioManager.Instance.PlayOneShot(FMODEvents.Instance.HoverCard, transform.position);
         m_currentAnim = StartCoroutine(IAnimateToPlace(m_individualHighlightBetTranform, m_hoverBetAnim, BetAnimType.HIGHLIGHT));

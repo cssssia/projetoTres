@@ -4,6 +4,8 @@ using UnityEngine.UI;
 
 public class LobbyCreateUI : MonoBehaviour
 {
+    private const string PLACEHOLDER_LOBBY_NAME = "insert lobby name";
+    private const string LOBBY_NAME = "lobby ";
     [SerializeField] private Button m_closeButton;
     [SerializeField] private Button m_createPublicButton;
     [SerializeField] private Button m_createPrivateButton;
@@ -22,7 +24,7 @@ public class LobbyCreateUI : MonoBehaviour
         });
 
         m_createPublicButton.onClick.AddListener(() => {
-            LobbyManager.Instance.CreateLobby(m_lobbyNameInputField.text, false);
+            LobbyManager.Instance.CreateLobby(m_lobbyNameInputField.text != PLACEHOLDER_LOBBY_NAME ? m_lobbyNameInputField.text : LOBBY_NAME + Random.Range(100, 1000), false);
         });
 
         m_createPrivateButton.onClick.AddListener(() => {

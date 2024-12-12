@@ -65,6 +65,7 @@ public class PlayerController : NetworkBehaviour
 
     public bool CanPlay { get; private set; }
     public bool CanBet { get; private set; }
+    public Action OnChangedCanBet;
 
     public override void OnNetworkSpawn() //research more the difference of this and awake
     {
@@ -406,6 +407,7 @@ public class PlayerController : NetworkBehaviour
         CanBet = (currentBetState == GameManager.BetState.HostTurn && IsHostPlayer)
                                             || (currentBetState == GameManager.BetState.ClientTurn && IsClientPlayer);
 
+        OnChangedCanBet?.Invoke();
         if (CanBet) Debug.Log("pode apostar");
         else Debug.Log("não pode apostar");
     }

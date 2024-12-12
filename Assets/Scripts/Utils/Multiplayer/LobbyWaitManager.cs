@@ -11,11 +11,16 @@ public class LobbyWaitManager : NetworkBehaviour
 	public event EventHandler OnReadyChanged;
 
     [SerializeField] private Dictionary<ulong, bool> m_playerReadyDictionary;
+	private bool m_inEditor;
 
     void Awake()
     {
         Instance = this;
         m_playerReadyDictionary = new Dictionary<ulong, bool>();
+
+		#if UNITY_EDITOR
+			m_inEditor = true;
+		#endif
     }
 
     public void SetPlayerReady()
@@ -40,7 +45,7 @@ public class LobbyWaitManager : NetworkBehaviour
 			}
 		}
 
-		if (l_allClientsReady)
+		if (l_allClientsReady && (NetworkManager.Singleton.ConnectedClientsIds.Count == MultiplayerManager.MAX_PLAYER_AMOUNT || m_inEditor))
 		{
 			Debug.Log("[GAME] all clients are ready");
 			SceneLoader.LoadNetwork(SceneLoader.Scene.SCN_Game);

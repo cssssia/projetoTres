@@ -34,6 +34,7 @@ public class CardBehavior : MonoBehaviour
 
     [Header("Card Transform")]
     public const float CARD_SCALE = 0.65f;
+    public const float CARD_TABLE_SCALE = 0.8f;
     public const float CARD_DRAG_SCALE = CARD_SCALE - 0.2f;
     [SerializeField] private CardTransform m_idleCardTranform;
     [Space]

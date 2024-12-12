@@ -13,8 +13,8 @@ MonoBehaviour:
   m_Name: CFG_PlayerSpawnData
   m_EditorClassIdentifier: 
   spawnPosition:
-  - {x: 1.315, y: 2.52, z: -5.28}
-  - {x: -1.315, y: 2.52, z: 5}
+  - {x: 0, y: 1.92, z: -5.68}
+  - {x: 0, y: 1.92, z: 5.68}
   spawnRotation:
-  - {x: 30.150002, y: 0, z: 0}
-  - {x: 30.150002, y: 180, z: 0}
+  - {x: 32.2, y: 0, z: 0}
+  - {x: 32.2, y: 180, z: 0}

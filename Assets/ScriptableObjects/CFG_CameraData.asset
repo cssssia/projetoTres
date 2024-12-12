@@ -39,7 +39,7 @@ MonoBehaviour:
       m_PreInfinity: 2
       m_PostInfinity: 2
       m_RotationOrder: 4
-    LocalRotation: {x: 25, y: 0, z: 0}
+    LocalRotation: {x: 32.2, y: 0, z: 0}
     RotationCurve:
       serializedVersion: 2
       m_Curve:

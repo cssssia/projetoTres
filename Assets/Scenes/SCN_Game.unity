@@ -11371,7 +11371,7 @@ PrefabInstance:
     - target: {fileID: 4815183477968308608, guid: 2a123caf6abeb0544825351c68a78add, type: 3}
       propertyPath: m_Materials.Array.data[0]
       value: 
-      objectReference: {fileID: 2100000, guid: 4dfadbe2cf640e74c9d92831a4b77347, type: 2}
+      objectReference: {fileID: 2100000, guid: 6b27168d04aaf204c9a75985131e01b9, type: 2}
     - target: {fileID: 6552211688483175772, guid: 2a123caf6abeb0544825351c68a78add, type: 3}
       propertyPath: m_Name
       value: Stake_1
@@ -14778,7 +14778,7 @@ PrefabInstance:
     - target: {fileID: 4815183477968308608, guid: 2a123caf6abeb0544825351c68a78add, type: 3}
       propertyPath: m_Materials.Array.data[0]
       value: 
-      objectReference: {fileID: 2100000, guid: 1e0f8379462c0724b8047ab67a1ad2d7, type: 2}
+      objectReference: {fileID: 2100000, guid: c22edb4b1f6aa6d47ac1085a1831a251, type: 2}
     - target: {fileID: 6552211688483175772, guid: 2a123caf6abeb0544825351c68a78add, type: 3}
       propertyPath: m_Name
       value: Scissors_1
@@ -18430,7 +18430,7 @@ PrefabInstance:
     - target: {fileID: 4815183477968308608, guid: 2a123caf6abeb0544825351c68a78add, type: 3}
       propertyPath: m_Materials.Array.data[0]
       value: 
-      objectReference: {fileID: 2100000, guid: 4dfadbe2cf640e74c9d92831a4b77347, type: 2}
+      objectReference: {fileID: 2100000, guid: 6b27168d04aaf204c9a75985131e01b9, type: 2}
     - target: {fileID: 6552211688483175772, guid: 2a123caf6abeb0544825351c68a78add, type: 3}
       propertyPath: m_Name
       value: Stake_2
@@ -19635,7 +19635,7 @@ PrefabInstance:
     - target: {fileID: 4815183477968308608, guid: 2a123caf6abeb0544825351c68a78add, type: 3}
       propertyPath: m_Materials.Array.data[0]
       value: 
-      objectReference: {fileID: 2100000, guid: 1e0f8379462c0724b8047ab67a1ad2d7, type: 2}
+      objectReference: {fileID: 2100000, guid: c22edb4b1f6aa6d47ac1085a1831a251, type: 2}
     - target: {fileID: 6552211688483175772, guid: 2a123caf6abeb0544825351c68a78add, type: 3}
       propertyPath: m_Name
       value: Scissors_2

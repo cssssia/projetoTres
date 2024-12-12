@@ -11,7 +11,7 @@ PrefabInstance:
     - target: {fileID: -5695983786731616087, guid: 2f21bec7f30c7d744a280a41c7e1980a, type: 3}
       propertyPath: m_Mesh
       value: 
-      objectReference: {fileID: -7414023034635206165, guid: b1441410f3335d649999194d9a2e5cb7, type: 3}
+      objectReference: {fileID: -7414023034635206165, guid: 52f92a3ebfbae6247b77ba1737919839, type: 3}
     - target: {fileID: 937226932739149441, guid: 2f21bec7f30c7d744a280a41c7e1980a, type: 3}
       propertyPath: GlobalObjectIdHash
       value: 951099334
@@ -44,9 +44,25 @@ PrefabInstance:
       propertyPath: m_Center.z
       value: -0.00000005960466
       objectReference: {fileID: 0}
+    - target: {fileID: 4962583754584604216, guid: 2f21bec7f30c7d744a280a41c7e1980a, type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 962a05a9dc1eeb642880526842bf1145, type: 2}
     - target: {fileID: 6693041384023231204, guid: 2f21bec7f30c7d744a280a41c7e1980a, type: 3}
       propertyPath: m_Name
       value: Item_Card
+      objectReference: {fileID: 0}
+    - target: {fileID: 7690226722388015351, guid: 2f21bec7f30c7d744a280a41c7e1980a, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 65
+      objectReference: {fileID: 0}
+    - target: {fileID: 7690226722388015351, guid: 2f21bec7f30c7d744a280a41c7e1980a, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 65
+      objectReference: {fileID: 0}
+    - target: {fileID: 7690226722388015351, guid: 2f21bec7f30c7d744a280a41c7e1980a, type: 3}
+      propertyPath: m_LocalScale.z
+      value: 65
       objectReference: {fileID: 0}
     - target: {fileID: 7690226722388015351, guid: 2f21bec7f30c7d744a280a41c7e1980a, type: 3}
       propertyPath: m_LocalPosition.x

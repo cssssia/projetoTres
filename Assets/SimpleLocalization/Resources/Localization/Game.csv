@@ -35,3 +35,10 @@ Game.WaitingUnpause,waiting for all players to unpause,esperando todos os jogado
 Game.Paused,paused,pausado
 Game.Resume,resume,retomar
 Game.Options,options,opções
+Game.EndedMatch,the match has ended,a partida terminou
+Game.YouWon,you won,você venceu
+Game.YouLost,you lost your soul,você perdeu sua alma
+Game.Rules,rules,regras
+Game.Bet,BET,APOSTAR
+Game.Accept,ACCEPT,ACEITAR
+Game.Increase,INCREASE,AUMENTAR

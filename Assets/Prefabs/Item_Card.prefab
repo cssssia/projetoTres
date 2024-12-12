@@ -53,18 +53,6 @@ PrefabInstance:
       value: Item_Card
       objectReference: {fileID: 0}
     - target: {fileID: 7690226722388015351, guid: 2f21bec7f30c7d744a280a41c7e1980a, type: 3}
-      propertyPath: m_LocalScale.x
-      value: 65
-      objectReference: {fileID: 0}
-    - target: {fileID: 7690226722388015351, guid: 2f21bec7f30c7d744a280a41c7e1980a, type: 3}
-      propertyPath: m_LocalScale.y
-      value: 65
-      objectReference: {fileID: 0}
-    - target: {fileID: 7690226722388015351, guid: 2f21bec7f30c7d744a280a41c7e1980a, type: 3}
-      propertyPath: m_LocalScale.z
-      value: 65
-      objectReference: {fileID: 0}
-    - target: {fileID: 7690226722388015351, guid: 2f21bec7f30c7d744a280a41c7e1980a, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
       objectReference: {fileID: 0}

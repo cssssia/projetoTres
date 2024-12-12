@@ -23,7 +23,7 @@ public class MenuUI : MonoBehaviour
             m_optionsUI.SetActive(true);
         });
         m_quitButton.onClick.AddListener(() => {
-            AudioManager.Instance.PlayOneShot(FMODEvents.Instance.HoverCard, transform.position);
+            AudioManager.Instance.PlayOneShot(FMODEvents.Instance.TurnCard, transform.position);
             Application.Quit();
         });
     }

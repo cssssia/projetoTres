@@ -166,8 +166,8 @@ public class CardBehavior : MonoBehaviour
     {
         if (m_currentAnim != null) StopCoroutine(m_currentAnim);
 
-        AudioManager.Instance.PlayOneShot(FMODEvents.Instance.HoverCard, transform.position);
         m_currentAnim = StartCoroutine(IAnimateToPlace(m_individualHighlightCardTranform, m_hoverCardAnim, CardAnimType.HIGHLIGHT));
+        AudioManager.Instance.PlayOneShot(FMODEvents.Instance.HoverCard, transform.position);
     }
 
     public void HighlightOff()

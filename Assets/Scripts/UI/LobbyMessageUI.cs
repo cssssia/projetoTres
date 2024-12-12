@@ -38,7 +38,7 @@ public class LobbyMessageUI : MonoBehaviour
     private void MultiplayerManager_OnFailToJoinGame(object p_sender, EventArgs e)
     {
         if (NetworkManager.Singleton.DisconnectReason == "") // if connection gets timeout, text message is empty
-            ShowMessage(ErrorMessage.MESSAGE_FAILED_CONNECT);
+            ShowMessage(Localization.Instance.Localize("MESSAGE_FAILED_CONNECT"));
         else
             ShowMessage(NetworkManager.Singleton.DisconnectReason);
 
@@ -47,27 +47,27 @@ public class LobbyMessageUI : MonoBehaviour
 
     private void LobbyManager_OnCreateLobbyStarted(object p_sender, EventArgs e)
     {
-        ShowMessage(ErrorMessage.MESSAGE_CREATING);
+        ShowMessage(Localization.Instance.Localize("MESSAGE_CREATING"));
     }
 
     private void LobbyManager_OnCreateLobbyFailed(object p_sender, EventArgs e)
     {
-        ShowMessage(ErrorMessage.MESSAGE_FAILED_CREATE_LOBBY);
+        ShowMessage(Localization.Instance.Localize("MESSAGE_FAILED_CREATE_LOBBY"));
     }
 
     private void LobbyManager_OnJoinStarted(object p_sender, EventArgs e)
     {
-        ShowMessage(ErrorMessage.MESSAGE_JOINING);
+        ShowMessage(Localization.Instance.Localize("MESSAGE_JOINING"));
     }
 
     private void LobbyManager_OnQuickJoinFailed(object p_sender, EventArgs e)
     {
-        ShowMessage(ErrorMessage.MESSAGE_FAILED_QUICK_LOBBY);
+        ShowMessage(Localization.Instance.Localize("MESSAGE_FAILED_QUICK_LOBBY"));
     }
 
     private void LobbyManager_OnCodeJoinFailed(object p_sender, EventArgs e)
     {
-        ShowMessage(ErrorMessage.MESSAGE_FAILED_JOIN_LOBBY);
+        ShowMessage(Localization.Instance.Localize("MESSAGE_FAILED_JOIN_LOBBY"));
     }
 
     private void ShowMessage(string p_message)

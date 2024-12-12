@@ -80,14 +80,14 @@ public class MultiplayerManager : NetworkBehaviour
 		if (UnityEngine.SceneManagement.SceneManager.GetActiveScene().name != SceneLoader.Scene.SCN_WaitLobby.ToString())
 		{
 	        p_connectionApprovalResponse.Approved = false;
-			p_connectionApprovalResponse.Reason = ErrorMessage.REASON_GAME_STARTED;
+			p_connectionApprovalResponse.Reason = Localization.Instance.Localize("REASON_GAME_STARTED");
 			return;
 		}
 
 		if (NetworkManager.Singleton.ConnectedClientsIds.Count >= MAX_PLAYER_AMOUNT)
 		{
 			p_connectionApprovalResponse.Approved = false;
-			p_connectionApprovalResponse.Reason = ErrorMessage.REASON_GAME_FULL;
+			p_connectionApprovalResponse.Reason = Localization.Instance.Localize("REASON_GAME_FULL");
 			return;
 		}
 

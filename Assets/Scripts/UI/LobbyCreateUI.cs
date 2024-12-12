@@ -24,11 +24,11 @@ public class LobbyCreateUI : MonoBehaviour
         });
 
         m_createPublicButton.onClick.AddListener(() => {
-            LobbyManager.Instance.CreateLobby(m_lobbyNameInputField.text != PLACEHOLDER_LOBBY_NAME ? m_lobbyNameInputField.text : LOBBY_NAME + Random.Range(100, 1000), false);
+            LobbyManager.Instance.CreateLobby(m_lobbyNameInputField.text == "" ? LOBBY_NAME + Random.Range(100, 1000) : m_lobbyNameInputField.text, false);
         });
 
         m_createPrivateButton.onClick.AddListener(() => {
-            LobbyManager.Instance.CreateLobby(m_lobbyNameInputField.text, true);
+            LobbyManager.Instance.CreateLobby(m_lobbyNameInputField.text == "" ? LOBBY_NAME + Random.Range(100, 1000) : m_lobbyNameInputField.text, true);
         });
 
     }

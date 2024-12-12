@@ -172,8 +172,10 @@ MonoBehaviour:
   m_currentBet: {fileID: 0}
   m_acceptTargetRect: {fileID: 0}
   m_increaseTargetRect: {fileID: 0}
+  m_initialBetTargetRect: {fileID: 0}
   m_acceptBetTargetTag: {fileID: 0}
   m_increaseBetTargetTag: {fileID: 0}
+  m_initialBetTargetTag: {fileID: 0}
   m_tableLayer:
     serializedVersion: 2
     m_Bits: 64
@@ -209,22 +211,22 @@ MonoBehaviour:
   m_playerController: {fileID: 5532184906107296603}
   m_player: 3
   m_eyesBehavior:
-  - {fileID: 700113930048907609}
-  - {fileID: 8465993737599439459}
-  - {fileID: 5648195077896705200}
-  - {fileID: 4022007124949691845}
-  - {fileID: 7971145645845751485}
-  - {fileID: 8954119076715819067}
-  - {fileID: 8018826078313087432}
-  - {fileID: 4690765117489053860}
-  - {fileID: 499485320961024362}
-  - {fileID: 7307610477064708595}
-  - {fileID: 7833632502702752121}
-  - {fileID: 3210970311723427762}
-  - {fileID: 8907404986550650484}
-  - {fileID: 7436208727128145816}
-  - {fileID: 6708551952918632923}
   - {fileID: 7117406426002693271}
+  - {fileID: 6708551952918632923}
+  - {fileID: 7436208727128145816}
+  - {fileID: 8907404986550650484}
+  - {fileID: 3210970311723427762}
+  - {fileID: 7833632502702752121}
+  - {fileID: 7307610477064708595}
+  - {fileID: 499485320961024362}
+  - {fileID: 4690765117489053860}
+  - {fileID: 8018826078313087432}
+  - {fileID: 8954119076715819067}
+  - {fileID: 7971145645845751485}
+  - {fileID: 4022007124949691845}
+  - {fileID: 5648195077896705200}
+  - {fileID: 8465993737599439459}
+  - {fileID: 700113930048907609}
 --- !u!1 &6213584777624509979
 GameObject:
   m_ObjectHideFlags: 0

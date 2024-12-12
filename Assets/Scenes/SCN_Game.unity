@@ -307,7 +307,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: SPECIAL ITEMS
+  m_text: special items
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: d551b2cc49900d64da5f434aef22e8cc, type: 2}
   m_sharedMaterial: {fileID: 3654273496672261189, guid: d551b2cc49900d64da5f434aef22e8cc, type: 2}
@@ -340,7 +340,7 @@ MonoBehaviour:
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
   m_fontSizeMax: 72
-  m_fontStyle: 8
+  m_fontStyle: 0
   m_HorizontalAlignment: 1
   m_VerticalAlignment: 512
   m_textAlignment: 65535
@@ -491,7 +491,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: MANTUS RULES
+  m_text: mantus rules
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: d551b2cc49900d64da5f434aef22e8cc, type: 2}
   m_sharedMaterial: {fileID: 3654273496672261189, guid: d551b2cc49900d64da5f434aef22e8cc, type: 2}
@@ -524,7 +524,7 @@ MonoBehaviour:
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
   m_fontSizeMax: 72
-  m_fontStyle: 8
+  m_fontStyle: 0
   m_HorizontalAlignment: 2
   m_VerticalAlignment: 512
   m_textAlignment: 65535
@@ -932,7 +932,7 @@ MonoBehaviour:
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
   m_fontSizeMax: 72
-  m_fontStyle: 8
+  m_fontStyle: 0
   m_HorizontalAlignment: 1
   m_VerticalAlignment: 256
   m_textAlignment: 65535
@@ -2235,7 +2235,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: MAIN MENU
+  m_text: main menu
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: f87680dbf5d2bee48aa8d6c884268488, type: 2}
   m_sharedMaterial: {fileID: 7014485699297257946, guid: f87680dbf5d2bee48aa8d6c884268488, type: 2}
@@ -2269,9 +2269,9 @@ MonoBehaviour:
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
   m_fontSizeMax: 72
-  m_fontStyle: 8
+  m_fontStyle: 0
   m_HorizontalAlignment: 2
-  m_VerticalAlignment: 4096
+  m_VerticalAlignment: 512
   m_textAlignment: 65535
   m_characterSpacing: 0
   m_wordSpacing: 0
@@ -4093,7 +4093,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: IN GAME ACTIONS
+  m_text: in game actions
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: d551b2cc49900d64da5f434aef22e8cc, type: 2}
   m_sharedMaterial: {fileID: 3654273496672261189, guid: d551b2cc49900d64da5f434aef22e8cc, type: 2}
@@ -4126,7 +4126,7 @@ MonoBehaviour:
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
   m_fontSizeMax: 72
-  m_fontStyle: 8
+  m_fontStyle: 0
   m_HorizontalAlignment: 1
   m_VerticalAlignment: 512
   m_textAlignment: 65535
@@ -5638,7 +5638,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: MANTUS RULES
+  m_text: mantus rules
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: d551b2cc49900d64da5f434aef22e8cc, type: 2}
   m_sharedMaterial: {fileID: 3654273496672261189, guid: d551b2cc49900d64da5f434aef22e8cc, type: 2}
@@ -5671,7 +5671,7 @@ MonoBehaviour:
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
   m_fontSizeMax: 72
-  m_fontStyle: 8
+  m_fontStyle: 0
   m_HorizontalAlignment: 2
   m_VerticalAlignment: 512
   m_textAlignment: 65535
@@ -5824,7 +5824,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: TIEBREAKER
+  m_text: tiebraker
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: d551b2cc49900d64da5f434aef22e8cc, type: 2}
   m_sharedMaterial: {fileID: 3654273496672261189, guid: d551b2cc49900d64da5f434aef22e8cc, type: 2}
@@ -5857,7 +5857,7 @@ MonoBehaviour:
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
   m_fontSizeMax: 72
-  m_fontStyle: 8
+  m_fontStyle: 0
   m_HorizontalAlignment: 1
   m_VerticalAlignment: 512
   m_textAlignment: 65535
@@ -6636,10 +6636,10 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: '- SCISSORS: DISCARD THE CARD(S) YOU HAVE ON HAND AND DRAW NEW ONES;
+  m_text: '- scissors: discard the card(s) you have on hand and draw new ones;
 
     -
-    STAKE: SEE THE SUITS IN THE ADVERSARIES HAND.'
+    stake: see the suits in the adversaries hand.'
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: f87680dbf5d2bee48aa8d6c884268488, type: 2}
   m_sharedMaterial: {fileID: 7014485699297257946, guid: f87680dbf5d2bee48aa8d6c884268488, type: 2}
@@ -6672,7 +6672,7 @@ MonoBehaviour:
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
   m_fontSizeMax: 72
-  m_fontStyle: 8
+  m_fontStyle: 0
   m_HorizontalAlignment: 1
   m_VerticalAlignment: 256
   m_textAlignment: 65535
@@ -6962,13 +6962,13 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: '- RAISE BET: CLICK ON THE BET BUTTON ON THE TABLE;
+  m_text: '- raise bet: click on the bet button on the table;
 
-    - AFTER A PLAYER
-    TRY TO BET, THE OTHER PLAYER WILL NEED TO ACCEPT OR INCREASE, INTERACTING WITH
-    THE BET BUTTON;
+    - after a player
+    try to bet, the other player will need to accept or increase, interacting with
+    the bet button;
 
-    - FORFEIT: CLICK THE DECK ON THE TABLE.'
+    - forfeit: click the deck on the table.'
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: f87680dbf5d2bee48aa8d6c884268488, type: 2}
   m_sharedMaterial: {fileID: 7014485699297257946, guid: f87680dbf5d2bee48aa8d6c884268488, type: 2}
@@ -7001,7 +7001,7 @@ MonoBehaviour:
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
   m_fontSizeMax: 72
-  m_fontStyle: 8
+  m_fontStyle: 0
   m_HorizontalAlignment: 1
   m_VerticalAlignment: 256
   m_textAlignment: 65535
@@ -7528,7 +7528,7 @@ Transform:
   m_GameObject: {fileID: 800067152}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: -0.08, z: 4.75}
+  m_LocalPosition: {x: -7.5, y: -0.08, z: 4.75}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -8261,7 +8261,7 @@ GameObject:
   - component: {fileID: 917451381}
   - component: {fileID: 917451383}
   m_Layer: 5
-  m_Name: TXT_Lenguage
+  m_Name: TXT_Language
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -8306,7 +8306,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: lenguage
+  m_text: language
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: f87680dbf5d2bee48aa8d6c884268488, type: 2}
   m_sharedMaterial: {fileID: 7014485699297257946, guid: f87680dbf5d2bee48aa8d6c884268488, type: 2}
@@ -8341,7 +8341,7 @@ MonoBehaviour:
   m_fontSizeMax: 72
   m_fontStyle: 0
   m_HorizontalAlignment: 2
-  m_VerticalAlignment: 4096
+  m_VerticalAlignment: 512
   m_textAlignment: 65535
   m_characterSpacing: 0
   m_wordSpacing: 0
@@ -8395,7 +8395,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2404a37f3bd75444aa4ad05d0f228347, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  LocalizationKey: Menu.Lenguage
+  LocalizationKey: Menu.Language
 --- !u!1 &922527604
 GameObject:
   m_ObjectHideFlags: 0
@@ -8565,10 +8565,10 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: '- CARDS 1 TO 7 WIN AGAINST ANY LOWER-VALUED CARD;
+  m_text: '- cards 1 to 7 win against any lower-valued card;
 
-    - IN THIS SCENARIO,
-    TIES OCCUR WHEN CARDS HAVE THE SAME VALUE, REGARDLESS OF SUIT.'
+    - in this scenario,
+    ties occur when cards have the same value, regardless of suit.'
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: f87680dbf5d2bee48aa8d6c884268488, type: 2}
   m_sharedMaterial: {fileID: 7014485699297257946, guid: f87680dbf5d2bee48aa8d6c884268488, type: 2}
@@ -8601,7 +8601,7 @@ MonoBehaviour:
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
   m_fontSizeMax: 72
-  m_fontStyle: 8
+  m_fontStyle: 0
   m_HorizontalAlignment: 1
   m_VerticalAlignment: 256
   m_textAlignment: 65535
@@ -8730,7 +8730,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: IN GAME ACTIONS
+  m_text: in game actions
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: d551b2cc49900d64da5f434aef22e8cc, type: 2}
   m_sharedMaterial: {fileID: 3654273496672261189, guid: d551b2cc49900d64da5f434aef22e8cc, type: 2}
@@ -8763,7 +8763,7 @@ MonoBehaviour:
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
   m_fontSizeMax: 72
-  m_fontStyle: 8
+  m_fontStyle: 0
   m_HorizontalAlignment: 1
   m_VerticalAlignment: 512
   m_textAlignment: 65535
@@ -9264,9 +9264,9 @@ MonoBehaviour:
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
   m_fontSizeMax: 72
-  m_fontStyle: 8
+  m_fontStyle: 0
   m_HorizontalAlignment: 2
-  m_VerticalAlignment: 4096
+  m_VerticalAlignment: 512
   m_textAlignment: 65535
   m_characterSpacing: 0
   m_wordSpacing: 0
@@ -9988,15 +9988,15 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: -8679921383154817045, guid: ce0936a477a2875458bb5655a01a2fb4, type: 3}
       propertyPath: m_LocalScale.x
-      value: 0.6499999
+      value: 0.9
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: ce0936a477a2875458bb5655a01a2fb4, type: 3}
       propertyPath: m_LocalScale.y
-      value: 0.65
+      value: 0.9
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: ce0936a477a2875458bb5655a01a2fb4, type: 3}
       propertyPath: m_LocalScale.z
-      value: 0.6499999
+      value: 0.9
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: ce0936a477a2875458bb5655a01a2fb4, type: 3}
       propertyPath: m_LocalPosition.x
@@ -10037,6 +10037,10 @@ PrefabInstance:
     - target: {fileID: -8679921383154817045, guid: ce0936a477a2875458bb5655a01a2fb4, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: ce0936a477a2875458bb5655a01a2fb4, type: 3}
+      propertyPath: m_ConstrainProportionsScale
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: ce0936a477a2875458bb5655a01a2fb4, type: 3}
       propertyPath: m_Name
@@ -10464,10 +10468,10 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: '- SCISSORS: DISCARD THE CARD(S) YOU HAVE ON HAND AND DRAW NEW ONES;
+  m_text: '- scissors: discard the card(s) you have on hand and draw new ones;
 
     -
-    STAKE: SEE THE SUITS IN THE ADVERSARIES HAND.'
+    stake: see the suits in the adversaries hand.'
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: f87680dbf5d2bee48aa8d6c884268488, type: 2}
   m_sharedMaterial: {fileID: 7014485699297257946, guid: f87680dbf5d2bee48aa8d6c884268488, type: 2}
@@ -10500,7 +10504,7 @@ MonoBehaviour:
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
   m_fontSizeMax: 72
-  m_fontStyle: 8
+  m_fontStyle: 0
   m_HorizontalAlignment: 1
   m_VerticalAlignment: 256
   m_textAlignment: 65535
@@ -10668,7 +10672,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: SPECIAL CARDS
+  m_text: special cards
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: d551b2cc49900d64da5f434aef22e8cc, type: 2}
   m_sharedMaterial: {fileID: 3654273496672261189, guid: d551b2cc49900d64da5f434aef22e8cc, type: 2}
@@ -10701,7 +10705,7 @@ MonoBehaviour:
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
   m_fontSizeMax: 72
-  m_fontStyle: 8
+  m_fontStyle: 0
   m_HorizontalAlignment: 1
   m_VerticalAlignment: 512
   m_textAlignment: 65535
@@ -11364,7 +11368,7 @@ MonoBehaviour:
   m_fontSizeMax: 72
   m_fontStyle: 0
   m_HorizontalAlignment: 2
-  m_VerticalAlignment: 4096
+  m_VerticalAlignment: 512
   m_textAlignment: 65535
   m_characterSpacing: 0
   m_wordSpacing: 0
@@ -11477,7 +11481,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: PAUSED
+  m_text: paused
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: d551b2cc49900d64da5f434aef22e8cc, type: 2}
   m_sharedMaterial: {fileID: 3654273496672261189, guid: d551b2cc49900d64da5f434aef22e8cc, type: 2}
@@ -11511,7 +11515,7 @@ MonoBehaviour:
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
   m_fontSizeMax: 72
-  m_fontStyle: 8
+  m_fontStyle: 0
   m_HorizontalAlignment: 2
   m_VerticalAlignment: 512
   m_textAlignment: 65535
@@ -12473,6 +12477,7 @@ GameObject:
   - component: {fileID: 1357966701}
   - component: {fileID: 1357966703}
   - component: {fileID: 1357966702}
+  - component: {fileID: 1357966704}
   m_Layer: 0
   m_Name: TXT_MatchEnded
   m_TagString: Untagged
@@ -12553,7 +12558,7 @@ MonoBehaviour:
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
   m_fontSizeMax: 72
-  m_fontStyle: 8
+  m_fontStyle: 0
   m_HorizontalAlignment: 2
   m_VerticalAlignment: 512
   m_textAlignment: 65535
@@ -12597,6 +12602,19 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1357966700}
   m_CullTransparentMesh: 1
+--- !u!114 &1357966704
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1357966700}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2404a37f3bd75444aa4ad05d0f228347, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  LocalizationKey: Game.EndedMatch
 --- !u!1 &1367482905
 GameObject:
   m_ObjectHideFlags: 0
@@ -12769,13 +12787,13 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: '- RAISE BET: CLICK ON THE BET BUTTON ON THE TABLE;
+  m_text: '- raise bet: click on the bet button on the table;
 
-    - AFTER A PLAYER
-    TRY TO BET, THE OTHER PLAYER WILL NEED TO ACCEPT OR INCREASE, INTERACTING WITH
-    THE BET BUTTON;
+    - after a player
+    try to bet, the other player will need to accept or increase, interacting with
+    the bet button;
 
-    - FORFEIT: CLICK THE DECK ON THE TABLE.'
+    - forfeit: click the deck on the table.'
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: f87680dbf5d2bee48aa8d6c884268488, type: 2}
   m_sharedMaterial: {fileID: 7014485699297257946, guid: f87680dbf5d2bee48aa8d6c884268488, type: 2}
@@ -12808,7 +12826,7 @@ MonoBehaviour:
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
   m_fontSizeMax: 72
-  m_fontStyle: 8
+  m_fontStyle: 0
   m_HorizontalAlignment: 1
   m_VerticalAlignment: 256
   m_textAlignment: 65535
@@ -12956,7 +12974,7 @@ MonoBehaviour:
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
   m_fontSizeMax: 72
-  m_fontStyle: 8
+  m_fontStyle: 0
   m_HorizontalAlignment: 2
   m_VerticalAlignment: 512
   m_textAlignment: 65535
@@ -13157,7 +13175,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: WAITING FOR OTHER PLAYER...
+  m_text: waiting for other player...
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: d551b2cc49900d64da5f434aef22e8cc, type: 2}
   m_sharedMaterial: {fileID: 3654273496672261189, guid: d551b2cc49900d64da5f434aef22e8cc, type: 2}
@@ -13190,7 +13208,7 @@ MonoBehaviour:
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
   m_fontSizeMax: 72
-  m_fontStyle: 8
+  m_fontStyle: 0
   m_HorizontalAlignment: 2
   m_VerticalAlignment: 512
   m_textAlignment: 65535
@@ -14048,7 +14066,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: MAIN MENU
+  m_text: main menu
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: f87680dbf5d2bee48aa8d6c884268488, type: 2}
   m_sharedMaterial: {fileID: 7014485699297257946, guid: f87680dbf5d2bee48aa8d6c884268488, type: 2}
@@ -14082,9 +14100,9 @@ MonoBehaviour:
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
   m_fontSizeMax: 72
-  m_fontStyle: 8
+  m_fontStyle: 0
   m_HorizontalAlignment: 2
-  m_VerticalAlignment: 4096
+  m_VerticalAlignment: 512
   m_textAlignment: 65535
   m_characterSpacing: 0
   m_wordSpacing: 0
@@ -14232,7 +14250,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: SOMEONE DISCONNECTED
+  m_text: someone disconnected
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: d551b2cc49900d64da5f434aef22e8cc, type: 2}
   m_sharedMaterial: {fileID: 3654273496672261189, guid: d551b2cc49900d64da5f434aef22e8cc, type: 2}
@@ -14265,7 +14283,7 @@ MonoBehaviour:
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
   m_fontSizeMax: 72
-  m_fontStyle: 8
+  m_fontStyle: 0
   m_HorizontalAlignment: 2
   m_VerticalAlignment: 512
   m_textAlignment: 65535
@@ -14381,7 +14399,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: BASIC RULES
+  m_text: basic rules
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: d551b2cc49900d64da5f434aef22e8cc, type: 2}
   m_sharedMaterial: {fileID: 3654273496672261189, guid: d551b2cc49900d64da5f434aef22e8cc, type: 2}
@@ -14414,7 +14432,7 @@ MonoBehaviour:
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
   m_fontSizeMax: 72
-  m_fontStyle: 8
+  m_fontStyle: 0
   m_HorizontalAlignment: 1
   m_VerticalAlignment: 512
   m_textAlignment: 65535
@@ -14848,10 +14866,10 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: '- CARDS 1 TO 7 WIN AGAINST ANY LOWER-VALUED CARD;
+  m_text: '- cards 1 to 7 win against any lower-valued card;
 
-    - IN THIS SCENARIO,
-    TIES OCCUR WHEN CARDS HAVE THE SAME VALUE, REGARDLESS OF SUIT.'
+    - in this scenario,
+    ties occur when cards have the same value, regardless of suit.'
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: f87680dbf5d2bee48aa8d6c884268488, type: 2}
   m_sharedMaterial: {fileID: 7014485699297257946, guid: f87680dbf5d2bee48aa8d6c884268488, type: 2}
@@ -14884,7 +14902,7 @@ MonoBehaviour:
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
   m_fontSizeMax: 72
-  m_fontStyle: 8
+  m_fontStyle: 0
   m_HorizontalAlignment: 1
   m_VerticalAlignment: 256
   m_textAlignment: 65535
@@ -15352,7 +15370,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: SPECIAL CARDS
+  m_text: special cards
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: d551b2cc49900d64da5f434aef22e8cc, type: 2}
   m_sharedMaterial: {fileID: 3654273496672261189, guid: d551b2cc49900d64da5f434aef22e8cc, type: 2}
@@ -15385,7 +15403,7 @@ MonoBehaviour:
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
   m_fontSizeMax: 72
-  m_fontStyle: 8
+  m_fontStyle: 0
   m_HorizontalAlignment: 1
   m_VerticalAlignment: 512
   m_textAlignment: 65535
@@ -16098,7 +16116,7 @@ MonoBehaviour:
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
   m_fontSizeMax: 72
-  m_fontStyle: 8
+  m_fontStyle: 0
   m_HorizontalAlignment: 1
   m_VerticalAlignment: 256
   m_textAlignment: 65535
@@ -16789,9 +16807,9 @@ MonoBehaviour:
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
   m_fontSizeMax: 72
-  m_fontStyle: 8
+  m_fontStyle: 0
   m_HorizontalAlignment: 2
-  m_VerticalAlignment: 4096
+  m_VerticalAlignment: 512
   m_textAlignment: 65535
   m_characterSpacing: 0
   m_wordSpacing: 0
@@ -17190,7 +17208,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: WAITING FOR ALL PLAYERS TO UNPAUSE...
+  m_text: waiting for all players to unpause...
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: f87680dbf5d2bee48aa8d6c884268488, type: 2}
   m_sharedMaterial: {fileID: 7014485699297257946, guid: f87680dbf5d2bee48aa8d6c884268488, type: 2}
@@ -17224,7 +17242,7 @@ MonoBehaviour:
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
   m_fontSizeMax: 72
-  m_fontStyle: 8
+  m_fontStyle: 0
   m_HorizontalAlignment: 2
   m_VerticalAlignment: 512
   m_textAlignment: 65535
@@ -17493,7 +17511,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: RESUME
+  m_text: resume
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: f87680dbf5d2bee48aa8d6c884268488, type: 2}
   m_sharedMaterial: {fileID: 7014485699297257946, guid: f87680dbf5d2bee48aa8d6c884268488, type: 2}
@@ -17527,9 +17545,9 @@ MonoBehaviour:
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
   m_fontSizeMax: 72
-  m_fontStyle: 8
+  m_fontStyle: 0
   m_HorizontalAlignment: 2
-  m_VerticalAlignment: 4096
+  m_VerticalAlignment: 512
   m_textAlignment: 65535
   m_characterSpacing: 0
   m_wordSpacing: 0
@@ -17595,6 +17613,7 @@ GameObject:
   - component: {fileID: 1834727226}
   - component: {fileID: 1834727228}
   - component: {fileID: 1834727227}
+  - component: {fileID: 1834727229}
   m_Layer: 0
   m_Name: TXT_Rules
   m_TagString: Untagged
@@ -17675,9 +17694,9 @@ MonoBehaviour:
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
   m_fontSizeMax: 72
-  m_fontStyle: 8
+  m_fontStyle: 0
   m_HorizontalAlignment: 2
-  m_VerticalAlignment: 4096
+  m_VerticalAlignment: 512
   m_textAlignment: 65535
   m_characterSpacing: 0
   m_wordSpacing: 0
@@ -17719,6 +17738,19 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1834727225}
   m_CullTransparentMesh: 1
+--- !u!114 &1834727229
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1834727225}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2404a37f3bd75444aa4ad05d0f228347, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  LocalizationKey: Game.Rules
 --- !u!1 &1840091389
 GameObject:
   m_ObjectHideFlags: 0
@@ -17977,7 +18009,7 @@ MonoBehaviour:
   m_fontSizeMax: 72
   m_fontStyle: 0
   m_HorizontalAlignment: 2
-  m_VerticalAlignment: 4096
+  m_VerticalAlignment: 512
   m_textAlignment: 65535
   m_characterSpacing: 0
   m_wordSpacing: 0
@@ -18424,7 +18456,7 @@ MonoBehaviour:
   m_fontSizeMax: 72
   m_fontStyle: 0
   m_HorizontalAlignment: 2
-  m_VerticalAlignment: 4096
+  m_VerticalAlignment: 512
   m_textAlignment: 65535
   m_characterSpacing: 0
   m_wordSpacing: 0
@@ -18817,7 +18849,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: SPECIAL ITEMS
+  m_text: special items
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: d551b2cc49900d64da5f434aef22e8cc, type: 2}
   m_sharedMaterial: {fileID: 3654273496672261189, guid: d551b2cc49900d64da5f434aef22e8cc, type: 2}
@@ -18850,7 +18882,7 @@ MonoBehaviour:
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
   m_fontSizeMax: 72
-  m_fontStyle: 8
+  m_fontStyle: 0
   m_HorizontalAlignment: 1
   m_VerticalAlignment: 512
   m_textAlignment: 65535
@@ -19629,7 +19661,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: TIEBREAKER
+  m_text: tiebraker
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: d551b2cc49900d64da5f434aef22e8cc, type: 2}
   m_sharedMaterial: {fileID: 3654273496672261189, guid: d551b2cc49900d64da5f434aef22e8cc, type: 2}
@@ -20035,7 +20067,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: BASIC RULES
+  m_text: basic rules
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: d551b2cc49900d64da5f434aef22e8cc, type: 2}
   m_sharedMaterial: {fileID: 3654273496672261189, guid: d551b2cc49900d64da5f434aef22e8cc, type: 2}
@@ -20068,7 +20100,7 @@ MonoBehaviour:
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
   m_fontSizeMax: 72
-  m_fontStyle: 8
+  m_fontStyle: 0
   m_HorizontalAlignment: 1
   m_VerticalAlignment: 512
   m_textAlignment: 65535
@@ -20665,7 +20697,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: OPTIONS
+  m_text: options
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: f87680dbf5d2bee48aa8d6c884268488, type: 2}
   m_sharedMaterial: {fileID: 7014485699297257946, guid: f87680dbf5d2bee48aa8d6c884268488, type: 2}
@@ -20699,9 +20731,9 @@ MonoBehaviour:
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
   m_fontSizeMax: 72
-  m_fontStyle: 8
+  m_fontStyle: 0
   m_HorizontalAlignment: 2
-  m_VerticalAlignment: 4096
+  m_VerticalAlignment: 512
   m_textAlignment: 65535
   m_characterSpacing: 0
   m_wordSpacing: 0

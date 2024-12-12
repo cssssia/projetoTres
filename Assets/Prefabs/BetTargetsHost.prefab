@@ -253,7 +253,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   playerId: 0
-  targetImage: {fileID: 0}
+  text: {fileID: 2293183053300242608}
   targetRect: {fileID: 7147770060791597670}
   type: 1
 --- !u!65 &1022336868471907609
@@ -464,7 +464,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   playerId: 0
-  targetImage: {fileID: 0}
+  text: {fileID: 7733084222791258793}
   targetRect: {fileID: 5278577735689908619}
   type: 2
 --- !u!65 &7457728594433661240
@@ -675,7 +675,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   playerId: 0
-  targetImage: {fileID: 0}
+  text: {fileID: 8647682858768559746}
   targetRect: {fileID: 7524740120983544743}
   type: 0
 --- !u!65 &3340612506699042903

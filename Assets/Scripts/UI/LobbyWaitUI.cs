@@ -29,8 +29,13 @@ public class LobbyWait : MonoBehaviour
     void Start()
     {
         Lobby l_lobby = LobbyManager.Instance.GetLobby();
-        m_lobbyNameText.text = "LOBBY NAME: " + l_lobby.Name;
-        m_lobbyCodeText.text = "LOBBY CODE: " + l_lobby.LobbyCode;
+
+        if(l_lobby.IsPrivate)
+            m_lobbyCodeText.text = Localization.Instance.Localize("WaitLobby.LobbyCode", l_lobby.LobbyCode);
+        else
+            m_lobbyCodeText.gameObject.SetActive(false);
+
+        m_lobbyNameText.text = Localization.Instance.Localize("WaitLobby.LobbyName", l_lobby.Name);
     }
 
 }

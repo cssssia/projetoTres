@@ -419,7 +419,7 @@ GameObject:
   - component: {fileID: 47803110}
   - component: {fileID: 47803112}
   m_Layer: 5
-  m_Name: TXT_Lenguage
+  m_Name: TXT_Language
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -553,7 +553,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2404a37f3bd75444aa4ad05d0f228347, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  LocalizationKey: Menu.Lenguage
+  LocalizationKey: Menu.Language
 --- !u!1 &49088552
 GameObject:
   m_ObjectHideFlags: 0

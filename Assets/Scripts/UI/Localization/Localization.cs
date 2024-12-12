@@ -23,4 +23,14 @@ public class Localization : MonoBehaviour
     {
         LocalizationManager.Language = localization;
     }
+
+    public string Localize(string p_localizeText)
+    {
+        return LocalizationManager.Localize(p_localizeText);
+    }
+
+    public string Localize(string p_localizeText, string p_arguments)
+    {
+        return LocalizationManager.Localize(p_localizeText, p_arguments);
+    }
 }

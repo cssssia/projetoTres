@@ -42,16 +42,19 @@ public class BetOnHandBehavior : MonoBehaviour
             {
                 if (betTag.IsAccept)
                 {
+                    betTag.text.text = Localization.Instance.Localize("Game.Accept");
                     m_acceptBetTargetTag = betTag;
                     m_acceptTargetRect = m_acceptBetTargetTag.targetRect;
                 }
                 else if (betTag.IsIncrease)
                 {
+                    betTag.text.text = Localization.Instance.Localize("Game.Increase");
                     m_increaseBetTargetTag = betTag;
                     m_increaseTargetRect = m_increaseBetTargetTag.targetRect;
                 }
                 else if (betTag.IsBet)
                 {
+                    betTag.text.text = Localization.Instance.Localize("Game.Bet");
                     m_initialBetTargetTag = betTag;
                     m_initialBetTargetRect = m_initialBetTargetTag.targetRect;
                 }

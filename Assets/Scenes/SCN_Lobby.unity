@@ -404,7 +404,7 @@ GameObject:
   - component: {fileID: 201570644}
   - component: {fileID: 201570643}
   m_Layer: 5
-  m_Name: TXT_LobbyName
+  m_Name: TXT_Inserted_LobbyName
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1260,7 +1260,7 @@ GameObject:
   - component: {fileID: 359382681}
   - component: {fileID: 359382680}
   m_Layer: 5
-  m_Name: TXT_LobbyCode
+  m_Name: TXT_Inserted_LobbyCode
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1394,6 +1394,7 @@ GameObject:
   - component: {fileID: 384916805}
   - component: {fileID: 384916804}
   - component: {fileID: 384916803}
+  - component: {fileID: 384916806}
   m_Layer: 5
   m_Name: TXT_Placeholder_PlayerName
   m_TagString: Untagged
@@ -1537,6 +1538,19 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 384916801}
   m_CullTransparentMesh: 1
+--- !u!114 &384916806
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 384916801}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2404a37f3bd75444aa4ad05d0f228347, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  LocalizationKey: Lobby.InsertName
 --- !u!1 &420600105
 GameObject:
   m_ObjectHideFlags: 0
@@ -1822,7 +1836,7 @@ GameObject:
   - component: {fileID: 656105809}
   - component: {fileID: 656105808}
   m_Layer: 5
-  m_Name: TXT_PlayerName
+  m_Name: TXT_Inserted_PlayerName
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -3458,6 +3472,7 @@ GameObject:
   - component: {fileID: 1192656494}
   - component: {fileID: 1192656493}
   - component: {fileID: 1192656492}
+  - component: {fileID: 1192656495}
   m_Layer: 5
   m_Name: TXT_Placeholder_LobbyCode
   m_TagString: Untagged
@@ -3601,6 +3616,19 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1192656490}
   m_CullTransparentMesh: 1
+--- !u!114 &1192656495
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1192656490}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2404a37f3bd75444aa4ad05d0f228347, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  LocalizationKey: Lobby.InsertLobbyName
 --- !u!1 &1194494375
 GameObject:
   m_ObjectHideFlags: 0
@@ -4617,6 +4645,7 @@ GameObject:
   - component: {fileID: 1798053710}
   - component: {fileID: 1798053709}
   - component: {fileID: 1798053708}
+  - component: {fileID: 1798053711}
   m_Layer: 5
   m_Name: TXT_Placeholder_LobbyCode
   m_TagString: Untagged
@@ -4760,6 +4789,19 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1798053706}
   m_CullTransparentMesh: 1
+--- !u!114 &1798053711
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1798053706}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2404a37f3bd75444aa4ad05d0f228347, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  LocalizationKey: Lobby.InsertCode
 --- !u!1 &1801529039
 GameObject:
   m_ObjectHideFlags: 0
@@ -5627,7 +5669,7 @@ GameObject:
   - component: {fileID: 2083965048}
   - component: {fileID: 2083965047}
   m_Layer: 5
-  m_Name: TXT_Close
+  m_Name: TXT_X
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

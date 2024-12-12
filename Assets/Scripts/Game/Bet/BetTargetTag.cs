@@ -1,3 +1,4 @@
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -5,7 +6,7 @@ public enum Type { ACCEPT, INCREASE, BET }
 public class BetTargetTag : MonoBehaviour
 {
     public int playerId;
-    public Image targetImage;
+    public TextMeshPro text;
     public RectTransform targetRect;
     public Type type;
     public bool IsAccept

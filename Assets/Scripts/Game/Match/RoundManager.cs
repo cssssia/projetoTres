@@ -29,7 +29,6 @@ public class RoundManager : NetworkBehaviour
     public event EventHandler OnStartPlayingCard;
     public event EventHandler OnAnimItemUsed;
     public event EventHandler OnBet;
-    public event EventHandler OnBetAsked;
     public event EventHandler OnEndedDealing;
     public event EventHandler OnEndedDealingItem;
 

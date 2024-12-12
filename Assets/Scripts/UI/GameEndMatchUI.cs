@@ -29,9 +29,9 @@ public class GameEndMatchUI : MonoBehaviour
 		if (p_newValue)
         {
             if (MatchManager.Instance.WonMatch.Value == (Player)PlayerController.LocalInstance.PlayerIndex)
-                m_results.text = "you won";
+                m_results.text = Localization.Instance.Localize("Game.YouWon");
             else
-                m_results.text = "you lost";
+                m_results.text = Localization.Instance.Localize("Game.YouLost");
 
 			Show();
         }

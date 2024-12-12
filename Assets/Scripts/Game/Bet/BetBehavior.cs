@@ -43,6 +43,8 @@ public class BetBehavior : MonoBehaviour
     private Vector3 m_startPosition;
     private Vector3 m_startRotation;
 
+    [SerializeField] private GameObject[] m_stackBets;
+
     private void Start()
     {
         m_startPosition = transform.position;
@@ -137,9 +139,34 @@ public class BetBehavior : MonoBehaviour
         AnimateToPlace(m_idleBetTranform, BetAnimType.IDLE);
     }
 
-    public void Bet(bool p_isIncrease, Action<GameObject, bool> p_onFinishAnim)
+    public void Bet(bool p_isIncrease, Action<GameObject, bool> p_onFinishAnim, HandItemAnimController p_animController)
     {
+        StartCoroutine(AnimBet(p_isIncrease, p_onFinishAnim, p_animController));
+    }
+
+    private IEnumerator AnimBet(bool p_isIncrease, Action<GameObject, bool> p_onFinishAnim, HandItemAnimController p_animController)
+    {
+        p_animController.betHandAnimator.OnDeliveredButton += AddButtonOStack;
+
+        bool l_waiting = true;
+
+        StartCoroutine(p_animController.betHandAnimator.GetEyebutton(() => { l_waiting = false; }));
+
+        while (l_waiting) yield return null;
+
         p_onFinishAnim?.Invoke(gameObject, p_isIncrease);
+    }
+
+    private void AddButtonOStack()
+    {
+        for (int i = 0; i < m_stackBets.Length; i++)
+        {
+            if (!m_stackBets[i].activeInHierarchy)
+            {
+                m_stackBets[i].SetActive(true);
+                break;
+            }
+        }
     }
 
     public void HighlightBetButton()

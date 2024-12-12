@@ -27,7 +27,7 @@ public class PlayerController : NetworkBehaviour
     [SerializeField] private GameManager.BetState currentBetState;
 
     [Space]
-    [SerializeField] private HandItemAnimController m_tableHandController;
+    [SerializeField] public HandItemAnimController m_tableHandController;
     private Queue<Action> m_actionsQueue;
 
 

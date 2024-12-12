@@ -18,7 +18,7 @@ public class BetOnHandBehavior : MonoBehaviour
     [SerializeField] private LayerMask m_tableLayer;
     [SerializeField] private LayerMask m_betLayer;
 
-
+    private HandItemAnimController m_handAnimController;
     PlayerController m_player;
     public void OnPlayerSpawned(PlayerController p_player)
     {
@@ -62,8 +62,22 @@ public class BetOnHandBehavior : MonoBehaviour
         }
 
         m_player.OnChangedCanBet += OnOtherPlayerBet;
-    }
+        FindHandAnimController(m_player);
 
+    }
+    void FindHandAnimController(PlayerController p_player)
+    {
+        var l_handAnimControllers = FindObjectsByType<HandItemAnimController>(default);
+
+        for (int i = 0; i < l_handAnimControllers.Length; i++)
+        {
+            if (l_handAnimControllers[i].PlayerType == (Player)p_player.PlayerIndex)
+            {
+                m_handAnimController = l_handAnimControllers[i];
+                break;
+            }
+        }
+    }
     public void OnOtherPlayerBet()
     {
         if (!m_player.CanBet || !RoundManager.Instance.BetHasStarted.Value) return;
@@ -118,10 +132,10 @@ public class BetOnHandBehavior : MonoBehaviour
                 if (m_betsBehavior[i].gameObject == p_gameObject)
                 {
                     bool l_stopIncreaseBet = RoundManager.Instance.StopIncreaseBet.Value;
-                    Debug.Log("can play: " + m_player.CanPlay);
-                    Debug.Log("canBet: " + m_player.CanBet);
-                    Debug.Log("betHasStarted: " + RoundManager.Instance.BetHasStarted.Value);
-                    Debug.Log("stopIncreaseBet: " + l_stopIncreaseBet);
+                    //Debug.Log("can play: " + m_player.CanPlay);
+                    //Debug.Log("canBet: " + m_player.CanBet);
+                    //Debug.Log("betHasStarted: " + RoundManager.Instance.BetHasStarted.Value);
+                    //Debug.Log("stopIncreaseBet: " + l_stopIncreaseBet);
 
                     if (!CanBet())
                     {
@@ -202,7 +216,7 @@ public class BetOnHandBehavior : MonoBehaviour
 
     private void Bet(bool p_isIncrease, BetBehavior p_myBet, Action<GameObject, bool> p_action)
     {
-        p_myBet.Bet(p_isIncrease, p_action);
+        p_myBet.Bet(p_isIncrease, p_action, m_handAnimController);
         m_currentBet.EndDrag();
         m_currentBet = null;
     }

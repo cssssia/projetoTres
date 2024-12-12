@@ -64,6 +64,7 @@ public class HandItemAnimController : MonoBehaviour
     [Space]
     public StakeAnimator stakeAnimator;
     public Material stakeMaterial;
+    public BetHandAnimator betHandAnimator;
     [Space]
 
     public System.Action OnCutCards;

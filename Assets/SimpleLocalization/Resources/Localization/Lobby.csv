@@ -2,7 +2,7 @@ Key,English,Portuguese
 Lobby.MainMenu,main menu,menu principal
 Lobby.InsertName,name,nome
 Lobby.CreateLobby,create lobby,criar lobby
-Lobby.QuickJoin,join any lobby,entrar em qualquer lobby
+Lobby.QuickJoin,join any lobby,entrar em um lobby
 Lobby.CodeJoin,join code lobby,entrar com código
 Lobby.InsertCode,code,código
 Lobby.InsertLobbyName,lobby name,nome do lobby

@@ -17,12 +17,12 @@ public class MenuOptionsUI : MonoBehaviour
     void Awake()
     {
         m_backButton.onClick.AddListener(() => {
-            // AudioManager.Instance.PlayOneShot(FMODEvents.Instance.buttonPressed, transform.position);
+            AudioManager.Instance.PlayOneShot(FMODEvents.Instance.ButtonHovered, transform.position);
             m_menuGameObject.SetActive(true);
             Hide();
         });
         m_masterSlider.onValueChanged.AddListener((p_value) => {
-            // AudioManager.Instance.masterVolume = p_value;
+            AudioManager.Instance.masterVolume = p_value;
         });
         m_musicSlider.onValueChanged.AddListener((p_value) => {
             // AudioManager.Instance.musicVolume = p_value;

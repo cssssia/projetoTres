@@ -139,18 +139,18 @@ public class BetBehavior : MonoBehaviour
         AnimateToPlace(m_idleBetTranform, BetAnimType.IDLE);
     }
 
-    public void Bet(bool p_isIncrease, Action<GameObject, bool> p_onFinishAnim, HandItemAnimController p_animController)
+    public void Bet(bool p_isIncrease, Action<GameObject, bool> p_onFinishAnim, HandItemAnimController p_animController, bool p_isOwner =true)
     {
-        StartCoroutine(AnimBet(p_isIncrease, p_onFinishAnim, p_animController));
+        StartCoroutine(AnimBet(p_isIncrease, p_onFinishAnim, p_animController, p_isOwner));
     }
 
-    private IEnumerator AnimBet(bool p_isIncrease, Action<GameObject, bool> p_onFinishAnim, HandItemAnimController p_animController)
+    private IEnumerator AnimBet(bool p_isIncrease, Action<GameObject, bool> p_onFinishAnim, HandItemAnimController p_animController, bool p_isOwner)
     {
         p_animController.betHandAnimator.OnDeliveredButton += AddButtonOStack;
 
         bool l_waiting = true;
 
-        StartCoroutine(p_animController.betHandAnimator.GetEyebutton(() => { l_waiting = false; }, p_isIncrease));
+        StartCoroutine(p_animController.betHandAnimator.GetEyebutton(() => { l_waiting = false; }, p_isIncrease, p_isOwner));
 
         while (l_waiting) yield return null;
 

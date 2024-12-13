@@ -182,6 +182,12 @@ public class RoundManager : NetworkBehaviour
     [ServerRpc (RequireOwnership = false)]
     public void OnStartGetEyeAnimServerRpc(int p_playerIndex, bool p_isIncrease)
     {
+        OnStartGetEyeAnimClientRpc(p_playerIndex, p_isIncrease);
+    }
+
+    [ClientRpc]
+    void OnStartGetEyeAnimClientRpc(int p_playerIndex, bool p_isIncrease)
+    {
         OnStartGetEye?.Invoke((p_playerIndex, p_isIncrease), EventArgs.Empty);
     }
 

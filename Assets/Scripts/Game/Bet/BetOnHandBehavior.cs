@@ -7,6 +7,7 @@ public class BetOnHandBehavior : MonoBehaviour
 {
     [SerializeField] private List<BetBehavior> m_betsBehavior;
     [SerializeField] private BetBehavior m_currentBet;
+    public BetBehavior OtherBetBehavior;
     [SerializeField] private RectTransform m_acceptTargetRect;
     [SerializeField] private RectTransform m_increaseTargetRect;
     [SerializeField] private RectTransform m_initialBetTargetRect;
@@ -19,6 +20,7 @@ public class BetOnHandBehavior : MonoBehaviour
     [SerializeField] private LayerMask m_betLayer;
 
     private HandItemAnimController m_handAnimController;
+    public HandItemAnimController OtherHandAnimController;
     PlayerController m_player;
     public void OnPlayerSpawned(PlayerController p_player)
     {
@@ -34,6 +36,8 @@ public class BetOnHandBehavior : MonoBehaviour
             {
                 m_betsBehavior.Add(bet);
             }
+            else
+                OtherBetBehavior = bet;
         }
 
         foreach (BetTargetTag betTag in l_betTargetTag)
@@ -77,8 +81,9 @@ public class BetOnHandBehavior : MonoBehaviour
             if (l_handAnimControllers[i].PlayerType == (Player)p_player.PlayerIndex)
             {
                 m_handAnimController = l_handAnimControllers[i];
-                break;
             }
+            else
+                OtherHandAnimController = l_handAnimControllers[i];
         }
     }
     public void OnOtherPlayerBet()
@@ -167,7 +172,7 @@ public class BetOnHandBehavior : MonoBehaviour
     }
 
     public List<RaycastResult> m_resultList;
-    public void CheckClickUp(bool p_canBet, Action<GameObject, bool> p_actionOnEndAnimation)
+    public void CheckClickUp(bool p_canBet, Action<bool> p_actionOnStartAnimation, Action<GameObject, bool> p_actionOnEndAnimation)
     {
         bool l_bet = false;
 
@@ -190,6 +195,9 @@ public class BetOnHandBehavior : MonoBehaviour
                         || (RoundManager.Instance.BetHasStarted.Value &&
                             l_mousePosRaycastHit.transform.gameObject == m_initialBetTargetRect.gameObject))
                     {
+                        //www.youtube.com/results?search_query=anime+shoot+boobs+scene
+                        
+                        p_actionOnStartAnimation.Invoke(false);
                         Bet(false, m_currentBet, p_actionOnEndAnimation);
                         l_bet = true;
 
@@ -199,6 +207,7 @@ public class BetOnHandBehavior : MonoBehaviour
                              || (!RoundManager.Instance.BetHasStarted.Value &&
                                  l_mousePosRaycastHit.transform.gameObject == m_initialBetTargetRect.gameObject))
                     {
+                        p_actionOnStartAnimation.Invoke(true);
                         Bet(true, m_currentBet, p_actionOnEndAnimation);
                         l_bet = true;
 

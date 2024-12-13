@@ -27,6 +27,7 @@ public class RoundManager : NetworkBehaviour
 	public event EventHandler OnCardPlayed;
 	public event EventHandler OnItemUsed;
     public event EventHandler OnStartPlayingCard;
+    public event EventHandler OnStartGetEye;
     public event EventHandler OnAnimItemUsed;
     public event EventHandler OnBet;
     public event EventHandler OnEndedDealing;
@@ -176,6 +177,12 @@ public class RoundManager : NetworkBehaviour
     public void OnStartPlayingCardAnimServerRpc(int p_cardId, int p_playerIndex, bool p_isItem, int p_targetIndex)
     {
         OnStartPlayingCard?.Invoke((new CustomSender(p_cardId, p_playerIndex, p_targetIndex), p_isItem), EventArgs.Empty);
+    }
+
+    [ServerRpc (RequireOwnership = false)]
+    public void OnStartGetEyeAnimServerRpc(int p_playerIndex, bool p_isIncrease)
+    {
+        OnStartGetEye?.Invoke((p_playerIndex, p_isIncrease), EventArgs.Empty);
     }
 
     [ServerRpc(RequireOwnership =false)]

@@ -30,24 +30,14 @@ public class PlayerController : NetworkBehaviour
     [SerializeField] public HandItemAnimController m_tableHandController;
     private Queue<Action> m_actionsQueue;
 
-
     void Start()
     {
         if (!IsOwner)
             return;
-    }
 
-    //[Header("Debug buttons")]
-    //public bool debug_useScissors;
-    //private void Update()
-    //{
-    //    if (!IsOwner) return;
-    //    if (debug_useScissors)
-    //    {
-    //        UseScissors();
-    //        debug_useScissors = false;
-    //    }
-    //}
+        // AudioManager.Instance.StopMenuMusic();
+        // AudioManager.Instance.InitializeMusic(FMODEvents.Instance.Music);
+    }
 
     public bool IsHostPlayer
     {
@@ -114,6 +104,8 @@ public class PlayerController : NetworkBehaviour
         CardsManager.Instance.OnAddCardToMyHand += CardsManager_OnAddCardToMyHand;
         CardsManager.Instance.OnRemoveCardFromMyHand += CardsManager_OnRemoveCardFromMyHand;
         CardsManager.Instance.OnAddItemCardToMyHand += CardsManager_OnAddItemCardToMyHand;
+
+        RoundManager.Instance.OnStartGetEye += RoundManager_OnStartGetEye;
 
         RoundManager.Instance.OnRoundWon += TurnManager_OnRoundWon;
 
@@ -193,6 +185,22 @@ public class PlayerController : NetworkBehaviour
         AnimCardClientRpc(l_customSender.cardId, l_customSender.playerType, l_customSender.targetIndex, l_isItem);
     }
 
+    private void RoundManager_OnStartGetEye(object p_object, EventArgs e)
+    {
+        bool p_isIncrease = (((bool, int))p_object).Item1;
+        int p_playerIndex = (((bool, int))p_object).Item2;
+
+        if (IsOwner && p_playerIndex != PlayerIndex)
+        {
+            GameManager.Instance.SetPlayerAnimatingServerRpc(true);
+                m_betBehavior.OtherBetBehavior.Bet(p_isIncrease,
+                                            (go, p_isIncrease) =>
+                                                    {
+                                                        GameManager.Instance.SetPlayerAnimatingServerRpc(false);
+                                                    }, m_betBehavior.OtherHandAnimController);
+        }
+    }
+
     private void TurnManager_OnRoundWon(object p_playerWonId, EventArgs e)
     {
         if (IsOwner)
@@ -250,7 +258,7 @@ public class PlayerController : NetworkBehaviour
         m_handBehavior.CheckClickUp(CanPlay && !RoundManager.Instance.BetHasStarted.Value,
                                     (id, isItem) => StartAnim(id, isItem),
                                     (go) => ThrowCard(go), (go) => UseItemCard(go));
-        if (CanPlay || RoundManager.Instance.BetHasStarted.Value) m_betBehavior.CheckClickUp(CanBet, (go, increase) => IncreaseBet(go, increase));
+        if (CanPlay || RoundManager.Instance.BetHasStarted.Value) m_betBehavior.CheckClickUp(CanBet, (increase) => StartAnimBet(increase), (go, increase) => IncreaseBet(go, increase));
         if (RoundManager.Instance.BetHasStarted.Value && CanBet) m_deckBehavior.CheckClickUp((go) => GiveUp(go));
     }
 
@@ -269,6 +277,11 @@ public class PlayerController : NetworkBehaviour
     private void StartAnim(int p_cardId, bool p_isItem)
     {
         RoundManager.Instance.OnStartPlayingCardAnimServerRpc(p_cardId, PlayerIndex, p_isItem, m_handBehavior.CurrentTargetIndex);
+    }
+
+    private void StartAnimBet(bool p_isIncrease)
+    {
+        RoundManager.Instance.OnStartGetEyeAnimServerRpc(PlayerIndex, p_isIncrease);
     }
 
     private void ThrowCard(GameObject p_gameObject)

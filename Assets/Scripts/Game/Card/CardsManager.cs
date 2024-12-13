@@ -262,6 +262,7 @@ public class CardsManager : NetworkBehaviour
     }
 
     List<int> l_cardsToRemove = new List<int>();
+    List<int> l_tempCardList = new List<int>();
     [ServerRpc(RequireOwnership = false)]
     public void UseScissorServerRpc(Player p_playerId)
     {
@@ -277,6 +278,8 @@ public class CardsManager : NetworkBehaviour
         }
 
         int l_quantityOfCardsRemoved = l_cardsToRemove.Count;
+
+        l_tempCardList = UsableDeckList.Where(card => card.playerId == Player.DEFAULT).Select(card => card.id).ToList();
 
         for (int i = CardsOnGameList.Count - 1; i >= 0; i--)
         {
@@ -297,11 +300,9 @@ public class CardsManager : NetworkBehaviour
             int l_rand;
             do
             {
-                l_rand = UnityEngine.Random.Range(0, UsableDeckList.Count);
+                l_rand = UnityEngine.Random.Range(0, l_tempCardList.Count);
             }
-            while (l_quantityOfCardsRemoved == 1 ? l_rand == l_cardsToRemove[0]
-                    : l_quantityOfCardsRemoved == 2 ? l_rand == l_cardsToRemove[0] || l_rand == l_cardsToRemove[1]
-                    : l_rand == l_cardsToRemove[0] || l_rand == l_cardsToRemove[1] || l_rand == l_cardsToRemove[2]);
+            while (GetCardByIndex(l_rand).playerId != Player.DEFAULT);
 
             DealCardsClientRpc(l_rand, p_playerId, i + 1 == l_quantityOfCardsRemoved);
         }

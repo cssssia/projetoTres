@@ -5246,7 +5246,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 224130951485110974, guid: 9ed2a051c32b4fe47a5e4fb95c20b03f, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 0
+      value: -0.000030517578
       objectReference: {fileID: 0}
     - target: {fileID: 224166536479716514, guid: 9ed2a051c32b4fe47a5e4fb95c20b03f, type: 3}
       propertyPath: m_AnchorMax.y
@@ -9206,7 +9206,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 963194225}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.21643962, y: 0, z: 0, w: 0.976296}
+  m_LocalRotation: {x: 0.2773147, y: 0, z: 0, w: 0.9607792}
   m_LocalPosition: {x: 0, y: 4.9, z: -7.65}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -10431,12 +10431,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_idleDeckAnim: {fileID: 11400000, guid: 40850fbc44eed554daaf43eb75b29e3f, type: 2}
   m_idleDeckTranform:
-    Position: {x: -5.1199994, y: 0.456, z: -5.5000005}
+    Position: {x: 0, y: 0.25, z: -5.5000005}
     Rotation: {x: 0, y: 88.177, z: 0}
     Scale: {x: 0.9, y: 0.9, z: 0.9}
   m_hoverDeckAnim: {fileID: 11400000, guid: 40850fbc44eed554daaf43eb75b29e3f, type: 2}
   m_highlightDeckTranform:
-    Position: {x: -5.1199994, y: 0.653, z: -5.5000005}
+    Position: {x: 0, y: 0.5, z: -5.5000005}
     Rotation: {x: 0, y: 88.177, z: 0}
     Scale: {x: 0.9, y: 1.2, z: 0.9}
   playerPosition: {x: 0, y: 0, z: 0}

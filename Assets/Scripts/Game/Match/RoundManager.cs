@@ -21,8 +21,6 @@ public class RoundManager : NetworkBehaviour
     public NetworkVariable<bool> StopIncreaseBet;
     public NetworkVariable<int> BetAsked;
     public NetworkVariable<int> TrickBetMultiplier;
-
-	public event EventHandler OnRoundWon;
     public event EventHandler OnTrickWon;
 	public event EventHandler OnCardPlayed;
 	public event EventHandler OnItemUsed;
@@ -32,6 +30,7 @@ public class RoundManager : NetworkBehaviour
     public event EventHandler OnBet;
     public event EventHandler OnEndedDealing;
     public event EventHandler OnEndedDealingItem;
+    public event EventHandler RetractCards;
 
     void Awake()
     {
@@ -94,7 +93,7 @@ public class RoundManager : NetworkBehaviour
                 if (CurrentTrick.WhoWonFirstTrick == Player.HOST) l_wonRound = Player.HOST;
                 else if (CurrentTrick.WhoWonFirstTrick == Player.CLIENT) l_wonRound = Player.CLIENT;
             }
-            else if (CurrentTrick.TurnsDraw >= 2) //three draws
+            else if (CurrentTrick.TurnsDraw > 2) //three draws
             {
                 if (CurrentTrick.WhoStartedTrick == Player.HOST) l_wonRound = Player.HOST;
                 else if (CurrentTrick.WhoStartedTrick == Player.CLIENT) l_wonRound = Player.CLIENT;
@@ -170,7 +169,7 @@ public class RoundManager : NetworkBehaviour
             TrickBetMultiplier.Value = 1;
         }
 
-        OnRoundWon?.Invoke(p_wonRound, EventArgs.Empty);
+        RetractCards?.Invoke(p_wonRound, EventArgs.Empty);
     }
 
     [ServerRpc (RequireOwnership = false)]

@@ -109,7 +109,7 @@ public class PlayerController : NetworkBehaviour
 
         RoundManager.Instance.OnStartGetEye += RoundManager_OnStartGetEye;
 
-        RoundManager.Instance.OnRoundWon += TurnManager_OnRoundWon;
+        CardsManager.Instance.OnRoundWon += TurnManager_OnRoundWon;
         RoundManager.Instance.BetHasStarted.OnValueChanged += (last, newValue) => { m_betHasStarted = newValue; };
 
         FindHandAnimController();

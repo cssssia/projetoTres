@@ -50,6 +50,7 @@ public class CardsManager : NetworkBehaviour
         SetItemTargets();
 
         RoundManager.Instance.OnItemUsed += OnItemUsed;
+        RoundManager.Instance.RetractCards += RetractCards;
     }
 
     void SetCardTargets()
@@ -344,6 +345,23 @@ public class CardsManager : NetworkBehaviour
                 if (!p_suits.Contains(l_card.suit)) p_suits.Add(l_card.suit);
             }
         }
+    }
+
+	public event EventHandler OnRoundWon;
+    private void RetractCards(object p_wonRound, EventArgs p_args)
+    {
+        StartCoroutine(IRetractCards());
+
+        OnRoundWon?.Invoke(p_wonRound, EventArgs.Empty);
+    }
+
+    float l_retractCards = 2f;
+    IEnumerator IRetractCards()
+    {
+        Debug.Log("recolhe as cards");
+        yield return new WaitForSeconds(l_retractCards);
+        Debug.Log("cabo de recolher as cards");
+        yield return null;
     }
 
 }

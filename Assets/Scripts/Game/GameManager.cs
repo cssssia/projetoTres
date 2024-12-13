@@ -57,7 +57,7 @@ public class GameManager : NetworkBehaviour
     private Dictionary<ulong, bool> m_playerAnimatingDictionary;
     public NetworkVariable<bool> IsAnyAnimationPlaying = new NetworkVariable<bool>(false);
     private bool m_autoTestGamePauseState;
-    private bool debug_itemEveryRound = true;
+    private bool debug_itemEveryRound = false;
 
     void Awake()
     {

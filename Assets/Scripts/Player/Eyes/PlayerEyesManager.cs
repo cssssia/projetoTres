@@ -22,7 +22,7 @@ public class PlayerEyesManager : NetworkBehaviour
         if (IsServer)
         {
             RoundManager.Instance.OnBet += OnBet;
-            RoundManager.Instance.OnRoundWon += OnRoundWon;
+            CardsManager.Instance.OnRoundWon += OnRoundWon;
             AnimButtonRemovalServerRpc(m_player, m_currentCoveredEyes, Player.DEFAULT);
         }
 

@@ -163,7 +163,7 @@ MonoBehaviour:
     Rotation: {x: 0, y: 0, z: 0}
     Scale: {x: 0, y: 0, z: 0}
   m_individualCutCardTransform:
-    Position: {x: -1.25, y: 0.95, z: 1}
+    Position: {x: 0, y: 0.95, z: 1}
     Rotation: {x: 0, y: 0, z: 0}
     Scale: {x: 0, y: 0, z: 0}
   m_playCardAnim: {fileID: 11400000, guid: b46c9a421976e4c4ebba812cf2bc3405, type: 2}

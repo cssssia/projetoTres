@@ -1,5 +1,6 @@
 using System;
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
 [Serializable]
@@ -44,6 +45,8 @@ public class BetBehavior : MonoBehaviour
     private Vector3 m_startRotation;
 
     [SerializeField] private GameObject[] m_stackBets;
+    [SerializeField] private Material stackBetsMaterial;
+    [SerializeField] private Transform[] m_eyesPool;
 
     private void Start()
     {
@@ -139,7 +142,7 @@ public class BetBehavior : MonoBehaviour
         AnimateToPlace(m_idleBetTranform, BetAnimType.IDLE);
     }
 
-    public void Bet(bool p_isIncrease, Action<GameObject, bool> p_onFinishAnim, HandItemAnimController p_animController, bool p_isOwner =true)
+    public void Bet(bool p_isIncrease, Action<GameObject, bool> p_onFinishAnim, HandItemAnimController p_animController, bool p_isOwner = true)
     {
         StartCoroutine(AnimBet(p_isIncrease, p_onFinishAnim, p_animController, p_isOwner));
     }
@@ -157,8 +160,16 @@ public class BetBehavior : MonoBehaviour
         p_onFinishAnim?.Invoke(gameObject, p_isIncrease);
     }
 
+    CardsManager m_cardsManager;
+
     private void AddButtonOStack()
     {
+        if (m_cardsManager == null)
+        {
+            m_cardsManager = CardsManager.Instance;
+            m_cardsManager.ReturnEyes += ReturnButtons;
+        }
+
         for (int i = 0; i < m_stackBets.Length; i++)
         {
             if (!m_stackBets[i].activeInHierarchy)
@@ -181,5 +192,98 @@ public class BetBehavior : MonoBehaviour
     {
         if (m_currentState is BetAnimType.HIGHLIGHT)
             AnimateToPlace(m_idleBetTranform, BetAnimType.IDLE);
+    }
+
+    public void ReturnButtons(object p_ovject, EventArgs p_args)
+    {
+        Debug.Log("return eye");
+        int id = (int)p_ovject;
+
+        if (id == playerId)
+        {
+            StartCoroutine(AnimButtonsToPlayer());
+        }
+        else
+        {
+            DestroyButtons();
+        }
+    }
+
+    [Space]
+    public Vector3 endRotation;
+    public List<Vector3> endPosition;
+    private List<Vector3> startPosition;
+    private List<Vector3> startRotation;
+    public CardAnimConfig returnEyeAnimConfig;
+    private IEnumerator AnimButtonsToPlayer()
+    {
+        startPosition = new();
+        startRotation = new();
+        for (int i = 0; i < m_stackBets.Length; i++)
+        {
+            if (m_stackBets[i].activeInHierarchy)
+            {
+                startPosition.Add(m_stackBets[i].transform.localPosition);
+                startRotation.Add(m_stackBets[i].transform.rotation.eulerAngles);
+
+                m_eyesPool[i].transform.localPosition = startPosition[^1];
+                m_eyesPool[i].transform.rotation = Quaternion.Euler(startRotation[^1]);
+                m_eyesPool[i].gameObject.SetActive(true);
+                m_stackBets[i].SetActive(false);
+            }
+            else m_eyesPool[i].gameObject.SetActive(false);
+        }
+
+
+        float l_time = 0f;
+        while (l_time < returnEyeAnimConfig.AnimTime)
+        {
+            float l_timeFraction = l_time / returnEyeAnimConfig.AnimTime;
+            for (int i = 0; i < m_eyesPool.Length; i++)
+            {
+                if (!m_eyesPool[i].gameObject.activeInHierarchy) continue;
+
+                l_tempPosition = Vector3.LerpUnclamped(startPosition[i], endPosition[i],
+                                        returnEyeAnimConfig.MoveAnimCurve.Evaluate(l_timeFraction));
+                l_tempPosition.y += returnEyeAnimConfig.CardYPump * returnEyeAnimConfig.YPumpCurve.Evaluate(l_timeFraction);
+
+                m_eyesPool[i].localPosition = l_tempPosition;
+                m_eyesPool[i].rotation = Quaternion.Euler(Vector3.LerpUnclamped(startRotation[i], endRotation,
+                    returnEyeAnimConfig.RotationAnimCurve.Evaluate(l_timeFraction)));
+                //print("start " + startRotation[i]);
+                //print("cur " + m_eyesPool[i].rotation);
+                //print("final " + endRotation);
+            }
+
+            yield return null;
+            l_time += Time.deltaTime;
+        }
+
+        for (int i = 0; i < m_eyesPool.Length; i++) m_eyesPool[i].gameObject.SetActive(false);
+    }
+
+    [Header("desdtroy anim")]
+    public AnimationCurve destroyStackAnimCurve;
+    public float destroyStackAnimTime;
+    public float initDestroyStack = 0f;
+    public float finalDestroyStack = 45f;
+    public void DestroyButtons()
+    {
+        StartCoroutine(IDestroyStack());
+    }
+
+    IEnumerator IDestroyStack()
+    {
+        float l_time = 0f;
+        while (l_time < destroyStackAnimTime)
+        {
+            stackBetsMaterial.SetFloat("_Custom_hide",
+                Mathf.Lerp(initDestroyStack, finalDestroyStack, destroyStackAnimCurve.Evaluate(l_time / destroyStackAnimTime)));
+
+            yield return null;
+            l_time += Time.deltaTime;
+        }
+
+        stackBetsMaterial.SetFloat("_Custom_hide", 0f);
     }
 }

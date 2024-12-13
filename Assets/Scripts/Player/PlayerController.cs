@@ -157,6 +157,7 @@ public class PlayerController : NetworkBehaviour
         {
             m_myHand.Add(p_cardIndex);
             CardsManager.Instance.GetCardByIndex(p_cardIndex).gameObject.transform.SetParent(transform, true);
+            Debug.Log("add card " + p_cardIndex + " on player " + gameObject.name);
             m_handBehavior.AddCardOnHand(p_cardIndex, p_lastCard);
         }
     }
@@ -221,10 +222,16 @@ public class PlayerController : NetworkBehaviour
         m_myHand.Clear();
         m_handBehavior.ResetCardsOnHandBehavior();
 
-        if (!IsOwner && IsServer)
+        if (!IsServer && IsOwner)
         {
-            RoundManager.Instance.RoundHasStarted.Value = false;
+            SetRoundHasStartedServerRpc();
         }
+    }
+
+    [ServerRpc(RequireOwnership = false)]
+    public void SetRoundHasStartedServerRpc()
+    {
+        RoundManager.Instance.RoundHasStarted.Value = false;
     }
 
     Ray l_rayClickDown;

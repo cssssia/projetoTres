@@ -14,6 +14,8 @@ public class CardsManager : NetworkBehaviour
     public event EventHandler OnRemoveCardFromMyHand;
     public event EventHandler OnAddItemCardToMyHand;
 
+    public event EventHandler ReturnEyes;
+
     [Header("Cards Lists")]
     public List<int> CardsOnGameList;
     public List<Card> UsableDeckList;
@@ -351,18 +353,25 @@ public class CardsManager : NetworkBehaviour
 	public event EventHandler OnRoundWon;
     private void RetractCards(object p_wonRound, EventArgs p_args)
     {
-        StartCoroutine(IRetractCards());
+        StartCoroutine(IRetractCards(p_wonRound));
+
+    }
+
+    float l_retractCards = 2f;
+    IEnumerator IRetractCards(object p_wonRound)
+    {
+        Debug.Log("recolhe as cards");
+        int l_winnerID = (int)p_wonRound;
+
+        ReturnEyes?.Invoke(p_wonRound, EventArgs.Empty);
+
+        yield return new WaitForSeconds(l_retractCards);
+        Debug.Log("cabo de recolher as cards");
+        yield return null;
 
         OnRoundWon?.Invoke(p_wonRound, EventArgs.Empty);
     }
 
-    float l_retractCards = 2f;
-    IEnumerator IRetractCards()
-    {
-        Debug.Log("recolhe as cards");
-        yield return new WaitForSeconds(l_retractCards);
-        Debug.Log("cabo de recolher as cards");
-        yield return null;
-    }
+    
 
 }

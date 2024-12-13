@@ -3,8 +3,11 @@ using FMODUnity;
 
 public class FMODEvents : Singleton<FMODEvents>
 {
-    // [field: Header("Music")]
-    // [field: SerializeField] public EventReference Music { get; private set; }
+    [field: Header("Music")]
+    [field: SerializeField] public EventReference Music { get; private set; }
+
+    [field: Header("MusicMenu")]
+    [field: SerializeField] public EventReference MusicMenu { get; private set; }
 
     [field: Header("Ambience")]
     [field: SerializeField] public EventReference Ambience { get; private set; }

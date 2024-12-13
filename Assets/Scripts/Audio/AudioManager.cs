@@ -22,6 +22,7 @@ public class AudioManager : MonoBehaviour
     private List<StudioEventEmitter> m_eventEmittersList;
 
     private EventInstance m_musicEventInstance;
+    private EventInstance m_musicMenuEventInstance;
     private EventInstance m_ambienceEventInstance;
 
     private void Awake()
@@ -35,29 +36,35 @@ public class AudioManager : MonoBehaviour
         m_eventEmittersList = new List<StudioEventEmitter>();
 
         m_masterBus = RuntimeManager.GetBus("bus:/");
-        // m_musicBus = RuntimeManager.GetBus("bus:/Music");
-        // m_ambienceBus = RuntimeManager.GetBus("bus:/Ambience");
-        // m_sfxBus = RuntimeManager.GetBus("bus:/SFX");
+        m_musicBus = RuntimeManager.GetBus("bus:/Music");
+        m_ambienceBus = RuntimeManager.GetBus("bus:/Ambience");
+        m_sfxBus = RuntimeManager.GetBus("bus:/SFX");
     }
 
     private void Start()
     {
-        InitializeAmbience(FMODEvents.Instance.Ambience);
-        //InitializeMusic(FMODEvents.Instance.music);
+        // InitializeAmbience(FMODEvents.Instance.Ambience);
+        InitializeMusic(FMODEvents.Instance.MusicMenu);
     }
 
     private void Update()
     {
         m_masterBus.setVolume(masterVolume);
-        // m_musicBus.setVolume(musicVolume);
-        // m_ambienceBus.setVolume(ambienceVolume);
-        // m_sfxBus.setVolume(sfxVolume);
+        m_musicBus.setVolume(musicVolume);
+        m_ambienceBus.setVolume(ambienceVolume);
+        m_sfxBus.setVolume(sfxVolume);
     }
 
-    private void InitializeMusic(EventReference p_musicEventReference)
+    public void InitializeMusic(EventReference p_musicEventReference)
     {
         m_musicEventInstance = CreateEventInstance(p_musicEventReference);
         m_musicEventInstance.start();
+    }
+
+    public void StopMenuMusic()
+    {
+        m_musicMenuEventInstance.stop(FMOD.Studio.STOP_MODE.ALLOWFADEOUT);
+        m_musicMenuEventInstance.release();
     }
 
     public void SetMusicParameter(string p_parameterName, float p_parameterValue)

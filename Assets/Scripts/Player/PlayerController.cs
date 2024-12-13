@@ -35,8 +35,8 @@ public class PlayerController : NetworkBehaviour
         if (!IsOwner)
             return;
 
-        // AudioManager.Instance.StopMenuMusic();
-        // AudioManager.Instance.InitializeMusic(FMODEvents.Instance.Music);
+        AudioManager.Instance.StopMenuMusic();
+        AudioManager.Instance.InitializeMusic(FMODEvents.Instance.Music);
     }
 
     public bool IsHostPlayer

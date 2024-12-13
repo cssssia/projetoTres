@@ -4681,6 +4681,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d7df2b94823a3c5498291cbd4ed00a9f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  <Music>k__BackingField:
+    Guid:
+      Data1: 1344382240
+      Data2: 1198782456
+      Data3: 2049481623
+      Data4: -1921696018
+    Path: event:/game/Soundtrack
+  <MusicMenu>k__BackingField:
+    Guid:
+      Data1: -810717424
+      Data2: 1259180397
+      Data3: 591492510
+      Data4: -1243522092
+    Path: event:/Menu UI/Soundtrack/Musica do menu
   <Ambience>k__BackingField:
     Guid:
       Data1: 214872819

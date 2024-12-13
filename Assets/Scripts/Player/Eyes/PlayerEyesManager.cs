@@ -28,10 +28,27 @@ public class PlayerEyesManager : NetworkBehaviour
 
     }
 
+    private void OnArrivedPlayer(bool p_arrived)
+    {
+        Debug.Log("OnArrivedPlayer " + m_player + IsOwner);
+        AnimFakeButtonRemovalServerRpc(m_player, m_currentCoveredEyes, m_player, p_arrived);
+    }
+
     public void OnPlayerSpawned(PlayerController p_playerController)
     {
         //m_playerController = p_playerController;
         m_player = (Player)p_playerController.PlayerIndex;
+
+        var l_handAnimControllers = FindObjectsByType<HandItemAnimController>(default);
+
+        for (int i = 0; i < l_handAnimControllers.Length; i++)
+        {
+            if (m_player == l_handAnimControllers[i].PlayerType)
+            {
+                Debug.Log("listening " + m_player + IsOwner);
+                l_handAnimControllers[i].betHandAnimator.OnArrivedPlayer += OnArrivedPlayer;
+            }
+        }
     }
 
     private void OnBet(object sender, EventArgs e)
@@ -61,6 +78,29 @@ public class PlayerEyesManager : NetworkBehaviour
         if (p_whoAsked == p_player)
         {
             l_nextEyes -= RoundManager.Instance.BetAsked.Value - RoundManager.Instance.TrickBetMultiplier.Value;
+            //print("next eyes " + l_nextEyes);
+        }
+
+        AnimButtonRemovalClientRpc(p_player, l_nextEyes, p_currentCoveredEyes);
+    }
+
+    [ServerRpc (RequireOwnership = false)]
+    void AnimFakeButtonRemovalServerRpc(Player p_player, int p_currentCoveredEyes, Player p_whoAsked, bool p_arrived)
+    {
+        //Debug.Log($"AnimButtonRemovalServerRpc + - IsClient: {IsClient}, IsHost: {IsHost}, IsServer: {IsServer}, IsOwner: {IsOwner}");
+
+        //Debug.Log("pts client: " + RoundManager.Instance.PointsClient.Value);
+        //Debug.Log("pts host: " + RoundManager.Instance.PointsHost.Value);
+
+        if (p_arrived) return;
+
+        int l_nextEyes = 16 - (p_player == Player.HOST ? RoundManager.Instance.PointsClient.Value : RoundManager.Instance.PointsHost.Value);
+
+        l_nextEyes -= RoundManager.Instance.TrickBetMultiplier.Value;
+
+        if (p_whoAsked == p_player)
+        {
+            l_nextEyes -= RoundManager.Instance.BetAsked.Value - RoundManager.Instance.TrickBetMultiplier.Value + 1;
             //print("next eyes " + l_nextEyes);
         }
 

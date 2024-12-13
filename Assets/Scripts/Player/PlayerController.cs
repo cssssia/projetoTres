@@ -55,6 +55,8 @@ public class PlayerController : NetworkBehaviour
 
     public bool CanPlay { get; private set; }
     public bool CanBet { get; private set; }
+    bool m_betHasStarted = false;
+
     public Action OnChangedCanBet;
 
     public override void OnNetworkSpawn() //research more the difference of this and awake
@@ -108,6 +110,7 @@ public class PlayerController : NetworkBehaviour
         RoundManager.Instance.OnStartGetEye += RoundManager_OnStartGetEye;
 
         RoundManager.Instance.OnRoundWon += TurnManager_OnRoundWon;
+        RoundManager.Instance.BetHasStarted.OnValueChanged += (last, newValue) => { m_betHasStarted = newValue; };
 
         FindHandAnimController();
 
@@ -246,6 +249,7 @@ public class PlayerController : NetworkBehaviour
             if (Physics.Raycast(l_ray, out l_mousePosRaycastHit))
             {
                 CheckHoverOnObject(l_mousePosRaycastHit.transform.gameObject);
+                if (CanBet && m_betHasStarted) m_deckBehavior.CheckHoverObject(l_mousePosRaycastHit.transform.gameObject);
             }
 
             m_handBehavior.UpdateMousePos(Input.mousePosition);
@@ -258,8 +262,8 @@ public class PlayerController : NetworkBehaviour
         m_handBehavior.CheckClickUp(CanPlay && !RoundManager.Instance.BetHasStarted.Value,
                                     (id, isItem) => StartAnim(id, isItem),
                                     (go) => ThrowCard(go), (go) => UseItemCard(go));
-        if (CanPlay || RoundManager.Instance.BetHasStarted.Value) m_betBehavior.CheckClickUp(CanBet, (increase) => StartAnimBet(increase), (go, increase) => IncreaseBet(go, increase));
-        if (RoundManager.Instance.BetHasStarted.Value && CanBet) m_deckBehavior.CheckClickUp((go) => GiveUp(go));
+        if (CanPlay || m_betHasStarted) m_betBehavior.CheckClickUp(CanBet, (increase) => StartAnimBet(increase), (go, increase) => IncreaseBet(go, increase));
+        if (m_betHasStarted && CanBet) m_deckBehavior.CheckClickUp((go) => GiveUp(go));
     }
 
     private void CheckClickOnObjects(GameObject p_gameObject)

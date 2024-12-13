@@ -15,14 +15,9 @@ public class DeckOnTableBehavior : MonoBehaviour
     {
         bool l_isDeck = false;
 
-        if (p_gameObject != null)
+        if (p_gameObject != null && p_gameObject.CompareTag("Deck"))
         {
-            if (m_deck == p_gameObject)
-            {
-                m_currentDeck = p_gameObject.GetComponent<DeckBehavior>();
-
-                l_isDeck = true;
-            }
+            m_currentDeck = p_gameObject.GetComponent<DeckBehavior>();
         }
 
         return l_isDeck;
@@ -48,4 +43,11 @@ public class DeckOnTableBehavior : MonoBehaviour
     {
         m_currentDeck.GiveUp(p_action);
     }
+
+    public void CheckHoverObject(GameObject p_gameObject)
+    {
+        if (p_gameObject == m_deck.gameObject) m_deck.HighlightDeck();
+        else m_deck.HighlightOff();
+    }
+
 }

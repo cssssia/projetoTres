@@ -3824,7 +3824,7 @@ CanvasGroup:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 409781018}
   m_Enabled: 1
-  m_Alpha: 1
+  m_Alpha: 0
   m_Interactable: 1
   m_BlocksRaycasts: 1
   m_IgnoreParentGroups: 0
@@ -5048,7 +5048,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 224130951485110974, guid: 9ed2a051c32b4fe47a5e4fb95c20b03f, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -0.000015258789
+      value: -0.000030517578
       objectReference: {fileID: 0}
     - target: {fileID: 224166536479716514, guid: 9ed2a051c32b4fe47a5e4fb95c20b03f, type: 3}
       propertyPath: m_AnchorMax.y
@@ -10009,7 +10009,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: ce0936a477a2875458bb5655a01a2fb4, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0.43
+      value: 0.456
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: ce0936a477a2875458bb5655a01a2fb4, type: 3}
       propertyPath: m_LocalPosition.z
@@ -10045,7 +10045,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: ce0936a477a2875458bb5655a01a2fb4, type: 3}
       propertyPath: m_ConstrainProportionsScale
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: ce0936a477a2875458bb5655a01a2fb4, type: 3}
       propertyPath: m_Name
@@ -10109,6 +10109,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a27bf2d43d168ad4cb6c169dd0bc7835, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  m_idleDeckAnim: {fileID: 11400000, guid: 40850fbc44eed554daaf43eb75b29e3f, type: 2}
+  m_idleDeckTranform:
+    Position: {x: -5.1199994, y: 0.456, z: -5.5000005}
+    Rotation: {x: 0, y: 88.177, z: 0}
+    Scale: {x: 0.9, y: 0.9, z: 0.9}
+  m_hoverDeckAnim: {fileID: 11400000, guid: 40850fbc44eed554daaf43eb75b29e3f, type: 2}
+  m_highlightDeckTranform:
+    Position: {x: -5.1199994, y: 0.653, z: -5.5000005}
+    Rotation: {x: 0, y: 88.177, z: 0}
+    Scale: {x: 0.9, y: 1.2, z: 0.9}
+  playerPosition: {x: 0, y: 0, z: 0}
 --- !u!1001 &1121166985
 PrefabInstance:
   m_ObjectHideFlags: 0

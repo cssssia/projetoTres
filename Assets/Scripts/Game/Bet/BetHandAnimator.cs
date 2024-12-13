@@ -14,6 +14,8 @@ public class BetHandAnimator : MonoBehaviour
     public Action OnDeliveredButton;
     public Action OnEndedAnim;
 
+    public UIAnimationBehaviour screenAnimBehavior;
+
     private void Start()
     {
         hatchController = FindObjectOfType<HatchController>();
@@ -39,8 +41,16 @@ public class BetHandAnimator : MonoBehaviour
         yield return hatchController.CloseHatch();
     }
 
-    public void ArrivedPlayer() => OnArrivedPlayer?.Invoke(true);
-    public void EndArrivedPlayer() => OnArrivedPlayer?.Invoke(false);
+    public void ArrivedPlayer()
+    {
+        OnArrivedPlayer?.Invoke(true);
+        screenAnimBehavior.PlayEnteryAnimations();
+    }
+    public void EndArrivedPlayer()
+    {
+        OnArrivedPlayer?.Invoke(false);
+        screenAnimBehavior.PlayLeaveAnimations();
+    }
 
     public void DeliverButton()
     {

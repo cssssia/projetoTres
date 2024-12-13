@@ -333,7 +333,7 @@ public class ObjectAnimation
     }
 }
 
-public enum UIAnimationType { ENTRY, LEAVE }
+//public enum UIAnimationType { ENTRY, LEAVE }
 
 public class ObjectAnimationBehaviour : MonoBehaviour
 {

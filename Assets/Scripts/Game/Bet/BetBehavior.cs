@@ -150,7 +150,7 @@ public class BetBehavior : MonoBehaviour
 
         bool l_waiting = true;
 
-        StartCoroutine(p_animController.betHandAnimator.GetEyebutton(() => { l_waiting = false; }));
+        StartCoroutine(p_animController.betHandAnimator.GetEyebutton(() => { l_waiting = false; }, p_isIncrease));
 
         while (l_waiting) yield return null;
 

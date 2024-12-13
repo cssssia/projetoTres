@@ -15,14 +15,17 @@ public class BetHandAnimator : MonoBehaviour
     public Action OnEndedAnim;
 
     public UIAnimationBehaviour screenAnimBehavior;
-
+    public GameObject eyeOnHand;
+    public GameObject eyeOnHandSibiling;
     private void Start()
     {
         hatchController = FindObjectOfType<HatchController>();
     }
 
-    public IEnumerator GetEyebutton(Action p_action)
+    bool m_isIncrease;
+    public IEnumerator GetEyebutton(Action p_action, bool p_increase)
     {
+        m_isIncrease = p_increase;
         handAnimator.SetTrigger("Bet");
 
         yield return hatchController.OpenHatch();
@@ -45,7 +48,10 @@ public class BetHandAnimator : MonoBehaviour
     {
         OnArrivedPlayer?.Invoke(true);
         screenAnimBehavior.PlayEnteryAnimations();
+        eyeOnHand.SetActive(true);
+        eyeOnHandSibiling.SetActive(m_isIncrease);
     }
+        
     public void EndArrivedPlayer()
     {
         OnArrivedPlayer?.Invoke(false);
@@ -55,6 +61,7 @@ public class BetHandAnimator : MonoBehaviour
     public void DeliverButton()
     {
         l_waitingAnim = false;
+        eyeOnHand.SetActive(false);
     }
 
     public void EndAnim() => l_waitingAnim = false;

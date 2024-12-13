@@ -35,14 +35,14 @@ public class BetHandAnimator : MonoBehaviour
         l_waitingAnim = true;
 
         while (l_waitingAnim) yield return null; // espera pra entregar o botão
-        Debug.Log("entrega o botão");
+        //Debug.Log("entrega o botão");
         OnDeliveredButton.Invoke();
 
         l_waitingAnim = true;
         while (l_waitingAnim) yield return null; // espera pra acabar a animação
         p_action?.Invoke();
 
-        Debug.Log("fecha a ecotilha");
+        //Debug.Log("fecha a ecotilha");
         yield return hatchController.CloseHatch();
     }
 

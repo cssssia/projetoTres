@@ -284,6 +284,8 @@ public class BetBehavior : MonoBehaviour
             l_time += Time.deltaTime;
         }
 
+        for (int i = 0; i < m_stackBets.Length; i++) m_stackBets[i].SetActive(false);
+
         stackBetsMaterial.SetFloat("_Custom_hide", 0f);
     }
 }

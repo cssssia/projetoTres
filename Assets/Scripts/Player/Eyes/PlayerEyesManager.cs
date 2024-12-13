@@ -16,7 +16,7 @@ public class PlayerEyesManager : NetworkBehaviour
 
     public override void OnNetworkSpawn()
     {
-        Debug.Log($"PLAYERS ESYES + - IsClient: {IsClient}, IsHost: {IsHost}, IsServer: {IsServer}, IsOwner: {IsOwner}");
+        //Debug.Log($"PLAYERS ESYES + - IsClient: {IsClient}, IsHost: {IsHost}, IsServer: {IsServer}, IsOwner: {IsOwner}");
         m_currentCoveredEyes = 16;
 
         if (IsServer)
@@ -30,7 +30,7 @@ public class PlayerEyesManager : NetworkBehaviour
 
     private void OnArrivedPlayer(bool p_arrived)
     {
-        Debug.Log("OnArrivedPlayer " + m_player + IsOwner);
+        //Debug.Log("OnArrivedPlayer " + m_player + IsOwner);
         AnimFakeButtonRemovalServerRpc(m_player, m_currentCoveredEyes, m_player, p_arrived);
     }
 
@@ -45,7 +45,7 @@ public class PlayerEyesManager : NetworkBehaviour
         {
             if (m_player == l_handAnimControllers[i].PlayerType)
             {
-                Debug.Log("listening " + m_player + IsOwner);
+                //Debug.Log("listening " + m_player + IsOwner);
                 l_handAnimControllers[i].betHandAnimator.OnArrivedPlayer += OnArrivedPlayer;
             }
         }

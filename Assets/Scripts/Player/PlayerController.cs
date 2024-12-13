@@ -61,7 +61,7 @@ public class PlayerController : NetworkBehaviour
 
     public override void OnNetworkSpawn() //research more the difference of this and awake
     {
-        Debug.Log($"{(Player)PlayerIndex} at OnNetworkSpawn PLAYER - IsClient: {IsClient}, IsHost: {IsHost}, IsServer: {IsServer}, IsOwner: {IsOwner}");
+        //Debug.Log($"{(Player)PlayerIndex} at OnNetworkSpawn PLAYER - IsClient: {IsClient}, IsHost: {IsHost}, IsServer: {IsServer}, IsOwner: {IsOwner}");
 
         if (IsServer)
         {
@@ -157,7 +157,7 @@ public class PlayerController : NetworkBehaviour
         {
             m_myHand.Add(p_cardIndex);
             CardsManager.Instance.GetCardByIndex(p_cardIndex).gameObject.transform.SetParent(transform, true);
-            Debug.Log("add card " + p_cardIndex + " on player " + gameObject.name);
+            //Debug.Log("add card " + p_cardIndex + " on player " + gameObject.name);
             m_handBehavior.AddCardOnHand(p_cardIndex, p_lastCard);
         }
     }
@@ -394,13 +394,17 @@ public class PlayerController : NetworkBehaviour
 
     private void IncreaseBet(GameObject gameObject, bool increase)
     {
-        if (gameObject.CompareTag("Bet"))
-        {
-            if (!RoundManager.Instance.RoundHasStarted.Value)
-                RoundManager.Instance.StartRoundServerRpc(IsHost ? Player.HOST : Player.CLIENT);
+        //AddFunctionToQueue(() =>
+        //{
+        //    Debug.Log("veted");
+            if (gameObject.CompareTag("Bet"))
+            {
+                if (!RoundManager.Instance.RoundHasStarted.Value)
+                    RoundManager.Instance.StartRoundServerRpc(IsHost ? Player.HOST : Player.CLIENT);
 
-            RoundManager.Instance.BetServerRpc(increase, (Player)PlayerIndex);
-        }
+                RoundManager.Instance.BetServerRpc(increase, (Player)PlayerIndex);
+            }
+        //});
     }
 
     private void GiveUp(GameObject gameObject)

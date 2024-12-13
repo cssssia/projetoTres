@@ -23,21 +23,23 @@ public class BetHandAnimator : MonoBehaviour
     }
 
     bool m_isIncrease;
-    public IEnumerator GetEyebutton(Action p_action, bool p_increase)
+    bool m_isOwner;
+    public IEnumerator GetEyebutton(Action p_action, bool p_increase, bool p_isOwner)
     {
         m_isIncrease = p_increase;
+        m_isOwner = p_isOwner;
         handAnimator.SetTrigger("Bet");
 
         yield return hatchController.OpenHatch();
 
         l_waitingAnim = true;
-        
-        while(l_waitingAnim) yield return null; // espera pra entregar o botão
+
+        while (l_waitingAnim) yield return null; // espera pra entregar o botão
         Debug.Log("entrega o botão");
         OnDeliveredButton.Invoke();
 
         l_waitingAnim = true;
-        while(l_waitingAnim) yield return null; // espera pra acabar a animação
+        while (l_waitingAnim) yield return null; // espera pra acabar a animação
         p_action?.Invoke();
 
         Debug.Log("fecha a ecotilha");
@@ -47,15 +49,15 @@ public class BetHandAnimator : MonoBehaviour
     public void ArrivedPlayer()
     {
         OnArrivedPlayer?.Invoke(true);
-        screenAnimBehavior.PlayEnteryAnimations();
+        if (m_isOwner) screenAnimBehavior.PlayEnteryAnimations();
         eyeOnHand.SetActive(true);
         eyeOnHandSibiling.SetActive(m_isIncrease);
     }
-        
+
     public void EndArrivedPlayer()
     {
         OnArrivedPlayer?.Invoke(false);
-        screenAnimBehavior.PlayLeaveAnimations();
+        if (m_isOwner) screenAnimBehavior.PlayLeaveAnimations();
     }
 
     public void DeliverButton()

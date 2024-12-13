@@ -190,17 +190,17 @@ public class PlayerController : NetworkBehaviour
 
     private void RoundManager_OnStartGetEye(object p_object, EventArgs e)
     {
-        bool p_isIncrease = (((bool, int))p_object).Item1;
-        int p_playerIndex = (((bool, int))p_object).Item2;
+        int p_playerIndex = (((int, bool))p_object).Item1;
+        bool p_isIncrease = (((int, bool))p_object).Item2;
 
         if (IsOwner && p_playerIndex != PlayerIndex)
         {
             GameManager.Instance.SetPlayerAnimatingServerRpc(true);
-                m_betBehavior.OtherBetBehavior.Bet(p_isIncrease,
-                                            (go, p_isIncrease) =>
-                                                    {
-                                                        GameManager.Instance.SetPlayerAnimatingServerRpc(false);
-                                                    }, m_betBehavior.OtherHandAnimController);
+            m_betBehavior.OtherBetBehavior.Bet(p_isIncrease,
+                                        (go, p_isIncrease) =>
+                                                {
+                                                    GameManager.Instance.SetPlayerAnimatingServerRpc(false);
+                                                }, m_betBehavior.OtherHandAnimController, false);
         }
     }
 

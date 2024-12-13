@@ -10,8 +10,8 @@ public class MatchManager : NetworkBehaviour
     public NetworkVariable<bool> MatchHasEnded;
     public NetworkVariable<Player> WonMatch;
 
-    [SerializeField] private List<GameObject> m_pointsHost;
-    [SerializeField] private List<GameObject> m_pointsClient;
+    [SerializeField] private List<PointBehavior> m_pointsHost;
+    [SerializeField] private List<PointBehavior> m_pointsClient;
 
     void Awake()
     {
@@ -34,7 +34,7 @@ public class MatchManager : NetworkBehaviour
         Debug.Log("b");
         for (int i = p_previousValue; i < p_newValue; i++)
         {
-            m_pointsHost[i].SetActive(true);
+            m_pointsHost[i].AnimPointShow();
         }
 
         if (p_newValue >= matchEndValue)
@@ -47,7 +47,7 @@ public class MatchManager : NetworkBehaviour
         Debug.Log("a");
         for (int i = p_previousValue; i < p_newValue; i++)
         {
-            m_pointsClient[i].SetActive(true);
+            m_pointsClient[i].AnimPointShow();
         }
 
         if (p_newValue >= matchEndValue)

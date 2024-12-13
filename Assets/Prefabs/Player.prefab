@@ -228,6 +228,7 @@ MonoBehaviour:
   - {fileID: 5648195077896705200}
   - {fileID: 8465993737599439459}
   - {fileID: 700113930048907609}
+  m_handAnimController: []
 --- !u!1 &9205496763922758675
 GameObject:
   m_ObjectHideFlags: 0

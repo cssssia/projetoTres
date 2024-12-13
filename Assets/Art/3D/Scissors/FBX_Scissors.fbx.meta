@@ -7,6 +7,16 @@ ModelImporter:
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
+      name: ferro.001
+    second: {fileID: 2100000, guid: 5c3c1e967ed1c094d86732a13ad5ec8e, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: ferro.002
+    second: {fileID: 2100000, guid: b291454d0fa62ea48b4a1a17eb0054cf, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
       name: ferro.008
     second: {fileID: 2100000, guid: 84c3eb6a348528b4c9ce592284eb6b4f, type: 2}
   - first:

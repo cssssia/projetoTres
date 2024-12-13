@@ -16439,6 +16439,10 @@ PrefabInstance:
       propertyPath: m_ConstrainProportionsScale
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: -1119808388923273303, guid: 9bb2b17273f24d942ab8a15068d9ccd9, type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: fc889cf4fc7488d4599db1e22e8893e1, type: 2}
     - target: {fileID: 919132149155446097, guid: 9bb2b17273f24d942ab8a15068d9ccd9, type: 3}
       propertyPath: m_Name
       value: FBX_Hatch_Intern

@@ -24,11 +24,15 @@ Material:
     serializedVersion: 3
     m_TexEnvs:
     - _BaseTexture:
-        m_Texture: {fileID: 2800000, guid: b4355fee4e80252478ebd39881384d9c, type: 3}
+        m_Texture: {fileID: 2800000, guid: 358af5a8e79d6504687139335f63704c, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _Base_taxture:
         m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _NOrmal:
+        m_Texture: {fileID: 2800000, guid: 59b2a7c0fe24b564c8c6261b528bc0c7, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _SampleTexture2D_1575a93d69d14294a686d585baa00199_Texture_1_Texture2D:
@@ -61,7 +65,7 @@ Material:
     - _AlphaClipThreshold: 1
     - _AlphaMultiplier: -0.55
     - _CrackPower: 28.83
-    - _CrackThickness: -3.1905255
+    - _CrackThickness: -3.1958802
     - _Custom_hide: -3
     - _DissolutionOn: 1
     - _Glow_thikines: 0

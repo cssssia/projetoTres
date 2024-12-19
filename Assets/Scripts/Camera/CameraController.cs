@@ -13,6 +13,8 @@ public class CameraController : Singleton<CameraController>
     [SerializeField] private CameraAnimConfig[] m_animConfigs;
     [SerializeField] private Transform m_cameraParent;
 
+    [Space, SerializeField] private PostProccessController m_postProccessController;
+
     private void Start()
     {
         GameInput.Instance.OnButtonVerticalDown += GameInput_Down;
@@ -94,6 +96,14 @@ public class CameraController : Singleton<CameraController>
             m_animConfigs[0].GetAnimData(CameraState.HAND).LocalPosition,
                Quaternion.Euler(m_animConfigs[0].GetAnimData(CameraState.HAND).LocalRotation));
     }
+
+    #region Post-Processing
+    /// <param name="p_exposure"> must be a value between 0 and 1</param>
+    public void SetExposure(float p_exposure)
+    {
+        m_postProccessController.SetExposure(p_exposure);
+    }
+    #endregion
 
 #if UNITY_EDITOR
     [NaughtyAttributes.Button]

@@ -32,6 +32,11 @@ public class PlayerEyesManager : NetworkBehaviour
     {
         //Debug.Log("OnArrivedPlayer " + m_player + IsOwner);
         AnimFakeButtonRemovalServerRpc(m_player, m_currentCoveredEyes, m_player, p_arrived);
+
+        if(!p_arrived)
+        {
+            //anim exposure
+        }
     }
 
     public void OnPlayerSpawned(PlayerController p_playerController)

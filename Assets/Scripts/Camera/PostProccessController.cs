@@ -10,6 +10,7 @@ public class PostProccessController : MonoBehaviour
     private ColorAdjustments m_colorAdjustments;
 
     [Header("Exposure")]
+    [SerializeField] private float m_currentExposureFactor;
     [SerializeField, NaughtyAttributes.MinMaxSlider(0f, 7f)] private Vector2 m_minMaxExposure;
     [SerializeField] private AnimationCurve m_exposureCurve;
     [Header("Anim")]
@@ -23,6 +24,9 @@ public class PostProccessController : MonoBehaviour
 
     public void SetExposure(float p_exposture)
     {
+        if (m_currentExposureFactor == p_exposture) return;
+        m_currentExposureFactor = p_exposture;
+        Debug.Log("set exposure " + p_exposture);
         float l_nextValue = Mathf.Lerp(m_minMaxExposure.x, m_minMaxExposure.y, m_exposureCurve.Evaluate(p_exposture));
 
         StartCoroutine(AnimFloatParameter(m_colorAdjustments.postExposure, l_nextValue));
@@ -32,14 +36,16 @@ public class PostProccessController : MonoBehaviour
     {
         float l_initValue = p_floatParam.value;
         float l_time = 0f;
-        while(l_time < m_animTime)
+
+        Debug.Log("start animing exposure " + p_floatParam.value);
+        while (l_time < m_animTime)
         {
             p_floatParam.Interp(l_initValue, p_nextValue, m_animCurve.Evaluate(l_time / m_animTime));
-
             yield return null;
             l_time += Time.deltaTime;
         }
 
         p_floatParam.value = p_nextValue;
+        Debug.Log("end animing exposure " + p_floatParam.value);
     }
 }

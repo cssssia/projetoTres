@@ -196,7 +196,6 @@ public class BetBehavior : MonoBehaviour
 
     public void ReturnButtons(object p_ovject, EventArgs p_args)
     {
-        Debug.Log("return eye");
         int id = (int)p_ovject;
 
         if (id == playerId)

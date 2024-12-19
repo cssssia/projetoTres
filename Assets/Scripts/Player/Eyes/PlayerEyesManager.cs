@@ -33,9 +33,16 @@ public class PlayerEyesManager : NetworkBehaviour
         //Debug.Log("OnArrivedPlayer " + m_player + IsOwner);
         AnimFakeButtonRemovalServerRpc(m_player, m_currentCoveredEyes, m_player, p_arrived);
 
-        if(!p_arrived)
+        if (!p_arrived)
         {
             //anim exposure
+            //if (IsOwner)
+            //{
+            //Debug.Log($"PLAYERS ESYES + - IsClient: {IsClient}, IsHost: {IsHost}, IsServer: {IsServer}, IsOwner: {IsOwner}");
+            //Debug.Log("anima exposição");
+
+            //    CameraController.Instance.SetExposure()
+            //}
         }
     }
 
@@ -68,7 +75,7 @@ public class PlayerEyesManager : NetworkBehaviour
         AnimButtonRemovalServerRpc(m_player, m_currentCoveredEyes, Player.DEFAULT);
     }
 
-    [ServerRpc (RequireOwnership = false)]
+    [ServerRpc(RequireOwnership = false)]
     void AnimButtonRemovalServerRpc(Player p_player, int p_currentCoveredEyes, Player p_whoAsked)
     {
         //Debug.Log($"AnimButtonRemovalServerRpc + - IsClient: {IsClient}, IsHost: {IsHost}, IsServer: {IsServer}, IsOwner: {IsOwner}");
@@ -89,7 +96,7 @@ public class PlayerEyesManager : NetworkBehaviour
         AnimButtonRemovalClientRpc(p_player, l_nextEyes, p_currentCoveredEyes);
     }
 
-    [ServerRpc (RequireOwnership = false)]
+    [ServerRpc(RequireOwnership = false)]
     void AnimFakeButtonRemovalServerRpc(Player p_player, int p_currentCoveredEyes, Player p_whoAsked, bool p_arrived)
     {
         //Debug.Log($"AnimButtonRemovalServerRpc + - IsClient: {IsClient}, IsHost: {IsHost}, IsServer: {IsServer}, IsOwner: {IsOwner}");
@@ -115,6 +122,11 @@ public class PlayerEyesManager : NetworkBehaviour
     [ClientRpc]
     void AnimButtonRemovalClientRpc(Player p_player, int p_nextEyes, int p_currentCoveredEyes)
     {
+        if (p_player == m_player && IsOwner)
+        {
+            CameraController.Instance.SetExposure(1f - (((float)p_nextEyes) / 15f));
+        }
+
         if (p_nextEyes < p_currentCoveredEyes)
         {
             //Debug.Log("tira " + (p_currentCoveredEyes - p_nextEyes) + "olhos do " + p_player);
@@ -157,7 +169,7 @@ public class PlayerEyesManager : NetworkBehaviour
         }
         else
         {
-            for (int i = p_initialIndex -1; i >= p_finalIndex; i--)
+            for (int i = p_initialIndex - 1; i >= p_finalIndex; i--)
             {
                 m_eyesBehavior[i].SetCover(p_cover);
             }

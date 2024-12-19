@@ -448,6 +448,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   postProcessProfile: {fileID: 11400000, guid: 239f4ed64c56cd5498143cb7b8ff4d0c, type: 2}
+  m_currentExposureFactor: 0
   m_minMaxExposure: {x: 0, y: 5}
   m_exposureCurve:
     serializedVersion: 2
@@ -473,7 +474,7 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
-  m_animTime: 0.5
+  m_animTime: 0.25
   m_animCurve:
     serializedVersion: 2
     m_Curve:

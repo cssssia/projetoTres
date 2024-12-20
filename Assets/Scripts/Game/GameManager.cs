@@ -161,7 +161,7 @@ public class GameManager : NetworkBehaviour
 
                 m_wonTrickPlayer = Player.DEFAULT;
             }
-            if (RoundManager.Instance.CurrentTrick.TrickBetMultiplier == 1)
+            if (RoundManager.Instance.CurrentTrick.TrickBetMultiplier == 1 && m_betState.Value != BetState.MaxBet)
             {
                 if (IsHostTurn())
                     m_betState.Value = BetState.HostTurn;
@@ -304,6 +304,20 @@ public class GameManager : NetworkBehaviour
         }
     }
 
+    private void CheckStopIncreaseBasedOnPoints(BetState p_desiredBetState)
+    {
+        int l_pointsHost = RoundManager.Instance.PointsHost.Value;
+        int l_pointsClient = RoundManager.Instance.PointsClient.Value;
+
+        int l_leadPoints = l_pointsHost >= l_pointsClient ? l_pointsHost : l_pointsClient;
+
+        if (l_leadPoints + 4 > 15)
+        {
+            SetBetState(BetState.MaxBet);
+        }
+        else SetBetState(p_desiredBetState);
+    }
+
     public void OnEndDealingCards(object p_index, EventArgs p_args)
     {
         if (m_gameState.Value is not GameState.DealingCards) return;
@@ -314,12 +328,12 @@ public class GameManager : NetworkBehaviour
         if (m_nextGameState.Value is GameState.HostTurn)
         {
             SetGameState(GameState.HostTurn);
-            SetBetState(BetState.HostTurn);
+            CheckStopIncreaseBasedOnPoints(BetState.HostTurn);
         }
         else if (m_nextGameState.Value is GameState.ClientTurn)
         {
             SetGameState(GameState.ClientTurn);
-            SetBetState(BetState.ClientTurn);
+            CheckStopIncreaseBasedOnPoints(BetState.ClientTurn);
         }
         else if (m_nextGameState.Value is GameState.DealingItems)
         {
@@ -338,12 +352,12 @@ public class GameManager : NetworkBehaviour
         if (m_nextGameState.Value is GameState.HostTurn) //logic round flow
         {
             SetGameState(GameState.HostTurn);
-            SetBetState(BetState.HostTurn);
+            CheckStopIncreaseBasedOnPoints(BetState.HostTurn);
         }
         else if (m_nextGameState.Value is GameState.ClientTurn)
         {
             SetGameState(GameState.ClientTurn);
-            SetBetState(BetState.ClientTurn);
+            CheckStopIncreaseBasedOnPoints(BetState.ClientTurn);
         }
     }
 
